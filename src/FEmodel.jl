@@ -21,7 +21,7 @@ type FEmodel
   g_num::Array{Int64, 2}
   nf::Array{Int64, 2}
   num::Array{Int64, 1}
-  data::Dict
+  data::Dict{Symbol, Any}
 
   neq::Int64
   kdiag::Array{Int64, 1}

@@ -1,7 +1,11 @@
+
 path = "/usr/local/Private/library/d3csom.so"
 isfile(path) && rm(path)
 
+old = pwd()
+cd(Pkg.dir("LHR")*"/test")
 run(`gfortran normnf.f95 -o $(path) -shared -fPIC`)
+cd(old)
 
 csom = dlopen(path)
 formnf_ = dlsym(csom, :formnf_)
