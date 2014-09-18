@@ -34,20 +34,24 @@ etype = int(ones(nels))
 g = int(zeros(ndof))
 g_g = int(zeros(ndof, nels))
 g_num = int(zeros(nod, nels))
-#kdiag = int(zeros(xxx))
 nf = int(ones(nodof, nn))
+num = int(zeros(nod))
+
+#neq = maximum(nf)
+#kdiag = int(zeros(neq))
+
 #no = int(zeros(xxx))
 #node = int(zeros(xxx))
-num = int(zeros(nod))
 #sense = int(zeros(xxx))
 
 # Float64 arrays
-action = zeros(ndof)
+actions = zeros(ndof, nels)
 coord = zeros(nod, ndim)
 eld = zeros(ndof)
 gamma = zeros(nels)
 g_coord = zeros(ndim, nn)
 km = zeros(ndof, ndof)
+
 #kv = zeros(xxx)
 #loads = zeros(xxx)
 
@@ -165,7 +169,7 @@ end
 displacements |> display
 println()
 
-actions = zeros(12, nels)
+actions = zeros(ndof, nels)
 for i in 1:nels
   num = g_num[:, i]
   coord = g_coord[:, num]'              #'
