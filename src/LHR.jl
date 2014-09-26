@@ -7,14 +7,12 @@ module LHR
   
   include("csomif/if.jl")
   include("FEmodel.jl")
-  include("fem.jl")
   
   ### Exports ###
   
   export
-    FEmodel,
-    fem
-
+    FEmodel
+  
   ### Deprecated ###
     
     include("deprecated.jl")
