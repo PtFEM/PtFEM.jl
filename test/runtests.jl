@@ -6,7 +6,7 @@ using Base.Test
 code_tests = [
   "test_csom1.jl",
   "test_csom2.jl",
-  "../examples/beam01.jl"
+  "../examples/Beams/beam01.jl"
 ]
 
 println("Running tests:")
