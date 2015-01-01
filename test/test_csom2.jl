@@ -3,7 +3,7 @@ path = "/usr/local/Private/library/d3csom.so"
 isfile(path) && rm(path)
 
 old = pwd()
-cd(Pkg.dir("LHR")*"/test")
+cd(Pkg.dir("CSoM")*"/test")
 run(`gfortran normnf.f95 -o $(path) -shared -fPIC`)
 cd(old)
 

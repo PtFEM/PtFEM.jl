@@ -1,4 +1,4 @@
-The LHR.jl package is licensed under the MIT "Expat" License:
+The CSoM.jl package is licensed under the MIT "Expat" License:
 
 > Copyright (c) 2014: Rob Goedman.
 >

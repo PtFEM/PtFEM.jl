@@ -1,4 +1,4 @@
-using Compat, LHR
+using Compat, CSoM
 
 data = @Compat.Dict(
   :support => [

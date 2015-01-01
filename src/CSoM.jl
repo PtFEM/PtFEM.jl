@@ -1,4 +1,4 @@
-module LHR
+module CSoM
 
   # package code goes here
   ### Imports ###

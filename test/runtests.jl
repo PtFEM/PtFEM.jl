@@ -1,4 +1,4 @@
-using LHR
+using CSoM
 using Base.Test
 
 # write your own tests here
