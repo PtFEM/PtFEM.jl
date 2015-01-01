@@ -1,9 +1,10 @@
+using CSoM
 
 path = "/usr/local/Private/library/d3csom.so"
 isfile(path) && rm(path)
 
 old = pwd()
-cd(Pkg.dir("CSoM")*"/test")
+cd(Pkg.dir("CSoM", "test"))
 run(`gfortran normnf.f95 -o $(path) -shared -fPIC`)
 cd(old)
 
