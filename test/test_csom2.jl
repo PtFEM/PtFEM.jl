@@ -1,12 +1,10 @@
 using CSoM
 
-path = "/usr/local/Private/library/d3csom.so"
-isfile(path) && rm(path)
+DepsDir = Pkg.dir("CSoM", "src", "deps")
+path = Pkg.dir(DepsDir, "d3csom.so")
 
 old = pwd()
-cd(Pkg.dir("CSoM", "test"))
-run(`gfortran normnf.f95 -o $(path) -shared -fPIC`)
-cd(old)
+cd(DepsDir)
 
 csom = dlopen(path)
 formnf_ = dlsym(csom, :formnf_)
@@ -198,3 +196,4 @@ println("Actions:")
 actions |> display
 println()
 
+cd(old)

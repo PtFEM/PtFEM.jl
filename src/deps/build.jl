@@ -1,4 +1,7 @@
-path = "/usr/local/Private/library/d3csom.so"
-isfile(path) && rm(path)
+DepsDir = Pkg.dir("CSoM", "src", "deps")
+path = Pkg.dir(DepsDir, "d3csom.so")
+file = Pkg.dir(DepsDir, "normnf.f95")
 
-run(`gfortran normnf.f95 -o $(path) -shared -fPIC`)
+cd(DepsDir)
+
+run(`gfortran $(file) -o $(path) -shared -fPIC`)
