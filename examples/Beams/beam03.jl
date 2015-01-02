@@ -1,6 +1,6 @@
 using Compat, CSoM
 
-data = @Compat.Dict(
+data = @compat Dict(
   :support => [
     (1, [0 0 0 0 0 0])],
   :properties => [
@@ -17,7 +17,7 @@ data = @Compat.Dict(
 data |> display
 println()
 
-m = FEmodel(20, 21, data)
+@time m = FEmodel(20, 21, data)
 
 println("Displacements:")
 m.displacements |> display
