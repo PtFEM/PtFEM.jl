@@ -1,6 +1,6 @@
 using CSoM, Compat
 
-data = @Compat Dict(
+data = @compat Dict(
   :support => [
     (1, [0 0 0 0 0 0])],
   :properties => [
