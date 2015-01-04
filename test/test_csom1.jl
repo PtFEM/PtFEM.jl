@@ -1,6 +1,6 @@
-using CSoM
+using CSoM, Compat
 
-data = {
+data = @Compat Dict(
   :support => [
     (1, [0 0 0 0 0 0])],
   :properties => [
@@ -12,7 +12,7 @@ data = {
     (2, int(linspace(2, 21, 20)))],
   :loads => [
     (21, [0.0 -10000.0 0.0 0.0 0.0 0.0])]
-}
+)
 
 data |> display
 println()
