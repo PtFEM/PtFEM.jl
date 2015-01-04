@@ -1,6 +1,21 @@
-language: julia
-julia:
-    - release
-    - nightly
+language: cpp
+compiler:
+  - clang
+notifications:
+  email: true
+env:
+  matrix: 
+    - JULIAVERSION="juliareleases" 
+    - JULIAVERSION="julianightlies" 
 before_install:
+  - sudo add-apt-repository ppa:staticfloat/julia-deps -y
+  - sudo add-apt-repository ppa:staticfloat/${JULIAVERSION} -y
+  - sudo apt-get update -qq -y
   - sudo apt-get install libpcre3-dev gfortran julia -y
+  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+script:
+  - julia -e 'Pkg.init(); Pkg.clone(pwd())'
+  - julia -e 'Pkg.build("CSoM")'
+  - julia -e 'Pkg.test("CSoM"; coverage=true)'
+after_success:
+  - julia -e 'cd(Pkg.dir("CSoM")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
