@@ -1,4 +1,6 @@
-path = Pkg.dir("CSoM", "deps", "src", "CSoM", "4th_ed", "libd3csom4.dylib")
+
+path = Pkg.dir("CSoM", "deps", "src", "CSoM", "4th_ed", "libd3csom4.")
+@osx ? path*"dylib" : path*"so"
 
 csom = dlopen(path)
 formnf_ = dlsym(csom, :formnf_)
