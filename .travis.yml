@@ -2,3 +2,5 @@ language: julia
 julia:
     - release
     - nightly
+before_install:
+  - sudo apt-get install libpcre3-dev gfortran julia -y
