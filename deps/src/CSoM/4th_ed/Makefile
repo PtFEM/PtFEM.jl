@@ -2,7 +2,7 @@
 # of the Fortran files found in the current directory.
 # Usage: make LIB=<libname>
 
-LIB=d3csom4
+LIB=libd3csom4
 FC=gfortran
 SUFFIX=so
 FFLAGS=-fPIC -O3

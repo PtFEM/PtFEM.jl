@@ -1,5 +1,5 @@
 @unix_only begin
-    cd(joinpath(dirname(@__FILE__), "src", "CSom", "4th_ed"))
+    cd(joinpath(dirname(@__FILE__), "src", "CSoM", "4th_ed"))
 
     suffix = @osx? "dylib" : "so"
     run(`make FC=gfortran SUFFIX=$suffix`)
