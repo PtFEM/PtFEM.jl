@@ -1,0 +1,36 @@
+"Uncoupled Consolidation Analysis: Linearly decreasing ICs"
+
+"nels   np_types"
+10 1
+
+"(cv(i),i=1,np_types)"
+1.0
+
+"(etype(i),i=1,nels)(not needed if np_types=1)"
+
+"element lengths (ell(i),i=1,nels)"
+0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1
+
+
+"Time Stepping Data"
+"dtim  nstep  theta  npri  nres  ntime"
+0.001 2000 0.5 100 11 1000
+
+"Initial conditions from top to bottom"
+"(loads(i),i=1,nels+1)"
+100.0
+ 90.0
+ 80.0
+ 70.0
+ 60.0
+ 50.0
+ 40.0
+ 30.0
+ 20.0
+ 10.0
+  0.0
+
+"Fixed boundary Conditions"
+"fixed_freedoms, (node(i),value(i),i=1,fixed freedoms"
+1
+1 0.0

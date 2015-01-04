@@ -1,0 +1,61 @@
+"3-d Data for example in Figure 6.45"
+
+"Width of top of embankment (w1)"
+10.0
+
+"Width of sloping portion of embankment (s1)"
+20.0
+
+"Distance foundation extends to right of embankment toe (w2)"
+10.0
+
+"Height of embankment (h1)"
+10.0
+
+"Thickness of foundation layer (h2)"
+5.0
+
+"Depth of slope (d1)"
+5.0
+
+"Number of x-elements in embankment (nx1)"
+5
+
+"Number of x-elements to right of embankment toe (nx2)"
+5
+
+"Number of y-elements in embankment (ny1)"
+5
+
+"Number of y-elements in foundation (ny2)"
+3
+
+"Number of z-elements in direction (nze)"
+3
+
+"Boundary conditions at front-back of mesh (ifix)"
+"smooth-smooth (ifix=1); rough-smooth (ifix=2); rough-rough (ifix=3)"
+2
+
+"Number of different property groups (np_types)"
+1
+
+"Material properties (phi,c,psi,gamma,e,v) for each group"
+0.0 40.0  0.0  20.0  1.0e5  0.3 
+
+"Property group assigned to each element (not needed if np_types=1)"
+
+"Pore pressure coefficient r_u"
+0.0
+
+"Iteration ceiling (limit)"
+1000
+
+"Factor of Safety accuracy tolerance (fos_tol)"
+0.05
+
+
+
+
+
+

@@ -1,0 +1,77 @@
+'Example 2: Gamma factoring'
+
+"Width of top of embankment (w1)"
+30.0
+
+"Width of sloping portion of embankment (s1)"
+20.0
+
+"Distance foundation extends to right of embankment toe (w2)"
+30.0
+
+"Height of embankment (h1)"
+10.0
+
+"Thickness of foundation layer (h2)"
+10.0
+
+"Number of x-elements in embankment (nx1)"
+50
+
+"Number of x-elements to right of embankment toe (nx2)"
+30
+
+"Number of y-elements in embankment (ny1)"
+10
+
+"Number of y-elements in foundation (ny2)"
+10
+
+"Number of different property groups (np_types)"
+1
+
+"Material properties (phi,c,psi,gamma,e,v) for each group"
+30.0  20.0  0.0  20.0  1.e5  0.3 
+
+"Property group assigned to each element (etype, data not needed if np_types=1)"
+
+"Pseudo-static analysis: Horizontal acceleration factor (k_h)"
+0.25
+
+"Number of free surface points and their coordinates (nosurf, surf(2,nosurf))"
+0
+
+"Unit weight of water (gam_w)"
+9.81
+
+"Iteration ceiling (limit)"
+2500
+
+"fos_type=1  Reduced   c and tan(phi)"
+"fos_type=2  Increased gamma"
+"fos_type=3  Reduced   tan(phi) only"
+"fos_type=4  Reduced   c only"
+"fos_type=5  Reduced   c and tan(phi) | Increased gamma"
+"fos_type=6  Increased k_h factor"
+"fos_type=7  Increased r_u factor"
+
+"Factoring strategy factor"
+6
+
+"Factor of Safety accuracy tolerance (fos_tol)"
+0.05
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,56 @@
+'Settlement Program Example 51_1'
+
+"Strain Type (type_2d)"
+'plane'
+
+"Element Type (element)"
+'triangle' 3  
+
+"Number of integrating points (nip)"
+1  
+
+"Counting Direction (dir)"
+'x'
+
+"Number of columns of elements (nxe)"
+2  
+
+"x(r)-coordinates of vertical lines"
+0.0   0.5  1.0
+
+"Number of rows of elements (nye)"
+2  
+
+"y(z)-coordinates of horizontal lines"
+0.0  -0.5 -1.0
+
+"Number of different property groups (np_types)"
+1
+
+"Material properties (e,v) for each group"
+1   1000000.0  0.3
+
+"Property group assigned to each element (etype, data not needed if np_types=1)"
+
+"Number of restrained nodes"
+5
+
+"Restrained nodal freedoms (0-displacement is zero, 1-displacement to be computed"
+1 0 1  4 0 1  7 0 0  8 1 0  9 1 0
+
+"Number of loaded nodes"
+3
+
+"Loaded node information (not needed if loaded_nodes=0)"
+1  0.0 -0.25   
+2  0.0 -0.50   
+3  0.0 -0.25
+
+"Number of fixed freedoms"
+0
+
+"Fixed freedom information (not needed if fixed_freedoms=0)"
+
+
+
+

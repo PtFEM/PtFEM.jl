@@ -1,0 +1,41 @@
+"Coupled Consolidation Analysis: Schiffman and Stein(1970) "
+
+"nels   np_types"
+  40      4
+  
+"(k/gamma_w(i),m_v(i),i=1,np_types)"  
+  1.26E-4      3.07E-3
+  3.75E-4      1.95E-3
+  5.34E-5      9.74E-4
+  1.34E-4      1.95E-3
+
+"(etype(i),i=1,nels) (not needed if np_types=1)"
+1 1 1 1 1 1 1 1 1 1
+2 2 2 2 2 2 2 2 2 2
+3 3 3 3 3 3 3 3 3 3
+4 4 4 4 4 4 4 4 4 4
+
+"element lengths (ell(i),i=1,nels)"
+1.0  1.0  1.0  1.0  1.0  1.0  1.0  1.0  1.0  1.0
+2.0  2.0  2.0  2.0  2.0  2.0  2.0  2.0  2.0  2.0
+3.0  3.0  3.0  3.0  3.0  3.0  3.0  3.0  3.0  3.0
+2.0  2.0  2.0  2.0  2.0  2.0  2.0  2.0  2.0  2.0
+
+"Time Stepping Data"
+"dtim  nstep  theta  npri  nres  ntime"
+ 1.0   10000   0.5    100   41    7195
+ 
+"Boundary Conditions: Nodes with pp and/or disp fixed to zero"
+"(nr,(k,nf(:,k),i=1,nr)"
+2
+1  1  0   41  0  0
+
+"Loaded nodes: Nodes with a time dependent load function applied"
+"loaded_nodes,(no(i),val(i),i=1,loaded_nodes)"
+1
+1  1.0
+
+"Load-Time Function: Number of points followed by (t,q) for each point"
+"(nlfp, lf(:,i),i=1,nlfp)"
+3
+0.0 0.0  0.0 1.0  10000.0 1.0

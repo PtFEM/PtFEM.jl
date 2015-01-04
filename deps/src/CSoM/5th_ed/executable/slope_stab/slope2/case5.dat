@@ -1,0 +1,76 @@
+"Example 5 A two-layer slope subjected to a horizontal acceleration" 
+
+"Distance foundation extends to left of embankment toe (w1)"
+33.5
+
+"Width of sloping portion of embankment to the left (s1)"
+66.2
+
+"Width of top of embankent (w2)"
+ 7.3
+
+"Width of sloping portion of embankment to the right (s2)"
+50.9
+
+"Distance foundation extends to right of embankment toe (w3)"
+33.5
+
+"Height of embankment (h1)"
+ 21.3
+
+"Thickness of foundation layer (h2)"
+ 14.6
+
+"Number of x-elements to left of embankment (nx1)"
+5
+
+"Number of x-elements in embankment (nx2)"
+10   
+
+"Number of x-elements to right of embankment (nx3)"
+5
+
+"Number of y-elements in embankment (ny1)"
+10
+
+"Number of y-elements in foundation (ny2)"
+5
+
+"Number of different property groups (np_types)"
+2
+
+"Material properties (phi,c,psi,gamma,e,v) for each group"
+30.0  10.0  0.0  18.2  1.e5  0.3
+20.0    5.0  0.0  18.2  1.e5  0.3
+
+"Property group assigned to each element (etype, data not needed if np_types=1)"
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+
+"Pseudo-static analysis: Horizontal acceleration factor (k_h)"
+0.2
+
+"Number of free surface points and their coordinates (nosurf, surf(:,nosurf))"
+0
+
+"Unit weight of water (gam_w)"
+0.0
+
+"Iteration ceiling (limit)"
+500
+
+"Factor of Safety accuracy tolerance (fos_tol)"
+0.05

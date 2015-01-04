@@ -1,0 +1,63 @@
+'Settlement Program example p51_5'
+
+"Strain Type"
+'axisymmetric'
+
+"Element Type"
+'quadrilateral' 4  
+
+"Number of integrating points"
+9  
+
+"Counting Direction"
+'z'
+
+"Number of columns of elements"
+3  
+
+"x(r)-coordinates of vertical lines"
+0.0   4.0  10.0  30.0
+
+"Number of rows of elements"
+2  
+
+"y(z)-coordinates of horizontal lines"
+0.0  -4.0 -10.0
+
+"Number of different property groups (np_types)"
+2
+
+"Material properties (E,v) for each group"
+1    100.0  0.3
+2   1000.0  0.45
+
+"Property group assigned to each element (not needed if np_types=1)"
+1   1 
+2   2 
+3   1 
+4   2 
+5   1  
+6   2
+
+"Number of restrained nodes"
+8
+
+"Restrained nodal freedoms (0-displacement is zero, 1-displacement to be copmputed"
+1 0 1  2 0 1  3 0 0  6 0 0  9 0 0  10 0 1  11 0 1  12 0 0
+
+"Number of loaded nodes"
+3
+
+"Loaded node information (not needed if loaded_nodes=0)"
+1      0.0      -2.6667   
+4      0.0     -23.3333   
+7      0.0     -24.0
+
+"Number of fixed freedoms"
+0
+
+"Fixed freedom information (not needed if fixed_freedoms=0)"
+
+
+
+

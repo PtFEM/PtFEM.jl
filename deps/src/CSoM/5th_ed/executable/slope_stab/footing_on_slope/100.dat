@@ -1,0 +1,73 @@
+"Example 1: A homogeneous slope"
+
+"Width of top of embankment (w1)"
+20.0
+
+"Width of sloping portion of embankment (s1)"
+20.0
+
+"Distance foundation extends to right of embankment toe (w2)"
+20.0
+
+"Height of embankment (h1)"
+10.0
+
+"Thickness of foundation layer (h2)"
+5.0
+
+"Number of x-elements in embankment (nx1)"
+20
+
+"Number of x-elements to right of embankment toe (nx2)"
+10
+
+"Number of y-elements in embankment (ny1)"
+10
+
+"Number of y-elements in foundation (ny2)"
+5
+
+"Number of different property groups (np_types)"
+1
+
+"Material properties (phi,c,psi,gamma,e,v) for each group"
+30.0  15.0  0.0  0.0  1.e5  0.3 
+
+"Property group assigned to each element (etype, data not needed if np_types=1)"
+
+"Pseudo-static analysis: Horizontal acceleration factor (k_h)"
+0.0
+
+"Number of free surface points and their coordinates (nosurf, surf(2,nosurf))"
+0
+
+"Unit weight of water (gam_w)"
+0.0
+
+"Iteration ceiling (limit)"
+1000
+
+"Factor of Safety accuracy tolerance (fos_tol)"
+0.05
+
+"Counting from left, give the first (fel) and last (lel) footing elements"
+11  20
+
+"Pressure applied to the footing (val)"
+100.0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,66 @@
+'Poulos and Davis example with 6-node triangles'
+
+"Strain Type"
+'plane'
+
+"Element Type"
+'triangle' 6  
+
+"Number of integrating points"
+3  
+
+"Counting Direction"
+'y'
+
+"Number of columns of elements"
+8  
+
+"x(r)-coordinates of vertical lines"
+0.0  0.25  0.5  0.75  1.0  1.25  1.75  2.25  3.0
+
+"Number of rows of elements"
+2  
+
+"y(z)-coordinates of horizontal lines"
+0.0  -0.5 -1.0
+
+"Number of different property groups (np_types)"
+1
+
+"Material properties (E,v) for each group"
+1   100.0  0.2
+
+"Property group assigned to each element (not needed if np_types=1)"
+
+"Number of restrained nodes"
+25
+
+"Restrained nodal freedoms (0-displacement is zero, 1-displacement to be computed"
+  1 0 1    2 0 1    3 0 1    4 0 1    5 0 0
+ 10 0 0   15 0 0   20 0 0   25 0 0   30 0 0
+ 35 0 0   40 0 0   45 0 0   50 0 0   55 0 0
+ 60 0 0   65 0 0   70 0 0   75 0 0   80 0 0
+ 81 0 1   82 0 1   83 0 1   84 0 1   85 0 0
+
+"Number of loaded nodes"
+9
+
+"Loaded node information (not needed if loaded_nodes=0)"
+ 1  0.0  -0.04167
+ 6  0.0  -0.16667
+11  0.0  -0.08333
+16  0.0  -0.16667
+21  0.0  -0.08333
+26  0.0  -0.16667
+31  0.0  -0.08333
+36  0.0  -0.16667
+41  0.0  -0.04167
+
+"Number of fixed freedoms"
+0
+
+"Fixed freedom information (not needed if fixed_freedoms=0)"
+
+
+
+

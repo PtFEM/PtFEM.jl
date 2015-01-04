@@ -1,0 +1,54 @@
+'Settlement Program Example 51_3'
+
+"Strain Type"
+'plane'
+
+"Element Type"
+'quadrilateral' 4  
+
+"Number of integrating points"
+4  
+
+"Counting Direction"
+'y'
+
+"Number of columns of elements"
+3  
+
+"x(r)-coordinates of vertical lines"
+0.0  10.0  20.0  30.0
+
+"Number of rows of elements"
+2  
+
+"y(z)-coordinates of horizontal lines"
+0.0  -5.0 -10.0
+
+"Number of different property groups (np_types)"
+1
+
+"Material properties (E,v) for each group"
+1  1000000.0  0.3
+
+"Property group assigned to each element (not needed if np_types=1)"
+
+"Number of restrained nodes"
+8
+
+"Restrained nodal freedoms (0-displacement is zero, 1-displacement to be computed"
+1 0 1  2 0 1  3 0 0  6 0 0  9 0 0  10 0 1  11 0 1  12 0 0
+
+"Number of loaded nodes (loaded_nodes)"
+0
+
+"Loaded node information (not needed if loaded_nodes=0)"
+
+"Number of fixed freedoms (fixed_freedoms)"
+2
+
+"Fixed freedom information (not needed if fixed_freedoms=0)"
+1  2  -1.0e-5   
+4  2  -1.0e-5
+
+
+
