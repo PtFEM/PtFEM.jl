@@ -1,4 +1,4 @@
-path = "/usr/local/Private/library/d3csom.so"
+path = Pkg.dir("CSoM", "deps", "src", "CSoM", "4th_ed", "libd3csom4.dylib")
 
 csom = dlopen(path)
 formnf_ = dlsym(csom, :formnf_)

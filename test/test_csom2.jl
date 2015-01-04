@@ -1,7 +1,7 @@
 using CSoM
 
-DepsDir = Pkg.dir("CSoM", "src", "deps")
-path = Pkg.dir(DepsDir, "d3csom.so")
+DepsDir = Pkg.dir("CSoM", "deps", "src", "CSoM", "4th_ed")
+path = Pkg.dir(DepsDir, "libd3csom4.dylib")
 
 old = pwd()
 cd(DepsDir)
