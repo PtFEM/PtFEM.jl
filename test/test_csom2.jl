@@ -1,7 +1,8 @@
 using CSoM
 
 DepsDir = Pkg.dir("CSoM", "deps", "src", "CSoM", "4th_ed")
-path = Pkg.dir(DepsDir, "libd3csom4.dylib")
+path = Pkg.dir(DepsDir, "libd3csom4.")
+path = path*@osx ? "dylib" : "so"
 
 old = pwd()
 cd(DepsDir)
