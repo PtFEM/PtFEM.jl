@@ -1,20 +1,20 @@
 module CSoM
 
-  # package code goes here
-  ### Imports ###
+# package code goes here
+### Imports ###
+
+### Includes ###
+
+include("csomif/if.jl")
+include("FEmodel.jl")
+
+### Exports ###
+
+export
+  FEmodel
+
+### Deprecated ###
   
-  ### Includes ###
-  
-  include("csomif/if.jl")
-  include("FEmodel.jl")
-  
-  ### Exports ###
-  
-  export
-    FEmodel
-  
-  ### Deprecated ###
-    
-    include("deprecated.jl")
+  include("deprecated.jl")
 
 end # module
