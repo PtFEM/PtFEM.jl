@@ -6,6 +6,8 @@ using Base.Test
 code_tests = [
   "test_csom1.jl",
   "test_csom2.jl",
+  "test_lufac.jl",
+  "test_ldlt.jl",
   "../examples/Beams/beam01.jl"
 ]
 

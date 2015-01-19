@@ -7,11 +7,20 @@ module CSoM
 
 include("csomif/if.jl")
 include("FEmodel.jl")
+include(Pkg.dir("CSoM", "src", "NMfE", "lufac.jl"))
+include(Pkg.dir("CSoM", "src", "NMfE", "ldlt.jl"))
 
 ### Exports ###
 
 export
-  FEmodel
+  # From FEmodel.jl
+  FEmodel,
+  
+  # From lufac.jl
+  lufac,
+  
+  # From ldlt.jl
+  ldlt
 
 ### Deprecated ###
   
