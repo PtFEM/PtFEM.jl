@@ -1,3 +1,4 @@
 *.o *.so *.dylib
 deps/src/CSoM/5th_ed/executable/*
 deps/src/CSoM/5th_ed/source/*
+deps/src/CSoM/NM/*
