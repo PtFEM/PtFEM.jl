@@ -63,30 +63,36 @@ function FEmodel(nels::Int64, nn::Int64, data::Dict;
     nf[:, data[:support][i][1]] = data[:support][i][2]
   end
   
-  #=
   ccall(formnf_, Void, 
     (Ptr{Int64}, Ptr{Int64}, Ptr{Int64}),
     &int64(nodof), &int64(nn), nf
   )
-  println(nf)
-  println()
-  =#
-  
-  formnf!(nodof, nn, nf)
   
   neq = maximum(nf)
   kdiag = int(zeros(neq))
   loads = zeros(length(nf))
 
+  #g_num[1,:] = int(linspace(1, 20, 20))
+  #g_num[2,:] = int(linspace(2, 21, 20))
   for i in 1:size(data[:node_numbering], 1)
     g_num[data[:node_numbering][i][1],:] = data[:node_numbering][i][2]
+    #println(i, g_num)
   end
   
   for i in 1:nels
     num = g_num[:, i]
-    num_to_g!(nod, nodof, nn, ndof, num, nf, g)
+    
+    ccall(num_to_g_, Void,
+      (Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, Ptr{Int64}),
+      &int64(nod), &int64(nodof), &int64(nn), &int64(ndof), num, nf, g
+    )
     g_g[:, i] = g
-    fkdiag!(ndof, neq, g, kdiag)
+    #println(i, ": num = ", g_num[:, i], ", g = ", g_g[:, i])
+    
+    ccall(fkdiag_, Void,
+      (Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, Ptr{Int64}),
+      &int64(ndof), &int64(neq), g, kdiag
+    )
   end
   
   for i in 2:neq
@@ -106,7 +112,6 @@ function FEmodel(nels::Int64, nn::Int64, data::Dict;
   gamma = zeros(nels)
   g_coord = zeros(ndim, nn)
   km = zeros(ndof, ndof)
-  km1 = zeros(ndof, ndof)
   kv = zeros(kdiag[neq])
   loads = zeros(neq)
   prop = zeros(nprops, np_types)
@@ -126,10 +131,13 @@ function FEmodel(nels::Int64, nn::Int64, data::Dict;
   for i in 1:nels
     num = g_num[:, i]
     coord = g_coord[:, num]'              #'
-    rigid_jointed!(km, prop, gamma, etype, i, coord)
-  
+    ccall(rigid_jointed_, Void,
+      (Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, Ptr{Int64},
+        Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int64}, Ptr{Int64}, Ptr{Float64}),
+      &int64(ndof), &int64(nprops), &int64(np_types), &int64(nels), &int64(nod), &int64(ndim),
+      km, prop, gamma, etype, &int64(i), coord
+    )
     g = g_g[:, i]
-    
     ccall(fsparv_, Void,
       (Ptr{Int64}, Ptr{Int64}, Ptr{Int64},
         Ptr{Float64}, Ptr{Float64}, Ptr{Int64}, Ptr{Int64}),
