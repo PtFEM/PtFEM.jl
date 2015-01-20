@@ -7,9 +7,9 @@ VERSION.minor < 4 && using Docile
 
 ### Includes ###
 
-include("csomif/if.jl")
+#include("csomif/if.jl")
 include("FEmodel.jl")
-include("FEmodelFortran.jl")
+#include("FEmodelFortran.jl")
 include(Pkg.dir("CSoM", "src", "NMfE", "lufac.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ldlt.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "formnf.jl"))
