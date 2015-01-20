@@ -1,15 +1,11 @@
-#=
-@doc doc"""
+@doc """
   This subroutine performs Cholesky factorisation on a symmetric
-  skyline global matrix.
+  skyline global matrix. The vector kv is updated.
 
-  sparin(kv, kdiag)
-
-  where:
-    kv::Vector{Float64}   : Skyline vector of global stiffness matrix
-    kdiag::Vector{Int64}  : Diagonal element vector
+  kv::Vector{Float64}   : Skyline vector of global stiffness matrix
+  
+  kdiag::Vector{Int64}  : Diagonal element vector
   """ ->
-=#
 function sparin!(kv::Vector{Float64}, kdiag::Vector{Int64})
   local x::Float64
   n = size(kdiag, 1)
