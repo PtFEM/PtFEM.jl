@@ -47,13 +47,13 @@ export
   FEmodelFortran,
   
   # From CSoM
-  formnf,
-  num_to_g,
-  fkdiag,
-  fsparv,
-  spabac,
-  sparin,
-  rigid_jointed,
+  formnf!,
+  num_to_g!,
+  fkdiag!,
+  fsparv!,
+  spabac!,
+  sparin!,
+  rigid_jointed!,
   
   # From NMfE
   lufac,
