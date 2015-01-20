@@ -106,7 +106,6 @@ function FEmodel(nels::Int64, nn::Int64, data::Dict;
   gamma = zeros(nels)
   g_coord = zeros(ndim, nn)
   km = zeros(ndof, ndof)
-  km1 = zeros(ndof, ndof)
   kv = zeros(kdiag[neq])
   loads = zeros(neq)
   prop = zeros(nprops, np_types)
@@ -127,29 +126,12 @@ function FEmodel(nels::Int64, nn::Int64, data::Dict;
     num = g_num[:, i]
     coord = g_coord[:, num]'              #'
     rigid_jointed!(km, prop, gamma, etype, i, coord)
-  
     g = g_g[:, i]
-    
-    ccall(fsparv_, Void,
-      (Ptr{Int64}, Ptr{Int64}, Ptr{Int64},
-        Ptr{Float64}, Ptr{Float64}, Ptr{Int64}, Ptr{Int64}),
-      &int64(kdiag[neq]), &int64(ndof),  &int64(neq),
-      kv, km, g, kdiag
-    )
+    fsparv!(kv, km, g, kdiag)
   end
-
-  ccall(sparin_, Void,
-    (Ptr{Int64}, Ptr{Int64}, Ptr{Float64}, Ptr{Int64}),
-    &int64(kdiag[neq]), &int64(neq), kv, kdiag
-  )
-
-  ccall(spabac_, Void,
-    (Ptr{Int64}, Ptr{Int64}, Ptr{Int64},
-      Ptr{Float64}, Ptr{Float64}, Ptr{Int64}),
-    &int64(kdiag[neq]), &int64(size(loads,1)), &int64(neq),
-    kv, loads, kdiag
-  )
-
+  
+  sparin!(kv, kdiag)
+  spabac!(kv, loads, kdiag)
   displacements = zeros(size(nf))
   for i in 1:size(displacements, 1)
     for j in 1:size(displacements, 2)
@@ -170,12 +152,7 @@ function FEmodel(nels::Int64, nn::Int64, data::Dict;
         eld[j] = loads[g[j]]
       end
     end
-    ccall(rigid_jointed_, Void,
-      (Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, Ptr{Int64},
-        Ptr{Float64}, Ptr{Float64}, Ptr{Float64}, Ptr{Int64}, Ptr{Int64}, Ptr{Float64}),
-      &int64(ndof), &int64(nprops), &int64(np_types), &int64(nels), &int64(nod), &int64(ndim),
-      km, prop, gamma, etype, &int64(i), coord
-    )
+    rigid_jointed!(km, prop, gamma, etype, i, coord)
     actions[:, i] = km * eld
   end
 

@@ -1,5 +1,7 @@
 module CSoM
 
+VERSION.minor < 4 && using Docile
+
 # package code goes here
 ### Imports ###
 

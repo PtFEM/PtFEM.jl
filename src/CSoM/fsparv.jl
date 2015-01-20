@@ -1,30 +1,33 @@
 #=
-SUBROUTINE fsparv(kv,km,g,kdiag)
-!
-! This subroutine assembles element matrices into a symmetric skyline
-! global matrix.
-!
- IMPLICIT NONE
- INTEGER,PARAMETER::iwp=SELECTED_REAL_KIND(15)
- INTEGER,INTENT(IN)::g(:),kdiag(:)
- REAL(iwp),INTENT(IN)::km(:,:)
- REAL(iwp),INTENT(OUT)::kv(:) 
- INTEGER::i,idof,k,j,iw,ival
- idof=UBOUND(g,1)
- DO i=1,idof
-   k=g(i)
-   IF(k/=0)THEN
-     DO j=1,idof
-       IF(g(j)/=0)THEN
-         iw=k-g(j)
-         IF(iw>=0)THEN
-           ival=kdiag(k)-iw
-           kv(ival)=kv(ival)+km(i,j) 
-         END IF
-       END IF
-     END DO
-   END IF
- END DO
-RETURN
-END SUBROUTINE fsparv
+@doc doc"""
+  This subroutine assembles element matrices into a symmetric skyline
+  global matrix.
+
+  fsparv(kv, km, g, kdiag)
+
+  where:
+    kv::Vector{Float64}   : Skyline vector of global stiffness matrix
+    km::Matrix{Float64}   : Stiffness matrix
+    g::Vector{Int64}      : Global coordinate vector
+    kdiag::Vector{Int64}  : Diagonal element vector
+  """ ->
 =#
+function fsparv!(kv::Vector{Float64}, km::Matrix{Float64},
+  g::Vector{Int64}, kdiag::Vector{Int64})
+  
+  ndof = size(g, 1)
+  for i in 1:ndof
+    k = g[i]
+    if k !== 0
+      for j in 1:ndof
+        if g[j] !== 0
+          iw = k - g[j]
+          if iw >= 0
+            ival = kdiag[k] - iw
+            kv[ival] += km[i, j]
+          end
+        end
+      end
+    end
+  end
+end

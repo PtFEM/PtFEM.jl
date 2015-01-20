@@ -26,4 +26,3 @@ println()
 println("Actions:")
 m.actions |> display
 println()
-
