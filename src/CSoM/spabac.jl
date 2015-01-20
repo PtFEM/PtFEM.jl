@@ -1,13 +1,14 @@
 @doc """
-Function spabac(kv, loads, kdiag) performs Cholesky forward and back-substitution on a symmetric skyline global matrix. The loads vector is updated.
+Function spabac! performs Cholesky forward and back-substitution on a symmetric skyline global matrix. The loads vector is updated.
 
-Required arguments to spabac!() are:
+Arguments to spabac!(kv, loads, kdiag):
 
 kv::Vector{Float64}   : Skyline vector of global stiffness matrix
 
 loads::Vector{Float64}: Load vector
 
-kdiag::Vector{Int64}  : Diagonal element vector""" ->
+kdiag::Vector{Int64}  : Diagonal element vector
+""" ->
 function spabac!(kv::Vector{Float64}, loads::Vector{Float64}, kdiag::Vector{Int64})
   local x::Float64
   n = size(kdiag, 1)
