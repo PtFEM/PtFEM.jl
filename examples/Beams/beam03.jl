@@ -17,7 +17,13 @@ data = @compat Dict(
 data |> display
 println()
 
-#@time m = FEmodelFortran(20, 21, data)
+if isdir(Pkg.dir("CSoM", "deps"))
+  println("Running Fortran ccall version:")
+  @time m = FEmodelFortran(20, 21, data)
+  println()
+end
+
+println("Running Julia version:")
 @time m = FEmodel(20, 21, data)
 println()
 

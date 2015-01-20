@@ -93,7 +93,7 @@ function FEmodel(nels::Int64, nn::Int64, data::Dict;
     kdiag[i] = kdiag[i] + kdiag[i-1]
   end
   
-  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).\n")
+  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
   
   no = int(zeros(fixed_freedoms))
   node = int(zeros(fixed_freedoms))
