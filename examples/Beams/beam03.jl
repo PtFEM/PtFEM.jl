@@ -17,7 +17,7 @@ data = @compat Dict(
 data |> display
 println()
 
-@time m = FEmodelFortran(20, 21, data)
+#@time m = FEmodelFortran(20, 21, data)
 @time m = FEmodel(20, 21, data)
 println()
 

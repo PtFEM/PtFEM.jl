@@ -1,15 +1,27 @@
 module CSoM
 
-VERSION.minor < 4 && using Docile
-
+if VERSION.minor < 4
+  using Docile, Lexicon
+  macro doc_mstr(text)
+     Base.triplequoted(text)
+  end
+  macro doc_str(text)
+     text
+  end
+  
+  export
+    # From CSoM
+    @doc_mstr,
+    @doc_str
+  
+end
+       
 # package code goes here
 ### Imports ###
 
 ### Includes ###
 
-#include("csomif/if.jl")
 include("FEmodel.jl")
-#include("FEmodelFortran.jl")
 include(Pkg.dir("CSoM", "src", "NMfE", "lufac.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ldlt.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "formnf.jl"))
@@ -19,6 +31,12 @@ include(Pkg.dir("CSoM", "src", "CSoM", "fsparv.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "spabac.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "sparin.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "rigid_jointed.jl"))
+
+# Only needed for comparing with Fortran performance
+if isdir(Pkg.dir("CSoM", "deps"))
+  include("csomif/if.jl")
+  include("FEmodelFortran.jl")
+end
 
 ### Exports ###
 
