@@ -7,8 +7,7 @@ code_tests = [
   "test_csom1.jl",
   #"test_csom2.jl",
   "test_lufac.jl",
-  "test_ldlt.jl",
-  Pkg.dir("CSoM", "Examples", "Beams", "beam01.jl")
+  "test_ldlt.jl"
 ]
 
 println("Running tests:")
