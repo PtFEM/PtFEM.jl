@@ -1,7 +1,10 @@
 module CSoM
 
+using Docile, Lexicon
+@document
+
 if VERSION.minor < 4
-  using Docile, Lexicon
+  #=
   macro doc_mstr(text)
      Base.triplequoted(text)
   end
@@ -13,7 +16,7 @@ if VERSION.minor < 4
     # From CSoM
     @doc_mstr,
     @doc_str
-  
+  =#
 end
        
 # package code goes here
@@ -54,6 +57,7 @@ export
   spabac!,
   sparin!,
   rigid_jointed!,
+  f, f1, f2,
   
   # From NMfE
   lufac,
