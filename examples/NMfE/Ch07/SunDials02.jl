@@ -29,12 +29,12 @@ p = plot(
   Guide.title("Example 7.5 (from SunDials.jl)")
 )
 
-draw(SVG("Ex7.5.svg", 8inch, 3inch), p)
+draw(SVG("Sundials02.svg", 8inch, 3inch), p)
 # Below will only work on OSX, please adjust for your environment.
 # JULIA_SVG_BROWSER is set from environment variable JULIA_SVG_BROWSER
 @osx ? if isdefined(Main, :JULIA_SVG_BROWSER) && length(JULIA_SVG_BROWSER) > 0
-  isfile("Ex7.5.svg") &&
-    run(`open -a $(JULIA_SVG_BROWSER) "Ex7.5.svg"`)
+  isfile("Sundials02.svg") &&
+    run(`open -a $(JULIA_SVG_BROWSER) "Sundials02.svg"`)
   end : println()
 
 cd(old)

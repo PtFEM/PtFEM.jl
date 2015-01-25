@@ -27,3 +27,5 @@ function sysfn(y, fy)
 end
 
 res = Sundials.kinsol(sysfn, ones(2))
+
+@assert res = [0.786153, 0.618035]
