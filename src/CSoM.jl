@@ -18,6 +18,19 @@ if VERSION.minor < 4
     @doc_str
   =#
 end
+
+if !isdefined(Main, :JULIA_SVG_BROWSER)
+  JULIA_SVG_BROWSER = ""
+  try
+    JULIA_SVG_BROWSER = ENV["JULIA_SVG_BROWSER"]
+  catch e
+    println("Environment variable JULIA_SVG_BROWSER not found.")
+    JULIA_SVG_BROWSER = ""
+  end
+end
+
+export
+  JULIA_SVG_BROWSER
        
 # package code goes here
 ### Imports ###
@@ -27,6 +40,7 @@ end
 include("FEmodel.jl")
 include(Pkg.dir("CSoM", "src", "NMfE", "lufac.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ldlt.jl"))
+include(Pkg.dir("CSoM", "src", "NMfE", "ivp.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "formnf.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "num_to_g.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "fkdiag.jl"))
@@ -61,7 +75,11 @@ export
   
   # From NMfE
   lufac,
-  ldlt
+  ldlt,
+  euler,
+  modified_euler,
+  mid_point_euler,
+  runga_kutta_4
 
 ### Deprecated ###
   

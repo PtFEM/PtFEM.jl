@@ -23,3 +23,5 @@ f2 = [f(g(xi, pi/4, pi/2)) for xi in x2]
 println()
 
 @show scal(pi/4, pi/2)*dot(f2, w2)
+
+Base.quadgk(f, pi/4, pi/2)
