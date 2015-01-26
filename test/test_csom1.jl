@@ -14,31 +14,8 @@ data = @compat Dict(
     (21, [0.0 -10000.0 0.0 0.0 0.0 0.0])]
 )
 
-data |> display
-println()
-
 m = FEmodel(20, 21, data)
 
-println()
-m.nf |> display
-println()
-
-println("m.kdiag (reshaped from $(typeof(m.kdiag)) of length $(size(m.kdiag, 1))):")
-reshape(m.kdiag, 20,6) |> display
-println()
-
-round(m.km) |> display
-println()
-
-println("First 10 elements of updated m.kv (of type $(typeof(m.kv)) with length $(size(m.kv, 1))):")
-m.kv[1:10] |> display
-println()
-
-println("Displacements:")
-m.displacements |> display
-println()
-
-println("Actions:")
-m.actions |> display
-println()
-
+@assert round(m.displacements[2,1:7], 5) == [0.0  -0.00079  -0.00309  -0.00684  -0.01195  -0.01833  -0.02592]
+@assert round(m.displacements[2,8:14], 5) == [-0.03463  -0.04437  -0.05508  -0.06667  -0.07905  -0.09216  -0.10591]
+@assert round(m.displacements[2,15:21], 5) == [-0.12021  -0.135  -0.15019  -0.16569  -0.18144  -0.19735  -0.21333]

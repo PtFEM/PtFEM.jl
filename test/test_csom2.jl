@@ -78,10 +78,6 @@ ccall(formnf_, Void,
   &int64(nodof), &int64(nn), nf
 )
 
-println()
-nf |> display
-println()
-
 neq = maximum(nf)
 kdiag = int(zeros(neq))
 loads = zeros(length(nf))
@@ -102,16 +98,9 @@ for i in 1:nels
   )
 end
 
-g_g |> display
-println()
-
 for i in 2:neq
   kdiag[i] = kdiag[i] + kdiag[i-1]
 end
-
-println("kdiag (reshaped from $(typeof(kdiag)) of length $(size(kdiag, 1))):")
-reshape(kdiag, 20,6) |> display
-println()
 
 kv = zeros(kdiag[neq])
 
@@ -137,21 +126,10 @@ for i in 1:nels
   )
 end
 
-round(km) |> display
-println()
-
-println("First 10 elements of kv (of type $(typeof(kv)) with length $(size(kv, 1))):")
-kv[1:10] |> display
-println()
-
 ccall(sparin_, Void,
   (Ptr{Int64}, Ptr{Int64}, Ptr{Float64}, Ptr{Int64}),
   &int64(kdiag[neq]), &int64(neq), kv, kdiag
 )
-
-println("First 10 elements of update kv (of type $(typeof(kv)) with length $(size(kv, 1))):")
-kv[1:10] |> display
-println()
 
 ccall(spabac_, Void,
   (Ptr{Int64}, Ptr{Int64}, Ptr{Int64},
@@ -161,7 +139,6 @@ ccall(spabac_, Void,
 )
 
 displacements = zeros(size(nf))
-println("Displacements:")
 for i in 1:size(displacements, 1)
   for j in 1:size(displacements, 2)
     if nf[i, j] > 0
@@ -170,8 +147,9 @@ for i in 1:size(displacements, 1)
   end
 end
 
-displacements |> display
-println()
+@assert round(displacements[2,1:7], 5) == [0.0  -0.00079  -0.00309  -0.00684  -0.01195  -0.01833  -0.02592]
+@assert round(displacements[2,8:14], 5) == [-0.03463  -0.04437  -0.05508  -0.06667  -0.07905  -0.09216  -0.10591]
+@assert round(displacements[2,15:21], 5) == [-0.12021  -0.135  -0.15019  -0.16569  -0.18144  -0.19735  -0.21333]
 
 actions = zeros(ndof, nels)
 for i in 1:nels
@@ -193,8 +171,6 @@ for i in 1:nels
   actions[:, i] = km * eld
 end
 
-println("Actions:")
-actions |> display
-println()
+@assert round(actions[12, 16:20], 2) == [-8000.0  -6000.0  -4000.0  -2000.0  0.0]
 
 cd(old)
