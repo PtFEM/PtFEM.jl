@@ -1,3 +1,28 @@
+"
+Function shootingmethod() for 2nd order BVP ODEs.
+
+Arguments to shootingmethod(f, bvs, initg, steps, tol, limit):
+
+f::Function           : Function to be estimated (see below).\n
+bvs::Vector{Float64}  : Vector of boundary values [xa, ya, xb, yb].\n
+initg::Matrix{Float64}: Vector of nitial gradients [a0, a1].\n
+steps::Int64          : Number of calculations steps.\n
+tol::Float64          : Tolerance for convergence.\n
+limit::Int64          : Max number of iterations.
+
+Example of how to define the function f(x, y) for y'' = 3x^3+4y:
+
+Decompose in two first order equations:
+
+dy[1] = y[2]\n
+dy[2] = 3x^3 + 4y[1]
+
+```
+function f(x::Float64, y::Vector{Float64})
+  [y[2], 3x^3 +4y[1]]
+end
+```
+"
 function shootingmethod(f::Function, bvs::Vector{Float64}, initg::Vector{Float64}, steps::Int64, tol::Float64=0.00001, limit::Int64=25)
   println("\n--- Shooting method for Second Order ODEs ---\n")
   @assert size(bvs, 1) == 4
@@ -29,8 +54,16 @@ function shootingmethod(f::Function, bvs::Vector{Float64}, initg::Vector{Float64
     return
   end
   iter = 0
-  while true
+  while iter <= limit
     iter += 1
+    if iter > limit
+      println("Max number of iterations exceeded ...")
+      println("Iterations performed: $iter")
+      for i in 1:nsteps
+        res[i,:] = [xa+(i-1)*h ystar[i]]
+      end
+      return(res)
+    end
     astar = a0[1] + (yb-y0[nsteps, 1])*(a0[2]-a0[1])/(y0[nsteps,2])
     x = xa
     y[1] = ya
