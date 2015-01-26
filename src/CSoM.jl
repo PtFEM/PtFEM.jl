@@ -41,6 +41,7 @@ include("FEmodel.jl")
 include(Pkg.dir("CSoM", "src", "NMfE", "lufac.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ldlt.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ivp.jl"))
+include(Pkg.dir("CSoM", "src", "NMfE", "bvp.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "formnf.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "num_to_g.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "fkdiag.jl"))
@@ -73,6 +74,7 @@ export
   sparin!,
   rigid_jointed!,
   f, f1, f2,
+  shootingmethod,
   
   # From NMfE
   lufac,

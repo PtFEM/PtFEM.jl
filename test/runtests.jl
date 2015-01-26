@@ -7,7 +7,9 @@ code_tests = [
   "test_csom1.jl",
   "test_lufac.jl",
   "test_ldlt.jl",
-  "test_ivp_ex7.3.jl"
+  "test_ivp_ex7.3.jl",        # Four direct methods
+  "test_bvp_ex7.4a.jl",       # Shooting method example 7.4a
+  "test_bvp_ex7.4b.jl"        # Shooting method example 7.4b
 ]
 
 if isdir(Pkg.dir("CSoM", "deps"))
