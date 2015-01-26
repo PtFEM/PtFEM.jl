@@ -1,11 +1,11 @@
 using CSoM, Gadfly
 
 old = pwd()
-ProjDir = Pkg.dir("CSoM", "examples", "NMfE", "Ch07")
+ProjDir = Pkg.dir("CSoM", "examples", "NMfE", "Ch07", "IVP")
 cd(ProjDir)
 
 f(x::Float64, y::Vector{Float64}) = [y[2], 2.0*y[1]-3.0*y[2]+3.0*x^2]
-steps = 5
+steps = 4
 h = 0.05
 
 x = 0.0
@@ -19,7 +19,7 @@ push!(r, mid_point_euler(f, x, y, steps, h))
 push!(r, runga_kutta_4(f, x, y, steps, h))
 println(r)
 
-xs = Float64[(i-1)*h for i in 1:steps]
+xs = Float64[(i-1)*h for i in 1:steps+1]
 pa = Plot[]
 titles = ["Euler", "Modified_Euler", "Mid_Point_Euler", "Runga_Kutta_4"]
 for i in 1:4

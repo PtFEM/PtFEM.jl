@@ -1,15 +1,15 @@
 using CSoM, Gadfly
 
 old = pwd()
-ProjDir = Pkg.dir("CSoM", "examples", "NMfE", "Ch07")
+ProjDir = Pkg.dir("CSoM", "examples", "NMfE", "Ch07", "IVP")
 cd(ProjDir)
 
-f(x::Float64, y::Vector{Float64}) = (x + y[1])^2
-steps = 26
-h = 0.02
+f(x::Float64, y::Vector{Float64}) = (x + y[1])/x
+steps = 10
+h = 0.1
 
-x = 0.0
-y = [1.0]
+x = 2.0
+y = [2.0]
 
 # y(3.0) = 4.2165
 
@@ -18,11 +18,9 @@ push!(r, euler(f, x, y, steps, h))
 push!(r, modified_euler(f, x, y, steps, h))
 push!(r, mid_point_euler(f, x, y, steps, h))
 push!(r, runga_kutta_4(f, x, y, steps, h))
-rr = hcat(r[1], r[2], r[3], r[4])
-rr[21:26,:] |> display
-println()
+println(r)
 
-xs = Float64[(i-1)*h for i in 1:steps]
+xs = Float64[(i-1)*h for i in 1:steps+1]
 titles = ["Euler", "Modified_Euler", "Mid_Point_Euler", "Runga_Kutta_4"]
 
 p = plot(
@@ -40,11 +38,11 @@ p = plot(
   Guide.ylabel("y", orientation=:vertical),
   Guide.title("Four ODE one-step methods on y'=(x + y)/x"))
 
-draw(SVG("Ex7.2.svg", 9inch, 3inch), p)
+draw(SVG("Ex7.1.svg", 8inch, 9.5inch), p)
 # Below will only work on OSX, please adjust for your environment.
 # JULIA_SVG_BROWSER is set from environment variable JULIA_SVG_BROWSER
 @osx ? if isdefined(Main, :JULIA_SVG_BROWSER) && length(JULIA_SVG_BROWSER) > 0
-  isfile("Ex7.2.svg") &&
-    run(`open -a $(JULIA_SVG_BROWSER) "Ex7.2.svg"`)
+  isfile("Ex7.1.svg") &&
+    run(`open -a $(JULIA_SVG_BROWSER) "Ex7.1.svg"`)
   end : println()
 

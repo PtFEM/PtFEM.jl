@@ -68,6 +68,7 @@ export
   num_to_g!,
   fkdiag!,
   fsparv!,
+  fsparv,
   spabac!,
   sparin!,
   rigid_jointed!,

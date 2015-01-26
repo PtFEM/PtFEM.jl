@@ -26,7 +26,7 @@ p = plot(
   Guide.colorkey("Legend"),
   Guide.xlabel("x", orientation=:horizontal),
   Guide.ylabel("y[1], y[2] and y[3]", orientation=:vertical),
-  Guide.title("Example 7.5 (from SunDials.jl)")
+  Guide.title("Example 7.5 (from Sundials.jl)")
 )
 
 draw(SVG("Sundials02.svg", 8inch, 3inch), p)

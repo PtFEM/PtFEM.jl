@@ -1,4 +1,5 @@
-function euler(f::Function, x::Float64, y::Vector{Float64}, nsteps::Int64, h::Float64)
+function euler(f::Function, x::Float64, y::Vector{Float64}, steps::Int64, h::Float64)
+  nsteps = steps + 1
   res = zeros(nsteps, length(y)+1)
   for i in 1:nsteps
     res[i,:] = [x, [y[i] for i in 1:length(y)]]
@@ -9,7 +10,8 @@ function euler(f::Function, x::Float64, y::Vector{Float64}, nsteps::Int64, h::Fl
   res
 end
 
-function modified_euler(f::Function, x::Float64, y::Vector{Float64}, nsteps::Int64, h::Float64)
+function modified_euler(f::Function, x::Float64, y::Vector{Float64}, steps::Int64, h::Float64)
+  nsteps = steps + 1
   res = zeros(nsteps, length(y)+1)
   for i in 1:nsteps
     res[i,:] = [x, [y[i] for i in 1:length(y)]]
@@ -21,7 +23,8 @@ function modified_euler(f::Function, x::Float64, y::Vector{Float64}, nsteps::Int
   res
 end
 
-function mid_point_euler(f::Function, x::Float64, y::Vector{Float64}, nsteps::Int64, h::Float64)
+function mid_point_euler(f::Function, x::Float64, y::Vector{Float64}, steps::Int64, h::Float64)
+  nsteps = steps + 1
   res = zeros(nsteps, length(y)+1)
   for i in 1:nsteps
     res[i,:] = [x, [y[i] for i in 1:length(y)]]
@@ -33,7 +36,8 @@ function mid_point_euler(f::Function, x::Float64, y::Vector{Float64}, nsteps::In
   res
 end
 
-function runga_kutta_4(f::Function, x::Float64, y::Vector{Float64}, nsteps::Int64, h::Float64)
+function runga_kutta_4(f::Function, x::Float64, y::Vector{Float64}, steps::Int64, h::Float64)
+  nsteps = steps + 1
   res = zeros(nsteps, length(y)+1)
   for i in 1:nsteps
     res[i,:] = [x, [y[i] for i in 1:length(y)]]

@@ -28,3 +28,23 @@ function fsparv!(kv::Vector{Float64}, km::Matrix{Float64},
     end
   end
 end
+
+"
+Function fsparv assembles element matrices into a symmetric skyline
+global matrix. A Skyline vector is returned.
+
+Arguments to fsparv!(kv, km, g, kdiag):
+
+kv::Vector{Float64}   : Skyline vector of global stiffness matrix.\n
+km::Matrix{Float64}   : Stiffness matrix.\n
+g::Vector{Int64}      : Global coordinate vector.\n
+kdiag::Vector{Int64}  : Diagonal element vector.
+"
+function fsparv(kv::Vector{Float64}, km::Matrix{Float64},
+  g::Vector{Int64}, kdiag::Vector{Int64})
+  
+  kvtmp = copy(kv)
+  fsparv!(kvtmp, km, g, kdiag)
+  kvtmp
+end
+  
