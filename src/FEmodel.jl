@@ -63,17 +63,7 @@ function FEmodel(nels::Int64, nn::Int64, data::Dict;
     nf[:, data[:support][i][1]] = data[:support][i][2]
   end
   
-  #=
-  ccall(formnf_, Void, 
-    (Ptr{Int64}, Ptr{Int64}, Ptr{Int64}),
-    &int64(nodof), &int64(nn), nf
-  )
-  println(nf)
-  println()
-  =#
-  
   formnf!(nodof, nn, nf)
-  
   neq = maximum(nf)
   kdiag = int(zeros(neq))
   loads = zeros(length(nf))
