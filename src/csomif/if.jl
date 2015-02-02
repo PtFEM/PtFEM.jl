@@ -1,5 +1,5 @@
 
-path = Pkg.dir("CSoM", "deps", "src", "CSoM", "4th_ed", "libd3csom4.")
+path = Pkg.dir("CSoM", "deps", "src", "CSoM", "4th_ed", "libcsom.")
 path = path*@osx ? "dylib" : "so"
 
 csom = dlopen(path)
@@ -11,21 +11,4 @@ fsparv_ = dlsym(csom, :fsparv_)
 sparin_ = dlsym(csom, :sparin_)
 spabac_ = dlsym(csom, :spabac_)
 
-function num_to_g(g_num, nf, g)
-  for i in 1:nels
-    num = g_num[:, i]
-    ccall(num_to_g_, Void,
-      (Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, Ptr{Int64}),
-      &int64(nod), &int64(nodof), &int64(nn), &int64(ndof), num, nf, g
-    )
-    g_g[:, i] = g
-    ccall(fkdiag_, Void,
-      (Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, Ptr{Int64}),
-      &int64(ndof), &int64(neq), g, kdiag
-    )
-  end
-  for i in 2:neq
-    kdiag[i] = kdiag[i] + kdiag[i-1]
-  end
-  (nf, g_g, kdiag)
-end
+testf03_ = dlsym(csom, :testf03_)

@@ -63,36 +63,28 @@ function FEmodelFortran(nels::Int64, nn::Int64, data::Dict;
     nf[:, data[:support][i][1]] = data[:support][i][2]
   end
   
-  ccall(formnf_, Void, 
-    (Ptr{Int64}, Ptr{Int64}, Ptr{Int64}),
-    &int64(nodof), &int64(nn), nf
-  )
-  
+  formnf!(nodof, nn, nf)
   neq = maximum(nf)
   kdiag = int(zeros(neq))
   loads = zeros(length(nf))
-
-  #g_num[1,:] = int(linspace(1, 20, 20))
-  #g_num[2,:] = int(linspace(2, 21, 20))
+  
+  #=
+  nf1 = deepcopy(nf)
+  ccall(testf03_, Void,
+    (Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, ),
+    &int64(nodof), &int64(nn), nf1)
+  println(nf1)
+  =#
+  
   for i in 1:size(data[:node_numbering], 1)
     g_num[data[:node_numbering][i][1],:] = data[:node_numbering][i][2]
-    #println(i, g_num)
   end
   
   for i in 1:nels
     num = g_num[:, i]
-    
-    ccall(num_to_g_, Void,
-      (Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, Ptr{Int64}),
-      &int64(nod), &int64(nodof), &int64(nn), &int64(ndof), num, nf, g
-    )
+    num_to_g!(nod, nodof, nn, ndof, num, nf, g)
     g_g[:, i] = g
-    #println(i, ": num = ", g_num[:, i], ", g = ", g_g[:, i])
-    
-    ccall(fkdiag_, Void,
-      (Ptr{Int64}, Ptr{Int64}, Ptr{Int64}, Ptr{Int64}),
-      &int64(ndof), &int64(neq), g, kdiag
-    )
+    fkdiag!(ndof, neq, g, kdiag)
   end
   
   for i in 2:neq
