@@ -3,7 +3,8 @@ using Compat, CSoM
 #=
 'plane'
 'triangle'   3   'x'
-2  2  1  1
+2  2  1
+1
 1.0e6  0.3
 0.0  0.5  1.0
 0.0 -0.5 -1.0
@@ -15,8 +16,8 @@ using Compat, CSoM
 =#
 
 data = @compat Dict(
-  :type => :plane,
-  :element => :triangle,
+  :element => :plane,
+  :fe => :triangle,
   :nod => 3,
   :direction => :x,
   :nxe => 2,

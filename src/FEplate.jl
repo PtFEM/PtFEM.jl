@@ -33,14 +33,26 @@ type FEplate
   # Float64 arrays
   displacements::Array{Float64, 2}
   actions::Array{Float64, 2}
+  bee::Array{Float64, 2}
   coord::Array{Float64, 2}
+  dee::Array{Float64, 2}
+  der::Array{Float64, 2}
+  deriv::Array{Float64, 2}
   eld::Array{Float64, 1}
-  gamma::Array{Float64, 1}
+  fun::ArrayPFunction, 1}
+  gc::Array{Float64, 1}
   g_coord::Array{Float64, 2}
+  jac::Array{Float64, 2}
   km::Array{Float64, 2}
   kv::Array{Float64, 1}
   loads::Array{Float64, 1}
+  points::Array{Float64, 2}
   prop::Array{Float64, 2}
+  sigma::Array{Float64, 1}
+  value::Array{Float64, 1}
+  weights::Array{Float64, 1}
+  x_coords::Array{Float64, 1}
+  y_coords::Array{Float64, 1}
 end
 
 function FEplate(nels::Int64, nn::Int64, data::Dict;

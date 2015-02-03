@@ -1,9 +1,9 @@
 module CSoM
 
 if VERSION.minor < 4
-  #=
   using Docile, Lexicon
   @document
+  #=
   macro doc_mstr(text)
      Base.triplequoted(text)
   end
