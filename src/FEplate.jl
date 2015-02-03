@@ -2,7 +2,7 @@ importall Base
 
 ### Model type ###
 
-type FEmodel
+type FEplate
   nels::Int64                     # Number of elements
   nn::Int64                       # Number of nodes in the mesh
   ndim::Int64                     # Number of dimensions
@@ -43,7 +43,7 @@ type FEmodel
   prop::Array{Float64, 2}
 end
 
-function FEmodel(nels::Int64, nn::Int64, data::Dict;
+function FEplate(nels::Int64, nn::Int64, data::Dict;
    ndim::Int64 = 3, np_types::Int64 = 1, nprops::Int64 = 4, nod::Int64 = 2)
   
   ndim == 2 ? nodof = 3 : nodof = 6   # Degrees of freedom per node
@@ -146,7 +146,7 @@ function FEmodel(nels::Int64, nn::Int64, data::Dict;
     actions[:, i] = km * eld
   end
 
-  FEmodel(nels, nn, ndim, nod, nprops, np_types, nodof, ndof,
+  FEplate(nels, nn, ndim, nod, nprops, np_types, nodof, ndof,
     fixed_freedoms, loaded_nodes, etype, g, g_g, g_num, nf, num, data,
     neq, kdiag, no, node, sense, displacements, actions, coord, eld,
     gamma, g_coord,km, kv, loads, prop);
@@ -154,13 +154,13 @@ end
 
 
 
-function model_show(io::IO, m::FEmodel, compact::Bool=false)
+function model_show(io::IO, m::FEplate, compact::Bool=false)
   if compact==true
-    println("FEmodel(")
+    println("FEplate(")
   else
     println("  nels =                    \"$(m.nels)\"")
   end
 end
 
-show(io::IO, m::FEmodel) = model_show(io, m, false)
-showcompact(io::IO, m::FEmodel) = model_show(io, m, true)
+show(io::IO, m::FEplate) = model_show(io, m, false)
+showcompact(io::IO, m::FEplate) = model_show(io, m, true)

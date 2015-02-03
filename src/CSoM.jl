@@ -57,12 +57,8 @@ include(Pkg.dir("CSoM", "src", "CSoM", "mesh_size.jl"))
 if isdir(Pkg.dir("CSoM", "deps"))
   include("csomif/if.jl")
   include("FEbeamFortran.jl")
-  include("FEplateFortran.jl")
-  include("FEaxisymmetricFortran.jl")
   export
-    FEbeamFortran,
-    FEplateFortran,
-    FEaxisymmetricFortran
+    FEbeamFortran
 end
 
 ### Exports ###
