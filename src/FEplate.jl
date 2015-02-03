@@ -39,7 +39,7 @@ type FEplate
   der::Array{Float64, 2}
   deriv::Array{Float64, 2}
   eld::Array{Float64, 1}
-  fun::ArrayPFunction, 1}
+  fun::Array{Function, 1}
   gc::Array{Float64, 1}
   g_coord::Array{Float64, 2}
   jac::Array{Float64, 2}
