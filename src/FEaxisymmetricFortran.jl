@@ -2,7 +2,7 @@ importall Base
 
 ### Model type ###
 
-type FEmodelFortran
+type FEbeamFortran
   nels::Int64                     # Number of elements
   nn::Int64                       # Number of nodes in the mesh
   ndim::Int64                     # Number of dimensions
@@ -43,7 +43,7 @@ type FEmodelFortran
   prop::Array{Float64, 2}
 end
 
-function FEmodelFortran(nels::Int64, nn::Int64, data::Dict;
+function FEbeamFortran(nels::Int64, nn::Int64, data::Dict;
    ndim::Int64 = 3, np_types::Int64 = 1, nprops::Int64 = 4, nod::Int64 = 2)
   
   ndim == 2 ? nodof = 3 : nodof = 6   # Degrees of freedom per node
@@ -179,7 +179,7 @@ function FEmodelFortran(nels::Int64, nn::Int64, data::Dict;
     actions[:, i] = km * eld
   end
 
-  FEmodelFortran(nels, nn, ndim, nod, nprops, np_types, nodof, ndof,
+  FEbeamFortran(nels, nn, ndim, nod, nprops, np_types, nodof, ndof,
     fixed_freedoms, loaded_nodes, etype, g, g_g, g_num, nf, num, data,
     neq, kdiag, no, node, sense, displacements, actions, coord, eld,
     gamma, g_coord,km, kv, loads, prop);
@@ -187,13 +187,13 @@ end
 
 
 
-function model_show(io::IO, m::FEmodelFortran, compact::Bool=false)
+function model_show(io::IO, m::FEbeamFortran, compact::Bool=false)
   if compact==true
-    println("FEmodel(")
+    println("FEbeam(")
   else
     println("  nels =                    \"$(m.nels)\"")
   end
 end
 
-show(io::IO, m::FEmodelFortran) = model_show(io, m, false)
-showcompact(io::IO, m::FEmodelFortran) = model_show(io, m, true)
+show(io::IO, m::FEbeamFortran) = model_show(io, m, false)
+showcompact(io::IO, m::FEbeamFortran) = model_show(io, m, true)

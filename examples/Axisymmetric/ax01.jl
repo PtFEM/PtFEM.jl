@@ -18,13 +18,6 @@ data |> display
 println()
 
 println("Running Julia version:")
-@time m = FEmodel(20, 21, data)
+@time m = FEaxisymmetric(20, 21, data)
 println()
 
-println("Displacements:")
-m.displacements |> display
-println()
-
-println("Actions:")
-m.actions |> display
-println()

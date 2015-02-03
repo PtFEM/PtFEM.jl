@@ -1,10 +1,9 @@
 module CSoM
 
-using Docile, Lexicon
-@document
-
 if VERSION.minor < 4
   #=
+  using Docile, Lexicon
+  @document
   macro doc_mstr(text)
      Base.triplequoted(text)
   end
@@ -37,7 +36,10 @@ export
 
 ### Includes ###
 
-include("FEmodel.jl")
+include("FEbeam.jl")
+include("FEplate.jl")
+include("FEaxisymmetric.jl")
+include("FEtypes.jl")
 include(Pkg.dir("CSoM", "src", "NMfE", "lufac.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ldlt.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ivp.jl"))
@@ -49,20 +51,37 @@ include(Pkg.dir("CSoM", "src", "CSoM", "fsparv.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "spabac.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "sparin.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "rigid_jointed.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "mesh_size.jl"))
 
 # Only needed for comparing with Fortran performance
 if isdir(Pkg.dir("CSoM", "deps"))
   include("csomif/if.jl")
-  include("FEmodelFortran.jl")
+  include("FEbeamFortran.jl")
+  include("FEplateFortran.jl")
+  include("FEaxisymmetricFortran.jl")
+  export
+    FEbeamFortran,
+    FEplateFortran,
+    FEaxisymmetricFortran
 end
 
 ### Exports ###
 
 export
-  # From FEmodel.jl
-  FEmodel,
-  # From FEmodelFortran.jl
-  FEmodelFortran,
+  # From FEbeam.jl
+  FEbeam,
+  
+  # From FEplate.jl
+  FEplate,
+  
+  # From FEaxisymmetric.jl
+  FEaxisymmetric,
+  
+  # From FEtypes.jl
+  FE_type,
+  Triangle,
+  Quadrilateral,
+  Hexahedron,
   
   # From CSoM
   formnf!,
@@ -75,6 +94,7 @@ export
   rigid_jointed!,
   f, f1, f2,
   shootingmethod,
+  mesh_size,
   
   # From NMfE
   lufac,

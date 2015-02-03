@@ -19,12 +19,12 @@ println()
 
 if isdir(Pkg.dir("CSoM", "deps"))
   println("Running Fortran ccall version:")
-  @time m = FEmodelFortran(20, 21, data)
+  @time m = FEbeamFortran(20, 21, data)
   println()
 end
 
 println("Running Julia version:")
-@time m = FEmodel(20, 21, data)
+@time m = FEbeam(20, 21, data)
 println()
 
 println("Displacements:")

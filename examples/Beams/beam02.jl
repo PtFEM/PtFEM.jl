@@ -17,7 +17,7 @@ data = @Compat.Dict(
 data |> display
 println()
 
-m = FEmodel(20, 21, data)
+m = FEbeam(20, 21, data)
 
 println("Displacements:")
 m.displacements |> display
