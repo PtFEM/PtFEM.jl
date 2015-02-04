@@ -54,7 +54,7 @@ include(Pkg.dir("CSoM", "src", "CSoM", "rigid_jointed.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "mesh_size.jl"))
 
 # Only needed for comparing with Fortran performance
-if isdir(Pkg.dir("CSoM", "deps"))
+if isfile(Pkg.dir("CSoM", "deps", "src", "CSoM", "4th_ed", "libcsom.dylib"))
   include("csomif/if.jl")
   include("FEbeamFortran.jl")
   export

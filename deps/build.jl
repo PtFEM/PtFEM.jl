@@ -3,12 +3,6 @@
     suffix = @osx? "dylib" : "so"
     run(`make clean`)
     run(`make FC=gfortran SUFFIX=$suffix`)
-    cd(joinpath(dirname(@__FILE__), "src", "CSoM", "5th_ed", "source", "library", "main"))
-    suffix = @osx? "dylib" : "so"
-    run(`make FC=gfortran SUFFIX=$suffix`)
-    cd(joinpath(dirname(@__FILE__), "src", "CSoM", "5th_ed", "source", "library", "geom"))
-    suffix = @osx? "dylib" : "so"
-    run(`make FC=gfortran SUFFIX=$suffix`)
 end
 
 @windows_only begin

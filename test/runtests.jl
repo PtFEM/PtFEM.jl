@@ -12,7 +12,7 @@ code_tests = [
   "test_bvp_ex7.4b.jl"        # Shooting method example 7.4b
 ]
 
-if isdir(Pkg.dir("CSoM", "deps"))
+if isfile(Pkg.dir("CSoM", "deps", "src", "CSoM", "4th_ed", "libcsom.dylib"))
   push!(code_tests, "test_csom2.jl")
 end
 
