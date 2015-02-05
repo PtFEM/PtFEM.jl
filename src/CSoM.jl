@@ -1,9 +1,12 @@
 module CSoM
 
+#=
+using Docile, Lexicon
+@document
+=#
+
 if VERSION.minor < 4
   #=
-  using Docile, Lexicon
-  @document
   macro doc_mstr(text)
      Base.triplequoted(text)
   end
@@ -37,9 +40,7 @@ export
 ### Includes ###
 
 include("FEbeam.jl")
-include("FEplate.jl")
-include("FEaxisymmetric.jl")
-include("FEtypes.jl")
+include("FEM.jl")
 include(Pkg.dir("CSoM", "src", "NMfE", "lufac.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ldlt.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ivp.jl"))
@@ -67,17 +68,18 @@ export
   # From FEbeam.jl
   FEbeam,
   
-  # From FEplate.jl
-  FEplate,
+  # From FEM.jl
+  Element,
+  Plane,
   
-  # From FEaxisymmetric.jl
-  FEaxisymmetric,
-  
-  # From FEtypes.jl
-  FE_type,
+  FiniteElement,
+  Axisymmetric,
   Triangle,
   Quadrilateral,
   Hexahedron,
+  
+  FE,
+  FEmodel,
   
   # From CSoM
   formnf!,
