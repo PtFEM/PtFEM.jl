@@ -2,48 +2,51 @@ importall Base
 
 ### Finite elements used to approximate element ###
 
-abstract FiniteElement                 # Finite elements
+abstract Element                 # Finite elements
 
-type Triangle <: FiniteElement
+type Triangle <: Element
   nod::Int64
 end
 
-type Quadrilateral <: FiniteElement
+type Quadrilateral <: Element
   nod::Int64
 end
 
-type Hexahedron <: FiniteElement
+type Hexahedron <: Element
   nod::Int64
 end
 
-type Axisymmetric <: FiniteElement
+type Axisymmetric <: Element
   nod::Int64
 end
 
 ### Top level component ###
 
-abstract Element                  # Structure element to be modeled
+abstract ElementType                  # Structure element to be modeled
 
-type Plane <: FiniteElement
+type Plane <: ElementType
   nxe::Int64                      # Number of elements in x direction
   nye::Int64                      # Number of elements in y direction
+  nip::Int64                      # Number of integration points
   direction::Symbol               # Node numbering direction
-  fe::FiniteElement               # Finite element type used
+  element::Element               # Finite element type used
 end
 
-type Beam3D <: FiniteElement
+type Beam3D <: ElementType
   nxe::Int64                      # Number of elements in x direction
   nye::Int64                      # Number of elements in y direction
   nze::Int64                      # Number of elements in z direction
+  nip::Int64                      # Number of integration points
   direction::Symbol               # Node numbering direction
-  fe::FiniteElement               # Finite element type used
+  element::Element               # Finite element type used
 end
 
 ### Model type ###
 
 type FEmodel                      # Computationale data and results structure
-  el::Element                     # 
-  fe::FiniteElement               #
+  elementtype::ElementType                     # 
+  element::Element               #
+  mat::Array{Float64, 2}
   
   # Scalars
   ndim::Int64                     # Number of dimensions
@@ -115,21 +118,40 @@ function FEmodel(data::Dict)
   nprops = 2
   penalty = 1e20
   
-  el = data[:element]
-  fe = el.fe 
-  (nels, nn) = mesh_size(fe, fe.nod, el.nxe, el.nye)
+  elementtype = data[:elementtype]
+  element = elementtype.element
+  prop = data[:properties]
+    
+  (nels, nn) = mesh_size(element, element.nod, elementtype.nxe, elementtype.nye)
   
-  ndof = fe.nod * nodof           # Degrees of freedom per element
-  if typeof(fe) == Axisymmetric
+  ndof = element.nod * nodof           # Degrees of freedom per element
+  if typeof(element) == Axisymmetric
     nst = 4
   end
-  # Int64 arrays
-  etype = int(ones(nels))
-  g = int(zeros(ndof))
-  g_g = int(zeros(ndof, nels))
-  g_num = int(zeros(fe.nod, nels))
-  nf = int(ones(nodof, nn))
-  num = int(zeros(fe.nod))
+  
+  # Allocate all arrays
+  nf = ones(Int64, nodof, nn)
+  points = zeros(Int64, elementtype.nip, ndim)
+  g = zeros(Int64, ndof)
+  g_coord = zeros(ndim,nn)
+  fun = Function[x -> 1 for i in 1:element.nod]
+  coord = zeros(element.nod, ndim)
+  jac = zeros(ndim, ndim)
+  g_num = zeros(Int64, element.nod, nels)
+  der = zeros(ndim, element.nod)
+  deriv = zeros(ndim, element.nod)
+  bee = zeros(nst,ndof)
+  km = zeros(ndof, ndof)
+  eld = zeros(ndof)
+  weights = zeros(elementtype.nip)
+  g_g = zeros(ndof, nels)
+  num = zeros(Int64, element.nod)
+  x_coords = data[:x_coords]
+  y_coords = data[:y_coords]
+  etype = data[:etype]
+  gc = zeros(ndim)
+  dee = zeros(nst,nst)
+  sigma = zeros(nst)
   
   for i in 1:size(data[:support], 1)
     nf[:, data[:support][i][1]] = data[:support][i][2]
@@ -137,10 +159,32 @@ function FEmodel(data::Dict)
   
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
-  kdiag = int(zeros(neq))
-  loads = zeros(length(nf))
-
+  kdiag = zeros(Int64, neq)
+  loads = zeros(neq+1)
+  
+  for iel in 1:nels
+    println(iel)
+    geom_rect!(element, iel, x_coords, y_coords, coord, num, elementtype.direction)
+    println(num)
+    num_to_g!(num, nf, g)
+    println(g)
+    g_num[:, iel] = num
+    println(g_num)
+    g_coord[:, num] = coord'
+    println(g_coord)
+    g_g[:, iel] = g
+    fkdiag!(kdiag, g)
+    println(kdiag)
+  end
+  
   #=
+  no = zeros(Int64, fixed_freedoms)
+  node = zeros(Int64, fixed_freedoms)
+  sense = zeros(Int64, fixed_freedoms)
+  actions = zeros(ndof, nels)
+  gamma = zeros(nels)
+  kv = zeros(kdiag[neq])
+
   for i in 1:size(data[:node_numbering], 1)
     g_num[data[:node_numbering][i][1],:] = data[:node_numbering][i][2]
   end
@@ -157,29 +201,6 @@ function FEmodel(data::Dict)
   end
   
   println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
-  
-  no = int(zeros(fixed_freedoms))
-  node = int(zeros(fixed_freedoms))
-  sense = int(zeros(fixed_freedoms))
-
-  # Float64 arrays
-  actions = zeros(ndof, nels)
-  coord = zeros(nod, ndim)
-  eld = zeros(ndof)
-  gamma = zeros(nels)
-  g_coord = zeros(ndim, nn)
-  km = zeros(ndof, ndof)
-  kv = zeros(kdiag[neq])
-  loads = zeros(neq)
-  prop = zeros(nprops, np_types)
-
-  for i in 1:size(data[:coordinates], 1)
-    g_coord[data[:coordinates][i][1],:] = data[:coordinates][i][2]
-  end
-  
-  for i in 1:size(data[:properties], 1)
-    prop[:, data[:properties][i][1]] = data[:properties][i][2]
-  end
   
   for i in 1:size(data[:loads], 1)
     loads[nf[:, data[:loads][i][1]]] = data[:loads][i][2]

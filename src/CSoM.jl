@@ -53,6 +53,7 @@ include(Pkg.dir("CSoM", "src", "CSoM", "spabac.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "sparin.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "rigid_jointed.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "mesh_size.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "geom_rect.jl"))
 
 # Only needed for comparing with Fortran performance
 if isfile(Pkg.dir("CSoM", "deps", "src", "CSoM", "4th_ed", "libcsom.dylib"))
@@ -72,7 +73,7 @@ export
   Element,
   Plane,
   
-  FiniteElement,
+  Element,
   Axisymmetric,
   Triangle,
   Quadrilateral,
@@ -93,6 +94,7 @@ export
   f, f1, f2,
   shootingmethod,
   mesh_size,
+  geom_rect!,
   
   # From NMfE
   lufac,

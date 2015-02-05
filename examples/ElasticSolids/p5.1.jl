@@ -16,11 +16,13 @@ using Compat, CSoM
 =#
 
 data = @compat Dict(
-  :element => Plane(2, 2, :x, Triangle(3)),
-  :nip => 1,
+  :elementtype => Plane(2, 2, 1, :x, Triangle(3)),
   :properties => [
-    (1, [1.0e6 0.3])
+    [1.0e6, 0.3]
     ],
+  :etype => [],
+  :x_coords => [0.0,  0.5,  1.0],
+  :y_coords => [0.0,  -0.5,  -1.0],
   :support => [
     (1, [0 1]),
     (4, [0 1]),
@@ -32,7 +34,8 @@ data = @compat Dict(
     (1, [0.0 -0.25]),
     (2, [0.0 -0.50]),
     (3, [0.0 -0.25])
-    ]
+    ],
+  :fixed_freedoms =>[]
 )
 
 data |> display
