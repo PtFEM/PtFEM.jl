@@ -4,17 +4,18 @@ function geom_rect!(element::Triangle, iel::Int64, x_coords::Array{Float64, 1},
   nxe = size(x_coords, 1) - 1
   nye = (size(y_coords, 1) - 1) * 2
   nod = size(num, 1)
-  
+  #println([nxe nye nod])
   if dir == :x || dir == :z
-    jel = 2 * nxe * int(((iel - 1) / (2 * nxe)))
-    ip = int((iel - jel + 1) / 2)
-    iq = int(2 * ((iel - 1) / (2 * nxe) + 1)) - 1 + int(((iel / 2) * 2) / iel)
+    jel = int(2 * nxe * floor((iel - 1) / (2 * nxe)))
+    ip = int(floor((iel - jel + 1) / 2))
+    iq = int(floor(2 * floor(floor((iel - 1) / (2 * nxe)) + 1) - 1 + floor(floor(iel / 2) * 2) / iel))
   else
-    jel = int((iel - 1) / nye)
+    #println("Direction != :x or :r.")
+    jel = int(floor((iel - 1) / nye))
     ip = jel + 1
     iq = iel - nye * jel
   end
-  println([jel ip iq])
+  #println([jel ip iq])
   if nod == 3
     if mod(iq, 2) != 0
       if dir == :x || dir == :z

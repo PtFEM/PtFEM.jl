@@ -162,20 +162,30 @@ function FEmodel(data::Dict)
   kdiag = zeros(Int64, neq)
   loads = zeros(neq+1)
   
+  # Find global array sizes
+  
   for iel in 1:nels
-    println(iel)
+    #println(iel)
     geom_rect!(element, iel, x_coords, y_coords, coord, num, elementtype.direction)
-    println(num)
+    #println(num)
+    #println(coord)
     num_to_g!(num, nf, g)
-    println(g)
+    #println(g)
     g_num[:, iel] = num
-    println(g_num)
+    #println(g_num)
     g_coord[:, num] = coord'
-    println(g_coord)
+    #println(g_coord)
     g_g[:, iel] = g
     fkdiag!(kdiag, g)
-    println(kdiag)
   end
+  
+  kv = zeros(kdiag[neq])
+
+  for i in 2:neq
+    kdiag[i] = kdiag[i] + kdiag[i-1]
+  end
+  
+  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
   
   #=
   no = zeros(Int64, fixed_freedoms)
@@ -183,25 +193,7 @@ function FEmodel(data::Dict)
   sense = zeros(Int64, fixed_freedoms)
   actions = zeros(ndof, nels)
   gamma = zeros(nels)
-  kv = zeros(kdiag[neq])
 
-  for i in 1:size(data[:node_numbering], 1)
-    g_num[data[:node_numbering][i][1],:] = data[:node_numbering][i][2]
-  end
-  
-  for i in 1:nels
-    num = g_num[:, i]
-    num_to_g!(nod, nodof, nn, ndof, num, nf, g)
-    g_g[:, i] = g
-    fkdiag!(ndof, neq, g, kdiag)
-  end
-  
-  for i in 2:neq
-    kdiag[i] = kdiag[i] + kdiag[i-1]
-  end
-  
-  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
-  
   for i in 1:size(data[:loads], 1)
     loads[nf[:, data[:loads][i][1]]] = data[:loads][i][2]
   end
