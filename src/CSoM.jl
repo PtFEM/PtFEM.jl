@@ -54,6 +54,11 @@ include(Pkg.dir("CSoM", "src", "CSoM", "sparin.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "rigid_jointed.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "mesh_size.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "geom_rect.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "sample.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "deemat.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "beemat.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "shape_fun.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "shape_der.jl"))
 
 # Only needed for comparing with Fortran performance
 if isfile(Pkg.dir("CSoM", "deps", "src", "CSoM", "4th_ed", "libcsom.dylib"))
@@ -95,6 +100,11 @@ export
   shootingmethod,
   mesh_size,
   geom_rect!,
+  sample!,
+  deemat!,
+  beemat!,
+  shape_fun!,
+  shape_der!,
   
   # From NMfE
   lufac,

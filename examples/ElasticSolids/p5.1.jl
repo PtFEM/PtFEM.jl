@@ -17,9 +17,8 @@ using Compat, CSoM
 
 data = @compat Dict(
   :elementtype => Plane(2, 2, 1, :x, Triangle(3)),
-  :properties => [
-    [1.0e6, 0.3]
-    ],
+  :nproperties => 1,
+  :properties => [1.0e6 0.3; 0.0 0.0],
   :etype => [],
   :x_coords => [0.0,  0.5,  1.0],
   :y_coords => [0.0,  -0.5,  -1.0],

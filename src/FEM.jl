@@ -94,7 +94,7 @@ type FEmodel                      # Computationale data and results structure
   deriv::Array{Float64, 2}        # Shape function derivatives w.r.t. global coord
   displacements::Array{Float64, 2}# Array of node displacements
   eld::Array{Float64, 1}          # Elemental node displacements
-  fun::Array{Function, 1}         # Shape function vector
+  fun::Array{Float64, 1}         # Shape function vector
   gc::Array{Float64, 1}           # Integrating point coordinates
   g_coord::Array{Float64, 2}      # Global node coordinates
   jac::Array{Float64, 2}          # Jacobian matrix
@@ -131,10 +131,14 @@ function FEmodel(data::Dict)
   
   # Allocate all arrays
   nf = ones(Int64, nodof, nn)
-  points = zeros(Int64, elementtype.nip, ndim)
+  for i in 1:size(data[:support], 1)
+    nf[:, data[:support][i][1]] = data[:support][i][2]
+  end
+  
+  points = zeros(elementtype.nip, ndim)
   g = zeros(Int64, ndof)
   g_coord = zeros(ndim,nn)
-  fun = Function[x -> 1 for i in 1:element.nod]
+  fun = zeros(element.nod)
   coord = zeros(element.nod, ndim)
   jac = zeros(ndim, ndim)
   g_num = zeros(Int64, element.nod, nels)
@@ -144,18 +148,20 @@ function FEmodel(data::Dict)
   km = zeros(ndof, ndof)
   eld = zeros(ndof)
   weights = zeros(elementtype.nip)
-  g_g = zeros(ndof, nels)
+  g_g = zeros(Int64, ndof, nels)
   num = zeros(Int64, element.nod)
   x_coords = data[:x_coords]
   y_coords = data[:y_coords]
   etype = data[:etype]
-  gc = zeros(ndim)
+  
+  etype = ones(Int64, nels)
+  if data[:nproperties] > 1
+    etype = data[:etype]
+  end 
+  
+  gc = ones(ndim)
   dee = zeros(nst,nst)
   sigma = zeros(nst)
-  
-  for i in 1:size(data[:support], 1)
-    nf[:, data[:support][i][1]] = data[:support][i][2]
-  end
   
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
@@ -165,28 +171,74 @@ function FEmodel(data::Dict)
   # Find global array sizes
   
   for iel in 1:nels
-    #println(iel)
     geom_rect!(element, iel, x_coords, y_coords, coord, num, elementtype.direction)
-    #println(num)
-    #println(coord)
     num_to_g!(num, nf, g)
-    #println(g)
     g_num[:, iel] = num
-    #println(g_num)
     g_coord[:, num] = coord'
-    #println(g_coord)
     g_g[:, iel] = g
     fkdiag!(kdiag, g)
   end
   
-  kv = zeros(kdiag[neq])
-
   for i in 2:neq
     kdiag[i] = kdiag[i] + kdiag[i-1]
   end
   
+  kv = zeros(kdiag[neq])
+
   println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
   
+  sample!(element, points, weights)
+  
+  local detm
+  for iel in 1:nels
+    deemat!(dee, prop[etype[iel], 1], prop[etype[iel], 2])
+    num = g_num[:, iel]
+    coord = g_coord[:, num]'              # Transpose
+    g = g_g[:, iel]
+    km = zeros(ndof, ndof)
+    for i in 1:elementtype.nip
+      shape_fun!(fun, points, i)
+      shape_der!(der, points, i)
+      jac = der*coord
+      detm = det(jac)
+      jac = inv(jac)
+      deriv = jac*der
+      beemat!(bee, deriv)
+      if typeof(element) == Axisymmetric
+        gc = fun*coord
+        bee[4, 1:ndof-1:2] = fun[:]/gc[1]
+      end
+      km += (bee')*dee*bee*detm*weights[i]*gc[1]
+    end
+    fsparv!(kv, km, g, kdiag)
+  end
+  
+  #=
+  println(fun)
+  println()
+  println(der)
+  println()
+  println(detm)
+  println()
+  println(jac)
+  println()
+  println(deriv)
+  println()
+  println(bee)
+  println()
+  println(weights)
+  println()
+  println(gc)
+  println()
+  println(km)
+  println()
+  println(g)
+  println()
+  println(kdiag)
+  println()
+  println(kv)
+  println()
+  =#
   #=
   no = zeros(Int64, fixed_freedoms)
   node = zeros(Int64, fixed_freedoms)
@@ -196,14 +248,6 @@ function FEmodel(data::Dict)
 
   for i in 1:size(data[:loads], 1)
     loads[nf[:, data[:loads][i][1]]] = data[:loads][i][2]
-  end
-  
-  for i in 1:nels
-    num = g_num[:, i]
-    coord = g_coord[:, num]'              #'
-    rigid_jointed!(km, prop, gamma, etype, i, coord)
-    g = g_g[:, i]
-    fsparv!(kv, km, g, kdiag)
   end
   
   sparin!(kv, kdiag)
