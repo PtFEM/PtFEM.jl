@@ -46,21 +46,13 @@ end
 type FEmodel                      # Computationale data and results structure
   elementtype::ElementType                     # 
   element::Element               #
-  mat::Array{Float64, 2}
   
   # Scalars
   ndim::Int64                     # Number of dimensions
-  
   nels::Int64                     # Number of elements
-  nxe::Int64                      # Number of elements in x direction
-  nye::Int64                      # Number of elements in y direction
-  nze::Int64                      # Number of elements in z direction
   nst::Int64                      # Number of stress terms
-  
-  nod::Int64                      # Number of nodes per element
   ndof::Int64                     # Degrees of freedom per element
   nip::Int64                      # Number of integrations points per element
-
   nn::Int64                       # Number of nodes in the mesh
   nodof::Int64                    # Number of degrees of freedom per node
   fixed_freedoms::Int64           # Number of fixed node displacements
@@ -231,20 +223,59 @@ function FEmodel(data::Dict)
   
   sparin!(kv, kdiag)
   loads[2:end] = spabac!(kv, loads[2:end], kdiag)
-
-  println(nf)
-  println()  
-  println(loads)
-  println()
-  
   nf1 = deepcopy(nf) + 1
-  println(nf1)
-  println()
+  
+  if typeof(element) == Axisymmetric
+    println("\nNode     r-disp          z-disp")
+  else
+    println("\nNode     x-disp          y-disp")
+  end
+  
   tmp = []
   for i in 1:nn
     tmp = vcat(tmp, loads[nf1[:,i]])
+    xstr = @sprintf("%+.4e", loads[nf1[1,i]])
+    ystr = @sprintf("%+.4e", loads[nf1[2,i]])
+    println("  $(i)    $(xstr)     $(ystr)")
   end
-  println(round(reshape(float(tmp), 2, 9)', 15))
+  #println(round(reshape(float(tmp), 2, 9)', 15))
+  
+  points = zeros(elementtype.nip, ndim)
+  weights = zeros(elementtype.nip)
+  sample!(element, points, weights)
+  println("\nThe integration point (nip = $(elementtype.nip)) stresses are:")
+  if typeof(element) == Axisymmetric
+    println("\nElement  r-coord   z-coord     sig_r        sig_z        tau_rz        sig_t")
+  else
+    println("\nElement  x-coord   y-coord     sig_x        sig_y        tau_xy")
+  end
+  for iel in 1:nels
+    deemat!(dee, prop[etype[iel], 1], prop[etype[iel], 2])
+    num = g_num[:, iel]
+    coord = g_coord[:, num]'
+    g = g_g[:, iel]
+    eld = loads[g+1]
+    for i in 1:elementtype.nip
+      shape_fun!(fun, points, i)
+      shape_der!(der, points, i)
+      gc = fun'*coord
+      jac = inv(der*coord)
+      deriv = jac*der
+      beemat!(bee, deriv)
+      if typeof(element) == Axisymmetric
+        gc = fun'*coord
+        bee[4, 1:ndof-1:2] = fun[:]/gc[1]
+      end
+      sigma = dee*(bee*eld)
+      gc1 = @sprintf("%+.4f", gc[1])
+      gc2 = @sprintf("%+.4f", gc[2])
+      s1 = @sprintf("%+.4e", sigma[1])
+      s2 = @sprintf("%+.4e", sigma[2])
+      s3 = @sprintf("%+.4e", sigma[3])
+      println("   $(iel)     $(gc1)   $(gc2)   $(s1)  $(s2)  $(s3)")
+    end
+  end
+  println()
   
   #=
   FEmodel(nels, nn, ndim, nod, nprops, np_types, nodof, ndof,
