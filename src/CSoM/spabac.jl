@@ -34,10 +34,11 @@ function spabac!(kv::Vector{Float64}, loads::Vector{Float64}, kdiag::Vector{Int6
     if l !== i
       m = i - 1
       for k in l:m
-        loads[k] -= x*kv[ki+k]
+        loads[k] = loads[k] - x*kv[ki+k]
       end
     end
   end
   loads[1]=loads[1]/kv[1]
+  loads
 end
 

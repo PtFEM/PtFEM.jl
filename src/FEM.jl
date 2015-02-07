@@ -114,7 +114,7 @@ function FEmodel(data::Dict)
   
   ndim = 2
   nst = 3
-  nodof =2
+  nodof = 2
   nprops = 2
   penalty = 1e20
   
@@ -166,7 +166,6 @@ function FEmodel(data::Dict)
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
   kdiag = zeros(Int64, neq)
-  loads = zeros(neq+1)
   
   # Find global array sizes
   
@@ -189,7 +188,6 @@ function FEmodel(data::Dict)
   
   sample!(element, points, weights)
   
-  local detm
   for iel in 1:nels
     deemat!(dee, prop[etype[iel], 1], prop[etype[iel], 2])
     num = g_num[:, iel]
@@ -213,69 +211,42 @@ function FEmodel(data::Dict)
     fsparv!(kv, km, g, kdiag)
   end
   
-  #=
-  println(fun)
-  println()
-  println(der)
-  println()
-  println(detm)
-  println()
-  println(jac)
-  println()
-  println(deriv)
-  println()
-  println(bee)
-  println()
-  println(weights)
-  println()
-  println(gc)
-  println()
-  println(km)
-  println()
-  println(g)
-  println()
-  println(kdiag)
-  println()
-  println(kv)
-  println()
-  =#
-  #=
-  no = zeros(Int64, fixed_freedoms)
-  node = zeros(Int64, fixed_freedoms)
-  sense = zeros(Int64, fixed_freedoms)
-  actions = zeros(ndof, nels)
-  gamma = zeros(nels)
-
-  for i in 1:size(data[:loads], 1)
-    loads[nf[:, data[:loads][i][1]]] = data[:loads][i][2]
+  loads = zeros(neq + 1)
+  for i in 1:size(data[:loaded_nodes], 1)
+    loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
+  end
+  
+  fixed_freedoms = size(data[:fixed_freedoms], 1)
+  
+  if fixed_freedoms > 0
+    no = zeros(Int64, fixed_freedoms)
+    node = zeros(Int64, fixed_freedoms)
+    sense = zeros(Int64, fixed_freedoms)
+    for i in 1:fixed_freedoms
+      no[i] = nf[fixed_freedoms[i][2], fixed_freedoms[i][1]]
+    end
+    kv[kdiag[no]] = kv[kdiag[no]] + penalty
+    loads[no] = kv[kdiag[no]] * value
   end
   
   sparin!(kv, kdiag)
-  spabac!(kv, loads, kdiag)
-  displacements = zeros(size(nf))
-  for i in 1:size(displacements, 1)
-    for j in 1:size(displacements, 2)
-      if nf[i, j] > 0
-        displacements[i,j] = loads[nf[i, j]]
-      end
-    end
-  end
+  loads[2:end] = spabac!(kv, loads[2:end], kdiag)
 
-  actions = zeros(ndof, nels)
-  for i in 1:nels
-    num = g_num[:, i]
-    coord = g_coord[:, num]'              #'
-    g = g_g[:, i]
-    eld = zeros(length(g))
-    for j in 1:length(g)
-      if g[j] != 0
-        eld[j] = loads[g[j]]
-      end
-    end
-    rigid_jointed!(km, prop, gamma, etype, i, coord)
-    actions[:, i] = km * eld
-  end
+  println(nf)
+  println()  
+  println(loads)
+  println()
   
+  nf1 = deepcopy(nf) + 1
+  println(nf1)
+  println()
+  tmp = []
+  for i in 1:nn
+    tmp = vcat(tmp, loads[nf1[:,i]])
+  end
+  println(round(reshape(float(tmp), 2, 9)', 15))
+  
+  #=
   FEmodel(nels, nn, ndim, nod, nprops, np_types, nodof, ndof,
     fixed_freedoms, loaded_nodes, etype, g, g_g, g_num, nf, num, data,
     neq, kdiag, no, node, sense, displacements, actions, coord, eld,
