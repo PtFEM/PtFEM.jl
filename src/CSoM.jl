@@ -39,8 +39,9 @@ export
 
 ### Includes ###
 
-include("FEbeam.jl")
 include("FEM.jl")
+include("FEbeam.jl")
+include("FEmodel.jl")
 include(Pkg.dir("CSoM", "src", "NMfE", "lufac.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ldlt.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ivp.jl"))
@@ -71,9 +72,6 @@ end
 ### Exports ###
 
 export
-  # From FEbeam.jl
-  FEbeam,
-  
   # From FEM.jl
   Element,
   Plane,
@@ -84,8 +82,13 @@ export
   Quadrilateral,
   Hexahedron,
   
-  FE,
+  FEM,
+  
+  # From FEmodel.jl
   FEmodel,
+  
+  # From FEbeam.jl
+  FEbeam,
   
   # From CSoM
   formnf!,
