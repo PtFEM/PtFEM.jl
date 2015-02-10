@@ -41,7 +41,6 @@ export
 
 include("FEM.jl")
 include("FEbeam.jl")
-include("FEbeamold.jl")
 include("FEmodel.jl")
 include(Pkg.dir("CSoM", "src", "NMfE", "lufac.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ldlt.jl"))
@@ -61,14 +60,6 @@ include(Pkg.dir("CSoM", "src", "CSoM", "deemat.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "beemat.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "shape_fun.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "shape_der.jl"))
-
-# Only needed for comparing with Fortran performance
-if isfile(Pkg.dir("CSoM", "deps", "src", "CSoM", "4th_ed", "libcsom.dylib"))
-  include("csomif/if.jl")
-  include("FEbeamFortran.jl")
-  export
-    FEbeamFortran
-end
 
 ### Exports ###
 
@@ -93,7 +84,6 @@ export
   
   # From FEbeam.jl
   FEbeam,
-  FEbeamold,
   
   # From CSoM
   formnf!,
