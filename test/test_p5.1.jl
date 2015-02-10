@@ -1,4 +1,4 @@
-using Base.Test
+using Base.Test, CSoM
 
 data = Dict(
   # Plane(nxe, nye, nip, direction, finite_element(nod))
