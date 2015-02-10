@@ -1,26 +1,7 @@
 module CSoM
 
-#=
-using Docile, Lexicon
-@document
-=#
-
 if VERSION.minor < 4
   using Docile, Lexicon
-  #@document
-  #=
-  macro doc_mstr(text)
-     Base.triplequoted(text)
-  end
-  macro doc_str(text)
-     text
-  end
-  
-  export
-    # From CSoM
-    @doc_mstr,
-    @doc_str
-  =#
 end
 
 if !isdefined(Main, :JULIA_SVG_BROWSER)
