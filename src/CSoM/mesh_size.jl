@@ -1,10 +1,32 @@
 @doc doc"""
 Function mesh_size returns the number of elements (nels) and the number
+of nodes (nn) in a 1-d geometry-created mesh.
+
+Arguments to (nels, nn) = mesh_size(element,nod,nxe,nye):
+
+fetype::FE_type       : Shape of finite element (Line)
+
+nod::Int64            : Number of nodes/element
+
+nxe::Int64            : Number of elements in x direction
+
+nye::Int64 = 0        : Number of elements in y direction (optional)
+""" ->
+function mesh_size(fetype::Line, nod::Int64, nxe::Int64)
+  nn=nxe+1; nels=nxe
+  if nod!=2
+    println("Invalid number of nodes for Triangle element.")
+  end
+  (nels, nn)
+end
+
+@doc doc"""
+Function mesh_size returns the number of elements (nels) and the number
 of nodes (nn) in a 2-d geometry-created mesh.
 
 Arguments to (nels, nn) = mesh_size(element,nod,nxe,nye):
 
-fetype::FE_type       : Shape of finite element
+fetype::FE_type       : Shape of finite element (Triangle or Quadrilateral)
 
 nod::Int64            : Number of nodes/element
 
@@ -50,7 +72,7 @@ of nodes (nn) in a 3-d geometry-created mesh.
 
 Arguments to (nels, nn) = mesh_size(element,nod,nxe,nye,nze):
 
-fetype::FE_type       : Shape of finite element
+fetype::FE_type       : Shape of finite element (Hexahedron)
 
 nod::Int64            : Number of nodes/element
 

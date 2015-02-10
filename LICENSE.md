@@ -1,5 +1,10 @@
 The CSoM.jl package is licensed under the MIT "Expat" License:
 
+The structure of CSoM is directly derived from the Fortran programs that accompany the books
+"Programming the finite element method" ( http://www.wiley.com//legacy/wileychi/smith_griffiths_margetts/ ) and "Numerical methods for engineers" by I M Smith and D V Griffiths ( http://inside.mines.edu/~vgriffit/ ).
+
+
+
 > Copyright (c) 2014: Rob Goedman.
 >
 > Permission is hereby granted, free of charge, to any person obtaining

@@ -9,7 +9,7 @@ function sample!(element::Triangle, s::Matrix{Float64} , wt::Vector{Float64})
   nip = size(s,1)
 
   const w = [5.0/9.0, 8.0/9.0, 5.0/9.0]
-  const v = [5.0/9.0*w, 8.0/9.0*w, 5.0/9.0*w]
+  const v = [5.0/9.0*w; 8.0/9.0*w; 5.0/9.0*w]
  
   if nip == 1
     s[1,1] = 0.333333333333333

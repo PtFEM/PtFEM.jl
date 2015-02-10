@@ -1,80 +1,102 @@
-import Base.show
-
-### Model type ###
-
-type FEbeam
-  nels::Int64                     # Number of elements
-  nn::Int64                       # Number of nodes in the mesh
-  ndim::Int64                     # Number of dimensions
-  nod::Int64                      # Number of nodes per element
-  nprops::Int64                   # Number of material properties
-  np_types::Int64                 # Number of different property types
-  nodof::Int64                    # Number of degrees of freedom per node
-  ndof::Int64                     # Degrees of freedom per element
-  fixed_freedoms::Int64           # Number of fixed displacement
-  loaded_nodes::Int64             # Number of loaded nodes
-
-  # Int64 arrays
-  etype::Array{Int64, 1}
-  g::Array{Int64, 1}
-  g_g::Array{Int64, 2}
-  g_num::Array{Int64, 2}
-  nf::Array{Int64, 2}
-  num::Array{Int64, 1}
-  data::Dict{Symbol, Any}
-
-  neq::Int64
-  kdiag::Array{Int64, 1}
-
-  no::Array{Int64, 1}
-  node::Array{Int64, 1}
-  sense::Array{Int64, 1}
-
-  # Float64 arrays
-  displacements::Array{Float64, 2}
-  actions::Array{Float64, 2}
-  coord::Array{Float64, 2}
-  eld::Array{Float64, 1}
-  gamma::Array{Float64, 1}
-  g_coord::Array{Float64, 2}
-  km::Array{Float64, 2}
-  kv::Array{Float64, 1}
-  loads::Array{Float64, 1}
-  prop::Array{Float64, 2}
-end
-
-function FEbeam(nels::Int64, nn::Int64, data::Dict;
-   ndim::Int64 = 3, np_types::Int64 = 1, nprops::Int64 = 4, nod::Int64 = 2)
+function FEbeam(data::Dict)
   
-  ndim == 2 ? nodof = 3 : nodof = 6   # Degrees of freedom per node
-  ndof = nod * nodof                  # Degrees of freedom per element
-  fixed_freedoms = 0                  # Number of fixed displacement
-  loaded_nodes = 0                    # Number of loaded nodes
-
-  # Int64 arrays
-  etype = int(ones(nels))
-  g = int(zeros(ndof))
-  g_g = int(zeros(ndof, nels))
-  g_num = int(zeros(nod, nels))
-  nf = int(ones(nodof, nn))
-  num = int(zeros(nod))
+  ndim = 3
+  nst = 1
+  ndim == 2 ? nodof = 3 : nodof = 6           # Degrees of freedom per node
+  nprops = 4
+  penalty = 1e20
   
-  for i in 1:size(data[:support], 1)
-    nf[:, data[:support][i][1]] = data[:support][i][2]
+  if :element_type in keys(data)
+    element_type = data[:element_type]
+  else
+    println("No element type specified.")
+    return
   end
+  
+  element = element_type.element
+  
+  if :properties in keys(data)
+    prop = zeros(size(data[:properties], 2), size(data[:properties], 1))
+    for i in 1:size(data[:properties], 1)
+      prop[:, i] = data[:properties][i, :]
+    end
+  end
+  
+  (nels, nn) = mesh_size(element, element.nod, element_type.nxe)
+  
+  ndof = element.nod * nodof                  # Degrees of freedom per element
+  
+  if typeof(element) == Axisymmetric
+    nst = 4
+  end
+  
+  # Allocate all arrays
+  nf = ones(Int64, nodof, nn)
+  if :support in keys(data)
+    for i in 1:size(data[:support], 1)
+      nf[:, data[:support][i][1]] = data[:support][i][2]
+    end
+  end
+  
+  points = zeros(element_type.nip, ndim)
+  g = zeros(Int64, ndof)
+  g_coord = zeros(ndim,nn)
+  x_coords = zeros(nn)
+  y_coords = zeros(nn)
+  z_coords = zeros(nn)
+  fun = zeros(element.nod)
+  coord = zeros(element.nod, ndim)
+  gamma = zeros(nels)
+  jac = zeros(ndim, ndim)
+  g_num = zeros(Int64, element.nod, nels)
+  der = zeros(ndim, element.nod)
+  deriv = zeros(ndim, element.nod)
+  bee = zeros(nst,ndof)
+  km = zeros(ndof, ndof)
+  eld = zeros(ndof)
+  weights = zeros(element_type.nip)
+  g_g = zeros(Int64, ndof, nels)
+  num = zeros(Int64, element.nod)
+  if :x_coords in keys(data)
+    x_coords = data[:x_coords]
+  end
+  if :y_coords in keys(data)
+    y_coords = data[:y_coords]
+  else
+    y_coords = zeros(length(x_coords))
+  end
+  if :z_coords in keys(data)
+    z_coords = data[:z_coords]
+  else
+    z_coords = zeros(length(z_coords))
+  end
+  actions = zeros(ndof, nels)
+  displacements = zeros(size(nf, 1), ndim)
+  
+  etype = ones(Int64, nels)
+  if :etype in keys(data)
+    etype = data[:etype]
+  end
+  
+  gc = ones(ndim, ndim)
+  dee = zeros(nst,nst)
+  sigma = zeros(nst)
   
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
   kdiag = int(zeros(neq))
   loads = zeros(length(nf))
-
-  for i in 1:size(data[:node_numbering], 1)
-    g_num[data[:node_numbering][i][1],:] = data[:node_numbering][i][2]
-  end
   
+  g_num[1, :] = int(linspace(1, nels, nels))'
+  g_num[2, :] = int(linspace(2, nels+1, nels))'
+
+  if :x_coords in keys(data)
+    g_coord[1,:] = data[:x_coords]
+  end
+    
   for i in 1:nels
     num = g_num[:, i]
-    num_to_g!(nod, nodof, nn, ndof, num, nf, g)
+    num_to_g!(element.nod, nodof, nn, ndof, num, nf, g)
     g_g[:, i] = g
     fkdiag!(ndof, neq, g, kdiag)
   end
@@ -82,35 +104,49 @@ function FEbeam(nels::Int64, nn::Int64, data::Dict;
   for i in 2:neq
     kdiag[i] = kdiag[i] + kdiag[i-1]
   end
+
+  kv = zeros(kdiag[neq])
   
   println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
   
-  no = int(zeros(fixed_freedoms))
-  node = int(zeros(fixed_freedoms))
-  sense = int(zeros(fixed_freedoms))
-
-  # Float64 arrays
-  actions = zeros(ndof, nels)
-  coord = zeros(nod, ndim)
-  eld = zeros(ndof)
-  gamma = zeros(nels)
-  g_coord = zeros(ndim, nn)
-  km = zeros(ndof, ndof)
-  kv = zeros(kdiag[neq])
   loads = zeros(neq)
-  prop = zeros(nprops, np_types)
-
-  for i in 1:size(data[:coordinates], 1)
-    g_coord[data[:coordinates][i][1],:] = data[:coordinates][i][2]
+  if :loaded_nodes in keys(data)
+    for i in 1:size(data[:loaded_nodes], 1)
+      loads[nf[:, data[:loaded_nodes][i][1]]] = data[:loaded_nodes][i][2]
+    end
   end
   
-  for i in 1:size(data[:properties], 1)
-    prop[:, data[:properties][i][1]] = data[:properties][i][2]
+  fixed_freedoms = 0
+  if :fixed_freedoms in keys(data)
+    fixed_freedoms = size(data[:fixed_freedoms], 1)
+  end
+  no = zeros(Int64, fixed_freedoms)
+  node = zeros(Int64, fixed_freedoms)
+  sense = zeros(Int64, fixed_freedoms)
+  value = zeros(Int64, fixed_freedoms)
+  if :fixed_freedoms in keys(data) && fixed_freedoms > 0
+    for i in 1:fixed_freedoms
+      no[i] = nf[data[:fixed_freedoms][i][2], data[:fixed_freedoms][i][1]]
+      value[i] = data[:fixed_freedoms][i][3]
+    end
+    kv[kdiag[no]] = kv[kdiag[no]] + penalty
+    loads[no] = kv[kdiag[no]] * value
   end
   
-  for i in 1:size(data[:loads], 1)
-    loads[nf[:, data[:loads][i][1]]] = data[:loads][i][2]
-  end
+  #=
+  println(g_coord)
+  println()
+  println(kdiag)
+  println()
+  println(loads)
+  println()
+  println(fixed_freedoms)
+  println()
+  println(prop)
+  println()
+  println(etype)
+  println()
+  =#
   
   for i in 1:nels
     num = g_num[:, i]
@@ -122,6 +158,8 @@ function FEbeam(nels::Int64, nn::Int64, data::Dict;
   
   sparin!(kv, kdiag)
   spabac!(kv, loads, kdiag)
+  #nf1 = deepcopy(nf) + 1
+
   displacements = zeros(size(nf))
   for i in 1:size(displacements, 1)
     for j in 1:size(displacements, 2)
@@ -131,7 +169,6 @@ function FEbeam(nels::Int64, nn::Int64, data::Dict;
     end
   end
 
-  actions = zeros(ndof, nels)
   for i in 1:nels
     num = g_num[:, i]
     coord = g_coord[:, num]'              #'
@@ -146,21 +183,35 @@ function FEbeam(nels::Int64, nn::Int64, data::Dict;
     actions[:, i] = km * eld
   end
 
-  FEbeam(nels, nn, ndim, nod, nprops, np_types, nodof, ndof,
-    fixed_freedoms, loaded_nodes, etype, g, g_g, g_num, nf, num, data,
-    neq, kdiag, no, node, sense, displacements, actions, coord, eld,
-    gamma, g_coord,km, kv, loads, prop);
+  #=
+  @show typeof(actions)
+  @show typeof(bee)
+  @show typeof(coord)
+  @show typeof(gamma)
+  @show typeof(dee)
+  @show typeof(der)
+  @show typeof(deriv)
+  @show typeof(displacements)
+  @show typeof(eld)
+  @show typeof(fun)
+  @show typeof(gc)
+  @show typeof(g_coord)
+  @show typeof(jac)
+  @show typeof(km)
+  @show typeof(kv)
+  @show typeof(loads)
+  @show typeof(points)
+  @show typeof(prop)
+  @show typeof(sigma)
+  @show typeof(value)
+  @show typeof(weights)
+  @show typeof(x_coords)
+  @show typeof(y_coords)
+  =#
+  
+  FEM(element_type, element, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
+    etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
+    bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
+    g_coord, jac, km, kv, loads, points, prop, sigma, value, weights,
+    x_coords, y_coords)
 end
-
-
-
-function model_show(io::IO, m::FEbeam, compact::Bool=false)
-  if compact==true
-    println("FEbeam(")
-  else
-    println("  nels =                    \"$(m.nels)\"")
-  end
-end
-
-show(io::IO, m::FEbeam) = model_show(io, m, false)
-showcompact(io::IO, m::FEbeam) = model_show(io, m, true)

@@ -4,6 +4,10 @@ import Base.show
 
 abstract Element                 # Finite elements
 
+type Line <: Element
+  nod::Int64
+end
+
 type Triangle <: Element
   nod::Int64
 end
@@ -22,21 +26,26 @@ end
 
 ### Top level component ###
 
-abstract ElementType                  # Structure element to be modeled
+abstract ElementType              # Structure element to be modeled
+
+type Rod <: ElementType
+  nxe::Int64                      # Number of elements in x direction
+  nip::Int64                      # Number of integration points per element
+  direction::Symbol               # Node numbering direction
+  element::Element                # Finite element type used
+end
+
+type Beam <: ElementType
+  nxe::Int64                      # Number of elements in x direction
+  nip::Int64                      # Number of integration points per element
+  direction::Symbol               # Node numbering direction
+  element::Element                # Finite element type used
+end
 
 type Plane <: ElementType
   nxe::Int64                      # Number of elements in x direction
   nye::Int64                      # Number of elements in y direction
   nip::Int64                      # Number of integration points
-  direction::Symbol               # Node numbering direction
-  element::Element               # Finite element type used
-end
-
-type Beam3D <: ElementType
-  nxe::Int64                      # Number of elements in x direction
-  nye::Int64                      # Number of elements in y direction
-  nze::Int64                      # Number of elements in z direction
-  nip::Int64                      # Number of integration points per element
   direction::Symbol               # Node numbering direction
   element::Element                # Finite element type used
 end
@@ -44,7 +53,7 @@ end
 ### Model type ###
 
 type FEM                          # Computationale data and results structure
-  elementtype::ElementType        # Store the element type object
+  element_type::ElementType        # Store the element type object
   element::Element                # Store finite element object
   
   # Scalars
@@ -54,13 +63,7 @@ type FEM                          # Computationale data and results structure
   ndof::Int64                     # Degrees of freedom per element
   nn::Int64                       # Number of nodes in the mesh
   nodof::Int64                    # Number of degrees of freedom per node
-  fixed_freedoms::Int64           # Number of fixed node displacements
-  loaded_nodes::Int64             # Number of loaded nodes
-  nr::Int64                       # Number of restrained nodes
-  
-  nprops::Int64                   # Number of material properties
-  np_types::Int64                 # Number of different property types
-  
+
   neq::Int64                      # Number of equations
   penalty::Float64                # Penalty for fixed nodes
 
@@ -106,6 +109,7 @@ type FEM                          # Computationale data and results structure
   y_coords::Array{Float64, 1}     # y(z)-coordinates of mesh layout
 end
 
+#=
 function model_show(io::IO, m::FEM, compact::Bool=false)
   if compact==true
     println("FEmodel(")
@@ -116,3 +120,4 @@ end
 
 show(io::IO, m::FEM) = model_show(io, m, false)
 showcompact(io::IO, m::FEM) = model_show(io, m, true)
+=#

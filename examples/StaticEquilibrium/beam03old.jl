@@ -1,31 +1,31 @@
 using Compat, CSoM
 
 data = @compat Dict(
-  :element_type => Beam(20, 1, :x, Line(2)),
-  :properties => [2.0e6 1.0e6 1.0e6 3.0e5;],
-  :x_coords => [linspace(0, 4, 21)],
   :support => [
-    (1, [0 0 0 0 0 0])
-    ],
-  :loaded_nodes => [
+    (1, [0 0 0 0 0 0])],
+  :properties => [
+    (1, [2.0e6 1.0e6 1.0e6 3.0e5])],
+  :coordinates => [
+    (1, linspace(0, 4, 21))],
+  :node_numbering => [
+    (1, int(linspace(1, 20, 20))),
+    (2, int(linspace(2, 21, 20)))],
+  :loads => [
     (21, [10000.0 1000.0 0.0 1000.0 0.0 0.0])]
 )
 
 data |> display
 println()
 
-#=
 if isdir(Pkg.dir("CSoM", "deps"))
   println("Running Fortran ccall version:")
   @time m = FEbeamFortran(20, 21, data)
   println()
 end
-=#
 
 println("Running Julia version:")
-@time m = FEbeam(data)
+@time m = FEbeamold(20, 21, data)
 println()
-
 
 println("Displacements:")
 m.displacements |> display

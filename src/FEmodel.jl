@@ -6,25 +6,36 @@ function FEmodel(data::Dict)
   nprops = 2
   penalty = 1e20
   
-  elementtype = data[:elementtype]
-  element = elementtype.element
-  prop = data[:properties]
+  if :element_type in keys(data)
+    element_type = data[:element_type]
+  else
+    println("No element type specified.")
+    return
+  end
+  
+  element = element_type.element
+  
+  if :properties in keys(data)
+    prop = data[:properties]
+  end
     
-  (nels, nn) = mesh_size(element, element.nod, elementtype.nxe, elementtype.nye)
+  (nels, nn) = mesh_size(element, element.nod, element_type.nxe, element_type.nye)
   
   ndof = element.nod * nodof           # Degrees of freedom per element
+
   if typeof(element) == Axisymmetric
     nst = 4
   end
   
   # Allocate all arrays
   nf = ones(Int64, nodof, nn)
-  for i in 1:size(data[:support], 1)
-    nf[:, data[:support][i][1]] = data[:support][i][2]
+  if :support in keys(data)
+    for i in 1:size(data[:support], 1)
+      nf[:, data[:support][i][1]] = data[:support][i][2]
+    end
   end
-  nr = size(data[:support], 1)
   
-  points = zeros(elementtype.nip, ndim)
+  points = zeros(element_type.nip, ndim)
   g = zeros(Int64, ndof)
   g_coord = zeros(ndim,nn)
   fun = zeros(element.nod)
@@ -37,7 +48,7 @@ function FEmodel(data::Dict)
   bee = zeros(nst,ndof)
   km = zeros(ndof, ndof)
   eld = zeros(ndof)
-  weights = zeros(elementtype.nip)
+  weights = zeros(element_type.nip)
   g_g = zeros(Int64, ndof, nels)
   num = zeros(Int64, element.nod)
   x_coords = data[:x_coords]
@@ -46,10 +57,9 @@ function FEmodel(data::Dict)
   displacements = zeros(size(nf, 1), ndim)
   
   etype = ones(Int64, nels)
-  if data[:nproperties] > 1
+  if :etype in keys(data)
     etype = data[:etype]
   end
-  np_types = size(etype, 1)
   
   gc = ones(ndim)
   dee = zeros(nst,nst)
@@ -62,7 +72,7 @@ function FEmodel(data::Dict)
   # Find global array sizes
   
   for iel in 1:nels
-    geom_rect!(element, iel, x_coords, y_coords, coord, num, elementtype.direction)
+    geom_rect!(element, iel, x_coords, y_coords, coord, num, element_type.direction)
     num_to_g!(num, nf, g)
     g_num[:, iel] = num
     g_coord[:, num] = coord'
@@ -86,7 +96,7 @@ function FEmodel(data::Dict)
     coord = g_coord[:, num]'              # Transpose
     g = g_g[:, iel]
     km = zeros(ndof, ndof)
-    for i in 1:elementtype.nip
+    for i in 1:element_type.nip
       shape_fun!(fun, points, i)
       shape_der!(der, points, i)
       jac = der*coord
@@ -104,21 +114,24 @@ function FEmodel(data::Dict)
   end
   
   loads = zeros(neq + 1)
-  for i in 1:size(data[:loaded_nodes], 1)
-    loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
+  if :loaded_nodes in keys(data)
+    for i in 1:size(data[:loaded_nodes], 1)
+      loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
+    end
   end
   
-  loaded_nodes = size(data[:loaded_nodes], 1)
-  fixed_freedoms = size(data[:fixed_freedoms], 1)
-  
+  fixed_freedoms = 0
+  if :fixed_freedoms in keys(data)
+    fixed_freedoms = size(data[:fixed_freedoms], 1)
+  end
   no = zeros(Int64, fixed_freedoms)
   node = zeros(Int64, fixed_freedoms)
   sense = zeros(Int64, fixed_freedoms)
   value = zeros(Int64, fixed_freedoms)
-  if fixed_freedoms > 0
+  if :fixed_freedoms in keys(data) && fixed_freedoms > 0
     for i in 1:fixed_freedoms
-      no[i] = nf[fixed_freedoms[i][2], fixed_freedoms[i][1]]
-      value[i] = fixed_freedoms[i][3]
+      no[i] = nf[data[:fixed_freedoms][i][2], data[:fixed_freedoms][i][1]]
+      value[i] = data[:fixed_freedoms][i][3]
     end
     kv[kdiag[no]] = kv[kdiag[no]] + penalty
     loads[no] = kv[kdiag[no]] * value
@@ -143,10 +156,10 @@ function FEmodel(data::Dict)
   end
   #println(round(reshape(float(tmp), 2, 9)', 15))
   
-  points = zeros(elementtype.nip, ndim)
-  weights = zeros(elementtype.nip)
+  points = zeros(element_type.nip, ndim)
+  weights = zeros(element_type.nip)
   sample!(element, points, weights)
-  println("\nThe integration point (nip = $(elementtype.nip)) stresses are:")
+  println("\nThe integration point (nip = $(element_type.nip)) stresses are:")
   if typeof(element) == Axisymmetric
     println("\nElement  r-coord   z-coord     sig_r        sig_z        tau_rz        sig_t")
   else
@@ -158,7 +171,7 @@ function FEmodel(data::Dict)
     coord = g_coord[:, num]'
     g = g_g[:, iel]
     eld = loads[g+1]
-    for i in 1:elementtype.nip
+    for i in 1:element_type.nip
       shape_fun!(fun, points, i)
       shape_der!(der, points, i)
       gc = fun'*coord
@@ -205,8 +218,8 @@ function FEmodel(data::Dict)
   @show typeof(x_coords)
   @show typeof(y_coords)
   =#
-  FEM(elementtype, element, ndim, nels, nst, ndof, nn, nodof, 
-    fixed_freedoms, loaded_nodes, nr, nprops, np_types, neq, penalty,
+  
+  FEM(element_type, element, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
     etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
     bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
     g_coord, jac, km, kv, loads, points, prop, sigma, value, weights,
