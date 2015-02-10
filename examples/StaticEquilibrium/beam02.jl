@@ -1,23 +1,20 @@
 using Compat, CSoM
 
-data = @Compat.Dict(
+data = @compat Dict(
+  :element_type => Beam(20, 1, :x, Line(2)),
+  :properties => [2.0e6 1.0e6 1.0e6 3.0e5;],
+  :x_coords => [linspace(0, 4, 21)],
   :support => [
-    (1, [0 0 0 0 0 0])],
-  :properties => [
-    (1, [2.0e6 1.0e6 1.0e6 3.0e5])],
-  :coordinates => [
-    (1, linspace(0, 4, 21))],
-  :node_numbering => [
-    (1, int(linspace(1, 20, 20))),
-    (2, int(linspace(2, 21, 20)))],
-  :loads => [
+    (1, [0 0 0 0 0 0])
+    ],
+  :loaded_nodes => [
     (21, [0.0 -10000.0 0.0 0.0 0.0 0.0])]
 )
 
 data |> display
 println()
 
-m = FEbeam(20, 21, data)
+m = FEbeam(data)
 
 println("Displacements:")
 m.displacements |> display

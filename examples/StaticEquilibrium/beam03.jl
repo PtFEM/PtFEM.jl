@@ -14,18 +14,9 @@ data = @compat Dict(
 data |> display
 println()
 
-#=
-if isdir(Pkg.dir("CSoM", "deps"))
-  println("Running Fortran ccall version:")
-  @time m = FEbeamFortran(20, 21, data)
-  println()
-end
-=#
-
 println("Running Julia version:")
 @time m = FEbeam(data)
 println()
-
 
 println("Displacements:")
 m.displacements |> display
