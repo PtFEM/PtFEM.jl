@@ -3,17 +3,14 @@ using Compat, CSoM
 data = @compat Dict(
   # Beam(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)
   :element_type => Beam(1, 1, 4, 1, :x, Line(2, 1), false),
-  :properties => [1.0e5;],
+  :properties => [2.0e3; 3.0e3],
+  :etype => [2 2 1 1],
   :x_coords => linspace(0, 1, 5),
   :support => [
-    (5, [0])
+    (1, [0])
     ],
-  :loaded_nodes => [
-    (1, [-0.625]),
-    (2, [-1.25]),
-    (3, [-1.25]),
-    (4, [-1.25]),
-    (5, [-0.625])
+  :fixed_freedoms => [
+    (5, [0.05])
     ]
 )
 

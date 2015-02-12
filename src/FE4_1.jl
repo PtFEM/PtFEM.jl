@@ -1,4 +1,4 @@
-function FEbeam(data::Dict)
+function FE4_1(data::Dict)
   
   # Parse & check FEdict data
   
@@ -30,9 +30,9 @@ function FEbeam(data::Dict)
     println("$(typeof(element)) is not a known finite element.")
     return
   end
-    
-  nodof = element.nodof           # Degrees of freedom per node
-  ndof = element.nod * nodof      # Degrees of freedom per element
+   
+  nodof = element.nodof         # Degrees of freedom per node
+  ndof = element.nod * nodof    # Degrees of freedom per element
   
   # Update penalty if specified in FEdict
   
@@ -103,7 +103,7 @@ function FEbeam(data::Dict)
   weights = zeros(element_type.nip)
   g_g = zeros(Int64, ndof, nels)
   num = zeros(Int64, element.nod)
-  actions = zeros(ndof, nels)
+  actions = zeros(nels, ndof)
   displacements = zeros(size(nf, 1), ndim)
   gc = ones(ndim, ndim)
   dee = zeros(nst,nst)
@@ -115,15 +115,15 @@ function FEbeam(data::Dict)
   
   # Set global numbering, coordinates and array sizes
   
-  g_num[1, :] = int(linspace(1, nels, nels))'
-  g_num[2, :] = int(linspace(2, nels+1, nels))'
-
+  ell = zeros(nels)
   if :x_coords in keys(data)
-    g_coord[1,:] = data[:x_coords]
+    for i in 1:length(data[:x_coords])-1
+      ell[i] = data[:x_coords][i+1] - data[:x_coords][i]
+    end
   end
-    
+  
   for i in 1:nels
-    num = g_num[:, i]
+    num = [i; i+1]
     num_to_g!(element.nod, nodof, nn, ndof, num, nf, g)
     g_g[:, i] = g
     fkdiag!(ndof, neq, g, kdiag)
@@ -136,11 +136,11 @@ function FEbeam(data::Dict)
   kv = zeros(kdiag[neq])
   
   println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
-  
-  loads = zeros(neq)
+    
+  loads = zeros(neq+1)
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
-      loads[nf[:, data[:loaded_nodes][i][1]]] = data[:loaded_nodes][i][2]
+      loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
     end
   end
   
@@ -160,41 +160,35 @@ function FEbeam(data::Dict)
     kv[kdiag[no]] = kv[kdiag[no]] + penalty
     loads[no] = kv[kdiag[no]] * value
   end
-  
   for i in 1:nels
-    num = g_num[:, i]
-    coord = g_coord[:, num]'              #'
-    rigid_jointed!(km, prop, gamma, etype, i, coord)
+    km = rod_km!(km, prop[1, etype[i]], ell[i])
     g = g_g[:, i]
     fsparv!(kv, km, g, kdiag)
   end
-  
   sparin!(kv, kdiag)
-  spabac!(kv, loads, kdiag)
-  #nf1 = deepcopy(nf) + 1
+  loads[2:end] = spabac!(kv, loads[2:end], kdiag)
+  @show loads
+  println()
 
   displacements = zeros(size(nf))
   for i in 1:size(displacements, 1)
     for j in 1:size(displacements, 2)
       if nf[i, j] > 0
-        displacements[i,j] = loads[nf[i, j]]
+        displacements[i,j] = loads[nf[i, j]+1]
       end
     end
   end
+  displacements = displacements'
 
+  loads[1] = 0.0
   for i in 1:nels
-    num = g_num[:, i]
-    coord = g_coord[:, num]'              #'
+    km = rod_km!(km, prop[1, etype[i]], ell[i])
     g = g_g[:, i]
-    eld = zeros(length(g))
-    for j in 1:length(g)
-      if g[j] != 0
-        eld[j] = loads[g[j]]
-      end
-    end
-    rigid_jointed!(km, prop, gamma, etype, i, coord)
-    actions[:, i] = km * eld
+    eld = loads[g+1]
+    actions[i, :] = km * eld
   end
+  @show actions
+  println
 
   FEM(element_type, element, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
     etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 

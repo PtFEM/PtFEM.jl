@@ -1,10 +1,8 @@
 function FEmodel(data::Dict)
   
-  ndim = 2
-  nst = 3
-  nodof = 2
-  nprops = 2
-  penalty = 1e20
+  # Setup basic dimensions of arrays
+  
+  # Parse & check FEdict data
   
   if :element_type in keys(data)
     element_type = data[:element_type]
@@ -13,27 +11,83 @@ function FEmodel(data::Dict)
     return
   end
   
-  element = element_type.element
+  ndim = element_type.ndim
+  nst = element_type.nst
   
-  if :properties in keys(data)
-    prop = data[:properties]
-  end
-    
-  (nels, nn) = mesh_size(element, element.nod, element_type.nxe, element_type.nye)
-  
-  ndof = element.nod * nodof           # Degrees of freedom per element
-
-  if typeof(element) == Axisymmetric
+  # Add radial stress
+  if ndim == 3 && element_type.axisymmetric
     nst = 4
   end
   
+  element = element_type.element
+  @assert typeof(element) <: Element
+  
+  if typeof(element) == Line
+    (nels, nn) = mesh_size(element, element_type.nxe)
+  elseif typeof(element) == Triangle || typeof(element) == Quadrilateral
+    (nels, nn) = mesh_size(element, element_type.nxe, element_type.nye)
+  elseif typeof(element) == Hexahedron
+    (nels, nn) = mesh_size(element, element_type.nxe, element_type.nye, element_type.nze)
+  else
+    println("$(typeof(element)) is not a known finite element.")
+    return
+  end
+     
+  nodof = element.nodof           # Degrees of freedom per node
+  ndof = element.nod * nodof      # Degrees of freedom per element
+  
+  # Update penalty if specified in FEdict
+  
+  penalty = 1e20
+  if :penalty in keys(data)
+    penalty = data[:penalty]
+  end
+  
   # Allocate all arrays
+  
+  # Start with arrays to be initialized from FEdict
+  
+  if :properties in keys(data)
+    prop = zeros(size(data[:properties], 1), size(data[:properties], 2))
+    for i in 1:size(data[:properties], 1)
+      prop[i, :] = data[:properties][i, :]
+    end
+  else
+    println("No :properties key found in FEdict")
+  end
+    
   nf = ones(Int64, nodof, nn)
   if :support in keys(data)
     for i in 1:size(data[:support], 1)
       nf[:, data[:support][i][1]] = data[:support][i][2]
     end
   end
+  
+  x_coords = zeros(nn)
+  if :x_coords in keys(data)
+    x_coords = data[:x_coords]
+  end
+  
+  y_coords = zeros(nn)
+  if :y_coords in keys(data)
+    y_coords = data[:y_coords]
+  else
+    y_coords = zeros(length(x_coords))
+  end
+  
+  z_coords = zeros(nn)
+  if :z_coords in keys(data)
+    z_coords = data[:z_coords]
+  else
+    z_coords = zeros(length(z_coords))
+  end
+
+  etype = ones(Int64, nels)
+  if :etype in keys(data)
+    etype = data[:etype]
+  end
+  
+  # All other arrays
   
   points = zeros(element_type.nip, ndim)
   g = zeros(Int64, ndof)
@@ -51,16 +105,8 @@ function FEmodel(data::Dict)
   weights = zeros(element_type.nip)
   g_g = zeros(Int64, ndof, nels)
   num = zeros(Int64, element.nod)
-  x_coords = data[:x_coords]
-  y_coords = data[:y_coords]
   actions = zeros(ndof, nels)
   displacements = zeros(size(nf, 1), ndim)
-  
-  etype = ones(Int64, nels)
-  if :etype in keys(data)
-    etype = data[:etype]
-  end
-  
   gc = ones(ndim)
   dee = zeros(nst,nst)
   sigma = zeros(nst)
@@ -104,7 +150,7 @@ function FEmodel(data::Dict)
       jac = inv(jac)
       deriv = jac*der
       beemat!(bee, deriv)
-      if typeof(element) == Axisymmetric
+      if element_type.axisymmetric
         gc = fun*coord
         bee[4, 1:ndof-1:2] = fun[:]/gc[1]
       end
@@ -141,7 +187,7 @@ function FEmodel(data::Dict)
   loads[2:end] = spabac!(kv, loads[2:end], kdiag)
   nf1 = deepcopy(nf) + 1
   
-  if typeof(element) == Axisymmetric
+  if element_type.axisymmetric
     println("\nNode     r-disp          z-disp")
   else
     println("\nNode     x-disp          y-disp")
@@ -160,7 +206,7 @@ function FEmodel(data::Dict)
   weights = zeros(element_type.nip)
   sample!(element, points, weights)
   println("\nThe integration point (nip = $(element_type.nip)) stresses are:")
-  if typeof(element) == Axisymmetric
+  if element_type.axisymmetric
     println("\nElement  r-coord   z-coord     sig_r        sig_z        tau_rz        sig_t")
   else
     println("\nElement  x-coord   y-coord     sig_x        sig_y        tau_xy")
@@ -178,7 +224,7 @@ function FEmodel(data::Dict)
       jac = inv(der*coord)
       deriv = jac*der
       beemat!(bee, deriv)
-      if typeof(element) == Axisymmetric
+      if element_type.axisymmetric
         gc = fun'*coord
         bee[4, 1:ndof-1:2] = fun[:]/gc[1]
       end

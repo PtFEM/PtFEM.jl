@@ -13,7 +13,7 @@ function rigid_jointed!(km::Matrix{Float64}, prop::Matrix{Float64},
  cc=zeros(12,12)
  
  if ndim ==1
-   ei=prop[1,etype[iel]]
+   ei=prop[etype[iel],1]
    ell=coord[2,1]-coord[1,1]
    km[1,1]=12.0*ei/(ell*ell*ell) 
    km[3,3]=km[1,1]
@@ -32,8 +32,8 @@ function rigid_jointed!(km::Matrix{Float64}, prop::Matrix{Float64},
    km[2,4]=2.0*ei/ell 
    km[4,2]=km[2,4]
  elseif ndim == 2
-   ea=prop[1,etype[iel]]
-   ei=prop[2,etype[iel]]
+   ea=prop[etype[iel],1]
+   ei=prop[etype[iel], 2]
    x1=coord[1,1]
    y1=coord[1,2]
    x2=coord[2,1]
@@ -82,10 +82,10 @@ function rigid_jointed!(km::Matrix{Float64}, prop::Matrix{Float64},
    km[3,6]=2.0*e3
    km[6,3]=km[3,6]
  else
-   ea=prop[1,etype[iel]]
-   eiy=prop[2,etype[iel]]
-   eiz=prop[3,etype[iel]]
-   gj=prop[4,etype[iel]]
+   ea=prop[etype[iel],1]
+   eiy=prop[etype[iel],2]
+   eiz=prop[etype[iel],3]
+   gj=prop[etype[iel],4]
    x1=coord[1,1]
    y1=coord[1,2]
    z1=coord[1,3]
