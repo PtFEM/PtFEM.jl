@@ -135,7 +135,7 @@ function FE4_1(data::Dict)
 
   kv = zeros(kdiag[neq])
   
-  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
+  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).\n")
     
   loads = zeros(neq+1)
   if :loaded_nodes in keys(data)
@@ -144,6 +144,12 @@ function FE4_1(data::Dict)
     end
   end
   
+  for i in 1:nels
+    km = rod_km!(km, prop[etype[i], 1], ell[i])
+    g = g_g[:, i]
+    fsparv!(kv, km, g, kdiag)
+  end
+
   fixed_freedoms = 0
   if :fixed_freedoms in keys(data)
     fixed_freedoms = size(data[:fixed_freedoms], 1)
@@ -151,23 +157,19 @@ function FE4_1(data::Dict)
   no = zeros(Int64, fixed_freedoms)
   node = zeros(Int64, fixed_freedoms)
   sense = zeros(Int64, fixed_freedoms)
-  value = zeros(Int64, fixed_freedoms)
+  value = zeros(Float64, fixed_freedoms)
   if :fixed_freedoms in keys(data) && fixed_freedoms > 0
     for i in 1:fixed_freedoms
-      no[i] = nf[data[:fixed_freedoms][i][2], data[:fixed_freedoms][i][1]]
-      value[i] = data[:fixed_freedoms][i][3]
+      node[i] = data[:fixed_freedoms][i][1]
+      no[i] = nf[1, node[i]]
+      value[i] = data[:fixed_freedoms][i][2][1]
     end
     kv[kdiag[no]] = kv[kdiag[no]] + penalty
-    loads[no] = kv[kdiag[no]] * value
+    loads[no+1] = kv[kdiag[no]] .* value
   end
-  for i in 1:nels
-    km = rod_km!(km, prop[1, etype[i]], ell[i])
-    g = g_g[:, i]
-    fsparv!(kv, km, g, kdiag)
-  end
+
   sparin!(kv, kdiag)
   loads[2:end] = spabac!(kv, loads[2:end], kdiag)
-  @show loads
   println()
 
   displacements = zeros(size(nf))
@@ -182,13 +184,11 @@ function FE4_1(data::Dict)
 
   loads[1] = 0.0
   for i in 1:nels
-    km = rod_km!(km, prop[1, etype[i]], ell[i])
+    km = rod_km!(km, prop[etype[i], 1], ell[i])
     g = g_g[:, i]
     eld = loads[g+1]
     actions[i, :] = km * eld
   end
-  @show actions
-  println
 
   FEM(element_type, element, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
     etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 

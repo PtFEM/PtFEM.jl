@@ -25,7 +25,6 @@ export
 include("FEM.jl")
 include("FEbeam.jl")
 include("FEmodel.jl")
-include("FE4_1.jl")
 include(Pkg.dir("CSoM", "src", "NMfE", "lufac.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ldlt.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ivp.jl"))
@@ -69,9 +68,6 @@ export
   
   # From FEbeam.jl
   FEbeam,
-  
-  # From FE4_1.jl
-  FE4_1,
   
   # From CSoM
   formnf!,
