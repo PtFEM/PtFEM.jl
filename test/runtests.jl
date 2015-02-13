@@ -6,6 +6,8 @@ using Base.Test
 code_tests = [
   "test_csom1.jl",
   "test_p5.1.jl",
+  "test_p4.1.jl",
+  "test_p4.2.jl",
   "test_lufac.jl",
   "test_ldlt.jl",
   "test_ivp_ex7.3.jl",        # Four direct methods
