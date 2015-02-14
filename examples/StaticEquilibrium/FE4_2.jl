@@ -1,4 +1,4 @@
-function FE4_1(data::Dict)
+function FE4_2(data::Dict)
   
   # Parse & check FEdict data
   
@@ -9,30 +9,17 @@ function FE4_1(data::Dict)
     return
   end
   
+  nels = element_type.nels
+  nn = element_type.nn
   ndim = element_type.ndim
+  nip = element_type.nip
   nst = element_type.nst
-  
-  # Add radial stress
-  if ndim == 3 && element_type.axisymmetric
-    nst = 4
-  end
   
   element = element_type.element
   @assert typeof(element) <: Element
   
-  if typeof(element) == Line
-    (nels, nn) = mesh_size(element, element_type.nxe)
-  elseif typeof(element) == Triangle || typeof(element) == Quadrilateral
-    (nels, nn) = mesh_size(element, element_type.nxe, element_type.nye)
-  elseif typeof(element) == Hexahedron
-    (nels, nn) = mesh_size(element, element_type.nxe, element_type.nye, element_type.nze)
-  else
-    println("$(typeof(element)) is not a known finite element.")
-    return
-  end
-   
-  nodof = element.nodof         # Degrees of freedom per node
-  ndof = element.nod * nodof    # Degrees of freedom per element
+  nodof = ndim                    # Degrees of freedom per node
+  ndof = element.nod * nodof      # Degrees of freedom per element
   
   # Update penalty if specified in FEdict
   
@@ -85,6 +72,11 @@ function FE4_1(data::Dict)
     etype = data[:etype]
   end
   
+  g_num = zeros(Int64, element.nod, nels)
+  if :g_num in keys(data)
+    g_num = data[:g_num]
+  end
+  
   # All other arrays
   
   points = zeros(element_type.nip, ndim)
@@ -94,7 +86,6 @@ function FE4_1(data::Dict)
   coord = zeros(element.nod, ndim)
   gamma = zeros(nels)
   jac = zeros(ndim, ndim)
-  g_num = zeros(Int64, element.nod, nels)
   der = zeros(ndim, element.nod)
   deriv = zeros(ndim, element.nod)
   bee = zeros(nst,ndof)
@@ -103,27 +94,28 @@ function FE4_1(data::Dict)
   weights = zeros(element_type.nip)
   g_g = zeros(Int64, ndof, nels)
   num = zeros(Int64, element.nod)
-  actions = zeros(nels, ndof)
+  actions = zeros(ndof, nels)
   displacements = zeros(size(nf, 1), ndim)
   gc = ones(ndim, ndim)
   dee = zeros(nst,nst)
   sigma = zeros(nst)
   
+  # Set global coordinates
+  
+  g_coord[1,:] = data[:x_coords]
+  if ndim > 1
+    g_coord[2,:] = data[:y_coords]
+  end
+  if ndim > 2
+    g_coord[3,:] = data[:z_coords]
+  end 
+    
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
   kdiag = int(zeros(neq))
   
-  # Set global numbering, coordinates and array sizes
-  
-  ell = zeros(nels)
-  if :x_coords in keys(data)
-    for i in 1:length(data[:x_coords])-1
-      ell[i] = data[:x_coords][i+1] - data[:x_coords][i]
-    end
-  end
-  
   for i in 1:nels
-    num = [i; i+1]
+    num = g_num[:, i]
     num_to_g!(element.nod, nodof, nn, ndof, num, nf, g)
     g_g[:, i] = g
     fkdiag!(ndof, neq, g, kdiag)
@@ -132,11 +124,11 @@ function FE4_1(data::Dict)
   for i in 2:neq
     kdiag[i] = kdiag[i] + kdiag[i-1]
   end
-
+  
   kv = zeros(kdiag[neq])
   
-  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).\n")
-    
+  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
+  
   loads = zeros(neq+1)
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
@@ -145,11 +137,13 @@ function FE4_1(data::Dict)
   end
   
   for i in 1:nels
-    km = rod_km!(km, prop[etype[i], 1], ell[i])
+    num = g_num[:, i]
+    coord = g_coord[:, num]'              #'
+    km = pin_jointed!(km, prop[etype[i], 1], coord)
     g = g_g[:, i]
     fsparv!(kv, km, g, kdiag)
   end
-
+  
   fixed_freedoms = 0
   if :fixed_freedoms in keys(data)
     fixed_freedoms = size(data[:fixed_freedoms], 1)
@@ -168,10 +162,9 @@ function FE4_1(data::Dict)
     kv[kdiag[no]] = kv[kdiag[no]] + penalty
     loads[no+1] = kv[kdiag[no]] .* value
   end
-
+  
   sparin!(kv, kdiag)
   loads[2:end] = spabac!(kv, loads[2:end], kdiag)
-  println()
 
   displacements = zeros(size(nf))
   for i in 1:size(displacements, 1)
@@ -181,14 +174,19 @@ function FE4_1(data::Dict)
       end
     end
   end
-  displacements = displacements'
 
-  loads[1] = 0.0
   for i in 1:nels
-    km = rod_km!(km, prop[etype[i], 1], ell[i])
+    num = g_num[:, i]
+    coord = g_coord[:, num]'              #'
     g = g_g[:, i]
-    eld = loads[g+1]
-    actions[i, :] = km * eld
+    eld = zeros(length(g))
+    for j in 1:length(g)
+      if g[j] != 0
+        eld[j] = loads[g[j]+1]
+      end
+    end
+    km = pin_jointed!(km, prop[etype[i], 1], coord)
+    actions[:, i] = km * eld
   end
 
   FEM(element_type, element, ndim, nels, nst, ndof, nn, nodof, neq, penalty,

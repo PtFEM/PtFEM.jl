@@ -36,6 +36,7 @@ include(Pkg.dir("CSoM", "src", "CSoM", "fsparv.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "spabac.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "sparin.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "rigid_jointed.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "pin_jointed.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "mesh_size.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "geom_rect.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "sample.jl"))
@@ -53,6 +54,7 @@ export
   Plane,
   Beam,
   Rod,
+  Frame,
   
   Element,
   Line,
@@ -78,6 +80,7 @@ export
   spabac!,
   sparin!,
   rigid_jointed!,
+  pin_jointed!,
   f, f1, f2,
   shootingmethod,
   mesh_size,

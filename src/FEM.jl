@@ -30,7 +30,7 @@ abstract ElementType              # Structure element to be modeled
 
 type Rod <: ElementType
   ndim::Int64                     # Number of dimensions (1,2 or 3)
-  nst::Int64                       # Number of stress terms
+  nst::Int64                      # Number of stress terms
   nxe::Int64                      # Number of elements in x direction
   nip::Int64                      # Number of integration points per element
   direction::Symbol               # Node numbering direction
@@ -40,7 +40,7 @@ end
 
 type Beam <: ElementType
   ndim::Int64                     # Number of dimensions (1,2 or 3)
-  nst::Int64                       # Number of stresses
+  nst::Int64                      # Number of stresses
   nxe::Int64                      # Number of elements in x direction
   nip::Int64                      # Number of integration points per element
   direction::Symbol               # Node numbering direction
@@ -48,9 +48,19 @@ type Beam <: ElementType
   axisymmetric::Bool              # Axisymmetric
 end
 
+# Frame(nels, nn, ndim, finite_element(nod, nodof))
+type Frame <: ElementType
+  nels::Int64                     # Number of elemnt
+  nn::Int64                       # Number of nodes
+  ndim::Int64                     # Number of dimensions
+  nst::Int64                      # Number of stresses
+  nip::Int64                      # Number of integration points per element
+  element::Element                # Finite element type used
+end
+
 type Plane <: ElementType
   ndim::Int64                     # Number of dimensions (1,2 or 3)
-  nst::Int64                       # Number of stresses
+  nst::Int64                      # Number of stresses
   nxe::Int64                      # Number of elements in x direction
   nye::Int64                      # Number of elements in y direction
   nip::Int64                      # Number of integration points

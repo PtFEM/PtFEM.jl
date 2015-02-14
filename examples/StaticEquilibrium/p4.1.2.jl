@@ -1,6 +1,5 @@
 using Compat, CSoM
-
-include(Pkg.dir("CSoM", "examples", "StaticEquilibrium", "FE4_1.jl"))
+include("FE4_1.jl")
 
 data = @compat Dict(
   # Beam(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)
@@ -12,10 +11,20 @@ data = @compat Dict(
     (1, [0])
     ],
   :fixed_freedoms => [
-    (5, [0.05])
+    (5, 1, 0.05)
     ]
 )
 
-@time m = FE4_1(data)
+data |> display
+println()
 
-@test round(m.displacements, 7) == [0.0 0.0166667 0.0333333 0.0416667 0.05]'
+@time m = FE4_1(data)
+println()
+
+println("Displacements:")
+m.displacements |> display
+println()
+
+println("Actions:")
+m.actions |> display
+println()
