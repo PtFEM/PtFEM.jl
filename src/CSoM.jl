@@ -45,6 +45,7 @@ include(Pkg.dir("CSoM", "src", "CSoM", "beemat.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "shape_fun.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "shape_der.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "rod_km.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "global_to_axial.jl"))
 
 ### Exports ###
 
@@ -91,6 +92,7 @@ export
   shape_fun!,
   shape_der!,
   rod_km!,
+  global_to_axial,
   
   # From NMfE
   lufac,

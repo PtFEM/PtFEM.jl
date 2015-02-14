@@ -1,4 +1,4 @@
-function FE4_2(data::Dict)
+function FE4_3(data::Dict)
   
   # Parse & check FEdict data
   
@@ -56,15 +56,11 @@ function FE4_2(data::Dict)
   y_coords = zeros(nn)
   if :y_coords in keys(data)
     y_coords = data[:y_coords]
-  else
-    y_coords = zeros(length(x_coords))
   end
   
   z_coords = zeros(nn)
   if :z_coords in keys(data)
     z_coords = data[:z_coords]
-  else
-    z_coords = zeros(length(z_coords))
   end
 
   etype = ones(Int64, nels)
@@ -99,6 +95,7 @@ function FE4_2(data::Dict)
   gc = ones(ndim, ndim)
   dee = zeros(nst,nst)
   sigma = zeros(nst)
+  axial = zeros(nels)
   
   # Set global coordinates
   
@@ -230,5 +227,5 @@ function FE4_2(data::Dict)
     etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
     bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
     g_coord, jac, km, kv, loads, points, prop, sigma, value, weights,
-    x_coords, y_coords)
+    x_coords, y_coords, z_coords, axial)
 end

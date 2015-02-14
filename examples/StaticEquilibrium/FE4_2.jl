@@ -99,6 +99,7 @@ function FE4_2(data::Dict)
   gc = ones(ndim, ndim)
   dee = zeros(nst,nst)
   sigma = zeros(nst)
+  axial = zeros(nels)
   
   # Set global coordinates
   
@@ -187,11 +188,12 @@ function FE4_2(data::Dict)
     end
     km = pin_jointed!(km, prop[etype[i], 1], coord)
     actions[:, i] = km * eld
+    axial[i] = global_to_axial(actions[:, i], coord)
   end
 
   FEM(element_type, element, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
     etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
     bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
     g_coord, jac, km, kv, loads, points, prop, sigma, value, weights,
-    x_coords, y_coords)
+    x_coords, y_coords, z_coords, axial)
 end

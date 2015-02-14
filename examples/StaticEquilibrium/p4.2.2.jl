@@ -37,3 +37,7 @@ println("Actions:")
 m.actions |> display
 println()
 
+println("Axial forces:")
+m.axial |> display
+println()
+

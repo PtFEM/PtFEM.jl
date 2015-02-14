@@ -126,6 +126,8 @@ type FEM                          # Computationale data and results structure
   weights::Array{Float64, 1}      # Weighting coefficients
   x_coords::Array{Float64, 1}     # x(r)-coordinates of mesh layout
   y_coords::Array{Float64, 1}     # y(z)-coordinates of mesh layout
+  z_coords::Array{Float64, 1}     # y-coordinates of mesh layout
+  axial::Array{Float64, 1}        # Axial force
 end
 
 #=
