@@ -3,22 +3,17 @@ using Compat, CSoM
 include("FE4_3.jl")
 
 data = @compat Dict(
-  # Beam(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
-  :element_type => Beam(2, 1, 4, 1, :x, Line(2, 2), false),
-  :properties => [4.0e4; 2.0e4],
-  :etype => [1, 1, 2, 2],
-  :x_coords => [0.0, 2.5, 5.0, 8.0, 10.0],
-  :loaded_nodes => [
-  (2, [-20.0 0.0]),
-  (3, [-6.0 -3.0]),
-  (4, [-8.8 2.2]),
-  (5, [-1.2 0.5333])],
-  :fixed_freedoms => [
-    (1, 1, 0.0),
-    (1, 2, -0.001),
-    (3, 1, -0.005),
-    (4, 1, 0.0)],
-  :penalty => 1e19
+  # Beam(ndim, nst, nxe, nip, finite_element(nod, nodof), axisymmetric)
+  :element_type => Beam(2, 1, 5, 1, :x, Line(2, 2), false),
+  :properties => [
+    1.924e4 0.2;
+    1.924e4 0.6;
+    1.924e4 1.0;
+    1.924e4 1.4;
+    1.924e4 1.8],
+  :etype => [1, 2, 3, 4, 5],
+  :x_coords => [0.0, 2.0, 4.0, 6.0, 8.0, 10.0],
+  :loaded_nodes => [(1, [1.0 0.0])]
 )
 
 data |> display
@@ -28,9 +23,9 @@ println()
 println()
 
 println("Displacements:")
-m.displacements |> display
+m.displacements' |> display
 println()
 
 println("Actions:")
-m.actions |> display
+m.actions' |> display
 println()

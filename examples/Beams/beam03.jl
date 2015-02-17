@@ -16,7 +16,6 @@ data = @compat Dict(
 data |> display
 println()
 
-println("Running Julia version:")
 @time m = FEbeam(data)
 println()
 
