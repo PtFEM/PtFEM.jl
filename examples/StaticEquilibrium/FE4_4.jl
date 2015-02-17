@@ -150,6 +150,7 @@ function FE4_3(data::Dict)
     end
     fsparv!(kv, km+mm, g, kdiag)
   end
+  @show kv
   
   loads = zeros(neq+1)
   if :loaded_nodes in keys(data)
@@ -166,6 +167,9 @@ function FE4_3(data::Dict)
   node = zeros(Int64, fixed_freedoms)
   sense = zeros(Int64, fixed_freedoms)
   value = zeros(Float64, fixed_freedoms)
+  @show fixed_freedoms
+  @show kdiag
+  @show nf
   if fixed_freedoms > 0
     for i in 1:fixed_freedoms
       node[i] = data[:fixed_freedoms][i][1]
@@ -173,12 +177,26 @@ function FE4_3(data::Dict)
       no[i] = nf[sense[i], node[i]]
       value[i] = data[:fixed_freedoms][i][3]
     end
+    @show node
+    @show sense
+    @show no
+    @show value
     kv[kdiag[no]] += penalty
     loads[no+1] = kv[kdiag[no]] .* value
   end
   
+  @show kv
+  @show loads
+  println()
+  
   sparin!(kv, kdiag)
+  @show kv
+  println()
+  
   loads[2:end] = spabac!(kv, loads[2:end], kdiag)
+  @show kv
+  @show loads
+
 
   displacements = zeros(size(nf))
   for i in 1:size(displacements, 1)
@@ -204,6 +222,35 @@ function FE4_3(data::Dict)
     actions[:, i] = (km+mm) * eld
   end
 
+  #=
+  @show typeof(actions)
+  @show typeof(bee)
+  @show typeof(coord)
+  @show typeof(gamma)
+  @show typeof(dee)
+  @show typeof(der)
+  @show typeof(deriv)
+  @show typeof(displacements)
+  @show typeof(eld)
+  @show typeof(fun)
+  @show typeof(gc)
+  @show typeof(g_coord)
+  @show typeof(jac)
+  @show typeof(km)
+  @show typeof(mm)
+  @show typeof(kg)
+  @show typeof(kv)
+  @show typeof(gv)
+  @show typeof(loads)
+  @show typeof(points)
+  @show typeof(prop)
+  @show typeof(sigma)
+  @show typeof(value)
+  @show typeof(weights)
+  @show typeof(x_coords)
+  @show typeof(y_coords)
+  =#
+  
   FEM(element_type, element, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
     etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
     bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,

@@ -1,6 +1,6 @@
-using Compat, CSoM, Base.Test
+using Compat, CSoM
 
-include(Pkg.dir("CSoM", "examples", "StaticEquilibrium", "FE4_3.jl"))
+include("FE4_3.jl")
 
 data = @compat Dict(
   # Beam(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
@@ -21,6 +21,16 @@ data = @compat Dict(
   :penalty => 1e19
 )
 
-@time m = FE4_3(data)
+data |> display
+println()
 
-@test round(m.displacements[:, 5], 7) == [0.0047132, 0.0023433]
+@time m = FE4_3(data)
+println()
+
+println("Displacements:")
+m.displacements |> display
+println()
+
+println("Actions:")
+m.actions |> display
+println()

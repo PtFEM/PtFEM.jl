@@ -115,7 +115,10 @@ type FEM                          # Computationale data and results structure
   g_coord::Array{Float64, 2}      # Global node coordinates
   jac::Array{Float64, 2}          # Jacobian matrix
   km::Array{Float64, 2}           # Element stiffness matrix
+  mm::Array{Float64, 2}           # Element mass matrix
+  kg::Array{Float64, 2}           # Element geometric matrix
   kv::Array{Float64, 1}           # Global stiffness matrix (skyline vector)
+  gv::Array{Float64, 1}           # Global geometric matrix (skyline vector)
   
   loads::Array{Float64, 1}        # Nodel loads and displacements
   points::Array{Float64, 2}       # Integrating point lacal coordinates

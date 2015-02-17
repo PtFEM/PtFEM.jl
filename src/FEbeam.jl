@@ -95,6 +95,9 @@ function FEbeam(data::Dict)
   deriv = zeros(ndim, element.nod)
   bee = zeros(nst,ndof)
   km = zeros(ndof, ndof)
+  mm = zeros(ndof, ndof)
+  gm = zeros(ndof, ndof)
+  kg = zeros(ndof, ndof)
   eld = zeros(ndof)
   weights = zeros(element_type.nip)
   g_g = zeros(Int64, ndof, nels)
@@ -131,6 +134,7 @@ function FEbeam(data::Dict)
   end
 
   kv = zeros(kdiag[neq])
+  gv = zeros(kdiag[neq])
   
   println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
   
@@ -196,6 +200,6 @@ function FEbeam(data::Dict)
   FEM(element_type, element, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
     etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
     bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
-    g_coord, jac, km, kv, loads, points, prop, sigma, value, weights,
-    x_coords, y_coords, x_coords, axial)
+    g_coord, jac, km, mm, gm, kv, gv, loads, points, prop, sigma, value,
+    weights, x_coords, y_coords, z_coords, axial)
 end

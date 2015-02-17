@@ -45,6 +45,9 @@ include(Pkg.dir("CSoM", "src", "CSoM", "beemat.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "shape_fun.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "shape_der.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "rod_km.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "rod_mm.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "beam_km.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "beam_mm.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "global_to_axial.jl"))
 
 ### Exports ###
@@ -92,6 +95,9 @@ export
   shape_fun!,
   shape_der!,
   rod_km!,
+  rod_mm!,
+  beam_km!,
+  beam_mm!,
   global_to_axial,
   
   # From NMfE
