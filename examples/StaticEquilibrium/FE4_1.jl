@@ -55,11 +55,13 @@ function FE4_1(data::Dict)
   end
   
   nf = ones(Int64, nodof, nn)
+  #
   if :support in keys(data)
     for i in 1:size(data[:support], 1)
       nf[:, data[:support][i][1]] = data[:support][i][2]
     end
   end
+  #
   
   x_coords = zeros(nn)
   if :x_coords in keys(data)
@@ -112,6 +114,7 @@ function FE4_1(data::Dict)
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
   kdiag = int(zeros(neq))
+  @show nf
   
   # Set global numbering, coordinates and array sizes
   
@@ -144,6 +147,7 @@ function FE4_1(data::Dict)
       loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
     end
   end
+  @show nf
   
   for i in 1:nels
     km = rod_km!(km, prop[etype[i], 1], ell[i])

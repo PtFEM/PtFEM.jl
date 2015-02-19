@@ -1,5 +1,7 @@
 using Compat, CSoM
 
+include("FE4_4.jl")
+
 data = @compat Dict(
   # Beam(ndim, nst, nxe, nip, direction, finite_element(nod, nodof), axisymmetric)
   :element_type => Beam(2, 1, 5, 1, :x, Line(2, 3), false),
@@ -25,7 +27,7 @@ data = @compat Dict(
 data |> display
 println()
 
-@time m = FEbeam(data)
+@time m = FE4_4(data)
 println()
 
 println("Displacements:")

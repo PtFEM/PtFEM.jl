@@ -1,4 +1,4 @@
-function FE4_3(data::Dict)
+function FE4_4(data::Dict)
   
   # Parse & check FEdict data
   
@@ -31,7 +31,7 @@ function FE4_3(data::Dict)
     return
   end
    
-  nodof = ndim                    # Degrees of freedom per node
+  nodof = ndim == 2 ? 3 : 6       # Degrees of freedom per node
   ndof = element.nod * nodof      # Degrees of freedom per element
   
   # Update penalty if specified in FEdict
@@ -55,8 +55,11 @@ function FE4_3(data::Dict)
   end
   
   nf = ones(Int64, nodof, nn)
+  @show nf
   if :support in keys(data)
     for i in 1:size(data[:support], 1)
+      @show nf
+      @show data[:support][i][2]
       nf[:, data[:support][i][1]] = data[:support][i][2]
     end
   end
@@ -127,7 +130,7 @@ function FE4_3(data::Dict)
   end
   
   for i in 1:nels
-    num = [i; i+1]
+    num = g_num[:, i]
     num_to_g!(element.nod, nodof, nn, ndof, num, nf, g)
     g_g[:, i] = g
     fkdiag!(ndof, neq, g, kdiag)
@@ -143,13 +146,14 @@ function FE4_3(data::Dict)
   println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
   
   for i in 1:nels
-    km = beam_km!(km, prop[etype[i], 1], ell[i])
+    km = beam_km!(km, prop[1, etype[i]], ell[i])
     g = g_g[:, i]
     if size(prop, 2) > 1
-      mm = beam_mm!(mm, prop[etype[i], 2], ell[i])
+      mm = beam_mm!(mm, prop[2, etype[i]], ell[i])
     end
     fsparv!(kv, km+mm, g, kdiag)
   end
+  @show km
   @show kv
   
   loads = zeros(neq+1)

@@ -22,7 +22,7 @@ p = plot(
     color=repeat([symbol("y[2]")], inner=[2])),
   layer(x=t, y=res[:,3], Geom.line,
     color=repeat([symbol("y[3]")], inner=[1])),
-  Scale.discrete_color_manual("darkred", "red", "green"),
+  Scale.color_discrete_manual("darkred", "red", "green"),
   Guide.colorkey("Legend"),
   Guide.xlabel("x", orientation=:horizontal),
   Guide.ylabel("y[1], y[2] and y[3]", orientation=:vertical),

@@ -30,7 +30,7 @@ for i in 1:4
       color=repeat([symbol("y1")], inner=[3])),
     layer(x=xs, y=y2, Geom.line,
       color=repeat([symbol("y2")], inner=[1])),
-    Scale.discrete_color_manual("darkred", "red", "darkblue","darkgreen"),
+    Scale.color_discrete_manual("darkred", "red", "darkblue","darkgreen"),
     Guide.colorkey("Legend"),
     Guide.xlabel("x", orientation=:horizontal),
     Guide.ylabel("w(x)", orientation=:vertical),

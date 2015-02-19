@@ -2,12 +2,12 @@ using Compat, CSoM
 include("FE4_1.jl")
 
 data = @compat Dict(
-  # Beam(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)
+  # Beam(ndim, nst, nxe, nip, direction, finite_element(nod, nodof), axisymmetric)
   :element_type => Beam(1, 1, 4, 1, :x, Line(2, 1), false),
   :properties => [1.0e5;],
   :x_coords => linspace(0, 1, 5),
   :support => [
-    (5, [0])
+    (1, [0])
     ],
   :loaded_nodes => [
     (1, [-0.625]),
