@@ -22,13 +22,10 @@ export
 
 ### Includes ###
 
-include("FEM.jl")
-include("FEbeam.jl")
-include("FEmodel.jl")
-include(Pkg.dir("CSoM", "src", "NMfE", "lufac.jl"))
-include(Pkg.dir("CSoM", "src", "NMfE", "ldlt.jl"))
-include(Pkg.dir("CSoM", "src", "NMfE", "ivp.jl"))
-include(Pkg.dir("CSoM", "src", "NMfE", "bvp.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "elements.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "FEM.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "FEbeam.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "FEmodel.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "formnf.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "num_to_g.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "fkdiag.jl"))
@@ -49,11 +46,15 @@ include(Pkg.dir("CSoM", "src", "CSoM", "rod_mm.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "beam_km.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "beam_mm.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "global_to_axial.jl"))
+include(Pkg.dir("CSoM", "src", "NMfE", "lufac.jl"))
+include(Pkg.dir("CSoM", "src", "NMfE", "ldlt.jl"))
+include(Pkg.dir("CSoM", "src", "NMfE", "ivp.jl"))
+include(Pkg.dir("CSoM", "src", "NMfE", "bvp.jl"))
 
 ### Exports ###
 
 export
-  # From FEM.jl
+  # From elements.jl
   ElementType,
   Plane,
   Beam,
@@ -62,11 +63,11 @@ export
   
   Element,
   Line,
-  Axisymmetric,
   Triangle,
   Quadrilateral,
   Hexahedron,
   
+  # From FEM.jl
   FEM,
   
   # From FEmodel.jl
