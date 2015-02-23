@@ -96,7 +96,7 @@ function rigid_jointed!(km::Matrix{Float64}, prop::Matrix{Float64},
    yl=y2-y1
    zl=z2-z1
    ell=sqrt(xl*xl+yl*yl+zl*zl)
-   #km=zeros(ndof,ndof)
+   km=zeros(ndof,ndof)
    a1=ea/ell
    a2=12.0*eiz/(ell*ell*ell)
    a3=12.0*eiy/(ell*ell*ell)

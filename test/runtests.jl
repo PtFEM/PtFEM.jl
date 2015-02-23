@@ -9,6 +9,7 @@ code_tests = [
   "test_p4.1.2.jl",
   "test_p4.2.2.jl",
   "test_p4.3.1b.jl",
+  "test_p4.4.2.jl",
   "test_p5.1.jl",
   "test_lufac.jl",
   "test_ldlt.jl",

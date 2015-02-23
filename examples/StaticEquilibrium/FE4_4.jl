@@ -13,7 +13,7 @@ function FE4_4(data::Dict)
   nst = element_type.nst
   
   # Add radial stress
-  if ndim == 3 && element_type.axisymmetric
+  if ndim == 3 && typeof(element_type) !== Frame && element_type.axisymmetric
     nst = 4
   end
   
@@ -21,7 +21,12 @@ function FE4_4(data::Dict)
   @assert typeof(element) <: Element
   
   if typeof(element) == Line
-    (nels, nn) = mesh_size(element, element_type.nxe)
+    if typeof(element_type) == Frame
+      nels = element_type.nels
+      nn = element_type.nn
+    else  
+      (nels, nn) = mesh_size(element, element_type.nxe)
+    end
   elseif typeof(element) == Triangle || typeof(element) == Quadrilateral
     (nels, nn) = mesh_size(element, element_type.nxe, element_type.nye)
   elseif typeof(element) == Hexahedron
@@ -30,7 +35,7 @@ function FE4_4(data::Dict)
     println("$(typeof(element)) is not a known finite element.")
     return
   end
-   
+  
   nodof = ndim == 2 ? 3 : 6       # Degrees of freedom per node
   ndof = element.nod * nodof      # Degrees of freedom per element
   
@@ -55,14 +60,13 @@ function FE4_4(data::Dict)
   end
   
   nf = ones(Int64, nodof, nn)
-  @show nf
+  
   if :support in keys(data)
     for i in 1:size(data[:support], 1)
-      @show nf
-      @show data[:support][i][2]
       nf[:, data[:support][i][1]] = data[:support][i][2]
     end
   end
+  
   
   x_coords = zeros(nn)
   if :x_coords in keys(data)
@@ -89,6 +93,12 @@ function FE4_4(data::Dict)
     g_num = data[:g_num]
   end
   
+  gamma = zeros(nels)
+  if :gamma in keys(data)
+    gamma = data[:gamma]
+  end
+  
+  
   # All other arrays
   
   points = zeros(element_type.nip, ndim)
@@ -96,7 +106,6 @@ function FE4_4(data::Dict)
   g_coord = zeros(ndim,nn)
   fun = zeros(element.nod)
   coord = zeros(element.nod, ndim)
-  gamma = zeros(nels)
   jac = zeros(ndim, ndim)
   der = zeros(ndim, element.nod)
   deriv = zeros(ndim, element.nod)
@@ -117,6 +126,14 @@ function FE4_4(data::Dict)
   axial = zeros(nels)
   
   # Set global coordinates
+  
+  g_coord[1,:] = data[:x_coords]
+  if ndim > 1
+    g_coord[2,:] = data[:y_coords]
+  end
+  if ndim > 2
+    g_coord[3,:] = data[:z_coords]
+  end
   
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
@@ -139,23 +156,20 @@ function FE4_4(data::Dict)
   for i in 2:neq
     kdiag[i] = kdiag[i] + kdiag[i-1]
   end
-
+  
   kv = zeros(kdiag[neq])
   gv = zeros(kdiag[neq])
     
-  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
+  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).\n")
   
   for i in 1:nels
-    km = beam_km!(km, prop[1, etype[i]], ell[i])
+    num = g_num[:, i]
+    coord = g_coord[:, num]'
+    km = rigid_jointed!(km, prop, gamma, etype, i, coord)
     g = g_g[:, i]
-    if size(prop, 2) > 1
-      mm = beam_mm!(mm, prop[2, etype[i]], ell[i])
-    end
-    fsparv!(kv, km+mm, g, kdiag)
+    fsparv!(kv, km, g, kdiag)
   end
-  @show km
-  @show kv
-  
+    
   loads = zeros(neq+1)
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
@@ -171,9 +185,6 @@ function FE4_4(data::Dict)
   node = zeros(Int64, fixed_freedoms)
   sense = zeros(Int64, fixed_freedoms)
   value = zeros(Float64, fixed_freedoms)
-  @show fixed_freedoms
-  @show kdiag
-  @show nf
   if fixed_freedoms > 0
     for i in 1:fixed_freedoms
       node[i] = data[:fixed_freedoms][i][1]
@@ -181,26 +192,12 @@ function FE4_4(data::Dict)
       no[i] = nf[sense[i], node[i]]
       value[i] = data[:fixed_freedoms][i][3]
     end
-    @show node
-    @show sense
-    @show no
-    @show value
     kv[kdiag[no]] += penalty
     loads[no+1] = kv[kdiag[no]] .* value
   end
   
-  @show kv
-  @show loads
-  println()
-  
   sparin!(kv, kdiag)
-  @show kv
-  println()
-  
   loads[2:end] = spabac!(kv, loads[2:end], kdiag)
-  @show kv
-  @show loads
-
 
   displacements = zeros(size(nf))
   for i in 1:size(displacements, 1)
@@ -210,20 +207,15 @@ function FE4_4(data::Dict)
       end
     end
   end
-
+  
+  loads[1] = 0.0
   for i in 1:nels
-    beam_km!(km, prop[etype[i], 1], ell[i])
+    num = g_num[:, i]
+    coord = g_coord[:, num]'
     g = g_g[:, i]
-    if size(prop, 2) > 1
-      beam_mm!(mm, prop[etype[i], 2], ell[i])
-    end
-    eld = zeros(length(g))
-    for j in 1:length(g)
-      if g[j] != 0
-        eld[j] = loads[g[j]+1]
-      end
-    end
-    actions[:, i] = (km+mm) * eld
+    eld = loads[g+1]
+    km = rigid_jointed!(km, prop, gamma, etype, i, coord)
+    actions[:, i] = km * eld
   end
 
   #=
