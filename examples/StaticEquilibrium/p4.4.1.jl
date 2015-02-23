@@ -3,8 +3,6 @@ using Compat, CSoM
 include("FE4_4.jl")
 
 data = @compat Dict(
-  # Beam(ndim, nst, nxe, nip, direction, finite_element(nod, nodof), axisymmetric)
-  #:element_type => Beam(2, 1, 6, 1, :x, Line(2, 3), false),
   # Frame(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
   :element_type => Frame(6, 6, 2, 1, 1, Line(2, 3)),
   :properties => [

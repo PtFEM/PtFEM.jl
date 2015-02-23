@@ -24,7 +24,6 @@ export
 
 include(Pkg.dir("CSoM", "src", "CSoM", "elements.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "FEM.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "FEbeam.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "FEmodel.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "formnf.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "num_to_g.jl"))
@@ -72,9 +71,6 @@ export
   
   # From FEmodel.jl
   FEmodel,
-  
-  # From FEbeam.jl
-  FEbeam,
   
   # From CSoM
   formnf!,

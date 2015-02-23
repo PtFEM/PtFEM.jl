@@ -1,10 +1,17 @@
 using Compat, CSoM
 
+include(Pkg.dir("CSoM", "examples", "StaticEquilibrium", "FE4_4.jl"))
+
 data = @compat Dict(
-  # Beam(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)
-  :element_type => Beam(3, 1, 20, 1, :x, Line(2, 6), false),
+  # Frame(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
+  :element_type => Frame(20, 21, 3, 1, 1, Line(2, 3)),
   :properties => [2.0e6 1.0e6 1.0e6 3.0e5;],
   :x_coords => linspace(0, 4, 21),
+  :y_coords => zeros(21),
+  :z_coords => zeros(21),
+  :g_num => [
+    collect(1:20)';
+    collect(2:21)'],
   :support => [
     (1, [0 0 0 0 0 0])
     ],
@@ -15,7 +22,7 @@ data = @compat Dict(
 data |> display
 println()
 
-m = FEbeam(data)
+m = FE4_4(data)
 
 println("Displacements:")
 m.displacements |> display

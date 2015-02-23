@@ -1,19 +1,25 @@
 using Compat, CSoM
 
+include(Pkg.dir("CSoM", "examples", "StaticEquilibrium", "FE4_4.jl"))
+
 data = @compat Dict(
-# Plane(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)
-  :element_type => Beam(3, 1, 20, 1, :x, Line(2, 6), false),
+  # Frame(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
+  :element_type => Frame(20, 21, 3, 1, 1, Line(2, 3)),
   :properties => [2.0e6 1.0e6 1.0e6 3.0e5;],
   :x_coords => linspace(0, 4, 21),
+  :y_coords => zeros(21),
+  :z_coords => zeros(21),
+  :g_num => [
+    collect(1:20)';
+    collect(2:21)'],
   :support => [
     (1, [0 0 0 0 0 0])
     ],
   :loaded_nodes => [
-    (21, [0.0 -10000.0 0.0 0.0 0.0 0.0])]
+    (21, [10000.0 1000.0 0.0 1000.0 0.0 0.0])],
+  :penalty => 1e19
 )
 
-m = FEbeam(data)
+m = FE4_4(data)
 
-@assert round(m.displacements[2,1:7], 5) == [0.0  -0.00079  -0.00309  -0.00684  -0.01195  -0.01833  -0.02592]
-@assert round(m.displacements[2,8:14], 5) == [-0.03463  -0.04437  -0.05508  -0.06667  -0.07905  -0.09216  -0.10591]
-@assert round(m.displacements[2,15:21], 5) == [-0.12021  -0.135  -0.15019  -0.16569  -0.18144  -0.19735  -0.21333]
+@assert round(m.displacements[2,1:7], 5) == [0.0  8.0e-5  0.00031  0.00068  0.00119  0.00183  0.00259]
