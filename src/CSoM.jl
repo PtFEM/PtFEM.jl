@@ -45,6 +45,10 @@ include(Pkg.dir("CSoM", "src", "CSoM", "rod_mm.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "beam_km.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "beam_mm.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "global_to_axial.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "hinge.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "glob_to_loc.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "loc_to_glob.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "checon.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "lufac.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ldlt.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ivp.jl"))
@@ -96,6 +100,10 @@ export
   beam_km!,
   beam_mm!,
   global_to_axial,
+  hinge!,
+  loc_to_glob!,
+  glob_to_loc!,
+  checon!,
   
   # From NMfE
   lufac,
