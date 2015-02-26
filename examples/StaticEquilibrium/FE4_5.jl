@@ -290,42 +290,6 @@ function FE4_5(data::Dict)
     if iters == limit && limit !== 1
       break
     end
-  end   
-  displacements = zeros(size(nf))
-  #loads[1] = 0.0
-
-  #=
-  @show typeof(actions)
-  @show typeof(bee)
-  @show typeof(coord)
-  @show typeof(gamma)
-  @show typeof(dee)
-  @show typeof(der)
-  @show typeof(deriv)
-  @show typeof(displacements)
-  @show typeof(eld)
-  @show typeof(fun)
-  @show typeof(gc)
-  @show typeof(g_coord)
-  @show typeof(jac)
-  @show typeof(km)
-  @show typeof(mm)
-  @show typeof(kg)
-  @show typeof(kv)
-  @show typeof(gv)
-  @show typeof(loads)
-  @show typeof(points)
-  @show typeof(prop)
-  @show typeof(sigma)
-  @show typeof(value)
-  @show typeof(weights)
-  @show typeof(x_coords)
-  @show typeof(y_coords)
-  =#
-  
-  FEM(element_type, element, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
-    etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
-    bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
-    g_coord, jac, km, mm, gm, kv, gv, loads, points, prop, sigma, value,
-    weights, x_coords, y_coords, z_coords, axial)
+  end
+  (inode[size(inode, 1)], eldtot[nf[:, inode[size(inode, 1)]]+1])
 end
