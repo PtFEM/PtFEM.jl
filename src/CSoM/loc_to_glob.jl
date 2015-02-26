@@ -5,8 +5,8 @@ function loc_to_glob!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float6
   #
   # Updates glob[:]
   #
-  t = zeros(12,12)
-  r0 = zeros(3,3)
+  t = zeros(12, 12)
+  r0 = zeros(3, 3)
 
   x1 = coord[1,1]
   y1 = coord[1,2]
@@ -18,7 +18,6 @@ function loc_to_glob!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float6
   yl = y2 - y1
   zl = z2 - z1
   ell = sqrt(xl*xl+yl*yl+zl*zl)
-  t = zeros()
   gamrad = gamma*pi/180.0
   cg = cos(gamrad)
   sg = sin(gamrad)
@@ -44,6 +43,8 @@ function loc_to_glob!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float6
    r0[3,2] = sg
    r0[1,3] = sg
   end
+  #@show r0
+  #@show loc
   for i in 1:3
    for j in 1:3 
      x = r0[i,j]
@@ -59,4 +60,6 @@ function loc_to_glob!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float6
    end
    glob[i] = sum
   end
+  #@show glob
+  glob
 end

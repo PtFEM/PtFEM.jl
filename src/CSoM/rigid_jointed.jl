@@ -183,7 +183,7 @@ function rigid_jointed!(km::Matrix{Float64}, prop::Matrix{Float64},
      for j in 1:12
        tsum=0.0
        for k in 1:12
-         tsum=tsum+km[i,k]*t1[k,j]
+         tsum += km[i,k]*t1[k,j]
        end
        cc[i,j]=tsum
      end
@@ -192,7 +192,7 @@ function rigid_jointed!(km::Matrix{Float64}, prop::Matrix{Float64},
      for j in 1:12
        tsum=0.0
        for k in 1:12
-         tsum=tsum+t2[i,k]*cc[k,j]
+         tsum += t2[i,k]*cc[k,j]
        end
        km[i,j]=tsum
      end

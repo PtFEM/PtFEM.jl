@@ -1,4 +1,4 @@
-function checon!(loads::Vector{Float64}, oldlds::Vector{Float64},tol::Float64, converged::Bool)
+function checon!(loads::Vector{Float64}, oldlds::Vector{Float64}, tol::Float64,  converged::Bool)
   #
   # This subroutine sets converged to .FALSE. if relative change in loads
   # and oldlds is greater than tol and updates oldlds.
@@ -7,4 +7,5 @@ function checon!(loads::Vector{Float64}, oldlds::Vector{Float64},tol::Float64, c
  converged = true
  converged = (maximum(abs(loads-oldlds))/maximum(abs(loads)) <= tol)
  oldlds = loads
+ (oldlds, converged)
 end

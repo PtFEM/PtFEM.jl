@@ -10,7 +10,8 @@ data = @compat Dict(
     1.0e10 1.0e6 50.0;
     1.0e10 1.0e6 80.0
      ],
-  :x_coords => [0.0,  5.0, 10.0, 20.0, 20.0, 35.0, 50.0, 50.0],
+  :etype => [1, 2, 2, 1, 3, 3, 1],
+  :x_coords => [0.0,  0.0, 10.0, 20.0, 20.0, 35.0, 50.0, 50.0],
   :y_coords => [0.0, 15.0, 15.0, 15.0,  0.0, 15.0, 15.0,  0.0],
   :g_num => [
     1 2 3 5 4 6 8;
@@ -27,20 +28,14 @@ data = @compat Dict(
     ],
   :limit => 200,
   :tol => 0.0001,
-  :incs => [0.5 0.3 0.2 0.2 0.1 0.05 0.02 0.01]
+  :incs => 8,
+  :dload => [0.5; 0.3; 0.2; 0.2; 0.1; 0.05; 0.02; 0.01]
+  #:incs => 1,
+  #:dload => [0.5;]
 )
 
 data |> display
 println()
 
-@time m = FE4_4(data)
+@time m = FE4_5(data)
 println()
-
-println("Displacements:")
-m.displacements' |> display
-println()
-
-println("Actions:")
-m.actions' |> display
-println()
-

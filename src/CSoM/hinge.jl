@@ -145,6 +145,8 @@ function hinge!(coord::Matrix{Float64}, holdr::Matrix{Float64}, action::Vector{F
      end
    end
    loc[10] = -loc[4]
+   #@show loc
    loc_to_glob!(loc,react,gam,coord)
+   #@show react
  end
 end
