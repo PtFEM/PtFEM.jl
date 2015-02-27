@@ -13,7 +13,7 @@ function sparin!(kv::Vector{Float64}, kdiag::Vector{Int64})
   n = size(kdiag, 1)
   kv[1] = sqrt(kv[1])
   for i in 2:n
-    ki = kdiag[i]-i
+    ki = kdiag[i] - i
     l = kdiag[i-1] - ki + 1
     for j in l:i
       x = kv[ki+j]

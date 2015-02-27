@@ -49,6 +49,9 @@ include(Pkg.dir("CSoM", "src", "CSoM", "hinge.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "glob_to_loc.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "loc_to_glob.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "checon.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "linmul_sky.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "stability.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "beam_gm.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "lufac.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ldlt.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ivp.jl"))
@@ -104,6 +107,9 @@ export
   loc_to_glob!,
   glob_to_loc!,
   checon!,
+  linmul_sky!,
+  stability!,
+  beam_gm!,
   
   # From NMfE
   lufac,
