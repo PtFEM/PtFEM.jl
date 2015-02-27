@@ -1,6 +1,6 @@
-using Compat, CSoM
+using Compat, CSoM, Base.Test
 
-include("FE4_6.jl")
+include(Pkg.dir("CSoM", "examples", "StaticEquilibrium", "FE4_6.jl"))
 
 data = @compat Dict(
   # Beam(ndim, nst, nxe, nip, direction, finite_element(nod, nodof), axisymmetric)
@@ -15,15 +15,6 @@ data = @compat Dict(
   :tol => 0.00001
 )
 
-data |> display
-println()
-
 @time m = FE4_6(data)
-println()
 
-println("\nThe buckling load = $(m[1])")
-m[4][1] = 0.0
-println("\nThe buckling mode (iterations=$(m[2])):\n")
-for i in 1:m[3]
-  println("$i    $(m[4][m[5][:, i]+1])")
-end
+@test round(m[4], 5) == [0.0, 0.72734, 0.15237, 0.38835, 0.16868, -0.24397, 0.06725, -0.45216]

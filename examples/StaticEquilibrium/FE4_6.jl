@@ -163,15 +163,10 @@ function FE4_6(data::Dict)
   if :tol in keys(data)
     tol = data[:tol]
   end
-  #@show km mm kg kv gv
   
   ival = 0.0
   iters = 0
   (iters, evec, ival) = stability!(kv, gv, kdiag, tol, limit, iters, evec, ival)
-  println("\nThe buckling load = $(ival)")
   evec[1] = 0.0
-  println("\nThe buckling mode (iterations=$(iters)):\n")
-  for i in 1:nn
-    println("$i    $(evec[nf[:, i]+1])")
-  end
+  (ival, iters, nn, evec, nf)
 end
