@@ -1,6 +1,6 @@
-using Compat, CSoM
+using Compat, CSoM, Base.Test
 
-include("FE4_7.jl")
+include(Pkg.dir("CSoM", "examples", "StaticEquilibrium", "FE4_7.jl"))
 
 data = @compat Dict(
   # Plane(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)
@@ -24,8 +24,7 @@ data = @compat Dict(
     ]
 )
 
-data |> display
-println()
 
 @time m = FE4_7(data)
-println()
+
+@test_approx_eq_eps m [-0.12113940612422724,-0.12113940612422731,-0.033472050966241285] eps()

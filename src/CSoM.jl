@@ -34,8 +34,13 @@ include(Pkg.dir("CSoM", "src", "CSoM", "sparin.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "rigid_jointed.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "pin_jointed.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "mesh_size.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "geom_rect.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "sample.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "geom_rect_triangle.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "geom_rect_quadrilateral.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "sample_hexahedron.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "sample_line.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "sample_quadrilateral.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "sample_tetrahedron.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "sample_triangle.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "deemat.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "beemat.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "shape_fun.jl"))
@@ -52,6 +57,7 @@ include(Pkg.dir("CSoM", "src", "CSoM", "checon.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "linmul_sky.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "stability.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "beam_gm.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "fmplat.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "lufac.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ldlt.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ivp.jl"))
@@ -72,6 +78,7 @@ export
   Triangle,
   Quadrilateral,
   Hexahedron,
+  Tetrahedron,
   
   # From FEM.jl
   FEM,
@@ -110,6 +117,7 @@ export
   linmul_sky!,
   stability!,
   beam_gm!,
+  fmplat!,
   
   # From NMfE
   lufac,

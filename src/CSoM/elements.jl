@@ -22,6 +22,11 @@ type Hexahedron <: Element
   nodof::Int64
 end
 
+type Tetrahedron <: Element
+  nod::Int64
+  nodof::Int64
+end
+
 ### Top level component ###
 
 abstract ElementType              # Structure element to be modeled
