@@ -24,7 +24,7 @@ function sample!(element::Quadrilateral, s::Matrix{Float64} , wt::Vector{Float64
     s[3,2] = -root3
     s[4,1] = root3
     s[4,2] = -root3
-    wt = ones(wt)
+    wt[:] = ones(wt)
   elseif nip == 9
     s[1:3:7,1] = -r15
     s[2:3:8,2] = 0.0
@@ -32,7 +32,7 @@ function sample!(element::Quadrilateral, s::Matrix{Float64} , wt::Vector{Float64
     s[1:3,2]   = r15
     s[4:6,2]   = 0.0
     s[7:9,2]   = -r15
-    wt = v
+    wt[:] = v
   elseif nip == 16
     s[1:4:13,1] = -0.861136311594053
     s[2:4:14,1] = -0.339981043584856

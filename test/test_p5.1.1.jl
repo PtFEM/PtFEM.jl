@@ -1,4 +1,6 @@
-using Compat, CSoM
+using Compat, Base.Test, CSoM
+
+include(Pkg.dir("CSoM", "examples", "ElasticSolids", "FE5_1.jl"))
 
 data = @compat Dict(
   # Plane(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)
@@ -20,8 +22,9 @@ data = @compat Dict(
     ]
 )
 
-data |> display
-println()
+@time m = FE5_1(data)
 
-@time m = FEmodel(data)
-println()
+@test_approx_eq_eps m.loads [0.0, -9.100000000000005e-7, 1.950000000000001e-7,
+-9.100000000000006e-7, 3.900000000000002e-7, -9.1e-7, -4.5500000000000025e-7,
+1.950000000000002e-7, -4.550000000000004e-7, 3.900000000000004e-7,
+-4.5499999999999993e-7, 1.9500000000000038e-7, 3.9000000000000045e-7] eps()

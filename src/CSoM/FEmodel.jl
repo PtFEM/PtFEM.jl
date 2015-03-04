@@ -174,7 +174,7 @@ function FEmodel(data::Dict)
   no = zeros(Int64, fixed_freedoms)
   node = zeros(Int64, fixed_freedoms)
   sense = zeros(Int64, fixed_freedoms)
-  value = zeros(Int64, fixed_freedoms)
+  value = zeros(Float64, fixed_freedoms)
   if :fixed_freedoms in keys(data) && fixed_freedoms > 0
     for i in 1:fixed_freedoms
       no[i] = nf[data[:fixed_freedoms][i][2], data[:fixed_freedoms][i][1]]

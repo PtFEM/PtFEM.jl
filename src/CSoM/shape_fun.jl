@@ -56,7 +56,7 @@ function shape_fun!(fun::Vector{Float64}, points::Matrix{Float64}, i::Int64)
     if nod == 3
       fun[:] = [c1,c3,c2]
     elseif nod == 4
-      fun = [4.0*xim*etam,4.0*xim*etap,4.0*xip*etap,4.0*xip*etam]
+      fun[:] = [4.0*xim*etam,4.0*xim*etap,4.0*xip*etap,4.0*xip*etam]
     elseif nod == 5
       fun[:] = [4.0*xim*etam-0.25*(1.0-xi*xi)*(1.0-eta*eta),
             4.0*xim*etap-0.25*(1.0-xi*xi)*(1.0-eta*eta),
@@ -80,7 +80,7 @@ function shape_fun!(fun::Vector{Float64}, points::Matrix{Float64}, i::Int64)
       etap=eta+1.0
       xim=xi-1.0
       xip=xi+1.0
-      fun = [0.25*xi*xim*eta*etam,-0.5*xi*xim*etap*etam,
+      fun[:] = [0.25*xi*xim*eta*etam,-0.5*xi*xim*etap*etam,
             0.25*xi*xim*eta*etap,-0.5*xip*xim*eta*etap,
             0.25*xi*xip*eta*etap,-0.5*xi*xip*etap*etam,
             0.25*xi*xip*eta*etam,-0.5*xip*xim*eta*etam,

@@ -39,7 +39,7 @@ function sample!(element::Tetrahedron, s::Matrix{Float64} , wt::Vector{Float64})
     s[8,1] = -root3
     s[8,2] = -root3
     s[8,3] = -root3
-    wt = ones(wt)
+    wt[:] = ones(wt)
   elseif nip == 14
     b = 0.795822426
     c = 0.758786911
@@ -90,7 +90,7 @@ function sample!(element::Tetrahedron, s::Matrix{Float64} , wt::Vector{Float64})
     s[13,2] = -c
     s[14,1] = -c
   elseif nip == 27
-    wt = [5.0/9.0*v; 8.0/9.0*v; 5.0/9.0*v]
+    wt[:] = [5.0/9.0*v; 8.0/9.0*v; 5.0/9.0*v]
     s[1:7:3,1] = -r15
     s[2:8:3,1] = 0.0
     s[3:9:3,1] = r15

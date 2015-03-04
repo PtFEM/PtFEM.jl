@@ -34,9 +34,9 @@ function mesh_size(fe::Triangle, nxe::Int64, nye::Int64)
     nn=(nxe+1)*(nye+1)
   elseif fe.nod==6
     nn=(2*nxe+1)*(2*nye+1)
-  elseif nod==10
+  elseif fe.nod==10
     nn=(3*nxe+1)*(3*nye+1)
-  elseif nod==15
+  elseif fe.nod==15
     nn=(4*nxe+1)*(4*nye+1)
   else
     println("Invalid number of nodes for Triangle element.")

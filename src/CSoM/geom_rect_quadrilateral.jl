@@ -8,7 +8,7 @@ function geom_rect!(element::Quadrilateral, iel::Int64, x_coords::Array{Float64,
     iq  = int(floor((iel-1)/nxe))+1
     ip = iel-(iq-1)*nxe
   else
-    ip = int((iel-1)/nye)+1
+    ip = int(floor((iel-1)/nye))+1
     iq = iel-(ip-1)*nye
   end
   if nod == 4
@@ -22,7 +22,7 @@ function geom_rect!(element::Quadrilateral, iel::Int64, x_coords::Array{Float64,
      num[2] = num[1]-1
      num[3] = ip*(nye+1)+iq
      num[4] = num[3]+1
-   end
+    end
     coord[1:2,1] = x_coords[ip]
     coord[3:4,1] = x_coords[ip+1]
     coord[1,2] = y_coords[iq+1]

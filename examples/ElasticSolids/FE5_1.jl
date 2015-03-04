@@ -1,4 +1,4 @@
-function FE4_7(data::Dict)
+function FE5_1(data::Dict)
   
   # Setup basic dimensions of arrays
   
@@ -120,12 +120,12 @@ function FE4_7(data::Dict)
   for iel in 1:nels
     geom_rect!(element, iel, x_coords, y_coords, coord, num, element_type.direction)
     num_to_g!(num, nf, g)
-    fkdiag!(kdiag, g)
     g_num[:, iel] = num
     g_coord[:, num] = coord'
     g_g[:, iel] = g
+    fkdiag!(kdiag, g)
   end
-  println()
+  
   for i in 2:neq
     kdiag[i] = kdiag[i] + kdiag[i-1]
   end
@@ -137,34 +137,29 @@ function FE4_7(data::Dict)
   
   sample!(element, points, weights)
   
-  d2x = zeros(neq)
-  d2y = zeros(neq)
-  d2xy = zeros(neq)
-  dtd = zeros(ndof, ndof)
-  @assert :thickness in keys(data)
-  aa = x_coords[2]-x_coords[1]
-  bb = y_coords[2]-y_coords[1]
-  
   for iel in 1:nels
-    e = prop[etype[iel], 1]
-    v = prop[etype[iel], 2]
-    d = e * data[:thickness]^3 / (12.0 * (1.0 - v * v))
+    deemat!(dee, prop[etype[iel], 1], prop[etype[iel], 2])
+    num = g_num[:, iel]
+    coord = g_coord[:, num]'              # Transpose
     g = g_g[:, iel]
-    km = zeros(km)
-    println()
+    km = zeros(ndof, ndof)
     for i in 1:element_type.nip
-      fmplat!(d2x, d2y, d2xy, points, aa, bb, i)
-      for k in 1:ndof
-        tmp = (d2x[k]*d2x[:]/aa^4 + d2y[k]*d2y[:]/bb^4 +
-        (v*d2x[k]*d2y[:]+v*d2x[:]*d2y[k] + 2.0*(1.0-v)*d2xy[k]*d2xy[:])/(aa^2*bb^2))
-        dtd[k, :] = 4.0aa*bb*d*weights[i]*tmp 
-        dtd[:, k] = dtd[k, :]
+      shape_fun!(fun, points, i)
+      shape_der!(der, points, i)
+      jac = der*coord
+      detm = det(jac)
+      jac = inv(jac)
+      deriv = jac*der
+      beemat!(bee, deriv)
+      if element_type.axisymmetric
+        gc = fun*coord
+        bee[4, 1:ndof-1:2] = fun[:]/gc[1]
       end
-      km = km + dtd
+      km += (bee')*dee*bee*detm*weights[i]*gc[1]
     end
     fsparv!(kv, km, g, kdiag)
   end
-  println()
+  
   loads = zeros(neq + 1)
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
@@ -186,25 +181,27 @@ function FE4_7(data::Dict)
       value[i] = data[:fixed_freedoms][i][3]
     end
     kv[kdiag[no]] = kv[kdiag[no]] + penalty
-    loads[no] = kv[kdiag[no]] * value
+    loads[no+1] = kv[kdiag[no]] .* value
   end
   
   sparin!(kv, kdiag)
   loads[2:end] = spabac!(kv, loads[2:end], kdiag)
+  loads[1] = 0.0
   nf1 = deepcopy(nf) + 1
   
-  println("\nNode       Disp            Rot-x         Rot-y           Twist-xy")
+  if element_type.axisymmetric
+    println("\nNode     r-disp          z-disp")
+  else
+    println("\nNode     x-disp          y-disp")
+  end
   
   tmp = []
   for i in 1:nn
     tmp = vcat(tmp, loads[nf1[:,i]])
-    Disp = @sprintf("%+.4e", loads[nf1[1,i]])
-    Rotx = @sprintf("%+.4e", loads[nf1[2,i]])
-    Roty = @sprintf("%+.4e", loads[nf1[3,i]])
-    Twistxy = @sprintf("%+.4e", loads[nf1[4,i]])
-    println("  $(i)    $(Disp)     $(Rotx)    $(Roty)     $(Twistxy)")
+    xstr = @sprintf("%+.4e", loads[nf1[1,i]])
+    ystr = @sprintf("%+.4e", loads[nf1[2,i]])
+    println("  $(i)    $(xstr)     $(ystr)")
   end
-  #println(round(reshape(float(tmp), 2, 9)', 15))
   
   element_type.nip = 1
   points = zeros(element_type.nip, ndim)
@@ -212,33 +209,44 @@ function FE4_7(data::Dict)
   sample!(element, points, weights)
   println("\nThe integration point (nip = $(element_type.nip)) stresses are:")
   if element_type.axisymmetric
-    println("\nElement     sig_r          sig_z            tau_rz            sig_t")
+    println("\nElement  r-coord   z-coord     sig_r        sig_z        tau_rz        sig_t")
   else
-    println("\nElement     sig_x          sig_y            tau_xy")
+    println("\nElement  x-coord   y-coord     sig_x        sig_y        tau_xy")
   end
-  bm = Vector{Float64}
   for iel in 1:nels
-    e = prop[etype[iel], 1]
-    v = prop[etype[iel], 2]
-    d = e * data[:thickness]^3 / (12.0 * (1.0 - v * v))
+    deemat!(dee, prop[etype[iel], 1], prop[etype[iel], 2])
+    num = g_num[:, iel]
+    coord = g_coord[:, num]'
     g = g_g[:, iel]
+    eld = loads[g+1]
     for i in 1:element_type.nip
-      fmplat!(d2x, d2y, d2xy, points, aa, bb, i)
-      bm = zeros(3)
-      for k in 1:ndof
-        bm[1] += 4.0*d*(d2x[k]/aa/aa + v*d2y[k]/bb/bb)*loads[g[k]+1]
-        bm[2] += 4.0*d*(v*d2x[k]/aa/aa + d2y[k]/bb/bb)*loads[g[k]+1]
-        bm[3] += 4.0*d*(1.0-v)*(d2xy[k]/aa/bb*loads[g[k]+1])
+      shape_fun!(fun, points, i)
+      shape_der!(der, points, i)
+      gc = fun'*coord
+      jac = inv(der*coord)
+      deriv = jac*der
+      beemat!(bee, deriv)
+      if element_type.axisymmetric
+        gc = fun'*coord
+        bee[4, 1:ndof-1:2] = fun[:]/gc[1]
       end
-      bm1 = @sprintf("%+.4e", bm[1])
-      bm2 = @sprintf("%+.4e", bm[2])
-      bm3 = @sprintf("%+.4e", bm[3])
-      println("   $(iel)     $(bm1)     $(bm2)      $(bm3)")
+      sigma = dee*(bee*eld)
+      gc1 = @sprintf("%+.4f", gc[1])
+      gc2 = @sprintf("%+.4f", gc[2])
+      s1 = @sprintf("%+.4e", sigma[1])
+      s2 = @sprintf("%+.4e", sigma[2])
+      s3 = @sprintf("%+.4e", sigma[3])
+      println("   $(iel)     $(gc1)   $(gc2)   $(s1)  $(s2)  $(s3)")
     end
   end
-  for iel in 1:nels
-  end
   println()
-  bm
+  
+  
+  FEM(element_type, element, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
+    etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
+    bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
+    g_coord, jac, km, mm, gm, kv, gv, loads, points, prop, sigma, value,
+    weights, x_coords, y_coords, z_coords, axial)
+  
 end
 
