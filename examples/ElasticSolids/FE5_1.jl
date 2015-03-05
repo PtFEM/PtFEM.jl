@@ -15,7 +15,7 @@ function FE5_1(data::Dict)
   nst = element_type.nst
   
   # Add radial stress
-  if ndim == 3 && element_type.axisymmetric
+  if element_type.axisymmetric
     nst = 4
   end
   
@@ -152,8 +152,8 @@ function FE5_1(data::Dict)
       deriv = jac*der
       beemat!(bee, deriv)
       if element_type.axisymmetric
-        gc = fun*coord
-        bee[4, 1:ndof-1:2] = fun[:]/gc[1]
+        gc = fun'*coord
+        bee[4, 1:2:(ndof-1)] = fun[:]/gc[1]
       end
       km += (bee')*dee*bee*detm*weights[i]*gc[1]
     end
@@ -228,7 +228,7 @@ function FE5_1(data::Dict)
       beemat!(bee, deriv)
       if element_type.axisymmetric
         gc = fun'*coord
-        bee[4, 1:ndof-1:2] = fun[:]/gc[1]
+        bee[4, 1:2:(ndof-1)] = fun[:]/gc[1]
       end
       sigma = dee*(bee*eld)
       gc1 = @sprintf("%+.4f", gc[1])

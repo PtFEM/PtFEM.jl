@@ -17,7 +17,7 @@ function deemat!(dee::Array{Float64, 2}, e::Float64, v::Float64)
     dee[1,1] = v1*c
     dee[2,2] = v1*c
     dee[4,4] = v1*c
-    dee[3,3] = pt5*c*(1.0-2v) 
+    dee[3,3] = 0.5*c*(1.0-2v) 
     dee[1,2] = v*c
     dee[2,1] = v*c
     dee[1,4] = v*c
