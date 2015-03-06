@@ -258,7 +258,6 @@ function FE5_2(data::Dict)
   end
   println()
   
-  
   FEM(element_type, element, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
     etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
     bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
