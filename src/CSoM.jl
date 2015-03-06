@@ -36,12 +36,14 @@ include(Pkg.dir("CSoM", "src", "CSoM", "pin_jointed.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "mesh_size.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "geom_rect_triangle.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "geom_rect_quadrilateral.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "hexahedron_xz.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "sample_hexahedron.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "sample_line.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "sample_quadrilateral.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "sample_tetrahedron.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "sample_triangle.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "deemat.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "beemat_nonaxi.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "beemat.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "shape_fun.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "shape_der.jl"))
@@ -72,6 +74,7 @@ export
   Beam,
   Rod,
   Frame,
+  Solid,
   
   Element,
   Line,
@@ -100,9 +103,11 @@ export
   shootingmethod,
   mesh_size,
   geom_rect!,
+  hexahedron_xz!,
   sample!,
   deemat!,
   beemat!,
+  beemat_nonaxi!,
   shape_fun!,
   shape_der!,
   rod_km!,

@@ -18,6 +18,8 @@ code_tests = [
   "test_p5.1.3.jl",
   "test_p5.1.4.jl",
   "test_p5.1.5.jl",
+  "test_p5.2.1.jl",
+  "test_p5.3.1.jl",
   "test_lufac.jl",
   "test_ldlt.jl",
   "test_ivp_ex7.3.jl",        # Four direct methods

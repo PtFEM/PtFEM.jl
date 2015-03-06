@@ -203,7 +203,7 @@ function shape_der!(der::Matrix{Float64}, points::Matrix{Float64}, i::Int64)
   elseif ndim == 3                                          # 3.0 dimensional elements
    xi=points[i, 1]
    eta=points[i, 2]
-   zeta=points(i,3)
+   zeta=points[i, 3]
    etam=1.0-eta 
    xim=1.0-xi
    zetam=1.0-zeta

@@ -72,3 +72,13 @@ type Plane <: ElementType
   axisymmetric::Bool              # Axisymmetric
 end
 
+type Solid <: ElementType
+  ndim::Int64                     # Number of dimensions (1,2 or 3)
+  nst::Int64                      # Number of stresses
+  nxe::Int64                      # Number of elements in x direction
+  nye::Int64                      # Number of elements in y direction
+  nze::Int64                      # Number of elements in y direction
+  nip::Int64                      # Number of integration points
+  element::Element                # Finite element type used
+end
+

@@ -39,7 +39,7 @@ function deemat!(dee::Array{Float64, 2}, e::Float64, v::Float64)
     dee[3,1] = v2
     dee[2,3] = v2
     dee[3,2] = v2
-    dee = dee*e/(2.0*(1.0+v)*vv)
+    dee[:, :] = dee*e/(2.0*(1.0+v)*vv)
   else
    println("wrong size for dee matrix")
   end

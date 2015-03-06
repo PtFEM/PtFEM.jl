@@ -4,7 +4,7 @@ function geom_rect!(element::Quadrilateral, iel::Int64, x_coords::Array{Float64,
   nxe = size(x_coords,1)-1
   nye = size(y_coords,1)-1
   nod = size(num, 1)
-  if dir == :x || dir == 'r'
+  if dir == :x || dir == :r
     iq  = int(floor((iel-1)/nxe))+1
     ip = iel-(iq-1)*nxe
   else
@@ -12,7 +12,7 @@ function geom_rect!(element::Quadrilateral, iel::Int64, x_coords::Array{Float64,
     iq = iel-(ip-1)*nye
   end
   if nod == 4
-    if dir == :x || dir == 'r'
+    if dir == :x || dir == :r
      num[1] = iq*(nxe+1)+ip		        		
      num[2] = (iq-1)*(nxe+1)+ip				
      num[3] = num[2]+1					
@@ -29,7 +29,7 @@ function geom_rect!(element::Quadrilateral, iel::Int64, x_coords::Array{Float64,
     coord[2:3,2] = y_coords[iq]
     coord[4,2] = coord[1,2]
   elseif nod == 5
-    if dir == :x || dir == 'r'
+    if dir == :x || dir == :r
      num[1] = iq*(2*nxe+1)+ip
      num[2] = (iq-1)*(2*nxe+1)+ip
      num[3] = num[2]+1
@@ -49,7 +49,7 @@ function geom_rect!(element::Quadrilateral, iel::Int64, x_coords::Array{Float64,
     coord[4,2] = coord[1,2]
     coord[5,:] = 0.25_iwp*(coord[1,:]+coord[2,:]+coord[3,:]+coord[4,:])
   elseif nod == 8
-    if dir == :x || dir == 'r'
+    if dir == :x || dir == :r
      num[1] = iq*(3*nxe+2)+2*ip-1                 
      num[2] = iq*(3*nxe+2)+ip-nxe-1		  
      num[3] = (iq-1)*(3*nxe+2)+2*ip-1		   
@@ -78,7 +78,7 @@ function geom_rect!(element::Quadrilateral, iel::Int64, x_coords::Array{Float64,
     coord[2,2] = 0.5*(coord[1,2]+coord[3,2])
     coord[6,2] = 0.5*(coord[5,2]+coord[7,2])
   elseif nod == 9
-    if dir == :x || dir == 'r'
+    if dir == :x || dir == :r
      num[1] = iq*(4*nxe+2)+2*ip-1
      num[2] = iq*(4*nxe+2)+2*ip-nxe-4
      num[3] =  (iq-1)*(4*nxe+2)+2*ip-1
