@@ -82,3 +82,13 @@ type Solid <: ElementType
   element::Element                # Finite element type used
 end
 
+type GenericSolid <: ElementType
+  ndim::Int64                     # Number of dimensions (1,2 or 3)
+  nst::Int64                      # Number of stresses
+  nels::Int64                     # Number of elements
+  nn::Int64                       # Number of nodes
+  nip::Int64                      # Number of integration points
+  element::Element                # Finite element type used
+  axisymmetric::Bool              # Axisymmetric
+end
+

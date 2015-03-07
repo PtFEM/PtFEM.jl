@@ -19,7 +19,7 @@ function fkdiag!(ndof::Int64, neq::Int64, g::Vector{Int64}, kdiag::Vector{Int64}
 end
 
 function fkdiag!(kdiag::Vector{Int64}, g::Vector{Int64})
-  idof=length(g)
+  idof = size(g, 1)
   for i in 1:idof
     imp1 = 1
     if g[i] !== 0

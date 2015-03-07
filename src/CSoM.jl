@@ -75,6 +75,7 @@ export
   Rod,
   Frame,
   Solid,
+  GenericSolid,
   
   Element,
   Line,

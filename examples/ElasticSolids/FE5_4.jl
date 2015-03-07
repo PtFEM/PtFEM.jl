@@ -1,4 +1,4 @@
-function FE5_3(data::Dict)
+function FE5_4(data::Dict)
   
   # Setup basic dimensions of arrays
   
@@ -6,6 +6,7 @@ function FE5_3(data::Dict)
   
   if :element_type in keys(data)
     element_type = data[:element_type]
+    @assert typeof(element_type) == GenericSolid
   else
     println("No element type specified.")
     return
@@ -13,21 +14,12 @@ function FE5_3(data::Dict)
   
   ndim = element_type.ndim
   nst = element_type.nst
+  nels = element_type.nels
+  nn = element_type.nn
   
   element = element_type.element
   @assert typeof(element) <: Element
   
-  if typeof(element) == Line
-    (nels, nn) = mesh_size(element, element_type.nxe)
-  elseif typeof(element) == Triangle || typeof(element) == Quadrilateral
-    (nels, nn) = mesh_size(element, element_type.nxe, element_type.nye)
-  elseif typeof(element) == Hexahedron
-    (nels, nn) = mesh_size(element, element_type.nxe, element_type.nye, element_type.nze)
-  else
-    println("$(typeof(element)) is not a known finite element.")
-    return
-  end
-     
   nodof = element.nodof           # Degrees of freedom per node
   ndof = element.nod * nodof      # Degrees of freedom per element
   
@@ -59,19 +51,16 @@ function FE5_3(data::Dict)
   end
   
   x_coords = zeros(nn)
-  if :x_coords in keys(data)
-    x_coords = data[:x_coords]
-  end
-  
   y_coords = zeros(nn)
-  if :y_coords in keys(data)
-    y_coords = data[:y_coords]
-  end
-  
   z_coords = zeros(nn)
-  if :z_coords in keys(data)
-    z_coords = data[:z_coords]
-  end
+  
+  g_coord = zeros(ndim,nn)
+  @assert :g_coord in keys(data)
+  g_coord = data[:g_coord]'
+  
+  g_num = zeros(Int64, element.nod, nels)
+  @assert :g_num in keys(data)
+  g_num = reshape(data[:g_num]', element.nod, nels)
 
   etype = ones(Int64, nels)
   if :etype in keys(data)
@@ -82,12 +71,10 @@ function FE5_3(data::Dict)
   
   points = zeros(element_type.nip, ndim)
   g = zeros(Int64, ndof)
-  g_coord = zeros(ndim,nn)
   fun = zeros(element.nod)
   coord = zeros(element.nod, ndim)
   gamma = zeros(nels)
   jac = zeros(ndim, ndim)
-  g_num = zeros(Int64, element.nod, nels)
   der = zeros(ndim, element.nod)
   deriv = zeros(ndim, element.nod)
   bee = zeros(nst,ndof)
@@ -110,13 +97,13 @@ function FE5_3(data::Dict)
   neq = maximum(nf)
   kdiag = zeros(Int64, neq)
   
-  # Find global array sizes
+  loads = zeros(Float64, neq+1)
+  gravlo = zeros(Float64, neq+1)
   
+  # Find global array sizes
   for iel in 1:nels
-    hexahedron_xz!(iel, x_coords, y_coords, z_coords, coord, num)
+    num = g_num[:, iel]
     num_to_g!(num, nf, g)
-    g_num[:, iel] = num
-    g_coord[:, num] = coord'
     g_g[:, iel] = g
     fkdiag!(kdiag, g)
   end
@@ -124,8 +111,6 @@ function FE5_3(data::Dict)
   for i in 2:neq
     kdiag[i] = kdiag[i] + kdiag[i-1]
   end
-  
-  kdiag |> display
   
   kv = zeros(kdiag[neq])
   gv = zeros(kdiag[neq])
@@ -140,6 +125,7 @@ function FE5_3(data::Dict)
     g = g_g[:, iel]
     km = zeros(ndof, ndof)
     for i in 1:element_type.nip
+      shape_fun!(fun, points, i)
       shape_der!(der, points, i)
       jac = der*coord
       detm = det(jac)
@@ -147,16 +133,18 @@ function FE5_3(data::Dict)
       deriv = jac*der
       beemat!(bee, deriv)
       km += (bee')*dee*bee*detm*weights[i]
+      eld[nodof:nodof:ndof] += fun[:]*detm*weights[i]
     end
     fsparv!(kv, km, g, kdiag)
+    gravlo[g+1] -= eld*prop[etype[iel], 3]
   end
   
-  loads = zeros(neq + 1)
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
       loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
     end
   end
+  loads += gravlo
   
   fixed_freedoms = 0
   if :fixed_freedoms in keys(data)
@@ -180,23 +168,29 @@ function FE5_3(data::Dict)
   loads[1] = 0.0
   nf1 = deepcopy(nf) + 1
   
-  println("\nNode     x-disp          y-disp          z-disp")
+  if ndim == 3
+    println("\nNode     x-disp          y-disp          z-disp")
+  else
+    println("\nNode     x-disp          y-disp")
+  end
   
   tmp = []
   for i in 1:nn
     xstr = @sprintf("%+.4e", loads[nf1[1,i]])
     ystr = @sprintf("%+.4e", loads[nf1[2,i]])
-    zstr = @sprintf("%+.4e", loads[nf1[3,i]])
-    println("  $(i)    $(xstr)     $(ystr)     $(zstr)")
+    if ndim == 3
+      zstr = @sprintf("%+.4e", loads[nf1[3,i]])
+      println("  $(i)    $(xstr)     $(ystr)     $(zstr)")
+    else
+      println("  $(i)    $(xstr)     $(ystr)")
+    end
   end
   
-  element_type.nip = 1
-  points = zeros(element_type.nip, ndim)
-  weights = zeros(element_type.nip)
-  sample!(element, points, weights)
   println("\nThe integration point (nip = $(element_type.nip)) stresses are:")
   println("\nElement  x-coord   y-coord      sig_x        sig_y        sig_z")
-  println("                                tau_xy       tau_yz       tau_zx")
+  if ndim == 3
+    println("                                tau_xy       tau_yz       tau_zx")
+  end
   for iel in 1:nels
     deemat!(dee, prop[etype[iel], 1], prop[etype[iel], 2])
     num = g_num[:, iel]
@@ -216,11 +210,15 @@ function FE5_3(data::Dict)
       s1 = @sprintf("%+.4e", sigma[1])
       s2 = @sprintf("%+.4e", sigma[2])
       s3 = @sprintf("%+.4e", sigma[3])
-      s4 = @sprintf("%+.4e", sigma[4])
-      s5 = @sprintf("%+.4e", sigma[5])
-      s6 = @sprintf("%+.4e", sigma[6])
+      if ndim == 3
+        s4 = @sprintf("%+.4e", sigma[4])
+        s5 = @sprintf("%+.4e", sigma[5])
+        s6 = @sprintf("%+.4e", sigma[6])
+      end
       println("   $(iel)     $(gc1)   $(gc2)   $(s1)  $(s2)  $(s3)")
-      println("                             $(s4)  $(s5)  $(s6)")
+      if ndim == 3
+        println("                             $(s4)  $(s5)  $(s6)")
+      end
     end
   end
   println()
