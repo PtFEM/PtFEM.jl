@@ -187,9 +187,11 @@ function FE5_4(data::Dict)
   end
   
   println("\nThe integration point (nip = $(element_type.nip)) stresses are:")
-  println("\nElement  x-coord   y-coord      sig_x        sig_y        sig_z")
   if ndim == 3
-    println("                                tau_xy       tau_yz       tau_zx")
+    println("\nElement  x-coord   y-coord   y-coord      sig_x        sig_y        sig_z")
+    println("                                          tau_xy       tau_yz       tau_zx")
+  else
+    println("\nElement  x-coord   y-coord      sig_x        sig_y        tau_xy")
   end
   for iel in 1:nels
     deemat!(dee, prop[etype[iel], 1], prop[etype[iel], 2])
@@ -198,8 +200,8 @@ function FE5_4(data::Dict)
     g = g_g[:, iel]
     eld = loads[g+1]
     for i in 1:element_type.nip
-      shape_fun!(fun, points, i)
       shape_der!(der, points, i)
+      shape_fun!(fun, points, i)
       gc = fun'*coord
       jac = inv(der*coord)
       deriv = jac*der
@@ -211,22 +213,27 @@ function FE5_4(data::Dict)
       s2 = @sprintf("%+.4e", sigma[2])
       s3 = @sprintf("%+.4e", sigma[3])
       if ndim == 3
+        gc3 = @sprintf("%+.4f", gc[3])
         s4 = @sprintf("%+.4e", sigma[4])
         s5 = @sprintf("%+.4e", sigma[5])
         s6 = @sprintf("%+.4e", sigma[6])
       end
-      println("   $(iel)     $(gc1)   $(gc2)   $(s1)  $(s2)  $(s3)")
       if ndim == 3
-        println("                             $(s4)  $(s5)  $(s6)")
+        println("   $(iel)     $(gc1)   $(gc2)   $(gc3)   $(s1)  $(s2)  $(s3)")
+        println("                                       $(s4)  $(s5)  $(s6)")
+      else
+        println("   $(iel)     $(gc1)   $(gc2)   $(s1)  $(s2)  $(s3)")
       end
     end
   end
   println()
+  
   
   FEM(element_type, element, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
     etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
     bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
     g_coord, jac, km, mm, gm, kv, gv, loads, points, prop, sigma, value,
     weights, x_coords, y_coords, z_coords, axial)
-  end
+  
+end
 

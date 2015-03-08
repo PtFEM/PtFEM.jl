@@ -12,7 +12,9 @@ function sample!(element::Tetrahedron, s::Matrix{Float64} , wt::Vector{Float64})
   const v = [5.0/9.0*w; 8.0/9.0*w; 5.0/9.0*w]
  
   if nip == 1
-    s[1,1:3] = 0.25
+    s[1,1] = 0.25
+    s[1,2] = 0.25
+    s[1,3] = 0.25
     wt[1] = 1//6
   elseif nip == 4
     s[1,1] = 0.58541020
@@ -45,6 +47,7 @@ function sample!(element::Tetrahedron, s::Matrix{Float64} , wt::Vector{Float64})
     wt[1] = -0.8/6.0
     wt[2] = 9 // 120
     wt[3:5] = wt[2]
+    wt[:] = wt[:]/6.0
   else
     println("Wrong number of integrating points for a tetrahedron.")
   end
