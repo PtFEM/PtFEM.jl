@@ -28,9 +28,24 @@ data = @compat Dict(
     (14, [0.0 0.0 -0.1667]), (15, [0.0 0.0 -0.1667]), (20, [0.0 0.0 0.0417]),
     (21, [0.0 0.0 -0.1667]), (22, [0.0 0.0  0.0417])
     ],
-  :cg_tol => 1.0e-5,
+  :cg_tol => 1.0e-6,
   :cg_limit => 200
 )
 
-@time FE5_6(data)
+function test_FE5_6(data::Dict, N::Int64)
+  for i in 1:N
+    m = FE5_6(data, true)
+  end
+end
+
+@time m = FE5_6(data, true)
+
+#=
+Profile.clear()  # in case we have any previous profiling data
+@profile test_FE5_6(data, 10)
+using ProfileView
+ProfileView.view()
+=#
+
+@time m = FE5_6(data)
 println()

@@ -259,7 +259,7 @@ function FE4_5(data::Dict)
       loads += bdylds
       bdylds = zeros(neq+1)
       loads[2:end] = spabac!(kv, loads[2:end], kdiag)
-      (oldlds, converged) = checon!(loads, oldlds, tol, converged)
+      converged = checon!(loads, oldlds, tol, converged)
       for iel in 1:nels
         num = g_num[:, iel]
         coord = g_coord[:, num]'

@@ -1,21 +1,21 @@
-function FE5_6(data::Dict)
+function FE5_6(data::Dict, profiling::Bool=false)
   
   # Setup basic dimensions of arrays
   
   # Parse & check FEdict data
   
   if :element_type in keys(data)
-    element_type = data[:element_type]
+    element_type = deepcopy(data[:element_type])
     @assert typeof(element_type) <: ElementType
   else
     println("No element type specified.")
     return
   end
   
-  ndim = element_type.ndim
-  nst = element_type.nst
+  ndim = copy(element_type.ndim)
+  nst = copy(element_type.nst)
   
-  element = element_type.element
+  element = deepcopy(element_type.element)
   @assert typeof(element) <: Element
   
   if typeof(element) == Line
@@ -29,14 +29,14 @@ function FE5_6(data::Dict)
     return
   end
      
-  nodof = element.nodof           # Degrees of freedom per node
+  nodof = copy(element.nodof)           # Degrees of freedom per node
   ndof = element.nod * nodof      # Degrees of freedom per element
   
   # Update penalty if specified in FEdict
   
   penalty = 1e20
   if :penalty in keys(data)
-    penalty = data[:penalty]
+    penalty = copy(data[:penalty])
   end
   
   # Allocate all arrays
@@ -46,7 +46,7 @@ function FE5_6(data::Dict)
   if :properties in keys(data)
     prop = zeros(size(data[:properties], 1), size(data[:properties], 2))
     for i in 1:size(data[:properties], 1)
-      prop[i, :] = data[:properties][i, :]
+      prop[i, :] = deepcopy(data[:properties][i, :])
     end
   else
     println("No :properties key found in FEdict")
@@ -55,43 +55,43 @@ function FE5_6(data::Dict)
   nf = ones(Int64, nodof, nn)
   if :support in keys(data)
     for i in 1:size(data[:support], 1)
-      nf[:, data[:support][i][1]] = data[:support][i][2]
+      nf[:, data[:support][i][1]] = deepcopy(data[:support][i][2])
     end
   end
   
   x_coords = zeros(nn)
   if :x_coords in keys(data)
-    x_coords = data[:x_coords]
+    x_coords = deepcopy(data[:x_coords])
   end
   
   y_coords = zeros(nn)
   if :y_coords in keys(data)
-    y_coords = data[:y_coords]
+    y_coords = deepcopy(data[:y_coords])
   end
   
   z_coords = zeros(nn)
   if :z_coords in keys(data)
-    z_coords = data[:z_coords]
+    z_coords = deepcopy(data[:z_coords])
   end
 
   etype = ones(Int64, nels)
   if :etype in keys(data)
-    etype = data[:etype]
+    etype = deepcopy(data[:etype])
   end
   
   g_coord = zeros(ndim,nn)
   if :g_coord in keys(data)
-    g_coord = data[:g_coord]'
+    g_coord = deepcopy(data[:g_coord]')
   end
   
   g_num = zeros(Int64, element.nod, nels)
   if :g_num in keys(data)
-    g_num = reshape(data[:g_num]', element.nod, nels)
+    g_num = reshape(deepcopy(data[:g_num]'), element.nod, nels)
   end
   
   etype = ones(Int64, nels)
   if :etype in keys(data)
-    etype = data[:etype]
+    etype = deepcopy(data[:etype])
   end
   
   # All other arrays
@@ -138,13 +138,13 @@ function FE5_6(data::Dict)
   d = zeros(neq+1)
   
   if :cg_tol in keys(data)
-    cg_tol = data[:cg_tol]
+    cg_tol = copy(data[:cg_tol])
   else
     cg_tol = 1.0e-5
   end
   
   if :cg_limit in keys(data)
-    cg_limit = data[:cg_limit]
+    cg_limit = copy(data[:cg_limit])
   else
     cg_limit = 200
   end
@@ -178,17 +178,16 @@ function FE5_6(data::Dict)
       jac = inv(jac)
       deriv = jac*der
       beemat!(bee, deriv)
-      km[:,:] += (bee')*dee*bee*detm*weights[i]
+      storkm[:,:,iel] += (bee')*dee*bee*detm*weights[i]
     end
-    storkm[:,:,iel] = km
     for k in 1:ndof
-      diag_precon[g[k]+1] += km[k, k]
+      diag_precon[g[k]+1] += storkm[k,k,iel]
     end
   end
   
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
-      loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
+      loads[nf[:, data[:loaded_nodes][i][1]]+1] = deepcopy(data[:loaded_nodes][i][2])
     end
   end
   
@@ -202,8 +201,8 @@ function FE5_6(data::Dict)
   value = zeros(Float64, fixed_freedoms)
   if :fixed_freedoms in keys(data) && fixed_freedoms > 0
     for i in 1:fixed_freedoms
-      no[i] = nf[data[:fixed_freedoms][i][2], data[:fixed_freedoms][i][1]]
-      value[i] = data[:fixed_freedoms][i][3]
+      no[i] = nf[deepcopy(data[:fixed_freedoms][i][2]), deepcopy(data[:fixed_freedoms][i][1])]
+      value[i] = deepcopy(data[:fixed_freedoms][i][3])
     end
     diag_precon[no+1] += penalty
     loads[no+1] = diag_precon[no+1] .* value
@@ -212,23 +211,22 @@ function FE5_6(data::Dict)
 
   #mesh_ensi(...)
   
-  diag_precon[2:end] = 1.0 ./ diag_precon[2:end]
+  diag_precon = 1.0 ./ diag_precon
   diag_precon[1] = 0.0
   d = diag_precon .* loads
-  p = copy(d)
+  p = deepcopy(d)
   x = zeros(neq+1)
-  
-  #diag_precon |> display
-  #println()
+  xnew = zeros(neq+1)
   
   cg_iters = 0
   while true
     cg_iters += 1
+    !profiling && print(".")
     u = zeros(neq+1)
     for iel in 1:nels
-      g = g_g[:, iel]
-      km[:,:] = storkm[:, :, iel]
-      u[g+1] += km*p[g+1]
+      g[:] = g_g[:, iel]
+      #km[:,:] = storkm[:, :, iel]
+      u[g+1] += storkm[:, :, iel]*p[g+1]
     end
     if fixed_freedoms !== 0
       u[no+1] = p[no+1]*store
@@ -241,38 +239,45 @@ function FE5_6(data::Dict)
     beta = dot(loads, d)/up
     #@show [cg_iters beta] 
     p = d + p*beta
-    (x, cg_converged) = checon!(xnew, x, cg_tol, cg_converged)
+    cg_converged = checon!(xnew, x, cg_tol, cg_converged)
     if cg_converged || cg_iters >= cg_limit
       break
     end
   end
+  println()
   
-  loads[:] = xnew
+  loads = xnew
   loads[1] = 0.0
   
+  
   println("Number of cg iterations to convergence was $(cg_iters).")
-  println("\nNode     x-disp          y-disp          z-disp")
+  if !profiling
+    println("\nNode     x-disp          y-disp          z-disp")
   
-  nf1 = deepcopy(nf) + 1
+    nf1 = deepcopy(nf) + 1
   
-  tmp = []
-  for i in 1:nn
-    xstr = @sprintf("%+.4e", loads[nf1[1,i]])
-    ystr = @sprintf("%+.4e", loads[nf1[2,i]])
-    zstr = @sprintf("%+.4e", loads[nf1[3,i]])
-    println("  $(i)    $(xstr)     $(ystr)     $(zstr)")
+    tmp = []
+    for i in 1:nn
+      xstr = @sprintf("%+.4e", loads[nf1[1,i]])
+      ystr = @sprintf("%+.4e", loads[nf1[2,i]])
+      zstr = @sprintf("%+.4e", loads[nf1[3,i]])
+      println("  $(i)    $(xstr)     $(ystr)     $(zstr)")
+    end
+  
+    #dismsh_ensi()
   end
-  
-  #dismsh_ensi()
   
   element_type.nip = 1
   points = zeros(element_type.nip, ndim)
   weights = zeros(element_type.nip)
   sample!(element, points, weights)
   
-  println("\nThe integration point (nip = $(element_type.nip)) stresses are:")
-  println("\nElement  x-coord   y-coord      z_coord      sig_x        sig_y        sig_z")
-  println("                                             tau_xy       tau_yz       tau_zx")
+  if !profiling
+    println("\nThe integration point (nip = $(element_type.nip)) stresses are:")
+    println("\nElement  x-coord   y-coord      z_coord      sig_x        sig_y        sig_z")
+    println("                                             tau_xy       tau_yz       tau_zx")
+  end
+  
   for iel in 1:nels
     deemat!(dee, prop[etype[iel], 1], prop[etype[iel], 2])
     num = g_num[:, iel]
@@ -287,17 +292,19 @@ function FE5_6(data::Dict)
       deriv = jac*der
       beemat!(bee, deriv)
       sigma = dee*(bee*eld)
-      gc1 = @sprintf("%+.4f", gc[1])
-      gc2 = @sprintf("%+.4f", gc[2])
-      gc3 = @sprintf("%+.4f", gc[3])
-      s1 = @sprintf("%+.4e", sigma[1])
-      s2 = @sprintf("%+.4e", sigma[2])
-      s3 = @sprintf("%+.4e", sigma[3])
-      s4 = @sprintf("%+.4e", sigma[4])
-      s5 = @sprintf("%+.4e", sigma[5])
-      s6 = @sprintf("%+.4e", sigma[6])
-      println("   $(iel)     $(gc1)  $(gc2)          $(gc[3])   $(s1)  $(s2)  $(s3)")
-      println("                                          $(s4)  $(s5)  $(s6)")
+      if !profiling
+        gc1 = @sprintf("%+.4f", gc[1])
+        gc2 = @sprintf("%+.4f", gc[2])
+        gc3 = @sprintf("%+.4f", gc[3])
+        s1 = @sprintf("%+.4e", sigma[1])
+        s2 = @sprintf("%+.4e", sigma[2])
+        s3 = @sprintf("%+.4e", sigma[3])
+        s4 = @sprintf("%+.4e", sigma[4])
+        s5 = @sprintf("%+.4e", sigma[5])
+        s6 = @sprintf("%+.4e", sigma[6])
+        println("   $(iel)     $(gc1)  $(gc2)          $(gc[3])   $(s1)  $(s2)  $(s3)")
+        println("                                          $(s4)  $(s5)  $(s6)")
+      end
     end
   end
   println()

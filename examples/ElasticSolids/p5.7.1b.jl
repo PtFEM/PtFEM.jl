@@ -1,6 +1,6 @@
 using Compat, CSoM
 
-include("FE5_6.jl")
+include("FE5_3.jl")
 
 nf_path = Pkg.dir("CSoM", "examples", "ElasticSolids", "p5.7.1.nf.dat")
 loads_path = Pkg.dir("CSoM", "examples", "ElasticSolids", "p5.7.1.loads.dat")
@@ -33,21 +33,10 @@ data = @compat Dict(
    -1.8000, -1.8500, -1.9000, -1.9500, -2.0000
   ],
   :support => CSoM.read_nf_file(nf_path),
-  :loaded_nodes => CSoM.read_loads_file(loads_path),
-  :cg_tol => 1.0e-5,
-  :cg_limit => 2000
+  :loaded_nodes => CSoM.read_loads_file(loads_path)
 )
 
-function test_FE5_6(data::Dict, N::Int64)
-  for i in 1:N
-    m = FE5_6(data)
-  end
-end
+@time m = FE5_3(data)
 
-@time m = FE5_6(data, true)
-
-Profile.clear()  # in case we have any previous profiling data
-@profile FE5_6(data, true)
-using ProfileView
-ProfileView.view()
+@time m = FE5_3(data)
 println()

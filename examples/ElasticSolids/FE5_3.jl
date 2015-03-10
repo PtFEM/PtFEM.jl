@@ -125,7 +125,7 @@ function FE5_3(data::Dict)
     kdiag[i] = kdiag[i] + kdiag[i-1]
   end
   
-  kdiag |> display
+  #kdiag |> display
   
   kv = zeros(kdiag[neq])
   gv = zeros(kdiag[neq])

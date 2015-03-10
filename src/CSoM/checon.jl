@@ -6,6 +6,6 @@ function checon!(loads::Vector{Float64}, oldlds::Vector{Float64}, tol::Float64, 
   # Updates converged and oldlds
  converged = true
  converged = (maximum(abs(loads-oldlds))/maximum(abs(loads)) <= tol)
- oldlds = loads
- (oldlds, converged)
+ oldlds[:] = loads
+ converged
 end
