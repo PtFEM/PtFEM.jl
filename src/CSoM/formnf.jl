@@ -8,5 +8,4 @@ function formnf!(nodof::Int64, nn::Int64, nf::Matrix{Int64})
       end
     end
   end
-  #int(nf)
 end
