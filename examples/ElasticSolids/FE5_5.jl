@@ -1,4 +1,4 @@
-function FE5_4(data::Dict)
+function FE5_5(data::Dict)
   
   # Setup basic dimensions of arrays
   
@@ -6,7 +6,7 @@ function FE5_4(data::Dict)
   
   if :element_type in keys(data)
     element_type = data[:element_type]
-    @assert typeof(element_type) == GenericSolid
+    @assert typeof(element_type) <: ElementType
   else
     println("No element type specified.")
     return
@@ -14,12 +14,25 @@ function FE5_4(data::Dict)
   
   ndim = element_type.ndim
   nst = element_type.nst
-  nels = element_type.nels
-  nn = element_type.nn
+  
+  if element_type.axisymmetric
+    nst = 4
+  end
   
   element = element_type.element
   @assert typeof(element) <: Element
   
+  if typeof(element) == Line
+    (nels, nn) = mesh_size(element, element_type.nxe)
+  elseif typeof(element) == Triangle || typeof(element) == Quadrilateral
+    (nels, nn) = mesh_size(element, element_type.nxe, element_type.nye)
+  elseif typeof(element) == Hexahedron
+    (nels, nn) = mesh_size(element, element_type.nxe, element_type.nye, element_type.nze)
+  else
+    println("$(typeof(element)) is not a known finite element.")
+    return
+  end
+     
   nodof = element.nodof           # Degrees of freedom per node
   ndof = element.nod * nodof      # Degrees of freedom per element
   
@@ -51,16 +64,29 @@ function FE5_4(data::Dict)
   end
   
   x_coords = zeros(nn)
-  y_coords = zeros(nn)
-  z_coords = zeros(nn)
+  if :x_coords in keys(data)
+    x_coords = data[:x_coords]
+  end
   
+  y_coords = zeros(nn)
+  if :y_coords in keys(data)
+    y_coords = data[:y_coords]
+  end
+  
+  z_coords = zeros(nn)
+  if :z_coords in keys(data)
+    z_coords = data[:z_coords]
+  end
+
   g_coord = zeros(ndim,nn)
-  @assert :g_coord in keys(data)
-  g_coord = data[:g_coord]'
+  if :g_coord in keys(data)
+    g_coord = data[:g_coord]'
+  end
   
   g_num = zeros(Int64, element.nod, nels)
-  @assert :g_num in keys(data)
-  g_num = reshape(data[:g_num]', element.nod, nels)
+  if :g_num in keys(data)
+    g_num = reshape(data[:g_num]', element.nod, nels)
+  end
 
   etype = ones(Int64, nels)
   if :etype in keys(data)
@@ -102,8 +128,10 @@ function FE5_4(data::Dict)
   
   # Find global array sizes
   for iel in 1:nels
-    num = g_num[:, iel]
+    geom_rect!(element, iel, x_coords, y_coords, coord, num, element_type.direction)
     num_to_g!(num, nf, g)
+    g_num[:, iel] = num
+    g_coord[:, num] = coord'
     g_g[:, iel] = g
     fkdiag!(kdiag, g)
   end
@@ -117,12 +145,24 @@ function FE5_4(data::Dict)
 
   println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
   
+  teps = zeros(nst)
+  tload = zeros(neq+1)
+  dtemp = zeros(nn)
+  dtel = zeros(element.nod)
+  epsi = zeros(nst)
+  
+  if :dtemp in keys(data)
+    dtemp = data[:dtemp]
+  end
+  
   sample!(element, points, weights)
   for iel in 1:nels
     deemat!(dee, prop[etype[iel], 1], prop[etype[iel], 2])
     num = g_num[:, iel]
     coord = g_coord[:, num]'              # Transpose
     g = g_g[:, iel]
+    dtel = dtemp[num]
+    etl = zeros(ndof)
     km = zeros(ndof, ndof)
     for i in 1:element_type.nip
       shape_fun!(fun, points, i)
@@ -132,19 +172,43 @@ function FE5_4(data::Dict)
       jac = inv(jac)
       deriv = jac*der
       beemat!(bee, deriv)
-      km += (bee')*dee*bee*detm*weights[i]
-      eld[nodof:nodof:ndof] += fun[:]*detm*weights[i]
+      if element_type.axisymmetric
+        gc = fun * coord
+        bee[4, 1:2:(ndof-1)] = fun[:]/gc[1]
+      end
+      km += (bee')*dee*bee*detm*weights[i]*gc[1]
+      gtemp = dot(fun, dtel)
+      teps[1:2] = gtemp*prop[etype[iel], 3:4]
+      etl += (bee')*dee*teps*detm*weights[i]*gc[1]
     end
+    tload[g+1] += etl
     fsparv!(kv, km, g, kdiag)
-    gravlo[g+1] -= eld*prop[etype[iel], 3]
   end
   
+  nspr = 0
+  if :nspr in keys(data)
+    nspr = size(data[:nspr], 1)
+  end
+  sno = zeros(Int64, nspr)
+  spno = zeros(Int64, nspr)
+  spse = zeros(Int64, nspr)
+  spva = zeros(Float64, nspr)
+  if :nspr in keys(data) && nspr > 0
+    for i in 1:nspr
+      spno[i] = data[:nspr][i][1]
+      spse[i] = data[:nspr][i][2]
+      spva[i] = data[:nspr][i][3]
+      sno[i] = nf[spse[i], spno[i]]
+    end
+    kv[kdiag[sno]] += spva
+  end
+
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
       loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
     end
   end
-  loads += gravlo
+  loads += loads + tload
   
   fixed_freedoms = 0
   if :fixed_freedoms in keys(data)
@@ -165,31 +229,31 @@ function FE5_4(data::Dict)
 
   sparin!(kv, kdiag)
   loads[2:end] = spabac!(kv, loads[2:end], kdiag)
+  
   loads[1] = 0.0
   nf1 = deepcopy(nf) + 1
   
-  if ndim == 3
-    println("\nNode     x-disp          y-disp          z-disp")
+  if element_type.axisymmetric
+    println("\nNode     r-disp          z-disp")
   else
     println("\nNode     x-disp          y-disp")
   end
   
-  tmp = []
   for i in 1:nn
     xstr = @sprintf("%+.4e", loads[nf1[1,i]])
     ystr = @sprintf("%+.4e", loads[nf1[2,i]])
-    if ndim == 3
-      zstr = @sprintf("%+.4e", loads[nf1[3,i]])
-      println("  $(i)    $(xstr)     $(ystr)     $(zstr)")
-    else
-      println("  $(i)    $(xstr)     $(ystr)")
-    end
+    println("  $(i)    $(xstr)     $(ystr)")
   end
   
+  element_type.nip = 1
+  points = zeros(element_type.nip, ndim)
+  weights = zeros(element_type.nip)
+  sample!(element, points, weights)
   println("\nThe integration point (nip = $(element_type.nip)) stresses are:")
-  println("\nElement  x-coord   y-coord      sig_x        sig_y        sig_z")
-  if ndim == 3
-    println("                                tau_xy       tau_yz       tau_zx")
+  if element_type.axisymmetric
+    println("\nElement  r-coord   s-coord      sig_r        sig_z        tau_rz       sig_t")
+  else
+    println("\nElement  x-coord   y-coord      sig_x        sig_y        tau_xy")
   end
   for iel in 1:nels
     deemat!(dee, prop[etype[iel], 1], prop[etype[iel], 2])
@@ -197,6 +261,7 @@ function FE5_4(data::Dict)
     coord = g_coord[:, num]'
     g = g_g[:, iel]
     eld = loads[g+1]
+    dtel = dtemp[num]
     for i in 1:element_type.nip
       shape_fun!(fun, points, i)
       shape_der!(der, points, i)
@@ -204,20 +269,26 @@ function FE5_4(data::Dict)
       jac = inv(der*coord)
       deriv = jac*der
       beemat!(bee, deriv)
-      sigma = dee*(bee*eld)
+      if element_type.axisymmetric
+        gc = fun * coord
+        bee[4, 1:2:(ndof-1)] = fun[:]/gc[1]
+      end
+      gtemp = dot(fun, dtel)
+      teps[1:2] = gtemp*prop[etype[iel], 3:4]
+      epsi = bee*eld - teps
+      sigma = dee*epsi
       gc1 = @sprintf("%+.4f", gc[1])
       gc2 = @sprintf("%+.4f", gc[2])
       s1 = @sprintf("%+.4e", sigma[1])
       s2 = @sprintf("%+.4e", sigma[2])
       s3 = @sprintf("%+.4e", sigma[3])
-      if ndim == 3
+      if element_type.axisymmetric
         s4 = @sprintf("%+.4e", sigma[4])
-        s5 = @sprintf("%+.4e", sigma[5])
-        s6 = @sprintf("%+.4e", sigma[6])
       end
-      println("   $(iel)     $(gc1)   $(gc2)   $(s1)  $(s2)  $(s3)")
-      if ndim == 3
-        println("                             $(s4)  $(s5)  $(s6)")
+      if element_type.axisymmetric
+        println("   $(iel)     $(gc1)   $(gc2)   $(s1)  $(s2)  $(s3) $(s4)")
+      else
+        println("   $(iel)     $(gc1)   $(gc2)   $(s1)  $(s2)  $(s3)")
       end
     end
   end

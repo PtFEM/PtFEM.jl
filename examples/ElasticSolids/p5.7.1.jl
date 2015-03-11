@@ -38,16 +38,5 @@ data = @compat Dict(
   :cg_limit => 2000
 )
 
-function test_FE5_6(data::Dict, N::Int64)
-  for i in 1:N
-    m = FE5_6(data)
-  end
-end
-
-@time m = FE5_6(data, true)
-
-Profile.clear()  # in case we have any previous profiling data
-@profile FE5_6(data, true)
-using ProfileView
-ProfileView.view()
+@time m = FE5_6(data)
 println()

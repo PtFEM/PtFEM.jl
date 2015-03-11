@@ -40,12 +40,10 @@ end
 
 @time m = FE5_6(data, true)
 
-#=
 Profile.clear()  # in case we have any previous profiling data
-@profile test_FE5_6(data, 10)
+@profile test_FE5_6(data, 20)
 using ProfileView
 ProfileView.view()
-=#
 
 @time m = FE5_6(data)
 println()

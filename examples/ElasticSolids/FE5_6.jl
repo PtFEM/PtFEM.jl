@@ -218,6 +218,7 @@ function FE5_6(data::Dict, profiling::Bool=false)
   x = zeros(neq+1)
   xnew = zeros(neq+1)
   
+  profiling && println("Start of CG loop.")
   cg_iters = 0
   while true
     cg_iters += 1
