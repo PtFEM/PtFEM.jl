@@ -28,11 +28,11 @@ function geom_rect!(element::Triangle, iel::Int64, x_coords::Array{Float64, 1},
         num[3] = num[1] + 1
       end
       coord[1, 1] = x_coords[ip]
-      coord[1, 2] = y_coords[int((iq + 1) / 2)]
+      coord[1, 2] = y_coords[round(Int64, (iq + 1) / 2)]
       coord[2, 1] = x_coords[ip + 1]
-      coord[2, 2] = y_coords[int((iq + 1) / 2)]
+      coord[2, 2] = y_coords[round(Int64, (iq + 1) / 2)]
       coord[3, 1] = x_coords[ip]
-      coord[3, 2] = y_coords[int((iq + 3) / 2)]
+      coord[3, 2] = y_coords[round(Int64, (iq + 3) / 2)]
     else
       if dir == :x || dir == :r
         num[1] = (nxe + 1) * round(Int64, iq / 2) + ip + 1
@@ -44,11 +44,11 @@ function geom_rect!(element::Triangle, iel::Int64, x_coords::Array{Float64, 1},
         num[3] = num[1] - 1
       end
       coord[1, 1] = x_coords[ip+ 1]
-      coord[1, 2] = y_coords[int((iq + 2) / 2)]
+      coord[1, 2] = y_coords[round(Int64, (iq + 2) / 2)]
       coord[2, 1] = x_coords[ip]
-      coord[2, 2] = y_coords[int((iq + 2) / 2)]
+      coord[2, 2] = y_coords[round(Int64, (iq + 2) / 2)]
       coord[3, 1] = x_coords[ip + 1]
-      coord[3, 2] = y_coords[int(iq / 2)]
+      coord[3, 2] = y_coords[round(Int64, iq / 2)]
     end      
   elseif nod == 6
     if mod(iq, 2) !== 0

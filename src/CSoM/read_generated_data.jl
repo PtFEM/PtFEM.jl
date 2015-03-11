@@ -52,7 +52,7 @@ function read_loads_file(f::String)
     sl = format_loads_line!(l, t)
     for k in 1:length(sl)/4
       ind = (k-1)*4
-      append!(t, [(int(sl[ind+1]), [sl[ind+2] sl[ind+3] sl[ind+4]])])
+      append!(t, [(round(Int64, sl[ind+1]), [sl[ind+2] sl[ind+3] sl[ind+4]])])
     end
   end
   close(f)
