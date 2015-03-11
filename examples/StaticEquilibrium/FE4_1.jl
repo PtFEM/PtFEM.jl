@@ -113,7 +113,7 @@ function FE4_1(data::Dict)
   
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
-  kdiag = int(zeros(neq))
+  kdiag = round(Int64, zeros(neq))
   @show nf
   
   # Set global numbering, coordinates and array sizes

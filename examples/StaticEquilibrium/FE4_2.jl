@@ -116,7 +116,7 @@ function FE4_2(data::Dict)
     
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
-  kdiag = int(zeros(neq))
+  kdiag = round(Int64, zeros(neq))
   
   for i in 1:nels
     num = g_num[:, i]

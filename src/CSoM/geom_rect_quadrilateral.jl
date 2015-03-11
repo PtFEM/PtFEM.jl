@@ -5,10 +5,10 @@ function geom_rect!(element::Quadrilateral, iel::Int64, x_coords::Array{Float64,
   nye = size(y_coords,1)-1
   nod = size(num, 1)
   if dir == :x || dir == :r
-    iq  = int(floor((iel-1)/nxe))+1
+    iq  = round(Int64, floor((iel-1)/nxe))+1
     ip = iel-(iq-1)*nxe
   else
-    ip = int(floor((iel-1)/nye))+1
+    ip = round(Int64, floor((iel-1)/nye))+1
     iq = iel-(ip-1)*nye
   end
   if nod == 4

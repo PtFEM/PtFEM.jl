@@ -8,7 +8,7 @@
 
 
 function format_nf_line!(l::String, t::Array{Tuple})
-  sl = int(split(l))
+  sl = round(Int64, split(l))
   @assert mod(length(sl), 4) == 0
   sl
 end

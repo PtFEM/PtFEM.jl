@@ -8,9 +8,9 @@ function hexahedron_xz!(iel::Int64, x_coords::Vector{Float64}, y_coords::Vector{
   nxe = size(x_coords, 1) - 1
   nze = size(z_coords, 1) - 1
   nod = size(num, 1)
-  iq = round(Int64,(iel-1)/(nxe*nze)) + 1
+  iq = round(Int64, floor((iel-1)/(nxe*nze))) + 1
   iplane = iel-(iq-1)*nxe*nze
-  is = round(Int64, (iplane-1)/nxe) + 1 
+  is = round(Int64, floor((iplane-1)/nxe)) + 1 
   ip = iplane-(is-1)*nxe
   if nod == 8
    fac1=(nxe+1)*(nze+1)*(iq-1)

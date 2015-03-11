@@ -141,7 +141,7 @@ function FE4_5(data::Dict)
   
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
-  kdiag = int(zeros(neq))
+  kdiag = round(Int64, zeros(neq))
   
   ell = zeros(nels)
   if :x_coords in keys(data)
