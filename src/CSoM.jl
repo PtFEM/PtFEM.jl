@@ -61,6 +61,8 @@ include(Pkg.dir("CSoM", "src", "CSoM", "stability.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "beam_gm.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "fmplat.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "read_generated_data.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "invar.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "formm.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "lufac.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ldlt.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ivp.jl"))
@@ -125,6 +127,8 @@ export
   stability!,
   beam_gm!,
   fmplat!,
+  invar!,
+  formm!,
   
   # From NMfE
   lufac,
