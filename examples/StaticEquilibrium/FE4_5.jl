@@ -291,5 +291,5 @@ function FE4_5(data::Dict)
       break
     end
   end
-  (inode[size(inode, 1)], eldtot[round(Int64, nf[:, inode[size(inode, 1)])]+1])
+  (inode[size(inode, 1)], eldtot[round(Int64, nf[:, inode[size(inode, 1)]])+1])
 end
