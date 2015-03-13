@@ -204,7 +204,7 @@ function FE4_5(data::Dict)
     end
   end
   
-  inode = zeros(size(data[:loaded_nodes], 1))
+  inode = zeros(Int64, size(data[:loaded_nodes], 1))
   ival = zeros(size(data[:loaded_nodes], 1), size(data[:loaded_nodes][1][2], 2))
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
@@ -285,11 +285,11 @@ function FE4_5(data::Dict)
     eldtot += loads
     println("\n   Node     Displacement(s) and Rotation(s)  (Iterations: $(iters))")
     for i in 1:size(inode, 1)
-      println("    $(inode[i])  $(eldtot[round(Int64, nf[:, inode[i]])+1])")
+      println("    $(inode[i])  $(eldtot[nf[:, inode[i]]+1])")
     end
     if iters == limit && limit !== 1
       break
     end
   end
-  (inode[size(inode, 1)], eldtot[round(Int64, nf[:, inode[size(inode, 1)]])+1])
+  (inode[size(inode, 1)], eldtot[nf[:, inode[size(inode, 1)]+1]])
 end
