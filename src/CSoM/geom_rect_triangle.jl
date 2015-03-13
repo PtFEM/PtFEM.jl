@@ -215,11 +215,11 @@ function geom_rect!(element::Triangle, iel::Int64, x_coords::Array{Float64, 1},
        num[15] = fac1+2*nye+3  
      end
      coord[1,1] = x_coords[ip]
-     coord[1,2] = y_coords[(iq+1)/2]
+     coord[1,2] = y_coords[round(Int64, (iq+1)/2)]
      coord[5,1] = x_coords[ip+1]   
-     coord[5,2] = y_coords[(iq+1)/2]
+     coord[5,2] = y_coords[round(Int64, (iq+1)/2)]
      coord[9,1] = x_coords[ip]   
-     coord[9,2] = y_coords[(iq+3)/2]
+     coord[9,2] = y_coords[round(Int64, (iq+3)/2)]
    else
      if dir == 'x' || dir == 'r'
        fac1=4*(4*nxe+1)*(iq-2)/2
@@ -257,11 +257,11 @@ function geom_rect!(element::Triangle, iel::Int64, x_coords::Array{Float64, 1},
        num[15] = fac1-2*nye-3 
      end
      coord[1,1] = x_coords[ip+1]
-     coord[1,2] = y_coords[(iq+2)/2]
+     coord[1,2] = y_coords[round(Int64, (iq+2)/2)]
      coord[5,1] = x_coords[ip]   
-     coord[5,2] = y_coords[(iq+2)/2]
+     coord[5,2] = y_coords[round(Int64, (iq+2)/2)]
      coord[9,1] = x_coords[ip+1] 
-     coord[9,2] = y_coords[iq/2]
+     coord[9,2] = y_coords[round(Int64, iq/2)]
    end
    coord[3,:] = 0.5*(coord[1,:]+coord[5,:])
    coord[7,:] = 0.5*(coord[5,:]+coord[9,:])
