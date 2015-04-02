@@ -1,6 +1,15 @@
 using LightXML
 using Codecs
 
+type VTKNode
+  coords::Vector{Float64}
+end
+
+type VTKElement
+  vertices::Vector{Int}
+  vtknum::Int
+end
+
 abstract AbstractVTKXML
 
 abstract AbstractVTKXMLBinary <: AbstractVTKXML
@@ -61,8 +70,8 @@ function write_data!(vtkxml::VTKXMLASCII, xmlele::XMLElement)
     add_text(xmlele, takebuf_string(vtkxml.buffer))
 end
 
-function write_VTKXML(filename::ASCIIString, nodes::Vector{Node},
-                             elements::Vector{Element},
+function write_VTKXML(filename::ASCIIString, nodes::Vector{VTKNode},
+                             elements::Vector{VTKElement},
                              binary::Bool=true, compress::Bool=false)
      if (!binary) && compress
         error("Can only compress when using Binary format")
@@ -79,8 +88,8 @@ function write_VTKXML(filename::ASCIIString, nodes::Vector{Node},
     end
 end
 
-function _write_VTKXML{P <: AbstractVTKXML}(filename::ASCIIString, nodes::Vector{Node},
-                                            elements::Vector{Element}, binary::Bool,
+function _write_VTKXML{P <: AbstractVTKXML}(filename::ASCIIString, nodes::Vector{VTKNode},
+                                            elements::Vector{VTKElement}, binary::Bool,
                                             compress::Bool, vtkxml::P)
 
     if binary
@@ -154,11 +163,16 @@ function _write_VTKXML{P <: AbstractVTKXML}(filename::ASCIIString, nodes::Vector
 
 
     xcell_types = new_child(xcells, "DataArray")
+    
     set_attribute(xcell_types, "type", "UInt8")
     set_attribute(xcell_types, "Name", "types")
     set_attribute(xcell_types, "format", VTK_FORMAT)
     for element in elements
+      if VERSION >= v"0.4.0"
         add_data!(vtkxml, UInt8(element.vtknum))
+      else
+        add_data!(vtkxml, Uint8(element.vtknum))
+      end
     end
     write_data!(vtkxml, xcell_types)
 

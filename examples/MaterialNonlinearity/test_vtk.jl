@@ -1,27 +1,20 @@
 using CSoM
 
+include(Pkg.dir("CSoM", "src", "CSoM", "exportVTK_XML.jl"))
+
 old = pwd()
 ProjDir = Pkg.dir("CSoM", "examples", "MaterialNonlinearity")
 cd(ProjDir)
 
-type Node
-    coords::Vector{Float64}
-end
+nodes = [
+  VTKNode([0.0, 0.0, 0.0]),
+  VTKNode([1.0, 0.0, 0.0]),
+  VTKNode([1.0, 1.0, 0.0]),
+  VTKNode([0.0, 1.0, 0.0]),
+  VTKNode([0.5, 1.5, 0.0])
+]
 
-type Element
-    vertices::Vector{Int}
-    vtknum::Int
-end
-
-include(Pkg.dir("CSoM", "src", "CSoM", "exportVTK_XML.jl"))
-
-nodes = [Node([0.0, 0.0, 0.0]),
-        Node([1.0, 0.0, 0.0]),
-        Node([1.0, 1.0, 0.0]),
-        Node([0.0, 1.0, 0.0]),
-        Node([0.5, 1.5, 0.0])]
-
-elements = [Element([1, 2, 3, 4], 9), Element([3, 4, 5], 5)]
+elements = [VTKElement([1, 2, 3, 4], 9), VTKElement([3, 4, 5], 5)]
 
 write_VTKXML("example.vtu", nodes, elements, false)
 write_VTKXML("example_bin.vtu", nodes, elements, true)
