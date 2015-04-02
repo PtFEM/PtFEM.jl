@@ -130,6 +130,9 @@ export
   fmplat!,
   invar!,
   formm!,
+  write_VTKXML,
+  VTKNode,
+  VTKElement,
   
   # From NMfE
   lufac,

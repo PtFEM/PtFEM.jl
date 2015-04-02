@@ -1,5 +1,6 @@
 using LightXML
 using Codecs
+using Compat
 
 type VTKNode
   coords::Vector{Float64}
@@ -27,7 +28,7 @@ function write_data!(vtkxml::VTKXMLBinaryCompressed, xmlele::XMLElement)
     uncompressed_size = vtkxml.buffer.size
     compressed_data = encode(Zlib, takebuf_array(vtkxml.buffer))
     compressed_size = length(compressed_data)
-    header = UInt32[1, uncompressed_size, uncompressed_size, compressed_size]
+    header = @compat UInt32[1, uncompressed_size, uncompressed_size, compressed_size]
     header_binary = bytestring(encode(Base64, reinterpret(UInt8, header)))
     data_binary = bytestring(encode(Base64, compressed_data))
     add_text(xmlele, header_binary)
@@ -42,7 +43,7 @@ VTKXMLBinaryUncompressed() = VTKXMLBinaryUncompressed(IOBuffer())
 function write_data!(vtkxml::VTKXMLBinaryUncompressed, xmlele::XMLElement)
     uncompressed_size = vtkxml.buffer.size
     uncompressed_data = takebuf_array(vtkxml.buffer)
-    header = UInt32[uncompressed_size]
+    header = @compat UInt32[uncompressed_size]
     header_binary = bytestring(encode(Base64, reinterpret(UInt8, header)))
     data_binary = bytestring(encode(Base64, uncompressed_data))
     add_text(xmlele, header_binary)
@@ -168,11 +169,7 @@ function _write_VTKXML{P <: AbstractVTKXML}(filename::ASCIIString, nodes::Vector
     set_attribute(xcell_types, "Name", "types")
     set_attribute(xcell_types, "format", VTK_FORMAT)
     for element in elements
-      if VERSION >= v"0.4.0"
-        add_data!(vtkxml, UInt8(element.vtknum))
-      else
-        add_data!(vtkxml, Uint8(element.vtknum))
-      end
+        add_data!(vtkxml, @compat UInt8(element.vtknum))
     end
     write_data!(vtkxml, xcell_types)
 

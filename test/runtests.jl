@@ -3,6 +3,10 @@ using Base.Test
 
 # write your own tests here
 
+isfile("example.vtu") && rm("example.vtu")
+isfile("example_bin.vtu") && rm("example_bin.vtu")
+isfile("example_compressed_bin.vtu") && rm("example_compressed_bin.vtu")
+
 code_tests = [
   "test_csom1.jl",
   "test_p4.1.1.jl",
@@ -25,6 +29,7 @@ code_tests = [
   "test_p5.5.1.jl",
   "test_p5.6.1.jl",
   "test_p6.1.1.jl",
+  "test_VTK.jl",
   "test_lufac.jl",
   "test_ldlt.jl",
   "test_ivp_ex7.3.jl",        # Four direct methods
