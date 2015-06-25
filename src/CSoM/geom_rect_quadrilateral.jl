@@ -1,5 +1,5 @@
-function geom_rect!(element::Quadrilateral, iel::Int64, x_coords::LinSpace{Float64},
-  y_coords::LinSpace{Float64}, coord::Matrix{Float64}, num::Vector{Int64}, dir::Symbol)
+function geom_rect!(element::Quadrilateral, iel::Int64, x_coords::Array{Float64, 1},
+  y_coords::Array{Float64, 1}, coord::Matrix{Float64}, num::Vector{Int64}, dir::Symbol)
 
   nxe = size(x_coords,1)-1
   nye = size(y_coords,1)-1
