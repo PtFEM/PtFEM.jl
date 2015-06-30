@@ -3,9 +3,11 @@ using Base.Test
 
 # write your own tests here
 
-isfile("example.vtu") && rm("example.vtu")
-isfile("example_bin.vtu") && rm("example_bin.vtu")
-isfile("example_compressed_bin.vtu") && rm("example_compressed_bin.vtu")
+if VERSION.minor == 3
+  isfile("example.vtu") && rm("example.vtu")
+  isfile("example_bin.vtu") && rm("example_bin.vtu")
+  isfile("example_compressed_bin.vtu") && rm("example_compressed_bin.vtu")
+end
 
 code_tests = [
   "test_csom1.jl",
