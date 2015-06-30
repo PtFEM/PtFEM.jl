@@ -14,4 +14,6 @@ if VERSION.minor == 3
   write_VTKXML("example.vtu", nodes, elements, false)
   write_VTKXML("example_bin.vtu", nodes, elements, true)
   write_VTKXML("example_compressed_bin.vtu", nodes, elements, true, true)
+else
+  print("Test temporarily disabled for 0.4!")
 end
