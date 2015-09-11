@@ -1,12 +1,6 @@
-language: julia
-os:
-  - linux
-  - osx
 julia:
-  - release
-  - nightly
-notifications:
-  email: false
+  - 0.3
+  - 0.4
 # uncomment the following lines to override the default test script
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
