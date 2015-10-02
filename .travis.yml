@@ -1,8 +1,7 @@
 language: julia
 julia:
-  - 0.3
   - 0.4
 # uncomment the following lines to override the default test script
-script:
-  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.build("CSoM"); Pkg.test("CSoM"; coverage=true)'
+#script:
+#  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+#  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.build("CSoM"); Pkg.test("CSoM"; #coverage=true)'
