@@ -7,13 +7,13 @@
 =#
 
 
-function format_nf_line!(l::String, t::Array{Tuple})
+function format_nf_line!(l::AbstractString, t::Array{Tuple})
   sl = round(Int64, split(l))
   @assert mod(length(sl), 4) == 0
   sl
 end
 
-function read_nf_file(f::String)
+function read_nf_file(f::AbstractString)
   f = open(f)
   t = Tuple[]
   while !eof(f)
@@ -38,13 +38,13 @@ end
     ...
 =#
 
-function format_loads_line!(l::String, t::Array{Tuple})
+function format_loads_line!(l::AbstractString, t::Array{Tuple})
   sl = float(split(l))
   @assert mod(length(sl), 4) == 0
   sl
 end
 
-function read_loads_file(f::String)
+function read_loads_file(f::AbstractString)
   f = open(f)
   t = Tuple[]
   while !eof(f)

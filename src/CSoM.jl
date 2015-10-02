@@ -21,7 +21,6 @@ export
 ### Imports ###
 
 ### Includes ###
-
 include(Pkg.dir("CSoM", "src", "CSoM", "elements.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "FEM.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "FEmodel.jl"))
