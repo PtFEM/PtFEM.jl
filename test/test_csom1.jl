@@ -22,4 +22,5 @@ data = @compat Dict(
 
 m = FE4_4(data)
 
-@assert round(m.displacements[2,1:7], 5) == [0.0  8.0e-5  0.00031  0.00068  0.00119  0.00183  0.00259]
+@assert Vector(round(m.displacements[2,1:7][:], 5)) == 
+  [0.0,  8.0e-5,  0.00031,  0.00068,  0.00119,  0.00183,  0.00259]

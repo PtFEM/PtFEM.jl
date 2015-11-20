@@ -6,12 +6,12 @@ function geom_rect!(element::Triangle, iel::Int64, x_coords::Array{Float64, 1},
   nod = size(num, 1)
   #println([nxe nye nod])
   if dir == :x || dir == :r
-    jel = round(Int64, 2 * nxe * floor((iel - 1) / (2 * nxe)))
-    ip = round(Int64, floor((iel - jel + 1) / 2))
-    iq = round(Int64, floor(2 * floor(floor((iel - 1) / (2 * nxe)) + 1) - 1 + floor(floor(iel / 2) * 2) / iel))
+    jel = round(Int64, 2 * nxe * floor((iel - 1) ÷ (2 * nxe)))
+    ip = round(Int64, floor((iel - jel + 1) ÷ 2))
+    iq = round(Int64, floor(2 * floor(floor((iel - 1) ÷ (2 * nxe)) + 1) - 1 + floor(floor(iel ÷ 2) * 2) / iel))
   else
     #println("Direction != :x or :r.")
-    jel = round(Int64, floor((iel - 1) / nye))
+    jel = round(Int64, floor((iel - 1) ÷ nye))
     ip = jel + 1
     iq = iel - nye * jel
   end
