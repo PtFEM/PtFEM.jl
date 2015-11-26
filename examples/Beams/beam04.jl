@@ -17,7 +17,7 @@ data = @compat Dict(
     (1, [0 0 0 0 0 0])
     ],
   :loaded_nodes => [
-    (21, [10000.0 1000.0 0.0 1000.0 0.0 0.0])],
+    (21, [1000.0 0.0 0.0 0.0 0.0 1000.0])],
   :penalty => 1e19
 )
 
@@ -35,3 +35,17 @@ println("Actions:")
 m.actions |> display
 println()
 
+rin = 0.1
+rout = 0.11
+area = 2pi*(rout^2-rin^2)
+@show area
+
+ip = pi/2*(rout^4-rin^4)
+@show ip
+
+sigma = m.actions[7,1] / area
+@show sigma
+
+sigmamax = m.actions[12,1]*rout/ip
+@show sigmamax
+println()

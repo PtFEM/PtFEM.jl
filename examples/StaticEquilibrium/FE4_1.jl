@@ -1,23 +1,23 @@
-function FE4_1(data::Dict)
+function FE4_1(data::Dict{Symbol, Any})
   
   # Parse & check FEdict data
   
   if :element_type in keys(data)
-    element_type = data[:element_type]
+    element_type::ElementType = data[:element_type]
   else
     println("No element type specified.")
     return
   end
   
-  ndim = element_type.ndim
-  nst = element_type.nst
+  ndim::Int64 = element_type.ndim
+  nst::Int64 = element_type.nst
   
   # Add radial stress
   if ndim == 3 && element_type.axisymmetric
     nst = 4
   end
   
-  element = element_type.element
+  element::Element = element_type.element
   @assert typeof(element) <: Element
   
   if typeof(element) == Line
@@ -114,7 +114,7 @@ function FE4_1(data::Dict)
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
   kdiag = round(Int64, zeros(neq))
-  @show nf
+  #@show nf
   
   # Set global numbering, coordinates and array sizes
   

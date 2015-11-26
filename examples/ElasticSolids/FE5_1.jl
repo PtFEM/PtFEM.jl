@@ -1,4 +1,4 @@
-function FE5_1(data::Dict)
+function FE5_1(data::Dict{Symbol, Any})
   
   # Setup basic dimensions of arrays
   

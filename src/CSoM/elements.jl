@@ -27,6 +27,9 @@ type Tetrahedron <: Element
   nodof::Int64
 end
 
+type UnknownElement <: Element
+end
+
 ### Top level component ###
 
 abstract ElementType              # Structure element to be modeled
@@ -90,5 +93,8 @@ type GenericSolid <: ElementType
   nip::Int64                      # Number of integration points
   element::Element                # Finite element type used
   axisymmetric::Bool              # Axisymmetric
+end
+
+type UnknownElementType <: ElementType
 end
 

@@ -8,6 +8,8 @@
 
 
 function format_nf_line!(l::AbstractString, t::Array{Tuple})
+  println(l)
+  println(typeof(l))
   sl = round(Int64, split(l))
   @assert mod(length(sl), 4) == 0
   sl

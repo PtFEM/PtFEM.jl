@@ -1,14 +1,13 @@
 using Compat, CSoM
 include("FE4_1.jl")
 
-N = 4
+N = 8
 F = 5.0
 dist_loads = [[(i, [-F/N]) for i in 1:(N+1)];]
-dist_loads[1] = (1, [-F/(2*N)])
-dist_loads[size(dist_loads,1)] = (N+1, [-F/(2*N)])
-dist_loads = convert(Vector{Tuple{Int64, Vector{Float64}}}, dist_loads)
+dist_loads[1] = (1,-F/(2*N))
+dist_loads[size(dist_loads,1)] = (N+1,-F/(2*N))
 
-data = Dict(
+data = @compat Dict(
   # Beam(ndim, nst, nxe, nip, direction, finite_element(nod, nodof), axisymmetric)
   :element_type => Beam(1, 1, N, 1, :x, Line(2, 1), false),
   :properties => [1.0e5;],
