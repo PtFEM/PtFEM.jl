@@ -46,7 +46,7 @@ end
 
 type Beam <: ElementType
   ndim::Int64                     # Number of dimensions (1,2 or 3)
-  nst::Int64                      # Number of stresses
+  nst::Int64                      # Number of stress terms
   nxe::Int64                      # Number of elements in x direction
   nip::Int64                      # Number of integration points per element
   direction::Symbol               # Node numbering direction
@@ -59,14 +59,14 @@ type Frame <: ElementType
   nels::Int64                     # Number of elemnt
   nn::Int64                       # Number of nodes
   ndim::Int64                     # Number of dimensions
-  nst::Int64                      # Number of stresses
+  nst::Int64                      # Number of stress terms
   nip::Int64                      # Number of integration points per element
   element::Element                # Finite element type used
 end
 
 type Plane <: ElementType
   ndim::Int64                     # Number of dimensions (1,2 or 3)
-  nst::Int64                      # Number of stresses
+  nst::Int64                      # Number of stress terms
   nxe::Int64                      # Number of elements in x direction
   nye::Int64                      # Number of elements in y direction
   nip::Int64                      # Number of integration points
@@ -77,7 +77,7 @@ end
 
 type Solid <: ElementType
   ndim::Int64                     # Number of dimensions (1,2 or 3)
-  nst::Int64                      # Number of stresses
+  nst::Int64                      # Number of stress terms
   nxe::Int64                      # Number of elements in x direction
   nye::Int64                      # Number of elements in y direction
   nze::Int64                      # Number of elements in y direction
@@ -87,7 +87,7 @@ end
 
 type GenericSolid <: ElementType
   ndim::Int64                     # Number of dimensions (1,2 or 3)
-  nst::Int64                      # Number of stresses
+  nst::Int64                      # Number of stress terms
   nels::Int64                     # Number of elements
   nn::Int64                       # Number of nodes
   nip::Int64                      # Number of integration points
