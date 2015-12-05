@@ -22,37 +22,13 @@ FE4_1(data::Dict)
 ```
 ### Notes
 
-Special handling is needed if a column contains `Symbol`s. In JSON a `Symbol`
-like `:Fe` is encoded as ":Fe". Optionally, `json2df()` turns these
-`ASCIIString`s back to `Symbol`s based on the convert_symbols argument.
+Special handling is needed ...
 
 ### Examples
 ```julia
 syms = [:A, :B, :C, :D]
 df = DataFrame(Any[Int64[], Symbol[], Float64[], Symbol[]], syms)
 push!(df, [3  :B 6.0 :Fe])
-push!(df, [9  :H 9.0 :Si])
-push!(df, [1  :O 1.0 :H])
-df |> display
-println()
-jsonstr = df2json(df, pretty_print=true);
-df1=json2df(jsonstr)
-println(df1)
-println()
-
-jsonstr2 = df2json(df, pretty_print=false);
-df2=json2df(jsonstr2)
-println(df2)
-println()
-
-jsonstr3 = df2json(df, cols=[:A, :C], pretty_print=true);
-df3=json2df(jsonstr3)
-println(df3)
-println()
-
-df4=json2df(jsonstr3, convert_symbols=false);
-println(df4)
-println()
 
 ```
 """

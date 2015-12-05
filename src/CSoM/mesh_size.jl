@@ -1,21 +1,13 @@
-@comment """
-# mesh_size
-"""
-
-"""
-mesh_size: The function mesh_size returns the number of elements (nels) and the number
+@doc doc"""
+Function mesh_size returns the number of elements (nels) and the number
 of nodes (nn) in a 1-d geometry-created mesh.
 
-### Method
-```julia
-(nels, nn) = mesh_size(element, nxe)
-```
-### Arguments
-```julia
-* `element` : Shape of 1D finite element (Line)
-* `nxe` : Number of elements in x direction
-```
-"""
+Arguments to (nels, nn) = mesh_size(element,nod,nxe,nye):
+
+fe::Element           : Shape of finite element (Line)
+
+nxe::Int64            : Number of elements in x direction
+""" ->
 function mesh_size(fe::Line, nxe::Int64)
   nn=nxe+1; nels=nxe
   if fe.nod != 2
@@ -24,25 +16,18 @@ function mesh_size(fe::Line, nxe::Int64)
   (nels, nn)
 end
 
-@comment """
-# mesh_size
-"""
-
-"""
-mesh_size: The function mesh_size returns the number of elements (nels) and the number
+@doc doc"""
+Function mesh_size returns the number of elements (nels) and the number
 of nodes (nn) in a 2-d geometry-created mesh.
 
-### Method
-```julia
-(nels, nn) = mesh_size(element, nxe)
-```
-### Arguments
-```julia
-* `element` : Shape of 2D finite element (Triangle)
-* `nxe` : Number of elements in x direction
-* `nxe` : Number of elements in y direction
-```
-"""
+Arguments to (nels, nn) = mesh_size(element,nod,nxe,nye):
+
+fe::Element           : Shape of finite element (Triangle or Quadrilateral)
+
+nxe::Int64            : Number of elements in x direction
+
+nye::Int64            : Number of elements in y direction
+""" ->
 function mesh_size(fe::Triangle, nxe::Int64, nye::Int64)
   nn=0; nels=nxe*nye*2
   if fe.nod==3
@@ -59,25 +44,6 @@ function mesh_size(fe::Triangle, nxe::Int64, nye::Int64)
   (nels, nn)
 end
 
-@comment """
-# mesh_size
-"""
-
-"""
-mesh_size: The function mesh_size returns the number of elements (nels) and the number
-of nodes (nn) in a 2-d geometry-created mesh.
-
-### Method
-```julia
-(nels, nn) = mesh_size(element, nxe, nye)
-```
-### Arguments
-```julia
-* `element` : Shape of 2D finite element (Quadrilateral)
-* `nxe` : Number of elements in x direction
-* `nye` : Number of elements in y direction
-```
-"""
 function mesh_size(fe::Quadrilateral, nxe::Int64, nye::Int64)
   nn=0; nels=nxe*nye
   if fe.nod==4
@@ -94,26 +60,20 @@ function mesh_size(fe::Quadrilateral, nxe::Int64, nye::Int64)
   (nels, nn)
 end
 
-@comment """
-# mesh_size
-"""
-
-"""
-mesh_size: The function mesh_size returns the number of elements (nels) and the number
+@doc doc"""
+Function mesh_size returns the number of elements (nels) and the number
 of nodes (nn) in a 3-d geometry-created mesh.
 
-### Method
-```julia
-(nels, nn) = mesh_size(element, nxe, nye, nze)
-```
-### Arguments
-```julia
-* `element` : Shape of 2D finite element (Hexahedron)
-* `nxe` : Number of elements in x direction
-* `nye` : Number of elements in y direction
-* `nxe` : Number of elements in x direction
-```
-"""
+Arguments to (nels, nn) = mesh_size(element,nod,nxe,nye,nze):
+
+fe::Element       : Shape of finite element (Hexahedron)
+
+nxe::Int64            : Number of elements in x direction
+
+nye::Int64            : Number of elements in y direction
+
+nze::Int64            : Number of elements in z direction
+""" ->
 function mesh_size(fe::Hexahedron, nxe::Int64, nye::Int64, nze::Int64)
   nn=0; nels=nxe*nye*nze
   if fe.nod==8
