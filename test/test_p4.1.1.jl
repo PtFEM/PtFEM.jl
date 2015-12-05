@@ -3,7 +3,7 @@ using Compat, CSoM
 include(Pkg.dir("CSoM", "examples", "StaticEquilibrium", "FE4_1.jl"))
 
 data = @compat Dict(
-  # Rod(nxe, np_types, nip, finite_element(nod, nodof))
+  # Rod(nels, np_types, nip, element(nod, nodof))
   :element_type => Rod(4, 1, 1, Line(2, 1)),
   :properties => [1.0e5;],
   :x_coords => linspace(0, 1, 5),
