@@ -85,11 +85,19 @@ Rod(nels, np_types, nip, element)
 
 ### Arguments
 ```julia
-* nxe::Int64        : Number of elements
-* np_types::Int74   : Number of different property types
+* nels::Int64       : Number of elements (stored in field nxe)
+* np_types::Int64   : Number of different property types
 * nip::Int64        : Number of integration points
 * element::Element  : Line(nod, nodof)
 ```
+
+### Related help
+```julia
+?ElementType  : Help on structural elements
+?Element      : Help on finite element types
+?Line         : Help on a Line finite element
+```
+
 """ ->
 immutable Rod <: ElementType      # Axial stresses only structural element
   nxe::Int64                      # Number of elements
