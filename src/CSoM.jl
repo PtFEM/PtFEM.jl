@@ -1,8 +1,6 @@
 module CSoM
 
-if VERSION.minor < 4
-  using Docile, Lexicon
-end
+#using Docile, Lexicon
 
 if !isdefined(Main, :JULIA_SVG_BROWSER)
   JULIA_SVG_BROWSER = ""

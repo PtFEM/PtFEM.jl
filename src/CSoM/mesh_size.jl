@@ -1,12 +1,24 @@
 @doc doc"""
+## mesh_size
+
 Function mesh_size returns the number of elements (nels) and the number
-of nodes (nn) in a 1-d geometry-created mesh.
+of nodes (nn) in a 1, 2 or 3-d geometry-created mesh.
 
-Arguments to (nels, nn) = mesh_size(element,nod,nxe,nye):
+### Method
+```julia
+(nels, nn) = mesh_size(element, nxe, [nye[, nze]])
+```
 
-fe::Element           : Shape of finite element (Line)
-
-nxe::Int64            : Number of elements in x direction
+### Arguments
+```julia
+* fe::Element           : Shape of finite element
+                          1D: Line
+                          2D: Trangle or Quadrilateral
+                          3D: Hexahedron
+* nxe::Int64            : Number of elements in x direction
+* nye::Int64            : Number of elements in y direction (for 2D and 3D)
+* nze::Int64            : Number of elements in z direction (3D only)
+```
 """ ->
 function mesh_size(fe::Line, nxe::Int64)
   nn=nxe+1; nels=nxe
@@ -16,18 +28,6 @@ function mesh_size(fe::Line, nxe::Int64)
   (nels, nn)
 end
 
-@doc doc"""
-Function mesh_size returns the number of elements (nels) and the number
-of nodes (nn) in a 2-d geometry-created mesh.
-
-Arguments to (nels, nn) = mesh_size(element,nod,nxe,nye):
-
-fe::Element           : Shape of finite element (Triangle or Quadrilateral)
-
-nxe::Int64            : Number of elements in x direction
-
-nye::Int64            : Number of elements in y direction
-""" ->
 function mesh_size(fe::Triangle, nxe::Int64, nye::Int64)
   nn=0; nels=nxe*nye*2
   if fe.nod==3
@@ -60,20 +60,6 @@ function mesh_size(fe::Quadrilateral, nxe::Int64, nye::Int64)
   (nels, nn)
 end
 
-@doc doc"""
-Function mesh_size returns the number of elements (nels) and the number
-of nodes (nn) in a 3-d geometry-created mesh.
-
-Arguments to (nels, nn) = mesh_size(element,nod,nxe,nye,nze):
-
-fe::Element       : Shape of finite element (Hexahedron)
-
-nxe::Int64            : Number of elements in x direction
-
-nye::Int64            : Number of elements in y direction
-
-nze::Int64            : Number of elements in z direction
-""" ->
 function mesh_size(fe::Hexahedron, nxe::Int64, nye::Int64, nze::Int64)
   nn=0; nels=nxe*nye*nze
   if fe.nod==8

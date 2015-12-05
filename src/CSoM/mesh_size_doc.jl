@@ -1,6 +1,6 @@
-using Docile
+using Docile, Lexicon
 
-@comment """
+Docile.@comment """
 # mesh_size
 """
 
@@ -26,7 +26,7 @@ function mesh_size(fe::Line, nxe::Int64)
   (nels, nn)
 end
 
-@comment """
+Docile.@comment """
 # mesh_size
 """
 
@@ -61,7 +61,7 @@ function mesh_size(fe::Triangle, nxe::Int64, nye::Int64)
   (nels, nn)
 end
 
-@comment """
+Docile.@comment """
 # mesh_size
 """
 
@@ -96,7 +96,7 @@ function mesh_size(fe::Quadrilateral, nxe::Int64, nye::Int64)
   (nels, nn)
 end
 
-@comment """
+Docile.@comment """
 # mesh_size
 """
 

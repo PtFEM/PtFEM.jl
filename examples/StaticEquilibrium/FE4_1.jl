@@ -1,6 +1,6 @@
 using Docile
 
-@comment """
+Docile.@comment """
 # FE4_1
 """
 
@@ -16,20 +16,63 @@ FE4_1(data::Dict)
 ### Arguments
 ```julia
 * `data` : Dictionary containing all input data
-
-   nels:     Number of elements
-   np_types: Number of element types
 ```
-### Notes
 
-Special handling is needed ...
+### Dictionary keys
+```julia
+* element_type::ElementType                            : Type of  structural element
+* support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
+* loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector
+* properties::Vector{Float64}                          : Material properties
+* x_coords::LinSpace{Float64}                          : X coordinate vector
+```
+
+### Optional dictionary keys
+```julia
+* etype::Vector{Int64}                                 : Element material vector
+```
 
 ### Examples
 ```julia
-syms = [:A, :B, :C, :D]
-df = DataFrame(Any[Int64[], Symbol[], Float64[], Symbol[]], syms)
-push!(df, [3  :B 6.0 :Fe])
+using CSoM
+include("FE4_1.jl")
 
+N = 4
+F = 5.0
+dist_loads = [[(i, [-F/N]) for i in 1:(N+1)];]
+dist_loads[1] = (1, [-F/(2*N)])
+dist_loads[size(dist_loads,1)] = (N+1, [-F/(2*N)])
+dist_loads = convert(Vector{Tuple{Int64, Vector{Float64}}}, dist_loads)
+
+data = Dict(
+  # Rod(nels, np_types, nip, finite_element(nod, nodof))
+  :element_type => Rod(N, 1, 1, Line(2, 1)),
+  :properties => [1.0e5;],
+  :x_coords => linspace(0, 1, (N+1)),
+  :support => [(1, [0])],
+  :loaded_nodes => dist_loads
+)
+
+data |> display
+println()
+
+@time m = FE4_1(data)
+println()
+
+println("Displacements:")
+m.displacements |> display
+println()
+
+println("Actions:")
+m.actions |> display
+println()
+```
+
+### Related help
+```julia
+?ElementType  : Help on structural elements
+?Rod          : Help on a Rod structural element
+?Element      : Help on finite element types
 ```
 """
 function FE4_1(data::Dict{Symbol, Any})
@@ -43,8 +86,13 @@ function FE4_1(data::Dict{Symbol, Any})
     return
   end
   
-  ndim::Int64 = element_type.ndim
-  nst::Int64 = element_type.nst
+  if typeof(element_type) == CSoM.Rod
+    ndim = 1
+    nst = element_type.np_types
+  else
+    ndim::Int64 = element_type.ndim
+    nst::Int64 = element_type.nst
+  end
   
   # Add radial stress
   if ndim == 3 && element_type.axisymmetric
@@ -173,7 +221,7 @@ function FE4_1(data::Dict{Symbol, Any})
   kv = zeros(kdiag[neq])
   gv = zeros(kdiag[neq])
   
-  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).\n")
+  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
     
   loads = zeros(neq+1)
   if :loaded_nodes in keys(data)
