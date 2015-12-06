@@ -19,7 +19,8 @@ export
 ### Imports ###
 
 ### Includes ###
-include(Pkg.dir("CSoM", "src", "CSoM", "elements.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "finite_elements.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "structural_elements.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "FEM.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "FEmodel.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "formnf.jl"))

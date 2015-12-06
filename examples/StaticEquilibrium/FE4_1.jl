@@ -24,7 +24,7 @@ FE4_1(data::Dict)
 * support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
 * loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector
 * properties::Vector{Float64}                          : Material properties
-* x_coords::LinSpace{Float64}                          : X coordinate vector
+* x_coords::LinSpace{Float64}                          : Xcoordinate vector
 ```
 
 ### Optional dictionary keys
@@ -37,35 +37,16 @@ FE4_1(data::Dict)
 using CSoM
 include("FE4_1.jl")
 
-N = 4
-F = 5.0
-dist_loads = [[(i, [-F/N]) for i in 1:(N+1)];]
-dist_loads[1] = (1, [-F/(2*N)])
-dist_loads[size(dist_loads,1)] = (N+1, [-F/(2*N)])
-dist_loads = convert(Vector{Tuple{Int64, Vector{Float64}}}, dist_loads)
-
 data = Dict(
   # Rod(nels, np_types, nip, finite_element(nod, nodof))
-  :element_type => Rod(N, 1, 1, Line(2, 1)),
+  :element_type => Rod(4, 1, 1, Line(2, 1)),
   :properties => [1.0e5;],
-  :x_coords => linspace(0, 1, (N+1)),
+  :x_coords => linspace(0, 1, 5),
   :support => [(1, [0])],
-  :loaded_nodes => dist_loads
+  :loaded_nodes => [(1,[-0.625]),(2,[-1.25]),(3,[-1.25]),(4,[-1.25]),(5,[-0.625])]
 )
 
-data |> display
-println()
-
-@time m = FE4_1(data)
-println()
-
-println("Displacements:")
-m.displacements |> display
-println()
-
-println("Actions:")
-m.actions |> display
-println()
+m = FE4_1(data)
 ```
 
 ### Related help
@@ -196,7 +177,6 @@ function FE4_1(data::Dict{Symbol, Any})
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
   kdiag = round(Int64, zeros(neq))
-  #@show nf
   
   # Set global numbering, coordinates and array sizes
   
