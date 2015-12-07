@@ -12,7 +12,6 @@ end
 code_tests = [
   "test_csom1.jl",
   "test_p4.1.1.jl",
-  "test_p4.1.1a.jl",
   "test_p4.1.2.jl",
   "test_p4.2.2.jl",
   "test_p4.3.1b.jl",

@@ -3,8 +3,8 @@ using Compat, CSoM
 include(Pkg.dir("CSoM", "examples", "StaticEquilibrium", "FE4_1.jl"))
 
 data = @compat Dict(
-  # Beam(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)
-  :element_type => Beam(1, 1, 4, 1, :x, Line(2, 1), false),
+  # Rod(nels, np_types, nip, finite_element(nod, nodof))
+  :element_type => Beam(4, 2, 1, Line(2, 1), false),
   :properties => [2.0e3; 1.0e3],
   :etype => [2, 2, 1, 1],
   :x_coords => linspace(0, 1, 5),
