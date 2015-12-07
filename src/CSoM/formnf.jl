@@ -1,20 +1,18 @@
 @doc doc"""
 ## formnf!
 
-...
+Returns nodal freedom array nf
 
-### Type
+### Function
 ```julia
-abstract Element
+formnf!(nodof::Int64, nn::Int64, nf::Matrix{Int64})
 ```
 
-### Subtypes
+### Arguments
 ```julia
-* Line::Element          : Line(nod, nodof)
-* Triangle::Element      : Triangle(nod, nodof)
-* Quadrilateral::Element : Quadrilateral(nod, nodof)
-* Hexahedron::Element    : Hexahedron(nod, nodof)
-* Tetrahedron::Element   : Tetrahedron(nod, nodof)
+* nodof::Int64       : Number of degrees of freedom for ech node
+* nn::Int64          : Number of nodes in mesh
+* nf::Array{Int64,2} : Nodal freedom matrix (updated)
 ```
 """ ->
 function formnf!(nodof::Int64, nn::Int64, nf::Matrix{Int64})

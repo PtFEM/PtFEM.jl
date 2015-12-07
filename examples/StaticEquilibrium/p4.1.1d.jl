@@ -9,8 +9,8 @@ dist_loads[size(dist_loads,1)] = (N+1, [-F/(2*N)])
 dist_loads = convert(Vector{Tuple{Int64, Vector{Float64}}}, dist_loads)
 
 data = Dict(
-  # Rod(nels, np_types, nip, finite_element(nod, nodof))
-  :element_type => Rod(N, 1, 1, Line(2, 1)),
+  # Beam(ndim, nst, nxe, nip, direction, finite_element(nod, nodof), axisymmetric)
+  :element_type => Beam(1, 1, N, 1, :x, Line(2, 1), false),
   :properties => [1.0e5;],
   :x_coords => linspace(0, 1, (N+1)),
   :support => [(1, [0])],

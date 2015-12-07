@@ -1,3 +1,10 @@
+#
+# Program p4.1 in PtFEM
+#
+# Once finished, this will be identical to FE4_1.jl
+# but using Julia sparse matrices, y = A \ x, etc.
+#
+
 using Docile
 
 Docile.@comment """
@@ -63,14 +70,21 @@ function FE4_1(data::Dict{Symbol, Any})
   if :element_type in keys(data)
     element_type::ElementType = data[:element_type]
   else
-    throw("No element type specified.")
+    println("No element type specified.")
+    return
   end
   
   if typeof(element_type) == CSoM.Rod
     ndim = 1
     nst = element_type.np_types
   else
-    throw("FE4_1 expects a Rod structural element.")
+    ndim::Int64 = element_type.ndim
+    nst::Int64 = element_type.nst
+  end
+  
+  # Add radial stress
+  if ndim == 3 && element_type.axisymmetric
+    nst = 4
   end
   
   element::Element = element_type.element
@@ -78,54 +92,28 @@ function FE4_1(data::Dict{Symbol, Any})
   
   if typeof(element) == Line
     (nels, nn) = mesh_size(element, element_type.nxe)
+  elseif typeof(element) == Triangle || typeof(element) == Quadrilateral
+    (nels, nn) = mesh_size(element, element_type.nxe, element_type.nye)
+  elseif typeof(element) == Hexahedron
+    (nels, nn) = mesh_size(element, element_type.nxe, element_type.nye, element_type.nze)
   else
-    throw("FE4_1 expects a Line finite element.")
+    println("$(typeof(element)) is not a known finite element.")
+    return
   end
    
   nodof = element.nodof         # Degrees of freedom per node
   ndof = element.nod * nodof    # Degrees of freedom per element
   
-  # Update penalty if specified in input dict
+  # Update penalty if specified in FEdict
   
   penalty = 1e20
   if :penalty in keys(data)
     penalty = data[:penalty]
   end
   
-  # All dynamic arrays
+  # Allocate all arrays
   
-  points = zeros(element_type.nip, ndim)   # 
-  g = zeros(Int64, ndof)                   # Element steering vector
-  g_coord = zeros(ndim,nn)                 # 
-  fun = zeros(element.nod)                 #
-  coord = zeros(element.nod, ndim)         #
-  gamma = zeros(nels)                      #
-  jac = zeros(ndim, ndim)                  #
-  g_num = zeros(Int64, element.nod, nels)  # 
-  der = zeros(ndim, element.nod)           #
-  deriv = zeros(ndim, element.nod)         #
-  bee = zeros(nst,ndof)                    #
-  km = zeros(ndof, ndof)                   #
-  mm = zeros(ndof, ndof)                   #
-  gm = zeros(ndof, ndof)                   #
-  kg = zeros(ndof, ndof)                   #
-  eld = zeros(ndof)                        #
-  weights = zeros(element_type.nip)        #
-  g_g = zeros(Int64, ndof, nels)           #
-  num = zeros(Int64, element.nod)          #
-  actions = zeros(nels, ndof)              #
-  nf = ones(Int64, nodof, nn)              #
-  displacements = zeros(size(nf, 1), ndim) #
-  gc = ones(ndim, ndim)                    #
-  dee = zeros(nst,nst)                     #
-  sigma = zeros(nst)                       #
-  axial = zeros(nels)                      #
-  x_coords = zeros(nn)                     #
-  y_coords = zeros(nn)                     # Not used, needed for FEM constructor
-  z_coords = zeros(nn)                     #
-  etype = ones(Int64, nels)                #
-
-  # Start with arrays to be initialized from input dict
+  # Start with arrays to be initialized from FEdict
   
   if :properties in keys(data)
     prop = zeros(size(data[:properties], 1), size(data[:properties], 2))
@@ -133,32 +121,69 @@ function FE4_1(data::Dict{Symbol, Any})
       prop[i, :] = data[:properties][i, :]
     end
   else
-    throw("No :properties key found in input dict to FE4_1.")
+    println("No :properties key found in FEdict")
   end
   
-  # Fill some dynamic arrays from input dict
-  
+  nf = ones(Int64, nodof, nn)
+  #
   if :support in keys(data)
     for i in 1:size(data[:support], 1)
       nf[:, data[:support][i][1]] = data[:support][i][2]
     end
-  else
-    throw("No :support key found in input dict to FE4_1.")
   end
-
+  #
+  
+  x_coords = zeros(nn)
   if :x_coords in keys(data)
     x_coords = data[:x_coords]
   end
   
+  y_coords = zeros(nn)
+  if :y_coords in keys(data)
+    y_coords = data[:y_coords]
+  end
+  
+  z_coords = zeros(nn)
+  if :z_coords in keys(data)
+    z_coords = data[:z_coords]
+  end
+
+  etype = ones(Int64, nels)
   if :etype in keys(data)
     etype = data[:etype]
   end
   
-  # Done with input dict and allocations
+  # All other arrays
+  
+  points = zeros(element_type.nip, ndim)
+  g = zeros(Int64, ndof)
+  g_coord = zeros(ndim,nn)
+  fun = zeros(element.nod)
+  coord = zeros(element.nod, ndim)
+  gamma = zeros(nels)
+  jac = zeros(ndim, ndim)
+  g_num = zeros(Int64, element.nod, nels)
+  der = zeros(ndim, element.nod)
+  deriv = zeros(ndim, element.nod)
+  bee = zeros(nst,ndof)
+  km = zeros(ndof, ndof)
+  mm = zeros(ndof, ndof)
+  gm = zeros(ndof, ndof)
+  kg = zeros(ndof, ndof)
+  eld = zeros(ndof)
+  weights = zeros(element_type.nip)
+  g_g = zeros(Int64, ndof, nels)
+  num = zeros(Int64, element.nod)
+  actions = zeros(nels, ndof)
+  displacements = zeros(size(nf, 1), ndim)
+  gc = ones(ndim, ndim)
+  dee = zeros(nst,nst)
+  sigma = zeros(nst)
+  axial = zeros(nels)
   
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
-  kdiag = zeros(Int64, neq)
+  kdiag = round(Int64, zeros(neq))
   
   # Set global numbering, coordinates and array sizes
   
