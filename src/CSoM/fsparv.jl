@@ -21,6 +21,7 @@ function fsparv!(kv::Vector{Float64}, km::Matrix{Float64},
           if iw >= 0
             ival = kdiag[k] - iw
             kv[ival] += km[i, j]
+            #println(kv)
           end
         end
       end

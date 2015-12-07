@@ -2,4 +2,4 @@
 *.svg
 *.vtu
 *.PNG
-
+notebooks/.ipynb_checkpoints

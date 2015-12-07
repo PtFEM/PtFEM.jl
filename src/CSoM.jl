@@ -62,6 +62,7 @@ include(Pkg.dir("CSoM", "src", "CSoM", "read_generated_data.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "invar.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "formm.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "exportVTK_XML.jl"))
+include(Pkg.dir("CSoM", "src", "CSoM", "fromSkyline.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "lufac.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ldlt.jl"))
 include(Pkg.dir("CSoM", "src", "NMfE", "ivp.jl"))
@@ -131,6 +132,7 @@ export
   write_VTKXML,
   VTKNode,
   VTKElement,
+  fromSkyline,
   
   # From NMfE
   lufac,

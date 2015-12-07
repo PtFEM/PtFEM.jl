@@ -2,7 +2,7 @@ import Base.show
 
 ### Model type ###
 
-type FEM                          # Computationale data and results structure
+immutable FEM                          # Computationale data and results structure
   element_type::ElementType        # Store the element type object
   element::Element                # Store finite element object
   
