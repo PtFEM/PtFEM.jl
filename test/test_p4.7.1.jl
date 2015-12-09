@@ -1,6 +1,6 @@
 using Compat, CSoM, Base.Test
 
-include(Pkg.dir("CSoM", "examples", "StaticEquilibrium", "FE4_7.jl"))
+include(Pkg.dir("CSoM", "examples", "4 Static Equilibrium", "FE4_7.jl"))
 
 data = @compat Dict(
   # Plane(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)

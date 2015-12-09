@@ -1,6 +1,6 @@
 using Compat, CSoM, Base.Test
 
-include(Pkg.dir("CSoM", "examples", "StaticEquilibrium", "FE4_2.jl"))
+include(Pkg.dir("CSoM", "examples", "4 Static Equilibrium", "FE4_2.jl"))
 
 data = @compat Dict(
   # Frame(nels, nn, ndim, nst, nip, finite_element(nod, nodof))

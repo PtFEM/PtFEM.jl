@@ -1,6 +1,6 @@
 using Compat, CSoM, Base.Test
 
-include(Pkg.dir("CSoM", "examples", "StaticEquilibrium", "FE4_6.jl"))
+include(Pkg.dir("CSoM", "examples", "4 Static Equilibrium", "FE4_6.jl"))
 
 data = @compat Dict(
   # Beam(ndim, nst, nxe, nip, direction, finite_element(nod, nodof), axisymmetric)

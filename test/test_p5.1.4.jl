@@ -1,6 +1,6 @@
 using Compat, Base.Test, CSoM
 
-include(Pkg.dir("CSoM", "examples", "ElasticSolids", "FE5_1.jl"))
+include(Pkg.dir("CSoM", "examples", "5 Elastic Solids", "FE5_1.jl"))
 
 data = @compat Dict(
   # Plane(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)

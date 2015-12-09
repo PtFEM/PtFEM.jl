@@ -1,6 +1,6 @@
 using Compat, CSoM
 
-include(Pkg.dir("CSoM", "examples", "StaticEquilibrium", "FE4_1.jl"))
+include(Pkg.dir("CSoM", "examples", "4 Static Equilibrium", "FE4_1.jl"))
 
 data = @compat Dict(
   # Rod(nels, np_types, nip, finite_element(nod, nodof))

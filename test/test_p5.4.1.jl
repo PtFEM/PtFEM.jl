@@ -1,6 +1,6 @@
 using Compat, Base.Test, CSoM
 
-include(Pkg.dir("CSoM", "examples", "ElasticSolids", "FE5_4.jl"))
+include(Pkg.dir("CSoM", "examples", "5 Elastic Solids", "FE5_4.jl"))
 
 data = @compat Dict(
   # GenericSolid(ndim, nst, nels, nn, nip, finite_element(nod, nodof), axisymmentrix)

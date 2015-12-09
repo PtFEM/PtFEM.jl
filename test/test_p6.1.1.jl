@@ -1,6 +1,6 @@
 using Compat, Base.Test, CSoM
 
-include(Pkg.dir("CSoM", "examples", "MaterialNonlinearity", "FE6_1.jl"))
+include(Pkg.dir("CSoM", "examples", "6 Material Nonlinearity", "FE6_1.jl"))
 
 data = @compat Dict(
   # Plane(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)
