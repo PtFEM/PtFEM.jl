@@ -8,11 +8,20 @@
 
 
 function format_nf_line!(l::AbstractString, t::Array{Tuple})
-  println(l)
-  println(typeof(l))
-  sl = round(Int64, split(l))
-  @assert mod(length(sl), 4) == 0
-  sl
+  items=split(l)
+  for i in 1:5
+    if length(items) < (i-1)*4+1
+      break
+    end
+    tup = (
+      parse(Int64, items[round(Int64, (i-1)*4+1)]), 
+      parse(Int64, items[round(Int64, (i-1)*4+2)]),
+      parse(Int64, items[round(Int64, (i-1)*4+3)]), 
+      parse(Int64, items[round(Int64, (i-1)*4+4)])
+    )
+    push!(t, tup)
+  end
+  t
 end
 
 function read_nf_file(f::AbstractString)
@@ -20,11 +29,7 @@ function read_nf_file(f::AbstractString)
   t = Tuple[]
   while !eof(f)
     l = readline(f)
-    sl = format_nf_line!(l, t)
-    for k in 1:length(sl)/4
-      ind = (k-1)*4
-      append!(t, [(sl[ind+1], [sl[ind+2] sl[ind+3] sl[ind+4]])])
-    end
+    t = format_nf_line!(l, t)
   end
   close(f)
   t
@@ -53,7 +58,7 @@ function read_loads_file(f::AbstractString)
     l = readline(f)
     sl = format_loads_line!(l, t)
     for k in 1:length(sl)/4
-      ind = (k-1)*4
+      ind = round(Int64, (k-1)*4)
       append!(t, [(round(Int64, sl[ind+1]), [sl[ind+2] sl[ind+3] sl[ind+4]])])
     end
   end

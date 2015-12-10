@@ -40,3 +40,4 @@ data |> display
 println()
 
 @time m = FE5_1(data);
+println()
