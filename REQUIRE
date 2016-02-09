@@ -1,7 +1,4 @@
-julia 0.3
+julia 0.4
 Compat
 Docile
 Lexicon
-Sundials
-Codecs
-LightXML

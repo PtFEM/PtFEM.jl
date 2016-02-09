@@ -1,8 +1,5 @@
 module CSoM
 
-#using Docile, Lexicon
-using IterativeSolvers
-
 if !isdefined(Main, :JULIA_SVG_BROWSER)
   JULIA_SVG_BROWSER = ""
   try
