@@ -1,4 +1,4 @@
-using Compat, CSoM
+using Compat, CSoM, Base.Test.@test
 
 include(Pkg.dir("CSoM", "examples", "4 Static Equilibrium", "FE4_1.jl"))
 
