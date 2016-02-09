@@ -65,14 +65,6 @@ include(Pkg.dir("CSoM", "src", "CSoM", "formm.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "exportVTK_XML.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "fromSkyline.jl"))
 include(Pkg.dir("CSoM", "src", "CSoM", "skyline2sparse.jl"))
-include(Pkg.dir("CSoM", "src", "NMfE", "lufac.jl"))
-include(Pkg.dir("CSoM", "src", "NMfE", "ldlt.jl"))
-include(Pkg.dir("CSoM", "src", "NMfE", "ivp.jl"))
-include(Pkg.dir("CSoM", "src", "NMfE", "bvp.jl"))
-include(Pkg.dir("CSoM", "src", "NMfE", "bigcstab.jl"))
-include(Pkg.dir("CSoM", "src", "NMfE", "bigcstabl.jl"))
-include(Pkg.dir("CSoM", "src", "NMfE", "bigcstab_left_precond.jl"))
-include(Pkg.dir("CSoM", "src", "NMfE", "bigcstab_right_precond.jl"))
 
 ### Exports ###
 
@@ -139,20 +131,8 @@ export
   VTKNode,
   VTKElement,
   fromSkyline,
-  skyline2sparse,
+  skyline2sparse
   
-  # From NMfE
-  lufac,
-  ldlt,
-  euler,
-  modified_euler,
-  mid_point_euler,
-  runga_kutta_4,
-  bigcstab,
-  bigcstabl!,
-  bigcstab_left_precond!,
-  bigcstab_right_precond!
-
 ### Deprecated ###
   
   include("deprecated.jl")
