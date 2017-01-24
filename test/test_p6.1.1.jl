@@ -2,7 +2,7 @@ using Compat, Base.Test, CSoM
 
 include(Pkg.dir("CSoM", "examples", "6 Material Nonlinearity", "FE6_1.jl"))
 
-data = @compat Dict(
+data = Dict(
   # Plane(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)
   :element_type => Plane(2, 4, 8, 4, 4, :y, Quadrilateral(8, 2), false),
   :properties => [100.0 1.0e5 0.3;],

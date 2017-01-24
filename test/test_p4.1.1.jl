@@ -1,8 +1,8 @@
-using Compat, CSoM, Base.Test.@test
+using CSoM, Base.Test.@test
 
 include(Pkg.dir("CSoM", "examples", "4 Static Equilibrium", "FE4_1.jl"))
 
-data = @compat Dict(
+data = Dict(
   # Rod(nels, np_types, nip, element(nod, nodof))
   :element_type => Rod(4, 1, 1, Line(2, 1)),
   :properties => [1.0e5;],

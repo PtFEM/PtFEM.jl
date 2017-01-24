@@ -2,7 +2,7 @@ using Compat, Base.Test, CSoM
 
 include(Pkg.dir("CSoM", "examples", "5 Elastic Solids", "FE5_5.jl"))
 
-data = @compat Dict(
+data = Dict(
   # Plane(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)
   :element_type => Plane(2, 3, 20, 2, 4, :y, Quadrilateral(8, 2), false),
   :properties => [1.0e5 0.0 1.0e-5 1.0e-5;],

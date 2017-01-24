@@ -139,14 +139,25 @@ export
   fromSkyline,
   skyline2sparse,
   
-  # FRom Cha04
+  # From Chap04
   FE4_1,
   FE4_2,
   FE4_3,
   FE4_4,
   FE4_5,
   FE4_6,
-  FE4_7
+  FE4_7,
+  
+  # From Chap05
+  FE5_1,
+  FE5_2,
+  FE5_3,
+  FE5_4,
+  FE5_5,
+  FE4_6,
+  
+  # From Chap05
+  FE6_1
   
 ### Deprecated ###
   

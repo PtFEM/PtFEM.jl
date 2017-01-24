@@ -1,8 +1,6 @@
-using Compat, CSoM
+using CSoM
 
-include(Pkg.dir("CSoM", "examples", "4 Static Equilibrium", "FE4_4.jl"))
-
-data = @compat Dict(
+data = Dict(
   # Frame(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
   :element_type => Frame(30, 31, 3, 1, 1, Line(2, 3)),
   :properties => [2.0e6 1.0e6 1.0e6 3.0e5;],

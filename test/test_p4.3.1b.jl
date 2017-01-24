@@ -1,8 +1,8 @@
-using Compat, CSoM, Base.Test
+using CSoM, Base.Test
 
 include(Pkg.dir("CSoM", "examples", "4 Static Equilibrium", "FE4_2.jl"))
 
-data = @compat Dict(
+data = Dict(
   # Frame(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
   :element_type => Frame(4, 5, 3, 1, 1, Line(2, 2)),
   :properties => [5.0e5;],

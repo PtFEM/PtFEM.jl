@@ -1,7 +1,6 @@
-using Compat, CSoM
-include("FE4_1.jl")
+using CSoM
 
-data = @compat Dict(
+data = Dict(
   # Rod(nels, np_types, nip, finite_element(nod, nodof))
   :element_type => Rod(4, 1, 1, Line(2, 1)),
   :properties => [2.0e3; 1.0e3],

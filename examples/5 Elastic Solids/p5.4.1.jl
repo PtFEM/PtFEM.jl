@@ -1,8 +1,8 @@
-using Compat, CSoM
+using CSoM
 
 include("FE5_4.jl")
 
-data = @compat Dict(
+data = Dict(
   # GenericSolid(ndim, nst, nels, nn, nip, finite_element(nod, nodof), axisymmentrix)
   :element_type => GenericSolid(2, 3, 6, 35, 9, Quadrilateral(9, 2), false),
   :properties => [1.0e6 0.3 0.0;],

@@ -1,8 +1,6 @@
-using Compat, CSoM
+using CSoM
 
-include("FE4_2.jl")
-
-data = @compat Dict(
+data = Dict(
   # Frame(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
   :element_type => Frame(10, 6, 2, 1, 1, Line(2, 2)),
   :properties => [2.0e5;],

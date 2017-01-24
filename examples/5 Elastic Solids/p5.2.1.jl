@@ -1,8 +1,8 @@
-using Compat, CSoM
+using CSoM
 
 include("FE5_2.jl")
 
-data = @compat Dict(
+data = Dict(
 # Plane(ndim, nst, nxe, nye, nip, direction=(:x|:y), finite_element(nod, nodof), axisymmetric=false)
 # Plane(ndim, nst, nxe, nye, nip, direction=:z, finite_element(nod, nodof), axisymmetric=true)
 # Plane(ndim, nst, nre, nze, nip, direction=:r, finite_element(nod, nodof), axisymmetric=false)

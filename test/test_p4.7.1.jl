@@ -1,8 +1,8 @@
-using Compat, CSoM, Base.Test
+using CSoM, Base.Test
 
 include(Pkg.dir("CSoM", "examples", "4 Static Equilibrium", "FE4_7.jl"))
 
-data = @compat Dict(
+data = Dict(
   # Plane(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)
   :element_type => Plane(2, 3, 2, 2, 16, :x, Quadrilateral(4, 4), false),
   :properties => [10.92 0.3;],
