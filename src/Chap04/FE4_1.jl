@@ -1,11 +1,7 @@
-using Docile
+using Documenter
 
-Docile.@comment """
+"""
 # FE4_1
-"""
-
-"""
-###FE4_1
 
 Backbone method for static equilibrium analysis of a rod.
 
@@ -35,7 +31,6 @@ FE4_1(data::Dict)
 ### Examples
 ```julia
 using CSoM
-include("FE4_1.jl")
 
 data = Dict(
   # Rod(nels, np_types, nip, finite_element(nod, nodof))
@@ -47,6 +42,15 @@ data = Dict(
 )
 
 m = FE4_1(data)
+
+println("Displacements:")
+m.displacements |> display
+println()
+
+println("Actions:")
+m.actions |> display
+println()
+
 ```
 
 ### Related help

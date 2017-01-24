@@ -2,8 +2,8 @@ import Base.show
 
 ### Model type ###
 
-immutable FEM                          # Computationale data and results structure
-  element_type::ElementType        # Store the element type object
+immutable FEM                     # Computationale data and results structure
+  element_type::ElementType       # Store the element type object
   element::Element                # Store finite element object
   
   # Scalars
@@ -33,7 +33,7 @@ immutable FEM                          # Computationale data and results structu
   actions::Array{Float64, 2}      # Actions
   bee::Array{Float64, 2}          # Strain displacement matrix
   coord::Array{Float64, 2}        # Element nodal coordinates
-  gamma::Vector{Float64}          # Rotation vector arouns local x axis
+  gamma::Vector{Float64}          # Rotation vector around local x axis
   dee::Array{Float64, 2}          # Stress strain matrix
   
   der::Array{Float64, 2}          # Shape function derivatives w.r.t. local coord

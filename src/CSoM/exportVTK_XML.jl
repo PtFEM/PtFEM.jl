@@ -71,7 +71,7 @@ function write_data!(vtkxml::VTKXMLASCII, xmlele::XMLElement)
     add_text(xmlele, takebuf_string(vtkxml.buffer))
 end
 
-function write_VTKXML(filename::ASCIIString, nodes::Vector{VTKNode},
+function write_VTKXML(filename::String, nodes::Vector{VTKNode},
                              elements::Vector{VTKElement},
                              binary::Bool=true, compress::Bool=false)
      if (!binary) && compress
@@ -89,7 +89,7 @@ function write_VTKXML(filename::ASCIIString, nodes::Vector{VTKNode},
     end
 end
 
-function _write_VTKXML{P <: AbstractVTKXML}(filename::ASCIIString, nodes::Vector{VTKNode},
+function _write_VTKXML{P <: AbstractVTKXML}(filename::String, nodes::Vector{VTKNode},
                                             elements::Vector{VTKElement}, binary::Bool,
                                             compress::Bool, vtkxml::P)
 

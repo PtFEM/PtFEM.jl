@@ -17,51 +17,58 @@ export
 ### Imports ###
 
 ### Includes ###
-include(Pkg.dir("CSoM", "src", "CSoM", "finite_elements.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "structural_elements.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "FEM.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "FEmodel.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "formnf.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "num_to_g.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "fkdiag.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "fsparv.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "spabac.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "sparin.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "rigid_jointed.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "pin_jointed.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "mesh_size.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "geom_rect_triangle.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "geom_rect_quadrilateral.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "hexahedron_xz.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "sample_hexahedron.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "sample_line.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "sample_quadrilateral.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "sample_tetrahedron.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "sample_triangle.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "deemat.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "beemat_nonaxi.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "beemat.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "shape_fun.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "shape_der.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "rod_km.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "rod_mm.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "beam_km.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "beam_mm.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "global_to_axial.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "hinge.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "glob_to_loc.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "loc_to_glob.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "checon.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "linmul_sky.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "stability.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "beam_gm.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "fmplat.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "read_generated_data.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "invar.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "formm.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "exportVTK_XML.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "fromSkyline.jl"))
-include(Pkg.dir("CSoM", "src", "CSoM", "skyline2sparse.jl"))
+include("CSoM/finite_elements.jl")
+include("CSoM/structural_elements.jl")
+include("CSoM/FEM.jl")
+include("CSoM/FEmodel.jl")
+include("CSoM/formnf.jl")
+include("CSoM/num_to_g.jl")
+include("CSoM/fkdiag.jl")
+include("CSoM/fsparv.jl")
+include("CSoM/spabac.jl")
+include("CSoM/sparin.jl")
+include("CSoM/rigid_jointed.jl")
+include("CSoM/pin_jointed.jl")
+include("CSoM/mesh_size.jl")
+include("CSoM/geom_rect_triangle.jl")
+include("CSoM/geom_rect_quadrilateral.jl")
+include("CSoM/hexahedron_xz.jl")
+include("CSoM/sample_hexahedron.jl")
+include("CSoM/sample_line.jl")
+include("CSoM/sample_quadrilateral.jl")
+include("CSoM/sample_tetrahedron.jl")
+include("CSoM/sample_triangle.jl")
+include("CSoM/deemat.jl")
+include("CSoM/beemat_nonaxi.jl")
+include("CSoM/beemat.jl")
+include("CSoM/shape_fun.jl")
+include("CSoM/shape_der.jl")
+include("CSoM/rod_km.jl")
+include("CSoM/rod_mm.jl")
+include("CSoM/beam_km.jl")
+include("CSoM/beam_mm.jl")
+include("CSoM/global_to_axial.jl")
+include("CSoM/hinge.jl")
+include("CSoM/glob_to_loc.jl")
+include("CSoM/loc_to_glob.jl")
+include("CSoM/checon.jl")
+include("CSoM/linmul_sky.jl")
+include("CSoM/stability.jl")
+include("CSoM/beam_gm.jl")
+include("CSoM/fmplat.jl")
+include("CSoM/read_generated_data.jl")
+include("CSoM/invar.jl")
+include("CSoM/formm.jl")
+include("CSoM/exportVTK_XML.jl")
+include("CSoM/fromSkyline.jl")
+include("CSoM/skyline2sparse.jl")
+include("Chap04/FE4_1.jl")
+include("Chap04/FE4_2.jl")
+include("Chap04/FE4_3.jl")
+include("Chap04/FE4_4.jl")
+include("Chap04/FE4_5.jl")
+include("Chap04/FE4_6.jl")
+include("Chap04/FE4_7.jl")
 
 ### Exports ###
 
@@ -89,6 +96,7 @@ export
   FEmodel,
   
   # From CSoM
+  #=
   formnf!,
   num_to_g!,
   fkdiag!,
@@ -127,8 +135,18 @@ export
   write_VTKXML,
   VTKNode,
   VTKElement,
+  =#
   fromSkyline,
-  skyline2sparse
+  skyline2sparse,
+  
+  # FRom Cha04
+  FE4_1,
+  FE4_2,
+  FE4_3,
+  FE4_4,
+  FE4_5,
+  FE4_6,
+  FE4_7
   
 ### Deprecated ###
   
