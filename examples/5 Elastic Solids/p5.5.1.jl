@@ -1,7 +1,5 @@
 using CSoM
 
-include("FE5_5.jl")
-
 data = Dict(
   # Plane(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)
   :element_type => Plane(2, 3, 20, 2, 4, :y, Quadrilateral(8, 2), false),

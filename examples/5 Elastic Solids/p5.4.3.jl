@@ -1,7 +1,5 @@
 using CSoM
 
-include("FE5_4.jl")
-
 data = Dict(
   # GenericSolid(ndim, nst, nels, nn, nip, finite_element(nod, nodof), axisymmentrix)
   :element_type => GenericSolid(3, 6, 7, 40, 27, Hexahedron(14, 3), false),

@@ -62,6 +62,7 @@ include("CSoM/formm.jl")
 include("CSoM/exportVTK_XML.jl")
 include("CSoM/fromSkyline.jl")
 include("CSoM/skyline2sparse.jl")
+
 include("Chap04/FE4_1.jl")
 include("Chap04/FE4_2.jl")
 include("Chap04/FE4_3.jl")
@@ -69,6 +70,15 @@ include("Chap04/FE4_4.jl")
 include("Chap04/FE4_5.jl")
 include("Chap04/FE4_6.jl")
 include("Chap04/FE4_7.jl")
+
+include("Chap05/FE5_1.jl")
+include("Chap05/FE5_2.jl")
+include("Chap05/FE5_3.jl")
+include("Chap05/FE5_4.jl")
+include("Chap05/FE5_5.jl")
+include("Chap05/FE5_6.jl")
+
+include("Chap06/FE6_1.jl")
 
 ### Exports ###
 
@@ -154,7 +164,7 @@ export
   FE5_3,
   FE5_4,
   FE5_5,
-  FE4_6,
+  FE5_6,
   
   # From Chap05
   FE6_1

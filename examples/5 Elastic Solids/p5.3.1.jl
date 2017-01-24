@@ -1,7 +1,5 @@
 using CSoM
 
-include("FE5_3.jl")
-
 data = Dict(
   # Solid(ndim, nst, nxe, nye, nze, nip, direction=:r, finite_element(nod, nodof))
   :element_type => Solid(3, 6, 1, 3, 2, 8, Hexahedron(20, 3)),

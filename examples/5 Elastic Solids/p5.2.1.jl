@@ -1,7 +1,5 @@
 using CSoM
 
-include("FE5_2.jl")
-
 data = Dict(
 # Plane(ndim, nst, nxe, nye, nip, direction=(:x|:y), finite_element(nod, nodof), axisymmetric=false)
 # Plane(ndim, nst, nxe, nye, nip, direction=:z, finite_element(nod, nodof), axisymmetric=true)

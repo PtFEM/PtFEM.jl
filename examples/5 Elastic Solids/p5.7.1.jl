@@ -1,7 +1,5 @@
 using CSoM
 
-include("FE5_6.jl")
-
 nf_path = Pkg.dir("CSoM", "examples", "5 Elastic Solids", "p5.7.1.nf.dat")
 loads_path = Pkg.dir("CSoM", "examples", "5 Elastic Solids", "p5.7.1.loads.dat")
 
