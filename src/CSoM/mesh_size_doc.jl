@@ -1,10 +1,8 @@
-using Docile, Lexicon
+using Documenter
 
-Docile.@comment """
+"""
 # mesh_size
-"""
 
-"""
 mesh_size: The function mesh_size returns the number of elements (nels) and the number
 of nodes (nn) in a 1-d geometry-created mesh.
 

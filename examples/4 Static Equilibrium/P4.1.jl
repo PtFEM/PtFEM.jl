@@ -5,14 +5,10 @@
 # but using Julia sparse matrices, y = A \ x, etc.
 #
 
-using Docile
+using Documenter
 
-Docile.@comment """
+"""
 # FE4_1
-"""
-
-"""
-###FE4_1
 
 Backbone method for static equilibrium analysis of a rod.
 

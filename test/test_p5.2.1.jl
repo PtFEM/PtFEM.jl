@@ -1,4 +1,4 @@
-using Compat, Base.Test, CSoM
+using Base.Test, CSoM
 
 data = Dict(
 # Plane(ndim, nst, nxe, nye, nip, direction=(:x|:y), finite_element(nod, nodof), axisymmetric=false)

@@ -1,4 +1,4 @@
-using Compat, Base.Test, CSoM
+using Base.Test, CSoM
 
 data = Dict(
   # GenericSolid(ndim, nst, nels, nn, nip, finite_element(nod, nodof), axisymmentrix)

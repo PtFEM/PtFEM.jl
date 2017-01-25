@@ -1,4 +1,4 @@
-using Compat, Base.Test, CSoM
+using Base.Test, CSoM
 
 data = Dict(
   # Solid(ndim, nst, nxe, nye, nze, nip, direction=:r, finite_element(nod, nodof))
