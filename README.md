@@ -8,7 +8,7 @@
 
 These are (some of) the programs as described in "Programming the Finite Element Method" by I M Smith and D V Griffiths. The package should probably be called PtFEM.jl, but for now I have always related them to Colorado School of Mines (being a mining engineer from Delft University myself), hence [CSoM.jl](https://github.com/goedman/CSoM.jl).
 
-Initial focus is on chapters 4 to 6 in order to figure out how to best structure the programs. For inspiration I'm looking of course at the PtFEM book but also a bit at [deal.II](http://dealii.org) and (to a lesser extent) [FEniCS](https://fenicsproject.org). I'm also looking to possibly reuse some of the approaches/features in [JuaFEM.jl](http://kristofferc.github.io/JuAFEM.jl/latest/).
+Initial focus is on chapters 4 to 6 in order to figure out how to best structure the programs. For inspiration I'm looking of course at the PtFEM book but also a bit at [deal.II](http://dealii.org) and (to a lesser extent) [FEniCS](https://fenicsproject.org). I'm also looking to possibly reuse some of the approaches/features in [JuaFEM](http://kristofferc.github.io/JuAFEM.jl/latest/).
 
 All 'basic' functions are in the src/CSoM directory while higher level computational flow 'templates' are in src/Chapxx directories. The idea of the templates is that they can be used to quickly set up similar models, e.g. 3D beams (see the Beams examples in [CSoM.jl](https://github.com/goedman/CSoM.jl/tree/master/examples/Beams)).
 
