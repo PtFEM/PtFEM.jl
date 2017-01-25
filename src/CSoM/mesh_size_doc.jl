@@ -24,11 +24,9 @@ function mesh_size(fe::Line, nxe::Int64)
   (nels, nn)
 end
 
-Docile.@comment """
+"""
 # mesh_size
-"""
 
-"""
 mesh_size: The function mesh_size returns the number of elements (nels) and the number
 of nodes (nn) in a 2-d geometry-created mesh.
 
@@ -59,11 +57,9 @@ function mesh_size(fe::Triangle, nxe::Int64, nye::Int64)
   (nels, nn)
 end
 
-Docile.@comment """
+"""
 # mesh_size
-"""
 
-"""
 mesh_size: The function mesh_size returns the number of elements (nels) and the number
 of nodes (nn) in a 2-d geometry-created mesh.
 
@@ -94,11 +90,9 @@ function mesh_size(fe::Quadrilateral, nxe::Int64, nye::Int64)
   (nels, nn)
 end
 
-Docile.@comment """
+"""
 # mesh_size
-"""
 
-"""
 mesh_size: The function mesh_size returns the number of elements (nels) and the number
 of nodes (nn) in a 3-d geometry-created mesh.
 
