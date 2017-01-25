@@ -8,7 +8,7 @@
 
 These are (some of) the programs as described in "Programming the Finite Element Method" by I M Smith and D V Griffiths. The package should probably be called PtFEM, but for now I have always related them to Colorado School of Mines (being a mining engineer from Delft University myself).
 
-Initial focus is on chapters 4 to 6 to figure out how to structure the programs.
+Initial focus is on chapters 4 to 6 to figure out how to structure the programs. For inspiration I'm looking of course at the PtFEM book but also a bit at deal.II and (to a lesser extent) FEniCS.
 
 For now 'basic' functions are in the src/CSoM directory, computational flow 'templates' are in src/Chapxx directories. The idea of the templates is that they can be used to quickly set up similar models, e.g. 3D beams.
 
@@ -24,3 +24,15 @@ Also note the NMfE.jl package, which contains the programs in the book "Numerica
 
 Rob J Goedman
 January 2017
+
+References:
+
+1. [Programming the Finite Element Method](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1119973341.html)
+2. [Numerical Methods for Engineer](https://books.google.com/books?id=lxGPQmuSwBQC&source=gbs_similarbooks)
+3. [FEniCS](https://fenicsproject.org)
+4. [deal.II](http://dealii.org)
+5. [ApproxFun.jl](https://github.com/JuliaApproximation/ApproxFun.jl)
+6. [DifferentialEquations.jl](https://github.com/JuliaDiffEq/DifferentialEquations.jl)
+7. [JuliaFEM.jl](http://www.juliafem.org)
+8. [JuaFEM.jl](https://github.com/KristofferC/JuAFEM.jl)
+9. [Julia language](http://julialang.org)
