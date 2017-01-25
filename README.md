@@ -6,21 +6,19 @@
 
 ##Access to CSoM models
 
-These are (some of) the programs as described in "Programming the Finite Element Method" by I M Smith and D V Griffiths. The package should probably be called PtFEM, but for now I have always related them to Colorado School of Mines (being a mining engineer from Delft University myself).
+These are (some of) the programs as described in "Programming the Finite Element Method" by I M Smith and D V Griffiths. The package should probably be called PtFEM.jl, but for now I have always related them to Colorado School of Mines (being a mining engineer from Delft University myself), hence [CSoM.jl](https://github.com/goedman/CSoM.jl).
 
-Initial focus is on chapters 4 to 6 to figure out how to structure the programs. For inspiration I'm looking of course at the PtFEM book but also a bit at deal.II and (to a lesser extent) FEniCS.
+Initial focus is on chapters 4 to 6 in order to figure out how to best structure the programs. For inspiration I'm looking of course at the PtFEM book but also a bit at [deal.II](http://dealii.org) and (to a lesser extent) [FEniCS](https://fenicsproject.org).
 
-For now 'basic' functions are in the src/CSoM directory, computational flow 'templates' are in src/Chapxx directories. The idea of the templates is that they can be used to quickly set up similar models, e.g. 3D beams.
+All 'basic' functions are in the src/CSoM directory while higher level computational flow 'templates' are in src/Chapxx directories. The idea of the templates is that they can be used to quickly set up similar models, e.g. 3D beams (see the Beams examples in CSoM).
 
-Once the structure is decided the basic functions will be reviewed for better approaches in Julia vs. the current Fortran flavor.
+Once the structure has been decided upon the basic functions will be reviewed for better approaches in [Julia](http://julialang.org) vs. the current Fortran flavor.
 
-Currently mostly being tested on Julia v0.5. Some testing is happening on 0.6
+Lots of other great development work related to solving partial differentiel equiations is done in Julia packages, e.g. [ApproxFun.jl](https://github.com/JuliaApproximation/ApproxFun.jl), [DifferentialEquations.jl](https://github.com/JuliaDiffEq/DifferentialEquations.jl), [JuliaFEM.jl](http://www.juliafem.org), [JuaFEM.jl](https://github.com/KristofferC/JuAFEM.jl) to name a few.
 
-No timeline is set when this work in progress will be finished.
+Also note the NMfE.jl package, which contains the programs in the book "Numerical Methods for Engineers" by the same authors. NMfE is a great introduction to PtFEM. In particular, examples/ch07 directory of NMfE.jl contains some very interesting Symata.jl based introductory examples of applying the method of weighted residuals (MRW).
 
-Lots of other great stuff related to solving partial differentiel equiations is done in Julia packages, e.g. ApproxFun.jl, DifferentialEquations.jl, JuliaFem.jl, JuaFEM.jl to name a few.
-
-Also note the NMfE.jl package, which contains the programs in the book "Numerical Methods for Engineers" by the same authors. In particular, Chapter 7 contains some Symata.jl based examples of applying the method of weighted residuals (MRW).
+Currently mostly being tested on Julia v0.5. Some testing is happening on 0.6 No timeline is set when this work in progress will be finished.
 
 Rob J Goedman
 January 2017
@@ -28,11 +26,14 @@ January 2017
 References:
 
 1. [Programming the Finite Element Method](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1119973341.html)
-2. [Numerical Methods for Engineer](https://books.google.com/books?id=lxGPQmuSwBQC&source=gbs_similarbooks)
-3. [FEniCS](https://fenicsproject.org)
-4. [deal.II](http://dealii.org)
-5. [ApproxFun.jl](https://github.com/JuliaApproximation/ApproxFun.jl)
-6. [DifferentialEquations.jl](https://github.com/JuliaDiffEq/DifferentialEquations.jl)
-7. [JuliaFEM.jl](http://www.juliafem.org)
-8. [JuaFEM.jl](https://github.com/KristofferC/JuAFEM.jl)
-9. [Julia language](http://julialang.org)
+1. [CSoM.jl](https://github.com/goedman/CSoM.jl)
+1. [deal.II](http://dealii.org)
+1. [FEniCS](https://fenicsproject.org)
+1. [Julia language](http://julialang.org)
+1. [ApproxFun.jl](https://github.com/JuliaApproximation/ApproxFun.jl)
+1. [DifferentialEquations.jl](https://github.com/JuliaDiffEq/DifferentialEquations.jl)
+1. [JuliaFEM.jl](http://www.juliafem.org)
+1. [JuaFEM.jl](https://github.com/KristofferC/JuAFEM.jl)
+1. [Numerical Methods for Engineer](https://books.google.com/books?id=lxGPQmuSwBQC&source=gbs_similarbooks)
+1. [NMfE.jl](https://github.com/goedman/NMfE.jl)
+1. [Symata.jl](https://github.com/jlapeyre/Symata.jl)
