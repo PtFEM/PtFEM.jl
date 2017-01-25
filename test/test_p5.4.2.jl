@@ -1,7 +1,5 @@
 using Compat, Base.Test, CSoM
 
-include(Pkg.dir("CSoM", "examples", "5 Elastic Solids", "FE5_4.jl"))
-
 data = Dict(
   # GenericSolid(ndim, nst, nels, nn, nip, finite_element(nod, nodof), axisymmentrix)
   :element_type => GenericSolid(3, 6, 6, 8, 1, Tetrahedron(4, 3), false),

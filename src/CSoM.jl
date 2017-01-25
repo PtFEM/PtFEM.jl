@@ -142,10 +142,10 @@ export
   fmplat!,
   invar!,
   formm!,
+  =#
   write_VTKXML,
   VTKNode,
   VTKElement,
-  =#
   fromSkyline,
   skyline2sparse,
   

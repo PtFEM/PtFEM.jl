@@ -1,7 +1,5 @@
 using CSoM
 
-include(Pkg.dir("CSoM", "examples", "4 Static Equilibrium", "FE4_1.jl"))
-
 data = Dict(
   # Rod(nels, np_types, nip, finite_element(nod, nodof))
   :element_type => Rod(4, 2, 1, Line(2, 1)),

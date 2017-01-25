@@ -1,7 +1,5 @@
 using CSoM, Base.Test
 
-include(Pkg.dir("CSoM", "examples", "4 Static Equilibrium", "FE4_3.jl"))
-
 data = Dict(
   # Beam(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
   :element_type => Beam(2, 1, 4, 1, :x, Line(2, 2), false),

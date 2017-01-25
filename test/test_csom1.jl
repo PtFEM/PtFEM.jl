@@ -1,7 +1,5 @@
 using CSoM
 
-include(Pkg.dir("CSoM", "examples", "4 Static Equilibrium", "FE4_4.jl"))
-
 data = Dict(
   # Frame(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
   :element_type => Frame(20, 21, 3, 1, 1, Line(2, 3)),
