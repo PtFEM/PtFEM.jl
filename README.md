@@ -18,7 +18,7 @@ Lots of other great development work related to solving partial differentiel equ
 
 Also note the  [NMfE.jl](https://github.com/goedman/NMfE.jl) package, which contains the programs in the book "Numerical Methods for Engineers" by the same authors. NMfE is a great introduction to PtFEM. In particular, examples/ch07 directory of NMfE.jl contains some very interesting [Symata.jl](https://github.com/jlapeyre/Symata.jl) based introductory examples of applying the method of weighted residuals (MRW).
 
-Currently CSoM.jl is mostly being tested on Julia v0.5. Testing will shift towards Julia v0.6 once some of the REQUIREd packages are available and show fewer warnings (Spring 2017?)
+Currently CSoM.jl has switched Julia v0.6.
 
 Please note that no timeline is set when this work in progress will be finished.
 
