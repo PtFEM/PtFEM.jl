@@ -26,7 +26,7 @@ data = Dict(
 @time m = FE6_1(data)
 
 #if VERSION.minor == 5
-  @test_approx_eq_eps m [10,519.0,-0.07134906003311133,250] 1.0e-6
+  @test m [10,519.0,-0.07134906003311133,250] 1.0e-6
 #else
 #  @test m ≈ [10,519.0,-0.07134906003311133,250] atol=1.0e-6
 #end
