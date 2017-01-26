@@ -1,4 +1,4 @@
-using Base.Test, CSoM
+using Base.Test, CSoM, Compat
 
 data = Dict(
   # Plane(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)
@@ -25,4 +25,8 @@ data = Dict(
 
 @time m = FE6_1(data)
 
-@test_approx_eq_eps m [10,519.0,-0.07134906003311133,250] 1.0e-6
+#if VERSION.minor == 5
+  @test_approx_eq_eps m [10,519.0,-0.07134906003311133,250] 1.0e-6
+#else
+#  @test m ≈ [10,519.0,-0.07134906003311133,250] atol=1.0e-6
+#end
