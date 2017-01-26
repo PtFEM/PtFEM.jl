@@ -179,7 +179,7 @@ function FE4_1(data::Dict{Symbol, Any})
   
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
-  kdiag = round(Int64, zeros(neq))
+  kdiag = zeros(Int64, neq)
   
   # Set global numbering, coordinates and array sizes
   

@@ -25,7 +25,7 @@ function stability!(kv::Vector{Float64}, gv::Vector{Float64}, kdiag::Vector{Int6
      big = minimum(x1[2:end])
    end
    x1 = x1 / big
-   converged = (maximum(abs(x1[2:end]-x0[2:end]))/maximum(abs(x1[2:end])) < tol)
+   converged = (maximum(abs.(x1[2:end]-x0[2:end]))/maximum(abs.(x1[2:end])) < tol)
    x0 = copy(x1)
    if converged || iters==limit
      break
