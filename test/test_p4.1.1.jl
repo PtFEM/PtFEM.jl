@@ -1,8 +1,8 @@
 using CSoM, Base.Test.@test
 
 data = Dict(
-  # Rod(nels, np_types, nip, element(nod, nodof))
-  :element_type => Rod(4, 1, 1, Line(2, 1)),
+  # Rod(nels, np_types, nip, fin_el(nod, nodof))
+  :struc_el => Rod(4, 1, 1, Line(2, 1)),
   :properties => [1.0e5;],
   :x_coords => linspace(0, 1, 5),
   :support => [

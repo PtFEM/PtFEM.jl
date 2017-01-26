@@ -144,7 +144,7 @@ function shape_fun!(fun::Vector{Float64}, points::Matrix{Float64}, i::Int64)
             0.125*xip*etam*zetap,0.125*xip*etam*zetam,
             0.125*xim*etap*zetam,0.125*xim*etap*zetap,
             0.125*xip*etap*zetap,0.125*xip*etap*zetam]
-    elseif nod == 14                          # type 6 element
+    elseif nod == 14                          # type 6 fin_el
      fun[1] = (xi*eta+xi*zeta+2.0*xi+eta*zeta+2.0*eta+2.0*zeta+2.0)*
        (xi-1.0)*(eta-1.0)*(zeta-1.0)/8.0
      fun[2] =-(xi*eta-xi*zeta+2.0*xi-eta*zeta+2.0*eta-2.0*zeta+2.0)*

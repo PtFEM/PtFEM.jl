@@ -2,7 +2,7 @@ using Base.Test, CSoM
 
 data = Dict(
   # Plane(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)
-  :element_type => Plane(2, 3, 20, 2, 4, :y, Quadrilateral(8, 2), false),
+  :struc_el => Plane(2, 3, 20, 2, 4, :y, Quadrilateral(8, 2), false),
   :properties => [1.0e5 0.0 1.0e-5 1.0e-5;],
   :x_coords => collect(linspace(0.0, 1.0, 21)),
   :y_coords => collect(linspace(0.05, -0.05, 3)),

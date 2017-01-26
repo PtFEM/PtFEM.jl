@@ -1,134 +1,134 @@
 ### Top level structural component ###
 
 @doc doc"""
-## ElementType
+## StructuralElement
 
-Abstract structural element type.
+Abstract structural fin_el type.
 
 ### Type
 ```julia
-abstract ElementType
+abstract StructuralElement
 ```
 
 ### Subtypes
 ```julia
-* Rod::ElementType          : Rod(nxe, np_types, nip, element)
-* Beam::ElementType         : Beam(nod, nodof)
-* Frame::ElementType        : Frame(nod, nodof)
-* Plane::ElementType        : Plane(nod, nodof)
-* Solid::ElementType        : Solid(nod, nodof)
-* GenericSolid::ElementType : GenericSolid(nod, nodof)
+* Rod::StructuralElement          : Rod(nxe, np_types, nip, fin_el)
+* Beam::StructuralElement         : Beam(nod, nodof)
+* Frame::StructuralElement        : Frame(nod, nodof)
+* Plane::StructuralElement        : Plane(nod, nodof)
+* Solid::StructuralElement        : Solid(nod, nodof)
+* GenericSolid::StructuralElement : GenericSolid(nod, nodof)
 ```
 """ ->
-abstract ElementType              # Structure element to be modeled
+abstract StructuralElement              # Structure fin_el to be modeled
 
 @doc doc"""
 ## Rod
 
-Concrete 1D structural element type with only axial stresses.
+Concrete 1D structural fin_el type with only axial stresses.
 
 ### Constructor
 ```julia
-Rod(nels, np_types, nip, element)
+Rod(nels, np_types, nip, fin_el)
 ```
 
 ### Arguments
 ```julia
-* nels::Int64       : Number of elements (stored in field nxe)
+* nels::Int64       : Number of fin_els (stored in field nxe)
 * np_types::Int64   : Number of different property types
 * nip::Int64        : Number of integration points
-* element::Element  : Line(nod, nodof)
+* fin_el::FiniteElement  : Line(nod, nodof)
 ```
 
 ### Related help
 ```julia
-?ElementType  : Help on structural elements
+?StructuralElement  : Help on structural elements
 ?Element      : Help on finite element types
 ?Line         : Help on a Line finite element
 ```
 
 """ ->
-immutable Rod <: ElementType      # Axial stresses only structural element
-  nxe::Int64                      # Number of elements
+immutable Rod <: StructuralElement      # Axial stresses only structural fin_el
+  nxe::Int64                      # Number of fin_els
   np_types::Int64                 # Number of property types
-  nip::Int64                      # Number of integration points per element
-  element::Element                # Finite element type used
+  nip::Int64                      # Number of integration points per fin_el
+  fin_el::FiniteElement                # Finite fin_el type used
 end
 
-type Beam <: ElementType          # 1D Beam structural element
+type Beam <: StructuralElement          # 1D Beam structural fin_el
   ndim::Int64                     # Number of dimensions (1,2 or 3)
   nst::Int64                      # Number of stress terms
-  nxe::Int64                      # Number of elements in x direction
-  nip::Int64                      # Number of integration points per element
+  nxe::Int64                      # Number of fin_els in x direction
+  nip::Int64                      # Number of integration points per fin_el
   direction::Symbol               # Node numbering direction
-  element::Element                # Finite element type used
+  fin_el::FiniteElement                # Finite fin_el type used
   axisymmetric::Bool              # Axisymmetric
 end
 
-type Beam2D <: ElementType
+type Beam2D <: StructuralElement
   ndim::Int64                     # Number of dimensions (1,2 or 3)
   nst::Int64                      # Number of stress terms
-  nxe::Int64                      # Number of elements in x direction
-  nye::Int64                      # Number of elements in y direction
-  nip::Int64                      # Number of integration points per element
+  nxe::Int64                      # Number of fin_els in x direction
+  nye::Int64                      # Number of fin_els in y direction
+  nip::Int64                      # Number of integration points per fin_el
   direction::Symbol               # Node numbering direction
-  element::Element                # Finite element type used
+  fin_el::FiniteElement                # Finite fin_el type used
   axisymmetric::Bool              # Axisymmetric
 end
 
-type Beam3D <: ElementType
+type Beam3D <: StructuralElement
   ndim::Int64                     # Number of dimensions (1,2 or 3)
   nst::Int64                      # Number of stress terms
-  nxe::Int64                      # Number of elements in x direction
-  nye::Int64                      # Number of elements in y direction
-  nze::Int64                      # Number of elements in z direction
-  nip::Int64                      # Number of integration points per element
+  nxe::Int64                      # Number of fin_els in x direction
+  nye::Int64                      # Number of fin_els in y direction
+  nze::Int64                      # Number of fin_els in z direction
+  nip::Int64                      # Number of integration points per fin_el
   direction::Symbol               # Node numbering direction
-  element::Element                # Finite element type used
+  fin_el::FiniteElement                # Finite fin_el type used
   axisymmetric::Bool              # Axisymmetric
 end
 
 # Frame(nels, nn, ndim, finite_element(nod, nodof))
-type Frame <: ElementType
+type Frame <: StructuralElement
   nels::Int64                     # Number of elemnt
   nn::Int64                       # Number of nodes
   ndim::Int64                     # Number of dimensions
   nst::Int64                      # Number of stress terms
-  nip::Int64                      # Number of integration points per element
-  element::Element                # Finite element type used
+  nip::Int64                      # Number of integration points per fin_el
+  fin_el::FiniteElement                # Finite fin_el type used
 end
 
-type Plane <: ElementType
+type Plane <: StructuralElement
   ndim::Int64                     # Number of dimensions (1,2 or 3)
   nst::Int64                      # Number of stress terms
-  nxe::Int64                      # Number of elements in x direction
-  nye::Int64                      # Number of elements in y direction
+  nxe::Int64                      # Number of fin_els in x direction
+  nye::Int64                      # Number of fin_els in y direction
   nip::Int64                      # Number of integration points
   direction::Symbol               # Node numbering direction
-  element::Element                # Finite element type used
+  fin_el::FiniteElement                # Finite fin_el type used
   axisymmetric::Bool              # Axisymmetric
 end
 
-type Solid <: ElementType
+type Solid <: StructuralElement
   ndim::Int64                     # Number of dimensions (1,2 or 3)
   nst::Int64                      # Number of stress terms
-  nxe::Int64                      # Number of elements in x direction
-  nye::Int64                      # Number of elements in y direction
-  nze::Int64                      # Number of elements in y direction
+  nxe::Int64                      # Number of fin_els in x direction
+  nye::Int64                      # Number of fin_els in y direction
+  nze::Int64                      # Number of fin_els in y direction
   nip::Int64                      # Number of integration points
-  element::Element                # Finite element type used
+  fin_el::FiniteElement                # Finite fin_el type used
 end
 
-type GenericSolid <: ElementType
+type GenericSolid <: StructuralElement
   ndim::Int64                     # Number of dimensions (1,2 or 3)
   nst::Int64                      # Number of stress terms
-  nels::Int64                     # Number of elements
+  nels::Int64                     # Number of fin_els
   nn::Int64                       # Number of nodes
   nip::Int64                      # Number of integration points
-  element::Element                # Finite element type used
+  fin_el::FiniteElement                # Finite fin_el type used
   axisymmetric::Bool              # Axisymmetric
 end
 
-type UnknownElementType <: ElementType
+type UnknownStructuralElement <: StructuralElement
 end
 

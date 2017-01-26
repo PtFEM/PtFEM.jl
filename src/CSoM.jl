@@ -83,8 +83,8 @@ include("Chap06/FE6_1.jl")
 ### Exports ###
 
 export
-  # From elements.jl
-  ElementType,
+  # From fin_els.jl
+  StructuralElement,
   Plane,
   Beam,
   Rod,
@@ -92,7 +92,7 @@ export
   Solid,
   GenericSolid,
   
-  Element,
+  FiniteElement,
   Line,
   Triangle,
   Quadrilateral,

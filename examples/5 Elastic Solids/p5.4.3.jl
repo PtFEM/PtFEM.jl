@@ -2,7 +2,7 @@ using CSoM
 
 data = Dict(
   # GenericSolid(ndim, nst, nels, nn, nip, finite_element(nod, nodof), axisymmentrix)
-  :element_type => GenericSolid(3, 6, 7, 40, 27, Hexahedron(14, 3), false),
+  :struc_el => GenericSolid(3, 6, 7, 40, 27, Hexahedron(14, 3), false),
   :properties => [1.0 0.49 0.0;],
   :g_coord => [
     0.0000  0.0000  0.0000;     0.0000  1.0000  0.0000;

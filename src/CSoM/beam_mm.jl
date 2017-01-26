@@ -1,6 +1,6 @@
 function beam_mm!(mm::Matrix{Float64}, fs::Float64, ell::Float64)
   #
-  # This subroutine forms the consistent mass matrix of a beam element.
+  # This subroutine forms the consistent mass matrix of a beam fin_el.
   #
  fac = (fs*ell)/420.0
  mm[1,1] = 156.0*fac

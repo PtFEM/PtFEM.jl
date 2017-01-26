@@ -4,37 +4,37 @@ function FE4_7(data::Dict)
   
   # Parse & check FEdict data
   
-  if :element_type in keys(data)
-    element_type = data[:element_type]
+  if :struc_el in keys(data)
+    struc_el = data[:struc_el]
   else
-    println("No element type specified.")
+    println("No fin_el type specified.")
     return
   end
   
-  ndim = element_type.ndim
-  nst = element_type.nst
+  ndim = struc_el.ndim
+  nst = struc_el.nst
   
   # Add radial stress
-  if ndim == 3 && element_type.axisymmetric
+  if ndim == 3 && struc_el.axisymmetric
     nst = 4
   end
   
-  element = element_type.element
-  @assert typeof(element) <: Element
+  fin_el = struc_el.fin_el
+  @assert typeof(fin_el) <: FiniteElement
   
-  if typeof(element) == Line
-    (nels, nn) = mesh_size(element, element_type.nxe)
-  elseif typeof(element) == Triangle || typeof(element) == Quadrilateral
-    (nels, nn) = mesh_size(element, element_type.nxe, element_type.nye)
-  elseif typeof(element) == Hexahedron
-    (nels, nn) = mesh_size(element, element_type.nxe, element_type.nye, element_type.nze)
+  if typeof(fin_el) == Line
+    (nels, nn) = mesh_size(fin_el, struc_el.nxe)
+  elseif typeof(fin_el) == Triangle || typeof(fin_el) == Quadrilateral
+    (nels, nn) = mesh_size(fin_el, struc_el.nxe, struc_el.nye)
+  elseif typeof(fin_el) == Hexahedron
+    (nels, nn) = mesh_size(fin_el, struc_el.nxe, struc_el.nye, struc_el.nze)
   else
-    println("$(typeof(element)) is not a known finite element.")
+    println("$(typeof(fin_el)) is not a known finite element.")
     return
   end
      
-  nodof = element.nodof           # Degrees of freedom per node
-  ndof = element.nod * nodof      # Degrees of freedom per element
+  nodof = fin_el.nodof           # Degrees of freedom per node
+  ndof = fin_el.nod * nodof      # Degrees of freedom per fin_el
   
   # Update penalty if specified in FEdict
   
@@ -85,25 +85,25 @@ function FE4_7(data::Dict)
   
   # All other arrays
   
-  points = zeros(element_type.nip, ndim)
+  points = zeros(struc_el.nip, ndim)
   g = zeros(Int64, ndof)
   g_coord = zeros(ndim,nn)
-  fun = zeros(element.nod)
-  coord = zeros(element.nod, ndim)
+  fun = zeros(fin_el.nod)
+  coord = zeros(fin_el.nod, ndim)
   gamma = zeros(nels)
   jac = zeros(ndim, ndim)
-  g_num = zeros(Int64, element.nod, nels)
-  der = zeros(ndim, element.nod)
-  deriv = zeros(ndim, element.nod)
+  g_num = zeros(Int64, fin_el.nod, nels)
+  der = zeros(ndim, fin_el.nod)
+  deriv = zeros(ndim, fin_el.nod)
   bee = zeros(nst,ndof)
   km = zeros(ndof, ndof)
   mm = zeros(ndof, ndof)
   gm = zeros(ndof, ndof)
   kg = zeros(ndof, ndof)
   eld = zeros(ndof)
-  weights = zeros(element_type.nip)
+  weights = zeros(struc_el.nip)
   g_g = zeros(Int64, ndof, nels)
-  num = zeros(Int64, element.nod)
+  num = zeros(Int64, fin_el.nod)
   actions = zeros(ndof, nels)
   displacements = zeros(size(nf, 1), ndim)
   gc = ones(ndim)
@@ -118,7 +118,7 @@ function FE4_7(data::Dict)
   # Find global array sizes
   
   for iel in 1:nels
-    geom_rect!(element, iel, x_coords, y_coords, coord, num, element_type.direction)
+    geom_rect!(fin_el, iel, x_coords, y_coords, coord, num, struc_el.direction)
     num_to_g!(num, nf, g)
     fkdiag!(kdiag, g)
     g_num[:, iel] = num
@@ -135,7 +135,7 @@ function FE4_7(data::Dict)
 
   println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
   
-  sample!(element, points, weights)
+  sample!(fin_el, points, weights)
   
   d2x = zeros(neq)
   d2y = zeros(neq)
@@ -152,7 +152,7 @@ function FE4_7(data::Dict)
     g = g_g[:, iel]
     km = zeros(km)
     println()
-    for i in 1:element_type.nip
+    for i in 1:struc_el.nip
       fmplat!(d2x, d2y, d2xy, points, aa, bb, i)
       for k in 1:ndof
         tmp = (d2x[k]*d2x[:]/aa^4 + d2y[k]*d2y[:]/bb^4 +
@@ -206,12 +206,12 @@ function FE4_7(data::Dict)
   end
   #println(round(reshape(float(tmp), 2, 9)', 15))
   
-  element_type.nip = 1
-  points = zeros(element_type.nip, ndim)
-  weights = zeros(element_type.nip)
-  sample!(element, points, weights)
-  println("\nThe integration point (nip = $(element_type.nip)) stresses are:")
-  if element_type.axisymmetric
+  struc_el.nip = 1
+  points = zeros(struc_el.nip, ndim)
+  weights = zeros(struc_el.nip)
+  sample!(fin_el, points, weights)
+  println("\nThe integration point (nip = $(struc_el.nip)) stresses are:")
+  if struc_el.axisymmetric
     println("\nElement     sig_r          sig_z            tau_rz            sig_t")
   else
     println("\nElement     sig_x          sig_y            tau_xy")
@@ -222,7 +222,7 @@ function FE4_7(data::Dict)
     v = prop[etype[iel], 2]
     d = e * data[:thickness]^3 / (12.0 * (1.0 - v * v))
     g = g_g[:, iel]
-    for i in 1:element_type.nip
+    for i in 1:struc_el.nip
       fmplat!(d2x, d2y, d2xy, points, aa, bb, i)
       bm = zeros(3)
       for k in 1:ndof

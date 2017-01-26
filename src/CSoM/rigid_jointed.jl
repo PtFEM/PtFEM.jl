@@ -2,7 +2,7 @@ function rigid_jointed!(km::Matrix{Float64}, prop::Matrix{Float64},
   gamma::Vector{Float64}, etype::Vector{Int64}, iel::Int64, coord::Matrix{Float64}) 
 #
 # This function forms the stiffness matrix of a
-# general beam/column element (1-, 2- or 3-d).
+# general beam/column fin_el (1-, 2- or 3-d).
 #
  ndim=size(coord,2)
  @assert 1 <= ndim <= 3

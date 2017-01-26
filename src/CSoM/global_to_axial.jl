@@ -1,7 +1,7 @@
 function global_to_axial(glob::Vector{Float64}, coord::Matrix{Float64})
   #
   # This subroutine transforms the global end reactions
-  # into an axial force for rod elements (2- or 3-d).
+  # into an axial force for rod fin_els (2- or 3-d).
   #
   local axial = 0.0
   local ndim = size(coord,2)

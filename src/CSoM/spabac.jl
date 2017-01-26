@@ -7,7 +7,7 @@ kv::Vector{Float64}   : Skyline vector of global stiffness matrix
 
 loads::Vector{Float64}: Load vector
 
-kdiag::Vector{Int64}  : Diagonal element vector
+kdiag::Vector{Int64}  : Diagonal fin_el vector
 """ ->
 function spabac!(kv::Vector{Float64}, loads::Vector{Float64}, kdiag::Vector{Int64})
   local x::Float64

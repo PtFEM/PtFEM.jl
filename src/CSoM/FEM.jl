@@ -3,14 +3,14 @@ import Base.show
 ### Model type ###
 
 immutable FEM                     # Computationale data and results structure
-  element_type::ElementType       # Store the element type object
-  element::Element                # Store finite element object
+  struc_el::StructuralElement       # Store the fin_el type object
+  fin_el::FiniteElement                # Store finite element object
   
   # Scalars
   ndim::Int64                     # Number of dimensions
-  nels::Int64                     # Number of elements
+  nels::Int64                     # Number of fin_els
   nst::Int64                      # Number of stress terms
-  ndof::Int64                     # Degrees of freedom per element
+  ndof::Int64                     # Degrees of freedom per fin_el
   nn::Int64                       # Number of nodes in the mesh
   nodof::Int64                    # Number of degrees of freedom per node
 
@@ -20,8 +20,8 @@ immutable FEM                     # Computationale data and results structure
   # Int64 arrays
   etype::Array{Int64, 1}          # Element property vector
   g::Array{Int64, 1}              # Element steering vector
-  g_g::Array{Int64, 2}            # Global element steering matrix
-  g_num::Array{Int64, 2}          # Global element node numbers matrix
+  g_g::Array{Int64, 2}            # Global fin_el steering matrix
+  g_num::Array{Int64, 2}          # Global fin_el node numbers matrix
   kdiag::Array{Int64, 1}          # Diagonal term location vector
   nf::Array{Int64, 2}             # Nodal freedom matrix
   no::Array{Int64, 1}             # Fixed freedom number vector
@@ -53,7 +53,7 @@ immutable FEM                     # Computationale data and results structure
   
   loads::Array{Float64, 1}        # Nodel loads and displacements
   points::Array{Float64, 2}       # Integrating point lacal coordinates
-  prop::Array{Float64, 2}         # Element properties (E and nu for each element)
+  prop::Array{Float64, 2}         # Element properties (E and nu for each fin_el)
   sigma::Array{Float64, 1}        # Stress terms
   value::Array{Float64, 1}        # Fixed values for displacements
   

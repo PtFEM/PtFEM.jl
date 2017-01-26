@@ -4,7 +4,7 @@ data = Dict(
 # Plane(ndim, nst, nxe, nye, nip, direction=(:x|:y), finite_element(nod, nodof), axisymmetric=false)
 # Plane(ndim, nst, nxe, nye, nip, direction=:z, finite_element(nod, nodof), axisymmetric=true)
 # Plane(ndim, nst, nre, nze, nip, direction=:r, finite_element(nod, nodof), axisymmetric=false)
-  :element_type => Plane(2, 6, 1, 5, 4, :r, Quadrilateral(8, 3), false),
+  :struc_el => Plane(2, 6, 1, 5, 4, :r, Quadrilateral(8, 3), false),
   :properties => [1.0e5 0.3;],
   :r_coords => [0.0, 0.5],
   :z_coords => [10.0, 8.0, 6.0, 4.0, 2.0, 0.0],

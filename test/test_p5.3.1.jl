@@ -2,7 +2,7 @@ using Base.Test, CSoM
 
 data = Dict(
   # Solid(ndim, nst, nxe, nye, nze, nip, direction=:r, finite_element(nod, nodof))
-  :element_type => Solid(3, 6, 1, 3, 2, 8, Hexahedron(20, 3)),
+  :struc_el => Solid(3, 6, 1, 3, 2, 8, Hexahedron(20, 3)),
   :properties => [
     100.0 0.3;
      50.0 0.3

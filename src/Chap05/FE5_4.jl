@@ -4,24 +4,24 @@ function FE5_4(data::Dict)
   
   # Parse & check FEdict data
   
-  if :element_type in keys(data)
-    element_type = data[:element_type]
-    @assert typeof(element_type) == GenericSolid
+  if :struc_el in keys(data)
+    struc_el = data[:struc_el]
+    @assert typeof(struc_el) == GenericSolid
   else
-    println("No element type specified.")
+    println("No fin_el type specified.")
     return
   end
   
-  ndim = element_type.ndim
-  nst = element_type.nst
-  nels = element_type.nels
-  nn = element_type.nn
+  ndim = struc_el.ndim
+  nst = struc_el.nst
+  nels = struc_el.nels
+  nn = struc_el.nn
   
-  element = element_type.element
-  @assert typeof(element) <: Element
+  fin_el = struc_el.fin_el
+  @assert typeof(fin_el) <: FiniteElement
   
-  nodof = element.nodof           # Degrees of freedom per node
-  ndof = element.nod * nodof      # Degrees of freedom per element
+  nodof = fin_el.nodof           # Degrees of freedom per node
+  ndof = fin_el.nod * nodof      # Degrees of freedom per fin_el
   
   # Update penalty if specified in FEdict
   
@@ -58,9 +58,9 @@ function FE5_4(data::Dict)
   @assert :g_coord in keys(data)
   g_coord = data[:g_coord]'
   
-  g_num = zeros(Int64, element.nod, nels)
+  g_num = zeros(Int64, fin_el.nod, nels)
   @assert :g_num in keys(data)
-  g_num = reshape(data[:g_num]', element.nod, nels)
+  g_num = reshape(data[:g_num]', fin_el.nod, nels)
 
   etype = ones(Int64, nels)
   if :etype in keys(data)
@@ -69,23 +69,23 @@ function FE5_4(data::Dict)
   
   # All other arrays
   
-  points = zeros(element_type.nip, ndim)
+  points = zeros(struc_el.nip, ndim)
   g = zeros(Int64, ndof)
-  fun = zeros(element.nod)
-  coord = zeros(element.nod, ndim)
+  fun = zeros(fin_el.nod)
+  coord = zeros(fin_el.nod, ndim)
   gamma = zeros(nels)
   jac = zeros(ndim, ndim)
-  der = zeros(ndim, element.nod)
-  deriv = zeros(ndim, element.nod)
+  der = zeros(ndim, fin_el.nod)
+  deriv = zeros(ndim, fin_el.nod)
   bee = zeros(nst,ndof)
   km = zeros(ndof, ndof)
   mm = zeros(ndof, ndof)
   gm = zeros(ndof, ndof)
   kg = zeros(ndof, ndof)
   eld = zeros(ndof)
-  weights = zeros(element_type.nip)
+  weights = zeros(struc_el.nip)
   g_g = zeros(Int64, ndof, nels)
-  num = zeros(Int64, element.nod)
+  num = zeros(Int64, fin_el.nod)
   actions = zeros(ndof, nels)
   displacements = zeros(size(nf, 1), ndim)
   gc = ones(ndim)
@@ -117,14 +117,14 @@ function FE5_4(data::Dict)
 
   println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
   
-  sample!(element, points, weights)
+  sample!(fin_el, points, weights)
   for iel in 1:nels
     deemat!(dee, prop[etype[iel], 1], prop[etype[iel], 2])
     num = g_num[:, iel]
     coord = g_coord[:, num]'              # Transpose
     g = g_g[:, iel]
     km = zeros(ndof, ndof)
-    for i in 1:element_type.nip
+    for i in 1:struc_el.nip
       shape_fun!(fun, points, i)
       shape_der!(der, points, i)
       jac = der*coord
@@ -186,7 +186,7 @@ function FE5_4(data::Dict)
     end
   end
   
-  println("\nThe integration point (nip = $(element_type.nip)) stresses are:")
+  println("\nThe integration point (nip = $(struc_el.nip)) stresses are:")
   if ndim == 3
     println("\nElement  x-coord   y-coord   y-coord      sig_x        sig_y        sig_z")
     println("                                          tau_xy       tau_yz       tau_zx")
@@ -199,7 +199,7 @@ function FE5_4(data::Dict)
     coord = g_coord[:, num]'
     g = g_g[:, iel]
     eld = loads[g+1]
-    for i in 1:element_type.nip
+    for i in 1:struc_el.nip
       shape_der!(der, points, i)
       shape_fun!(fun, points, i)
       gc = fun'*coord
@@ -229,7 +229,7 @@ function FE5_4(data::Dict)
   println()
   
   
-  FEM(element_type, element, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
+  FEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
     etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
     bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
     g_coord, jac, km, mm, gm, kv, gv, loads, points, prop, sigma, value,

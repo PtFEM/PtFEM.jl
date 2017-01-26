@@ -1,5 +1,5 @@
 "
-Function fsparv! assembles element matrices into a symmetric skyline
+Function fsparv! assembles fin_el matrices into a symmetric skyline
 global matrix. The Skyline vector kv is updated.
 
 Arguments to fsparv!(kv, km, g, kdiag):
@@ -7,7 +7,7 @@ Arguments to fsparv!(kv, km, g, kdiag):
 kv::Vector{Float64}   : Skyline vector of global stiffness matrix.\n
 km::Matrix{Float64}   : Stiffness matrix.\n
 g::Vector{Int64}      : Global coordinate vector.\n
-kdiag::Vector{Int64}  : Diagonal element vector.
+kdiag::Vector{Int64}  : Diagonal fin_el vector.
 "
 function fsparv!(kv::Vector{Float64}, km::Matrix{Float64},
   g::Vector{Int64}, kdiag::Vector{Int64})
@@ -30,7 +30,7 @@ function fsparv!(kv::Vector{Float64}, km::Matrix{Float64},
 end
 
 "
-Function fsparv assembles element matrices into a symmetric skyline
+Function fsparv assembles fin_el matrices into a symmetric skyline
 global matrix. A Skyline vector is returned.
 
 Arguments to fsparv!(kv, km, g, kdiag):
@@ -38,7 +38,7 @@ Arguments to fsparv!(kv, km, g, kdiag):
 kv::Vector{Float64}   : Skyline vector of global stiffness matrix.\n
 km::Matrix{Float64}   : Stiffness matrix.\n
 g::Vector{Int64}      : Global coordinate vector.\n
-kdiag::Vector{Int64}  : Diagonal element vector.
+kdiag::Vector{Int64}  : Diagonal fin_el vector.
 "
 function fsparv(kv::Vector{Float64}, km::Matrix{Float64},
   g::Vector{Int64}, kdiag::Vector{Int64})

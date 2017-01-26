@@ -4,37 +4,37 @@ function FE5_5(data::Dict)
   
   # Parse & check FEdict data
   
-  if :element_type in keys(data)
-    element_type = data[:element_type]
-    @assert typeof(element_type) <: ElementType
+  if :struc_el in keys(data)
+    struc_el = data[:struc_el]
+    @assert typeof(struc_el) <: StructuralElement
   else
-    println("No element type specified.")
+    println("No fin_el type specified.")
     return
   end
   
-  ndim = element_type.ndim
-  nst = element_type.nst
+  ndim = struc_el.ndim
+  nst = struc_el.nst
   
-  if element_type.axisymmetric
+  if struc_el.axisymmetric
     nst = 4
   end
   
-  element = element_type.element
-  @assert typeof(element) <: Element
+  fin_el = struc_el.fin_el
+  @assert typeof(fin_el) <: FiniteElement
   
-  if typeof(element) == Line
-    (nels, nn) = mesh_size(element, element_type.nxe)
-  elseif typeof(element) == Triangle || typeof(element) == Quadrilateral
-    (nels, nn) = mesh_size(element, element_type.nxe, element_type.nye)
-  elseif typeof(element) == Hexahedron
-    (nels, nn) = mesh_size(element, element_type.nxe, element_type.nye, element_type.nze)
+  if typeof(fin_el) == Line
+    (nels, nn) = mesh_size(fin_el, struc_el.nxe)
+  elseif typeof(fin_el) == Triangle || typeof(fin_el) == Quadrilateral
+    (nels, nn) = mesh_size(fin_el, struc_el.nxe, struc_el.nye)
+  elseif typeof(fin_el) == Hexahedron
+    (nels, nn) = mesh_size(fin_el, struc_el.nxe, struc_el.nye, struc_el.nze)
   else
-    println("$(typeof(element)) is not a known finite element.")
+    println("$(typeof(fin_el)) is not a known finite element.")
     return
   end
      
-  nodof = element.nodof           # Degrees of freedom per node
-  ndof = element.nod * nodof      # Degrees of freedom per element
+  nodof = fin_el.nodof           # Degrees of freedom per node
+  ndof = fin_el.nod * nodof      # Degrees of freedom per fin_el
   
   # Update penalty if specified in FEdict
   
@@ -83,9 +83,9 @@ function FE5_5(data::Dict)
     g_coord = data[:g_coord]'
   end
   
-  g_num = zeros(Int64, element.nod, nels)
+  g_num = zeros(Int64, fin_el.nod, nels)
   if :g_num in keys(data)
-    g_num = reshape(data[:g_num]', element.nod, nels)
+    g_num = reshape(data[:g_num]', fin_el.nod, nels)
   end
 
   etype = ones(Int64, nels)
@@ -95,23 +95,23 @@ function FE5_5(data::Dict)
   
   # All other arrays
   
-  points = zeros(element_type.nip, ndim)
+  points = zeros(struc_el.nip, ndim)
   g = zeros(Int64, ndof)
-  fun = zeros(element.nod)
-  coord = zeros(element.nod, ndim)
+  fun = zeros(fin_el.nod)
+  coord = zeros(fin_el.nod, ndim)
   gamma = zeros(nels)
   jac = zeros(ndim, ndim)
-  der = zeros(ndim, element.nod)
-  deriv = zeros(ndim, element.nod)
+  der = zeros(ndim, fin_el.nod)
+  deriv = zeros(ndim, fin_el.nod)
   bee = zeros(nst,ndof)
   km = zeros(ndof, ndof)
   mm = zeros(ndof, ndof)
   gm = zeros(ndof, ndof)
   kg = zeros(ndof, ndof)
   eld = zeros(ndof)
-  weights = zeros(element_type.nip)
+  weights = zeros(struc_el.nip)
   g_g = zeros(Int64, ndof, nels)
-  num = zeros(Int64, element.nod)
+  num = zeros(Int64, fin_el.nod)
   actions = zeros(ndof, nels)
   displacements = zeros(size(nf, 1), ndim)
   gc = ones(ndim)
@@ -128,7 +128,7 @@ function FE5_5(data::Dict)
   
   # Find global array sizes
   for iel in 1:nels
-    geom_rect!(element, iel, x_coords, y_coords, coord, num, element_type.direction)
+    geom_rect!(fin_el, iel, x_coords, y_coords, coord, num, struc_el.direction)
     num_to_g!(num, nf, g)
     g_num[:, iel] = num
     g_coord[:, num] = coord'
@@ -148,14 +148,14 @@ function FE5_5(data::Dict)
   teps = zeros(nst)
   tload = zeros(neq+1)
   dtemp = zeros(nn)
-  dtel = zeros(element.nod)
+  dtel = zeros(fin_el.nod)
   epsi = zeros(nst)
   
   if :dtemp in keys(data)
     dtemp = data[:dtemp]
   end
   
-  sample!(element, points, weights)
+  sample!(fin_el, points, weights)
   for iel in 1:nels
     deemat!(dee, prop[etype[iel], 1], prop[etype[iel], 2])
     num = g_num[:, iel]
@@ -164,7 +164,7 @@ function FE5_5(data::Dict)
     dtel = dtemp[num]
     etl = zeros(ndof)
     km = zeros(ndof, ndof)
-    for i in 1:element_type.nip
+    for i in 1:struc_el.nip
       shape_fun!(fun, points, i)
       shape_der!(der, points, i)
       jac = der*coord
@@ -172,7 +172,7 @@ function FE5_5(data::Dict)
       jac = inv(jac)
       deriv = jac*der
       beemat!(bee, deriv)
-      if element_type.axisymmetric
+      if struc_el.axisymmetric
         gc = fun * coord
         bee[4, 1:2:(ndof-1)] = fun[:]/gc[1]
       end
@@ -233,7 +233,7 @@ function FE5_5(data::Dict)
   loads[1] = 0.0
   nf1 = deepcopy(nf) + 1
   
-  if element_type.axisymmetric
+  if struc_el.axisymmetric
     println("\nNode     r-disp          z-disp")
   else
     println("\nNode     x-disp          y-disp")
@@ -245,12 +245,12 @@ function FE5_5(data::Dict)
     println("  $(i)    $(xstr)     $(ystr)")
   end
   
-  element_type.nip = 1
-  points = zeros(element_type.nip, ndim)
-  weights = zeros(element_type.nip)
-  sample!(element, points, weights)
-  println("\nThe integration point (nip = $(element_type.nip)) stresses are:")
-  if element_type.axisymmetric
+  struc_el.nip = 1
+  points = zeros(struc_el.nip, ndim)
+  weights = zeros(struc_el.nip)
+  sample!(fin_el, points, weights)
+  println("\nThe integration point (nip = $(struc_el.nip)) stresses are:")
+  if struc_el.axisymmetric
     println("\nElement  r-coord   s-coord      sig_r        sig_z        tau_rz       sig_t")
   else
     println("\nElement  x-coord   y-coord      sig_x        sig_y        tau_xy")
@@ -262,14 +262,14 @@ function FE5_5(data::Dict)
     g = g_g[:, iel]
     eld = loads[g+1]
     dtel = dtemp[num]
-    for i in 1:element_type.nip
+    for i in 1:struc_el.nip
       shape_fun!(fun, points, i)
       shape_der!(der, points, i)
       gc = fun'*coord
       jac = inv(der*coord)
       deriv = jac*der
       beemat!(bee, deriv)
-      if element_type.axisymmetric
+      if struc_el.axisymmetric
         gc = fun * coord
         bee[4, 1:2:(ndof-1)] = fun[:]/gc[1]
       end
@@ -282,10 +282,10 @@ function FE5_5(data::Dict)
       s1 = @sprintf("%+.4e", sigma[1])
       s2 = @sprintf("%+.4e", sigma[2])
       s3 = @sprintf("%+.4e", sigma[3])
-      if element_type.axisymmetric
+      if struc_el.axisymmetric
         s4 = @sprintf("%+.4e", sigma[4])
       end
-      if element_type.axisymmetric
+      if struc_el.axisymmetric
         println("   $(iel)     $(gc1)   $(gc2)   $(s1)  $(s2)  $(s3) $(s4)")
       else
         println("   $(iel)     $(gc1)   $(gc2)   $(s1)  $(s2)  $(s3)")
@@ -294,7 +294,7 @@ function FE5_5(data::Dict)
   end
   println()
   
-  FEM(element_type, element, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
+  FEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
     etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
     bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
     g_coord, jac, km, mm, gm, kv, gv, loads, points, prop, sigma, value,

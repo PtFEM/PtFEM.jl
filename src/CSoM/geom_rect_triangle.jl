@@ -1,4 +1,4 @@
-function geom_rect!(element::Triangle, iel::Int64, x_coords::Array{Float64, 1},
+function geom_rect!(fin_el::Triangle, iel::Int64, x_coords::Array{Float64, 1},
   y_coords::Array{Float64, 1}, coord::Matrix{Float64}, num::Vector{Int64}, dir::Symbol)
   
   nxe = size(x_coords, 1) - 1
@@ -276,7 +276,7 @@ function geom_rect!(element::Triangle, iel::Int64, x_coords::Array{Float64, 1},
    coord[14,:] = 0.5*(coord[3,:]+coord[7,:])
    coord[13,:] = 0.5*(coord[2,:]+coord[15,:])
   else
-   println("Wrong number of nodes for triangular element.")
+   println("Wrong number of nodes for triangular fin_el.")
    exit(1)
   end
 end

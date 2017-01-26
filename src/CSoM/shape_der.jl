@@ -7,7 +7,7 @@ function shape_der!(der::Matrix{Float64}, points::Matrix{Float64}, i::Int64)
   ndim = size(der, 1)
   nod = size(der, 2)
 
-  if ndim == 1                                          # 1.0 dimensional elements
+  if ndim == 1                                          # 1.0 dimensional fin_els
    xi = points[i, 1]
    if nod == 2
      der[1,1] = -0.5 
@@ -42,7 +42,7 @@ function shape_der!(der::Matrix{Float64}, points::Matrix{Float64}, i::Int64)
    else
      println("Wrong number of nodes in shape_der.")
    end
-  elseif ndim == 2                                      # 2.0 dimensional elements
+  elseif ndim == 2                                      # 2.0 dimensional fin_els
    xi=points[i, 1]
    eta=points[i, 2] 
    c1=xi 
@@ -200,7 +200,7 @@ function shape_der!(der::Matrix{Float64}, points::Matrix{Float64}, i::Int64)
    else
      println("Wrong number of nodes in shape_der.")
    end
-  elseif ndim == 3                                          # 3.0 dimensional elements
+  elseif ndim == 3                                          # 3.0 dimensional fin_els
    xi=points[i, 1]
    eta=points[i, 2]
    zeta=points[i, 3]
@@ -243,7 +243,7 @@ function shape_der!(der::Matrix{Float64}, points::Matrix{Float64}, i::Int64)
      der[3,6] =  0.125*xim*etap
      der[3,7] =  0.125*xip*etap       
      der[3,8] = -0.125*xip*etap  
-   elseif nod == 14                                     # type 6 element
+   elseif nod == 14                                     # type 6 fin_el
      der[1,1] =  (2.0*xi*eta+2.0*xi*zeta+4.0*xi+eta*zeta+eta+zeta)*
        (eta-1.0)*(zeta-1.0)/8.0
      der[1,2] = -(2.0*xi*eta-2.0*xi*zeta+4.0*xi-eta*zeta+eta-zeta)*

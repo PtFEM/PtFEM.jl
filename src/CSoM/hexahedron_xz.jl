@@ -124,7 +124,7 @@ function hexahedron_xz!(iel::Int64, x_coords::Vector{Float64}, y_coords::Vector{
    coord[14:4:18,3] = 0.5*(z_coords[is] + z_coords[is+1])
 
   else
-    println("Wrong number of nodes for hexahedral element.")
+    println("Wrong number of nodes for hexahedral fin_el.")
     exit(1)
   end
 end

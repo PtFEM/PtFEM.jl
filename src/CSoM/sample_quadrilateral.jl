@@ -1,4 +1,4 @@
-function sample!(element::Quadrilateral, s::Matrix{Float64} , wt::Vector{Float64})
+function sample!(fin_el::Quadrilateral, s::Matrix{Float64} , wt::Vector{Float64})
   #
   # This subroutine returns the local coordinates and weighting coefficients
   # of the integrating points.

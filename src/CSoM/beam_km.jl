@@ -1,7 +1,7 @@
 function beam_km!(km::Matrix{Float64}, ei::Float64, ell::Float64)
   #
   # This subroutine forms the stiffness matrix of a
-  # beam element (bending only).
+  # beam fin_el (bending only).
   #
  km[1,1] = 12.0*ei/(ell*ell*ell) 
  km[3,3] = km[1,1]

@@ -1,7 +1,7 @@
 function fmplat!(d2x::Vector{Float64}, d2y::Vector{Float64}, d2xy::Vector{Float64}, points::Matrix{Float64}, aa::Float64, bb::Float64, i::Int64)
   #
   # This subroutine forms the 2nd derivatives for rectangular
-  # plate bending elements.
+  # plate bending fin_els.
   #
   # Updates d2x, d2y and d2xy vectors
   #

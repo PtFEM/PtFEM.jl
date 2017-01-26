@@ -1,4 +1,4 @@
-function geom_rect!(element::Quadrilateral, iel::Int64, x_coords::Array{Float64, 1},
+function geom_rect!(fin_el::Quadrilateral, iel::Int64, x_coords::Array{Float64, 1},
   y_coords::Array{Float64, 1}, coord::Matrix{Float64}, num::Vector{Int64}, dir::Symbol)
 
   nxe = size(x_coords,1)-1
@@ -110,7 +110,7 @@ function geom_rect!(element::Quadrilateral, iel::Int64, x_coords::Array{Float64,
     coord[6,2] = 0.5*(coord[5,2]+coord[7,2])
     coord[9,:] = 0.5*(coord[4,:]+coord[8,:])
   else
-    println("Wrong number of nodes for quadrilateral element.")
+    println("Wrong number of nodes for quadrilateral fin_el.")
     exit(1)
   end
 end

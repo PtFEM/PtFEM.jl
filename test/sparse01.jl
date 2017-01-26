@@ -9,7 +9,7 @@ include(joinpath(ProjDir, "p4.1.1.jl"))
 #=
 data = Dict(
   # Rod(nels, np_types, nip, finite_element(nod, nodof))
-  :element_type => Rod(4, 1, 1, Line(2, 1)),
+  :struc_el => Rod(4, 1, 1, Line(2, 1)),
   :properties => [1.0e5;],
   :x_coords => linspace(0, 1, 5),
   :support => [(1, [0])],

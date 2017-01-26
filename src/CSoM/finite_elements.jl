@@ -1,50 +1,50 @@
-### Finite elements used to approximate element ###
+### Finite elements used to approximate fin_el ###
 
 @doc doc"""
-## Element
+## FiniteElement
 
 Abstract finite element type.
 
 ### Type
 ```julia
-abstract Element
+abstract FiniteElement
 ```
 
 ### Subtypes
 ```julia
-* Line::Element          : Line(nod, nodof)
-* Triangle::Element      : Triangle(nod, nodof)
-* Quadrilateral::Element : Quadrilateral(nod, nodof)
-* Hexahedron::Element    : Hexahedron(nod, nodof)
-* Tetrahedron::Element   : Tetrahedron(nod, nodof)
+* Line::FiniteElement          : Line(nod, nodof)
+* Triangle::FiniteElement      : Triangle(nod, nodof)
+* Quadrilateral::FiniteElement : Quadrilateral(nod, nodof)
+* Hexahedron::FiniteElement    : Hexahedron(nod, nodof)
+* Tetrahedron::FiniteElement   : Tetrahedron(nod, nodof)
 ```
 """ ->
-abstract Element                 # Finite elements
+abstract FiniteElement                 # Finite elements
 
-immutable Line <: Element
+immutable Line <: FiniteElement
   nod::Int64
   nodof::Int64
 end
 
-immutable Triangle <: Element
+immutable Triangle <: FiniteElement
   nod::Int64
   nodof::Int64
 end
 
-immutable Quadrilateral <: Element
+immutable Quadrilateral <: FiniteElement
   nod::Int64
   nodof::Int64
 end
 
-immutable Hexahedron <: Element
+immutable Hexahedron <: FiniteElement
   nod::Int64
   nodof::Int64
 end
 
-immutable Tetrahedron <: Element
+immutable Tetrahedron <: FiniteElement
   nod::Int64
   nodof::Int64
 end
 
-immutable UnknownElement <: Element
+immutable UnknownFiniteElement <: FiniteElement
 end

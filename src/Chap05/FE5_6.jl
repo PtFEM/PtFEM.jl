@@ -4,33 +4,33 @@ function FE5_6(data::Dict, profiling::Bool=false)
   
   # Parse & check FEdict data
   
-  if :element_type in keys(data)
-    element_type = deepcopy(data[:element_type])
-    @assert typeof(element_type) <: ElementType
+  if :struc_el in keys(data)
+    struc_el = deepcopy(data[:struc_el])
+    @assert typeof(struc_el) <: StructuralElement
   else
-    println("No element type specified.")
+    println("No fin_el type specified.")
     return
   end
   
-  ndim = copy(element_type.ndim)
-  nst = copy(element_type.nst)
+  ndim = copy(struc_el.ndim)
+  nst = copy(struc_el.nst)
   
-  element = deepcopy(element_type.element)
-  @assert typeof(element) <: Element
+  fin_el = deepcopy(struc_el.fin_el)
+  @assert typeof(fin_el) <: FiniteElement
   
-  if typeof(element) == Line
-    (nels, nn) = mesh_size(element, element_type.nxe)
-  elseif typeof(element) == Triangle || typeof(element) == Quadrilateral
-    (nels, nn) = mesh_size(element, element_type.nxe, element_type.nye)
-  elseif typeof(element) == Hexahedron
-    (nels, nn) = mesh_size(element, element_type.nxe, element_type.nye, element_type.nze)
+  if typeof(fin_el) == Line
+    (nels, nn) = mesh_size(fin_el, struc_el.nxe)
+  elseif typeof(fin_el) == Triangle || typeof(fin_el) == Quadrilateral
+    (nels, nn) = mesh_size(fin_el, struc_el.nxe, struc_el.nye)
+  elseif typeof(fin_el) == Hexahedron
+    (nels, nn) = mesh_size(fin_el, struc_el.nxe, struc_el.nye, struc_el.nze)
   else
-    println("$(typeof(element)) is not a known finite element.")
+    println("$(typeof(fin_el)) is not a known finite element.")
     return
   end
      
-  nodof = copy(element.nodof)           # Degrees of freedom per node
-  ndof = element.nod * nodof      # Degrees of freedom per element
+  nodof = copy(fin_el.nodof)           # Degrees of freedom per node
+  ndof = fin_el.nod * nodof      # Degrees of freedom per fin_el
   
   # Update penalty if specified in FEdict
   
@@ -84,9 +84,9 @@ function FE5_6(data::Dict, profiling::Bool=false)
     g_coord = deepcopy(data[:g_coord]')
   end
   
-  g_num = zeros(Int64, element.nod, nels)
+  g_num = zeros(Int64, fin_el.nod, nels)
   if :g_num in keys(data)
-    g_num = reshape(deepcopy(data[:g_num]'), element.nod, nels)
+    g_num = reshape(deepcopy(data[:g_num]'), fin_el.nod, nels)
   end
   
   etype = ones(Int64, nels)
@@ -96,23 +96,23 @@ function FE5_6(data::Dict, profiling::Bool=false)
   
   # All other arrays
   
-  points = zeros(element_type.nip, ndim)
+  points = zeros(struc_el.nip, ndim)
   g = zeros(Int64, ndof)
-  fun = zeros(element.nod)
-  coord = zeros(element.nod, ndim)
+  fun = zeros(fin_el.nod)
+  coord = zeros(fin_el.nod, ndim)
   gamma = zeros(nels)
   jac = zeros(ndim, ndim)
-  der = zeros(ndim, element.nod)
-  deriv = zeros(ndim, element.nod)
+  der = zeros(ndim, fin_el.nod)
+  deriv = zeros(ndim, fin_el.nod)
   bee = zeros(nst,ndof)
   km = zeros(ndof, ndof)
   mm = zeros(ndof, ndof)
   gm = zeros(ndof, ndof)
   kg = zeros(ndof, ndof)
   eld = zeros(ndof)
-  weights = zeros(element_type.nip)
+  weights = zeros(struc_el.nip)
   g_g = zeros(Int64, ndof, nels)
-  num = zeros(Int64, element.nod)
+  num = zeros(Int64, fin_el.nod)
   actions = zeros(ndof, nels)
   displacements = zeros(size(nf, 1), ndim)
   gc = ones(ndim)
@@ -158,7 +158,7 @@ function FE5_6(data::Dict, profiling::Bool=false)
 
   println("There are $(neq) equations.")
   
-  sample!(element, points, weights)
+  sample!(fin_el, points, weights)
 
   for iel in 1:nels
     hexahedron_xz!(iel, x_coords, y_coords, z_coords, coord, num)
@@ -171,7 +171,7 @@ function FE5_6(data::Dict, profiling::Bool=false)
     g = g_g[:, iel]
     coord = g_coord[:, num]'              # Transpose
     km = zeros(ndof, ndof)
-    for i in 1:element_type.nip
+    for i in 1:struc_el.nip
       shape_der!(der, points, i)
       jac = der*coord
       detm = det(jac)
@@ -268,13 +268,13 @@ function FE5_6(data::Dict, profiling::Bool=false)
     #dismsh_ensi()
   end
   
-  element_type.nip = 1
-  points = zeros(element_type.nip, ndim)
-  weights = zeros(element_type.nip)
-  sample!(element, points, weights)
+  struc_el.nip = 1
+  points = zeros(struc_el.nip, ndim)
+  weights = zeros(struc_el.nip)
+  sample!(fin_el, points, weights)
   
   if !profiling
-    println("\nThe integration point (nip = $(element_type.nip)) stresses are:")
+    println("\nThe integration point (nip = $(struc_el.nip)) stresses are:")
     println("\nElement  x-coord   y-coord      z_coord      sig_x        sig_y        sig_z")
     println("                                             tau_xy       tau_yz       tau_zx")
   end
@@ -285,7 +285,7 @@ function FE5_6(data::Dict, profiling::Bool=false)
     coord = g_coord[:, num]'
     g = g_g[:, iel]
     eld = loads[g+1]
-    for i in 1:element_type.nip
+    for i in 1:struc_el.nip
       shape_fun!(fun, points, i)
       shape_der!(der, points, i)
       gc = fun'*coord
@@ -310,7 +310,7 @@ function FE5_6(data::Dict, profiling::Bool=false)
   end
   println()
   
-  FEM(element_type, element, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
+  FEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
     etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
     bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
     g_coord, jac, km, mm, gm, kv, gv, loads, points, prop, sigma, value,

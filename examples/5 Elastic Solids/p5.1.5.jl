@@ -2,7 +2,7 @@ using CSoM
 
 data = Dict(
   # Plane(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)
-  :element_type => Plane(2, 3, 3, 2, 9, :z, Quadrilateral(4, 2), true),
+  :struc_el => Plane(2, 3, 3, 2, 9, :z, Quadrilateral(4, 2), true),
   :properties => [
      100.0 0.3;
     1000.0 0.45

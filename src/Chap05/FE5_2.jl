@@ -3,43 +3,43 @@ function FE5_2(data::Dict)
   # Setup basic dimensions of arrays
   # Parse & check FEdict data
   
-  if :element_type in keys(data)
-    element_type = data[:element_type]
+  if :struc_el in keys(data)
+    struc_el = data[:struc_el]
   else
-    println("No element type specified.")
+    println("No fin_el type specified.")
     return
   end
   
-  ndim = element_type.ndim
-  nst = element_type.nst
+  ndim = struc_el.ndim
+  nst = struc_el.nst
   
   # Handle :r direction (implicit axisymmetric)
-  if element_type.direction == :r
-    nre = element_type.nxe::Int64
-    nze = element_type.nye::Int64
+  if struc_el.direction == :r
+    nre = struc_el.nxe::Int64
+    nze = struc_el.nye::Int64
   end
   
   # Add radial stress
-  if element_type.axisymmetric
+  if struc_el.axisymmetric
     nst = 4
   end
   
-  element = element_type.element
-  @assert typeof(element) <: Element
+  fin_el = struc_el.fin_el
+  @assert typeof(fin_el) <: FiniteElement
   
-  if typeof(element) == Line
-    (nels, nn) = mesh_size(element, element_type.nxe)
-  elseif typeof(element) == Triangle || typeof(element) == Quadrilateral
-    (nels, nn) = mesh_size(element, element_type.nxe, element_type.nye)
-  elseif typeof(element) == Hexahedron
-    (nels, nn) = mesh_size(element, element_type.nxe, element_type.nye, element_type.nze)
+  if typeof(fin_el) == Line
+    (nels, nn) = mesh_size(fin_el, struc_el.nxe)
+  elseif typeof(fin_el) == Triangle || typeof(fin_el) == Quadrilateral
+    (nels, nn) = mesh_size(fin_el, struc_el.nxe, struc_el.nye)
+  elseif typeof(fin_el) == Hexahedron
+    (nels, nn) = mesh_size(fin_el, struc_el.nxe, struc_el.nye, struc_el.nze)
   else
-    println("$(typeof(element)) is not a known finite element.")
+    println("$(typeof(fin_el)) is not a known finite element.")
     return
   end
      
-  nodof = element.nodof           # Degrees of freedom per node
-  ndof = element.nod * nodof      # Degrees of freedom per element
+  nodof = fin_el.nodof           # Degrees of freedom per node
+  ndof = fin_el.nod * nodof      # Degrees of freedom per fin_el
   
   # Update penalty if specified in FEdict
   
@@ -109,25 +109,25 @@ function FE5_2(data::Dict)
   
   # All other arrays
   
-  points = zeros(element_type.nip, ndim)
+  points = zeros(struc_el.nip, ndim)
   g = zeros(Int64, ndof)
   g_coord = zeros(ndim,nn)
-  fun = zeros(element.nod)
-  coord = zeros(element.nod, ndim)
+  fun = zeros(fin_el.nod)
+  coord = zeros(fin_el.nod, ndim)
   gamma = zeros(nels)
   jac = zeros(ndim, ndim)
-  g_num = zeros(Int64, element.nod, nels)
-  der = zeros(ndim, element.nod)
-  deriv = zeros(ndim, element.nod)
+  g_num = zeros(Int64, fin_el.nod, nels)
+  der = zeros(ndim, fin_el.nod)
+  deriv = zeros(ndim, fin_el.nod)
   bee = zeros(nst,ndof)
   km = zeros(ndof, ndof)
   mm = zeros(ndof, ndof)
   gm = zeros(ndof, ndof)
   kg = zeros(ndof, ndof)
   eld = zeros(ndof)
-  weights = zeros(element_type.nip)
+  weights = zeros(struc_el.nip)
   g_g = zeros(Int64, ndof, nels)
-  num = zeros(Int64, element.nod)
+  num = zeros(Int64, fin_el.nod)
   actions = zeros(ndof, nels)
   displacements = zeros(size(nf, 1), ndim)
   gc = ones(ndim)
@@ -142,7 +142,7 @@ function FE5_2(data::Dict)
   # Find global array sizes
   
   for iel in 1:nels
-    geom_rect!(element, iel, r_coords, z_coords, coord, num, element_type.direction)
+    geom_rect!(fin_el, iel, r_coords, z_coords, coord, num, struc_el.direction)
     num_to_g!(num, nf, g)
     g_num[:, iel] = num
     g_coord[:, num] = coord'
@@ -159,7 +159,7 @@ function FE5_2(data::Dict)
   
   println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
   
-  sample!(element, points, weights)
+  sample!(fin_el, points, weights)
 
   for iel in 1:nels
     deemat!(dee, prop[etype[iel], 1], prop[etype[iel], 2])
@@ -167,7 +167,7 @@ function FE5_2(data::Dict)
     coord = g_coord[:, num]'              # Transpose
     g = g_g[:, iel]
     km = zeros(ndof, ndof)
-    for i in 1:element_type.nip
+    for i in 1:struc_el.nip
       shape_fun!(fun, points, i)
       shape_der!(der, points, i)
       jac = der*coord
@@ -221,11 +221,11 @@ function FE5_2(data::Dict)
     println("  $(i)    $(rstr)     $(zstr)     $(tstr)")
   end
   
-  element_type.nip = 1
-  points = zeros(element_type.nip, ndim)
-  weights = zeros(element_type.nip)
-  sample!(element, points, weights)
-  println("\nThe integration point (nip = $(element_type.nip)) stresses are:")
+  struc_el.nip = 1
+  points = zeros(struc_el.nip, ndim)
+  weights = zeros(struc_el.nip)
+  sample!(fin_el, points, weights)
+  println("\nThe integration point (nip = $(struc_el.nip)) stresses are:")
   println("\nElement  r-coord   z-coord     sig_r         sig_z        sig-t")
   println("                               tau_rz        tau_zt       tau-tr")
   for iel in 1:nels
@@ -234,7 +234,7 @@ function FE5_2(data::Dict)
     coord = g_coord[:, num]'
     g = g_g[:, iel]
     eld = loads[g+1]
-    for i in 1:element_type.nip
+    for i in 1:struc_el.nip
       shape_fun!(fun, points, i)
       shape_der!(der, points, i)
       gc = fun'*coord
@@ -258,7 +258,7 @@ function FE5_2(data::Dict)
   end
   println()
   
-  FEM(element_type, element, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
+  FEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
     etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
     bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
     g_coord, jac, km, mm, gm, kv, gv, loads, points, prop, sigma, value,

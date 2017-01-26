@@ -5,7 +5,7 @@ loads_path = Pkg.dir("CSoM", "examples", "5 Elastic Solids", "p5.7.1.loads.dat")
 
 data = Dict(
   # Solid(ndim, nst, nxe, nye, nze, nip, direction=:r, finite_element(nod, nodof))
-  :element_type => Solid(3, 6, 20, 60, 40, 8, Hexahedron(20, 3)),
+  :struc_el => Solid(3, 6, 20, 60, 40, 8, Hexahedron(20, 3)),
   :properties => [
     100.0 0.3;
      ],

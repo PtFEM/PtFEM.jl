@@ -6,7 +6,7 @@ Arguments to sparin!(kv, kdiag):
 
 kv::Vector{Float64}   : Skyline vector of global stiffness matrix
 
-kdiag::Vector{Int64}  : Diagonal element vector
+kdiag::Vector{Int64}  : Diagonal fin_el vector
 """ ->
 function sparin!(kv::Vector{Float64}, kdiag::Vector{Int64})
   local x::Float64

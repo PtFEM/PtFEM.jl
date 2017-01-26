@@ -4,7 +4,7 @@ include("FE4_5.jl")
 
 data = Dict(
   # Frame(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
-  :element_type => Frame(12, 10, 3, 1, 1, Line(2, 3)),
+  :struc_el => Frame(12, 10, 3, 1, 1, Line(2, 3)),
   :properties => [
     1.0 1.0e4 1.0e4 1.0 1.0 1.0 1.0e8;
      ],

@@ -72,7 +72,7 @@ function write_data!(vtkxml::VTKXMLASCII, xmlele::XMLElement)
 end
 
 function write_VTKXML(filename::String, nodes::Vector{VTKNode},
-                             elements::Vector{VTKElement},
+                             fin_els::Vector{VTKElement},
                              binary::Bool=true, compress::Bool=false)
      if (!binary) && compress
         error("Can only compress when using Binary format")
@@ -80,17 +80,17 @@ function write_VTKXML(filename::String, nodes::Vector{VTKNode},
 
     if binary
         if compress
-            _write_VTKXML(filename, nodes, elements, binary, compress, VTKXMLBinaryCompressed())
+            _write_VTKXML(filename, nodes, fin_els, binary, compress, VTKXMLBinaryCompressed())
         else
-            _write_VTKXML(filename, nodes, elements, binary, compress, VTKXMLBinaryUncompressed())
+            _write_VTKXML(filename, nodes, fin_els, binary, compress, VTKXMLBinaryUncompressed())
         end
     else
-        _write_VTKXML(filename, nodes, elements, binary, compress, VTKXMLASCII())
+        _write_VTKXML(filename, nodes, fin_els, binary, compress, VTKXMLASCII())
     end
 end
 
 function _write_VTKXML{P <: AbstractVTKXML}(filename::String, nodes::Vector{VTKNode},
-                                            elements::Vector{VTKElement}, binary::Bool,
+                                            fin_els::Vector{VTKElement}, binary::Bool,
                                             compress::Bool, vtkxml::P)
 
     if binary
@@ -114,8 +114,8 @@ function _write_VTKXML{P <: AbstractVTKXML}(filename::String, nodes::Vector{VTKN
     xpiece = new_child(xgrid, "Piece")
     set_attribute(xpiece, "NumberOfPoints", length(nodes))
 
-    ncells = length(elements)
-    set_attribute(xpiece, "NumberOfCells", length(elements))
+    ncells = length(fin_els)
+    set_attribute(xpiece, "NumberOfCells", length(fin_els))
 
     # Points
     xpoints = new_child(xpiece, "Points")
@@ -143,8 +143,8 @@ function _write_VTKXML{P <: AbstractVTKXML}(filename::String, nodes::Vector{VTKN
     set_attribute(xcellconn, "Name", "connectivity")
     set_attribute(xcellconn, "format", VTK_FORMAT)
 
-    for element in elements
-        for vertex in element.vertices
+    for fin_el in fin_els
+        for vertex in fin_el.vertices
             add_data!(vtkxml, vertex-1)
         end
     end
@@ -156,8 +156,8 @@ function _write_VTKXML{P <: AbstractVTKXML}(filename::String, nodes::Vector{VTKN
     set_attribute(xcell_offsets, "Name", "offsets")
     set_attribute(xcell_offsets, "format", VTK_FORMAT)
     offset = 0
-    for element in elements
-        offset += length(element.vertices)
+    for fin_el in fin_els
+        offset += length(fin_el.vertices)
         add_data!(vtkxml, offset)
     end
     write_data!(vtkxml, xcell_offsets)
@@ -168,8 +168,8 @@ function _write_VTKXML{P <: AbstractVTKXML}(filename::String, nodes::Vector{VTKN
     set_attribute(xcell_types, "type", "UInt8")
     set_attribute(xcell_types, "Name", "types")
     set_attribute(xcell_types, "format", VTK_FORMAT)
-    for element in elements
-        add_data!(vtkxml, @compat UInt8(element.vtknum))
+    for fin_el in fin_els
+        add_data!(vtkxml, @compat UInt8(fin_el.vtknum))
     end
     write_data!(vtkxml, xcell_types)
 

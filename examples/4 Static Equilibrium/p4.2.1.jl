@@ -2,7 +2,7 @@ using CSoM
 
 data = Dict(
   # Frame(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
-  :element_type => Frame(10, 6, 2, 1, 1, Line(2, 2)),
+  :struc_el => Frame(10, 6, 2, 1, 1, Line(2, 2)),
   :properties => [2.0e5;],
   :x_coords => [0.0, 4.0, 4.0, 8.0, 8.0, 12.0],
   :y_coords => [3.0, 0.0, 3.0, 3.0, 0.0, 0.0],

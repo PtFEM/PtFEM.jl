@@ -16,7 +16,7 @@ FE4_1(data::Dict)
 
 ### Dictionary keys
 ```julia
-* element_type::ElementType                            : Type of  structural element
+* struc_el::StructuralElement                            : Type of  structural fin_el
 * support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
 * loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector
 * properties::Vector{Float64}                          : Material properties
@@ -34,7 +34,7 @@ using CSoM
 
 data = Dict(
   # Rod(nels, np_types, nip, finite_element(nod, nodof))
-  :element_type => Rod(4, 1, 1, Line(2, 1)),
+  :struc_el => Rod(4, 1, 1, Line(2, 1)),
   :properties => [1.0e5;],
   :x_coords => linspace(0, 1, 5),
   :support => [(1, [0])],
@@ -55,39 +55,39 @@ println()
 
 ### Related help
 ```julia
-?ElementType  : Help on structural elements
-?Rod          : Help on a Rod structural element
-?Element      : Help on finite element types
+?StructuralElement  : Help on structural elements
+?Rod                : Help on a Rod structural fin_el
+?FiniteElement      : Help on finite element types
 ```
 """
 function FE4_1(data::Dict{Symbol, Any})
   
   # Parse & check FEdict data
   
-  if :element_type in keys(data)
-    element_type::ElementType = data[:element_type]
+  if :struc_el in keys(data)
+    struc_el = data[:struc_el]
   else
-    throw("No element type specified.")
+    throw("No fin_el type specified.")
   end
   
-  if typeof(element_type) == CSoM.Rod
+  if typeof(struc_el) == CSoM.Rod
     ndim = 1
-    nst = element_type.np_types
+    nst = struc_el.np_types
   else
-    throw("FE4_1 expects a Rod structural element.")
+    throw("FE4_1 expects a Rod structural fin_el.")
   end
   
-  element::Element = element_type.element
-  @assert typeof(element) <: Element
+  fin_el = struc_el.fin_el
+  @assert typeof(fin_el) <: FiniteElement
   
-  if typeof(element) == Line
-    (nels, nn) = mesh_size(element, element_type.nxe)
+  if typeof(fin_el) == Line
+    (nels, nn) = CSoM.mesh_size(fin_el, struc_el.nxe)
   else
     throw("FE4_1 expects a Line finite element.")
   end
    
-  nodof = element.nodof         # Degrees of freedom per node
-  ndof = element.nod * nodof    # Degrees of freedom per element
+  nodof = fin_el.nodof         # Degrees of freedom per node
+  ndof = fin_el.nod * nodof    # Degrees of freedom per fin_el
   
   # Update penalty if specified in input dict
   
@@ -98,25 +98,25 @@ function FE4_1(data::Dict{Symbol, Any})
   
   # All dynamic arrays
   
-  points = zeros(element_type.nip, ndim)   # 
+  points = zeros(struc_el.nip, ndim)   # 
   g = zeros(Int64, ndof)                   # Element steering vector
   g_coord = zeros(ndim,nn)                 # 
-  fun = zeros(element.nod)                 #
-  coord = zeros(element.nod, ndim)         #
+  fun = zeros(fin_el.nod)                 #
+  coord = zeros(fin_el.nod, ndim)         #
   gamma = zeros(nels)                      #
   jac = zeros(ndim, ndim)                  #
-  g_num = zeros(Int64, element.nod, nels)  # 
-  der = zeros(ndim, element.nod)           #
-  deriv = zeros(ndim, element.nod)         #
+  g_num = zeros(Int64, fin_el.nod, nels)  # 
+  der = zeros(ndim, fin_el.nod)           #
+  deriv = zeros(ndim, fin_el.nod)         #
   bee = zeros(nst,ndof)                    #
   km = zeros(ndof, ndof)                   #
   mm = zeros(ndof, ndof)                   #
   gm = zeros(ndof, ndof)                   #
   kg = zeros(ndof, ndof)                   #
   eld = zeros(ndof)                        #
-  weights = zeros(element_type.nip)        #
+  weights = zeros(struc_el.nip)        #
   g_g = zeros(Int64, ndof, nels)           #
-  num = zeros(Int64, element.nod)          #
+  num = zeros(Int64, fin_el.nod)          #
   actions = zeros(nels, ndof)              #
   nf = ones(Int64, nodof, nn)              #
   displacements = zeros(size(nf, 1), ndim) #
@@ -160,7 +160,7 @@ function FE4_1(data::Dict{Symbol, Any})
   
   # Done with input dict and allocations
   
-  formnf!(nodof, nn, nf)
+  CSoM.formnf!(nodof, nn, nf)
   neq = maximum(nf)
   kdiag = zeros(Int64, neq)
   
@@ -175,9 +175,9 @@ function FE4_1(data::Dict{Symbol, Any})
   
   for i in 1:nels
     num = [i; i+1]
-    num_to_g!(element.nod, nodof, nn, ndof, num, nf, g)
+    CSoM.num_to_g!(fin_el.nod, nodof, nn, ndof, num, nf, g)
     g_g[:, i] = g
-    fkdiag!(ndof, neq, g, kdiag)
+    CSoM.fkdiag!(ndof, neq, g, kdiag)
   end
   
   for i in 2:neq
@@ -197,9 +197,9 @@ function FE4_1(data::Dict{Symbol, Any})
   end
   
   for i in 1:nels
-    km = rod_km!(km, prop[etype[i], 1], ell[i])
+    km = CSoM.rod_km!(km, prop[etype[i], 1], ell[i])
     g = g_g[:, i]
-    fsparv!(kv, km, g, kdiag)
+    CSoM.fsparv!(kv, km, g, kdiag)
   end
 
   fixed_freedoms = 0
@@ -221,8 +221,8 @@ function FE4_1(data::Dict{Symbol, Any})
     loads[no+1] = kv[kdiag[no]] .* value
   end
 
-  sparin!(kv, kdiag)
-  loads[2:end] = spabac!(kv, loads[2:end], kdiag)
+  CSoM.sparin!(kv, kdiag)
+  loads[2:end] = CSoM.spabac!(kv, loads[2:end], kdiag)
   println()
 
   displacements = zeros(size(nf))
@@ -237,13 +237,13 @@ function FE4_1(data::Dict{Symbol, Any})
 
   loads[1] = 0.0
   for i in 1:nels
-    km = rod_km!(km, prop[etype[i], 1], ell[i])
+    km = CSoM.rod_km!(km, prop[etype[i], 1], ell[i])
     g = g_g[:, i]
     eld = loads[g+1]
     actions[i, :] = km * eld
   end
 
-  FEM(element_type, element, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
+  FEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
     etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
     bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
     g_coord, jac, km, mm, gm, kv, gv, loads, points, prop, sigma, value,
