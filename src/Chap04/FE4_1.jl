@@ -217,7 +217,7 @@ function FE4_1(data::Dict{Symbol, Any})
       no[i] = nf[sense[i], node[i]]
       value[i] = data[:fixed_freedoms][i][3]
     end
-    kv[kdiag[no]] = kv[kdiag[no]] + penalty
+    kv[kdiag[no]] += penalty
     loads[no+1] = kv[kdiag[no]] .* value
   end
 

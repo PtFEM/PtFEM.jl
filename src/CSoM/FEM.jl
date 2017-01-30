@@ -3,8 +3,8 @@ import Base.show
 ### Model type ###
 
 immutable FEM                     # Computationale data and results structure
-  struc_el::StructuralElement       # Store the fin_el type object
-  fin_el::FiniteElement                # Store finite element object
+  struc_el::StructuralElement     # Store the structural element object
+  fin_el::FiniteElement           # Store finite element object
   
   # Scalars
   ndim::Int64                     # Number of dimensions
