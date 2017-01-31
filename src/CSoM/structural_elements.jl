@@ -111,7 +111,7 @@ type Frame <: StructuralElement
   ndim::Int64                     # Number of dimensions
   nst::Int64                      # Number of stress terms
   nip::Int64                      # Number of integration points per fin_el
-  fin_el::FiniteElement                # Finite fin_el type used
+  fin_el::FiniteElement           # Finite fin_el type used
 end
 
 type Plane <: StructuralElement
