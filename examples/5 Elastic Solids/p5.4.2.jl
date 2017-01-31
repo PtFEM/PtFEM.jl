@@ -2,7 +2,7 @@ using CSoM
 
 data = Dict(
   # GenericSolid(ndim, nst, nels, nn, nip, finite_element(nod, nodof), axisymmentrix)
-  :struc_el => GenericSolid(3, 6, 6, 8, 1, Tetrahedron(4, 3), false),
+  :struc_el => GenericSolid(3, 6, 6, 8, 1, Tetrahedron(3), false),
   :properties => [100.0 0.3 0.0;],
   :g_coord => [
     0.0 0.0 0.0; 1.0 0.0 0.0; 0.0 0.0 -1.0; 1.0 0.0 -1.0;

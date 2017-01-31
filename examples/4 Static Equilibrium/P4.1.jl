@@ -23,7 +23,7 @@ FE4_1(data::Dict)
 
 ### Dictionary keys
 ```julia
-* struc_el::StructuralElement                            : Type of  structural fin_el
+* struc_el::StructuralElement                          : Type of structural element
 * support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
 * loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector
 * properties::Vector{Float64}                          : Material properties
@@ -55,7 +55,7 @@ m = FE4_1(data)
 ### Related help
 ```julia
 ?StructuralElement  : Help on structural elements
-?Rod                : Help on a Rod structural fin_el
+?Rod                : Help on a Rod structural element
 ?FiniteElement      : Help on finite element types
 ```
 """
@@ -66,7 +66,7 @@ function FE4_1(data::Dict{Symbol, Any})
   if :struc_el in keys(data)
     struc_el::StructuralElement = data[:struc_el]
   else
-    println("No fin_el type specified.")
+    println("No element type specified.")
     return
   end
   

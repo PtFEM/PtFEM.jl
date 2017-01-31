@@ -62,19 +62,19 @@ println()
 """
 function FE4_1(data::Dict{Symbol, Any})
   
-  # Parse & check FEdict data
+  # Parse & check FE problem data input dict
   
   if :struc_el in keys(data)
     struc_el = data[:struc_el]
   else
-    throw("No fin_el type specified.")
+    throw("No structural element type specified.")
   end
   
   if typeof(struc_el) == CSoM.Rod
     ndim = 1
     nst = struc_el.np_types
   else
-    throw("FE4_1 expects a Rod structural fin_el.")
+    throw("FE4_1 expects a Rod structural element.")
   end
   
   fin_el = struc_el.fin_el
@@ -83,18 +83,15 @@ function FE4_1(data::Dict{Symbol, Any})
   if typeof(fin_el) == Line
     (nels, nn) = CSoM.mesh_size(fin_el, struc_el.nxe)
   else
-    throw("FE4_1 expects a Line finite element.")
+    throw("FE4_1 expects a Line (Interval) finite element.")
   end
    
   nodof = fin_el.nodof         # Degrees of freedom per node
   ndof = fin_el.nod * nodof    # Degrees of freedom per fin_el
   
-  # Update penalty if specified in input dict
+  # Set penalty
   
-  penalty = 1e20
-  if :penalty in keys(data)
-    penalty = data[:penalty]
-  end
+  penalty = :penalty in keys(data) ? data[:penalty] : 1e20
   
   # All dynamic arrays
   

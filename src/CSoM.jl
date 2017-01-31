@@ -85,10 +85,12 @@ include("Chap06/FE6_1.jl")
 export
   # From fin_els.jl
   StructuralElement,
-  Plane,
-  Beam,
   Rod,
   Frame,
+  Beam1D,
+  Beam2D,
+  Beam3D,
+  Plane,
   Solid,
   GenericSolid,
   

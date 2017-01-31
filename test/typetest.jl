@@ -1,7 +1,7 @@
 using CSoM
 
 data = Dict{Symbol, Any}(
-  :struc_el => Beam(1, 1, 4, 1, :x, Line(2, 1), false)
+  :struc_el => Beam1D(1, 1, 4, 1, :x, Line(2, 1), false)
 )
 
 function test_type(dct::Dict{Symbol, Any})

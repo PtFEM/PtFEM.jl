@@ -1,8 +1,8 @@
 using CSoM
 
 data = Dict(
-  # Beam(ndim, nst, nxe, nip, direction, finite_element(nod, nodof), axisymmetric)
-  :struc_el => Beam(2, 1, 4, 1, :x, Line(2, 1), false),
+  # Beam1D(ndim, nst, nxe, nip, direction, finite_element(nod, nodof), axisymmetric)
+  :struc_el => Beam1D(2, 1, 4, 1, :x, Line(2, 1), false),
   :properties => [4.0e4; 2.0e4],
   :etype => [1, 1, 2, 2],
   :x_coords => [0.0, 2.5, 5.0, 8.0, 10.0],
