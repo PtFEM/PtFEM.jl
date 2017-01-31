@@ -125,6 +125,7 @@ function FE4_1(data::Dict{Symbol, Any})
   y_coords = zeros(nn)                     # Not used, needed for FEM constructor
   z_coords = zeros(nn)                     #
   etype = ones(Int64, nels)                #
+  ell = zeros(nels)
 
   # Start with arrays to be initialized from input dict
   
@@ -137,7 +138,8 @@ function FE4_1(data::Dict{Symbol, Any})
     throw("No :properties key found in input dict to FE4_1.")
   end
   
-  # Fill some dynamic arrays from input dict
+  # Update nodal freedom array from input dict :support entry
+  # nf has dimensions [nodof, nn] and all entries are set to 1 (free)
   
   if :support in keys(data)
     for i in 1:size(data[:support], 1)
@@ -149,26 +151,29 @@ function FE4_1(data::Dict{Symbol, Any})
 
   if :x_coords in keys(data)
     x_coords = data[:x_coords]
+    @assert length(x_coords) == nels + 1
+  else
+    dl = 1.0/nels
+    x_coords = 0.0:dl:1.0
   end
   
+  # Set lengths of elements
+  for i in 1:length(x_coords)-1
+    ell[i] = x_coords[i+1] - x_coords[i]
+  end
+
+  # In multiple np_types, get np_type for each structural element
   if :etype in keys(data)
     etype = data[:etype]
   end
   
-  # Done with input dict and allocations
+  # Done with input dict and allocations, re-do nf (assign number to each dof)
   
   CSoM.formnf!(nodof, nn, nf)
   neq = maximum(nf)
   kdiag = zeros(Int64, neq)
   
   # Set global numbering, coordinates and array sizes
-  
-  ell = zeros(nels)
-  if :x_coords in keys(data)
-    for i in 1:length(data[:x_coords])-1
-      ell[i] = data[:x_coords][i+1] - data[:x_coords][i]
-    end
-  end
   
   for i in 1:nels
     num = [i; i+1]

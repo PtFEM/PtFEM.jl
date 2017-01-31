@@ -27,3 +27,7 @@ println()
 println("Actions:")
 m.actions |> display
 println()
+
+# Stiffness matrix
+println("Stiffness matrix:")
+fromSkyline(m.kv, m.kdiag)
