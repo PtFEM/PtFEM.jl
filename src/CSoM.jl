@@ -87,7 +87,7 @@ export
   StructuralElement,
   Rod,
   Frame,
-  Beam1D,
+  Beam,
   Beam2D,
   Beam3D,
   Plane,

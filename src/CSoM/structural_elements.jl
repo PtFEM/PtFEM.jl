@@ -13,7 +13,7 @@ abstract StructuralElement
 ### Subtypes
 ```julia
 * Rod::StructuralElement          : Rod(nxe, np_types, nip, fin_el)
-* Beam::StructuralElement         : Beam1D(nod, nodof)
+* Beam::StructuralElement         : Beam(nod, nodof)
 * Frame::StructuralElement        : Frame(nod, nodof)
 * Plane::StructuralElement        : Plane(nod, nodof)
 * Solid::StructuralElement        : Solid(nod, nodof)
@@ -68,11 +68,11 @@ end
 """
 ## Beam
 
-Concrete 1D structural element with transverse and moment loading.
+Concrete structural element with transverse and moment loading.
 
 ### Constructor
 ```julia
-Beam1D(ndim, nip, fin_el)
+Beam(ndim, nip, fin_el)
 ```
 
 ### Arguments
@@ -94,36 +94,13 @@ Beam1D(ndim, nip, fin_el)
 ```
 
 """
-type Beam1D <: StructuralElement    # 1D Beam structural element
+type Beam <: StructuralElement    # 1D Beam structural element
   ndim::Int64                     # Number of dimensions (1,2 or 3)
   nst::Int64                      # Number of stress terms
   nxe::Int64                      # Number of fin_els in x direction
   nip::Int64                      # Number of integration points per fin_el
   direction::Symbol               # Node numbering direction
   fin_el::FiniteElement           # Finite fin_el type used
-  axisymmetric::Bool              # Axisymmetric
-end
-
-type Beam2D <: StructuralElement
-  ndim::Int64                     # Number of dimensions (1,2 or 3)
-  nst::Int64                      # Number of stress terms
-  nxe::Int64                      # Number of fin_els in x direction
-  nye::Int64                      # Number of fin_els in y direction
-  nip::Int64                      # Number of integration points per fin_el
-  direction::Symbol               # Node numbering direction
-  fin_el::FiniteElement           # Finite fin_el type used
-  axisymmetric::Bool              # Axisymmetric
-end
-
-type Beam3D <: StructuralElement
-  ndim::Int64                     # Number of dimensions (1,2 or 3)
-  nst::Int64                      # Number of stress terms
-  nxe::Int64                      # Number of fin_els in x direction
-  nye::Int64                      # Number of fin_els in y direction
-  nze::Int64                      # Number of fin_els in z direction
-  nip::Int64                      # Number of integration points per fin_el
-  direction::Symbol               # Node numbering direction
-  fin_el::FiniteElement                # Finite fin_el type used
   axisymmetric::Bool              # Axisymmetric
 end
 
