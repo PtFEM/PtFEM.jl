@@ -86,10 +86,8 @@ export
   # From fin_els.jl
   StructuralElement,
   Rod,
-  Frame,
   Beam,
-  Beam2D,
-  Beam3D,
+  Frame,
   Plane,
   Solid,
   GenericSolid,
