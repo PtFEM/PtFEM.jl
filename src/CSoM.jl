@@ -1,5 +1,7 @@
 module CSoM
 
+using Compat
+
 if !isdefined(Main, :JULIA_SVG_BROWSER)
   JULIA_SVG_BROWSER = ""
   try
