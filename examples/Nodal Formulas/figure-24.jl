@@ -1,4 +1,5 @@
 using CSoM
+using Base.Test
 
 #=
 Compare formulas at:
@@ -8,7 +9,7 @@ http://www.awc.org/pdf/codes-standards/publications/design-aids/AWC-DA6-BeamForm
 data = Dict(
   # Frame(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
   :struc_el => Frame(20, 21, 3, 1, 1, Line(2, 3)),
-  :properties => [2.0e6 1.0e6 1.0e6 3.0e5;],
+  :properties => [1.0e6 1.0e6 1.0e6 3.0e5;],
   :x_coords => collect(linspace(0, 4, 21)),
   :y_coords => zeros(21),
   :z_coords => zeros(21),
@@ -48,3 +49,9 @@ println()
 println("y moment actions:")
 m.actions[12,:] |> display
 println()
+
+# See figure 24 in above reference (Δmax): 
+@test m.displacements[2,11] ≈ -10000 * 4^3 / (192 * 1.0e6) atol=10.0*eps()
+
+# See figure 24 in above reference (Mmax): 
+@test m.actions[12,10] ≈ (10000 * 4 / 8) atol=10.0*eps()
