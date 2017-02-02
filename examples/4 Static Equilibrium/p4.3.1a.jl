@@ -27,10 +27,22 @@ println()
 @time m = FE4_3(data)
 println()
 
-println("Displacements:")
-m.displacements |> display
-println()
+if VERSION.minor > 5
+  println("Displacements:")
+  m.displacements' |> display
+  println()
 
-println("Actions:")
-m.actions |> display
-println()
+  println("Actions:")
+  m.actions' |> display
+  println()
+else
+  using DataFrames
+  df = DataFrame(
+    xl_Force = m.actions[1, :],
+    xl_Moment = m.actions[2, :],
+    xr_Force = m.actions[3, :],
+    xr_Moment = m.actions[4, :]
+  )
+  display(df)
+end
+

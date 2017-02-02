@@ -37,11 +37,6 @@ println("Actions:")
 m.actions |> display
 println()
 
-#=
-using Plots
-plot(m.displacements[2,:])
-=#
-
 println("y displacements:")
 m.displacements[2,:] |> display
 println()
@@ -55,3 +50,23 @@ println()
 
 # See figure 24 in above reference (Mmax): 
 @test m.actions[12,10] ≈ (10000 * 4 / 8) atol=10.0*eps()
+
+if VERSION.minor == 5
+  using Plots
+  gr(size=(400,600))
+
+  p = Vector{Plots.Plot{Plots.GRBackend}}(3)
+  p[1] = plot(m.x_coords, m.displacements[2,:], ylim=(-0.004, 0.001), lab="Displacement", 
+   xlabel="x [m]", ylabel="deflection [m]", color=:red)
+  p[2] = plot(m.actions[2,:], lab="Shear force", ylim=(-6000, 6000), xlabel="element",
+    ylabel="shear force [N]", palette=:greens,fill=(0,:auto),α=0.6)
+  p[3] = plot(m.actions[12,:], lab="Moment", ylim=(-6000, 6000), xlabel="element",
+    ylabel="moment [Nm]", palette=:grays,fill=(0,:auto),α=0.6)
+
+  plot(p..., layout=(3, 1))
+  savefig(ProjDir*"/figure-24.png")
+  #=
+  plot!()
+  gui()
+  =#
+end
