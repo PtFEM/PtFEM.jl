@@ -44,13 +44,6 @@ println()
 println("y moment actions:")
 m.actions[12,:] |> display
 println()
-
-# See figure 24 in above reference (Δmax): 
-@test m.displacements[2,11] ≈ -10000 * 4^3 / (192 * 1.0e6) atol=10.0*eps()
-
-# See figure 24 in above reference (Mmax): 
-@test m.actions[12,10] ≈ (10000 * 4 / 8) atol=10.0*eps()
-
 if VERSION.minor == 5
   using Plots
   gr(size=(400,600))
@@ -70,3 +63,13 @@ if VERSION.minor == 5
   gui()
   =#
 end
+
+if VERSION.minor > 5
+
+  # See figure 24 in above reference (Δmax): 
+  @eval @test m.displacements[2,11] ≈ -10000 * 4^3 / (192 * 1.0e6) atol=10.0*eps()
+
+  # See figure 24 in above reference (Mmax): 
+  @eval @test m.actions[12,10] ≈ (10000 * 4 / 8) atol=10.0*eps()
+end
+  
