@@ -14,7 +14,7 @@ All 'basic' functions are in the src/CSoM directory while higher level computati
 
 Once the structure has been decided upon the basic functions will be reviewed for better approaches in [Julia](http://julialang.org) vs. the current Fortran flavor. 
 
-Lots of other great development work related to solving partial differentiel equiations is done in Julia packages, e.g. [ApproxFun.jl](https://github.com/JuliaApproximation/ApproxFun.jl), [DifferentialEquations.jl](https://github.com/JuliaDiffEq/DifferentialEquations.jl), [JuliaFEM.jl](http://www.juliafem.org) and, as mentioned earlier,  [JuaFEM.jl](https://github.com/KristofferC/JuAFEM.jl) to name a few.
+More fundamental and great development work related to solving partial differential equations is done in Julia packages, e.g. [ApproxFun.jl](https://github.com/JuliaApproximation/ApproxFun.jl), [DifferentialEquations.jl](https://github.com/JuliaDiffEq/DifferentialEquations.jl), [JuliaFEM.jl](http://www.juliafem.org) and, as mentioned earlier,  [JuaFEM.jl](https://github.com/KristofferC/JuAFEM.jl) to name a few.
 
 Also note the  [NMfE.jl](https://github.com/goedman/NMfE.jl) package, which contains the programs in the book "Numerical Methods for Engineers" by the same authors. NMfE is a great introduction to PtFEM. In particular, examples/ch07 directory of NMfE.jl contains some very interesting [Symata.jl](https://github.com/jlapeyre/Symata.jl) based introductory examples of applying the method of weighted residuals (MRW).
 
