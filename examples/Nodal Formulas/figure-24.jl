@@ -8,20 +8,20 @@ http://www.awc.org/pdf/codes-standards/publications/design-aids/AWC-DA6-BeamForm
 
 data = Dict(
   # Frame(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
-  :struc_el => Frame(20, 21, 3, 1, 1, Line(2, 3)),
+  :struc_el => Frame(200, 201, 3, 1, 1, Line(2, 3)),
   :properties => [1.0e6 1.0e6 1.0e6 3.0e5;],
-  :x_coords => collect(linspace(0, 4, 21)),
-  :y_coords => zeros(21),
-  :z_coords => zeros(21),
+  :x_coords => collect(linspace(0, 4, 201)),
+  :y_coords => zeros(201),
+  :z_coords => zeros(201),
   :g_num => [
-    collect(1:20)';
-    collect(2:21)'],
+    collect(1:200)';
+    collect(2:201)'],
   :support => [
     (1, [0 0 0 0 0 0]),
-    (21, [0 0 0 0 0 0]),
+    (201, [0 0 0 0 0 0]),
     ],
   :loaded_nodes => [
-    (11, [0.0 -10000.0 0.0 0.0 0.0 0.0])]
+    (101, [0.0 -10000.0 0.0 0.0 0.0 0.0])]
 )
 
 data |> display

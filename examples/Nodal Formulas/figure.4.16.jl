@@ -44,6 +44,7 @@ end
 
 data = Dict(
   # Beam(ndim, nst, nxe, nip, direction, finite_element(nod, nodof), axisymmet
+  # ?Beam for more details
   :struc_el => Beam(2, 1, 100, 1, :x, Line(2, 2), false),
   :properties => [4.0e4; 2.0e4],
   :etype => repeat(1:2, inner=50),

@@ -1,88 +1,96 @@
 using CSoM
 using Base.Test
 
-ProjDir = dirname(@__FILE__)
-
 #=
 Compare formulas at:
 http://www.awc.org/pdf/codes-standards/publications/design-aids/AWC-DA6-BeamFormulas-0710.pdf
 =#
 
-ProjDir = dirname(@__FILE__)
-
-# Setup loaded nodes entry
-function create_figure_1_loaded_nodes_array(x, wl)
-  # x        : x coordinate array [m]
-  # wl       : load [kN/m]
-  
-  N = length(x)
-  lnodes =  Array{Tuple{Int64,Array{Float64,2}},1}()
-  for i in 1:N
-    push!(lnodes, (i, [0.0 0.0]))
-  end
-  
-  # update nodes with contribution by fixed loads
-  for i in 1:N
-    if i == 1
-      shearforce = -wl*(x[i+1]-x[i])/2.0      # allocate 1/2 weight to each node
-      lnodes[i][2][1] = shearforce
-      lnodes[i][2][2] = 0.0
-    elseif i == N
-      shearforce = -wl*(x[i]-x[i-1])/2.0
-      lnodes[i][2][1] = shearforce
-      lnodes[i][2][2] = 0.0
-    else
-      shearforce = -wl*((x[i]-x[i-1]) + (x[i+1]-x[i]))/2.0
-      lnodes[i][2][1] = shearforce
-      lnodes[i][2][2] = 0.0
-    end
-  end
-
-  lnodes
-end
-
 data = Dict(
-  # Beam(ndim, nst, nxe, nip, direction, finite_element(nod, nodof), axisymmet
-  :struc_el => Beam(2, 1, 1, 1, :x, Line(2, 2), false),
-  :properties => [1.0e4],
-  :x_coords => [0.0; 1.0],
+  # Frame(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
+  :struc_el => Frame(20, 21, 3, 1, 1, Line(2, 3)),
+  :properties => [1.0e3 1.0e3 1.0e3 3.0e5;],
+  :x_coords => collect(linspace(0, 4, 21)),
+  :y_coords => zeros(21),
+  :z_coords => zeros(21),
+  :g_num => [
+    collect(1:20)';
+    collect(2:21)'],
   :support => [
-    (1, [0 0]),
-    (2, [0 0])
+    (1, [0 0 0 0 0 0]),
+    (21, [0 0 0 0 0 0]),
     ],
   :loaded_nodes => [
-    (1, [-2.0 -4/12]),
-    (2, [-2.0  4/12])
-    ],
-  :penalty => 1e19
+      ( 1, [0.0 -1.0 0.0 0.0 0.0 0.0]),
+      ( 2, [0.0 -1.0 0.0 0.0 0.0 0.0]),
+      ( 3, [0.0 -1.0 0.0 0.0 0.0 0.0]),
+      ( 4, [0.0 -1.0 0.0 0.0 0.0 0.0]),
+      ( 5, [0.0 -1.0 0.0 0.0 0.0 0.0]),
+      ( 6, [0.0 -1.0 0.0 0.0 0.0 0.0]),
+      ( 7, [0.0 -1.0 0.0 0.0 0.0 0.0]),
+      ( 8, [0.0 -1.0 0.0 0.0 0.0 0.0]),
+      ( 9, [0.0 -1.0 0.0 0.0 0.0 0.0]),
+      (10, [0.0 -1.0 0.0 0.0 0.0 0.0]),
+      (11, [0.0 -1.0 0.0 0.0 0.0 0.0]),
+      (12, [0.0 -1.0 0.0 0.0 0.0 0.0]),
+      (13, [0.0 -1.0 0.0 0.0 0.0 0.0]),
+      (14, [0.0 -1.0 0.0 0.0 0.0 0.0]),
+      (15, [0.0 -1.0 0.0 0.0 0.0 0.0]),
+      (16, [0.0 -1.0 0.0 0.0 0.0 0.0]),
+      (17, [0.0 -1.0 0.0 0.0 0.0 0.0]),
+      (18, [0.0 -1.0 0.0 0.0 0.0 0.0]),
+      (19, [0.0 -1.0 0.0 0.0 0.0 0.0]),
+      (20, [0.0 -1.0 0.0 0.0 0.0 0.0]),
+      (21, [0.0 -1.0 0.0 0.0 0.0 0.0])
+    ]
 )
 
-#data[:loaded_nodes] = create_figure_1_loaded_nodes_array(data[:x_coords], 4.0)
-data[:loaded_nodes] |> display
+data |> display
 println()
 
-m = FE4_3(data)
+m = FE4_4(data)
 
 println("Displacements:")
-m.displacements' |> display
+m.displacements |> display
 println()
 
 println("Actions:")
-m.actions' |> display
+m.actions |> display
 println()
 
+println("y displacements:")
+m.displacements[2,:] |> display
+println()
+
+println("y moment actions:")
+m.actions[12,:] |> display
+println()
 if VERSION.minor == 5
   using Plots
   gr(size=(400,600))
 
   p = Vector{Plots.Plot{Plots.GRBackend}}(3)
-  p[1] = plot(m.x_coords, m.displacements[2,:], ylim=(-0.002, 0.003), lab="Displacement", 
+  p[1] = plot(m.x_coords, m.displacements[2,:], ylim=(-0.004, 0.001), lab="Displacement", 
    xlabel="x [m]", ylabel="deflection [m]", color=:red)
-  p[2] = plot(m.actions'[3,:], lab="Shear force", ylim=(-30, 30), xlabel="element",
+  p[2] = plot(m.actions[2,:], lab="Shear force", ylim=(-10, 10), xlabel="element",
     ylabel="shear force [N]", palette=:greens,fill=(0,:auto),α=0.6)
-  p[3] = plot(m.actions'[4,:], lab="Moment", ylim=(-2, 2), xlabel="element",
+  p[3] = plot(m.actions[12,:], lab="Moment", ylim=(-7, 7), xlabel="element",
     ylabel="moment [Nm]", palette=:grays,fill=(0,:auto),α=0.6)
 
   plot(p..., layout=(3, 1))
   savefig(ProjDir*"/figure-23.png")
+  #=
+  plot!()
+  gui()
+  =#
 end
+
+if VERSION.minor > 5
+
+  # See figure 24 in above reference (Δmax): 
+  @eval @test m.displacements[2,11] ≈ -10000 * 4^3 / (192 * 1.0e6) atol=10.0*eps()
+
+  # See figure 24 in above reference (Mmax): 
+  @eval @test m.actions[12,10] ≈ (10000 * 4 / 8) atol=10.0*eps()
+end
+  
