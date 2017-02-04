@@ -21,11 +21,11 @@ function FE4_3(data::Dict)
   @assert typeof(fin_el) <: FiniteElement
   
   if typeof(fin_el) == Line
-    (nels, nn) = mesh_size(fin_el, struc_el.nxe)
+    (nels, nn) = CSoM.mesh_size(fin_el, struc_el.nxe)
   elseif typeof(fin_el) == Triangle || typeof(fin_el) == Quadrilateral
-    (nels, nn) = mesh_size(fin_el, struc_el.nxe, struc_el.nye)
+    (nels, nn) = CSoM.mesh_size(fin_el, struc_el.nxe, struc_el.nye)
   elseif typeof(fin_el) == Hexahedron
-    (nels, nn) = mesh_size(fin_el, struc_el.nxe, struc_el.nye, struc_el.nze)
+    (nels, nn) = CSoM.mesh_size(fin_el, struc_el.nxe, struc_el.nye, struc_el.nze)
   else
     println("$(typeof(fin_el)) is not a known finite element.")
     return
