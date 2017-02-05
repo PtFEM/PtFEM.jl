@@ -68,7 +68,7 @@ function update_equivalent_m_and_f!(data::Dict)
         else
           indx = findin(ns, t[1])[1]
           data[:loaded_nodes][indx][2][1] += -force
-          data[:loaded_nodes][indx][2][2] += moment
+          data[:loaded_nodes][indx][2][2] += -moment
         end
         t2 = t[1] + 1
         if !(t2 in ns)
@@ -135,11 +135,13 @@ else
   gr(size=(400,600))
 
   p = Vector{Plots.Plot{Plots.GRBackend}}(3)
-  p[1] = plot(m.x_coords, m.displacements[2,:], ylim=(-0.1, 0.1), lab="y Displacement", 
+  p[1] = plot(m.x_coords, m.displacements[2,:], ylim=(-0.01, 0.01), lab="y Displacement", 
    xlabel="x [m]", ylabel="deflection [m]", color=:red)
-  p[2] = plot(m.actions[2,:], lab="Shear force", ylim=(-150, 170), xlabel="element",
+ moms = vcat(fm_df[:, :xl_Moment], fm_df[end, :xr_Moment])
+ fors = vcat(fm_df[:, :xl_Force], fm_df[end, :xr_Force])
+  p[2] = plot(fors, lab="Shear force", ylim=(-5.0, 25), xlabel="element",
     ylabel="shear force [N]", palette=:greens,fill=(0,:auto),α=0.6)
-  p[3] = plot(m.actions[4,:], lab="Moment", ylim=(-150, 170), xlabel="element",
+  p[3] = plot(moms, lab="Moment", ylim=(-30, 35), xlabel="element",
     ylabel="moment [Nm]", palette=:grays,fill=(0,:auto),α=0.6)
 
   plot(p..., layout=(3, 1))
