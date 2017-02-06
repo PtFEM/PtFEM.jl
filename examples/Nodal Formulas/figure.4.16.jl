@@ -1,31 +1,45 @@
 using CSoM
 
+ProjDir = dirname(@__FILE__)
+
 data = Dict(
   # Beam(ndim, nst, nxe, nip, direction, finite_element(nod, nodof), axisymmet
-  :struc_el => Beam(2, 1, 4, 1, :x, Line(2, 2), false),
+  # ?Beam for more details
+  :struc_el => Beam(2, 1, 9, 1, :x, Line(2, 2), false),
   :properties => [4.0e4; 2.0e4],
-  :etype => [1, 1, 2, 2],
-  :x_coords => [0.0, 2.5, 5.0, 8.0, 10.0],
+  :etype => [1,1,2,2,2,2,2,2,2],
+  :x_coords => [0.0, 2.5, 5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0, 10.0],
   :support => [
-      (1, [0 1]),
-      (4, [0 1])
-    ],
-  :loaded_nodes => [
-      (2, [-20.0 0.0]),
-      (3, [-6.0 -3.0]),
-      (4, [-8.8 2.2]),
-      (5, [-1.2 0.5333])
+    (1, [0 1]),
+    (9, [0 1])
     ],
   :fixed_freedoms => [
-      (1, 2, -0.001),
-      (3, 1, -0.005)
+    (1, 2, -0.001),
+    (3, 1, -0.005)],
+  :loaded_nodes => [
+      (2, [-20.0 0.0])
+      (3, [-1.0 -0.02083])
+      (4, [-1.0 0.0])
+      (5, [-1.0 0.0])
+      (6, [-1.0 0.0])
+      (7, [-1.0 0.0])
+      (8, [-1.0 0.0])
+      (9, [-3.8 -0.77917])
+      (10, [-1.2 0.5333])
     ],
   :penalty => 1e19,
   :eq_nodal_forces_and_moments => [
-    (3, [-6.0 -3.0 -6.0 3.0]),
-    (4, [-2.8 -0.8 -1.2  0.5333])
+    (3, [-1.0 -0.02083 -1.0 0.02083]),
+    (4, [-1.0 -0.02083 -1.0 0.02083]),
+    (5, [-1.0 -0.02083 -1.0 0.02083]),
+    (6, [-1.0 -0.02083 -1.0 0.02083]),
+    (7, [-1.0 -0.02083 -1.0 0.02083]),
+    (8, [-1.0 -0.02083 -1.0 0.02083]),
+    (9, [-2.8 -0.8 -1.2  0.5333])
   ]
 )
+
+data[:loaded_nodes]
 
 data |> display
 println()
@@ -69,21 +83,23 @@ else
   display(dis_df)
   println()
   display(fm_df)
-
+  
   using Plots
   gr(size=(400,600))
 
   p = Vector{Plots.Plot{Plots.GRBackend}}(3)
-  p[1] = plot(m.x_coords, m.displacements[2,:], ylim=(-0.01, 0.01), lab="y Displacement", 
+  p[1] = plot(m.x_coords, m.displacements[2,:], ylim=(-0.005, 0.005), lab="y Displacement", 
    xlabel="x [m]", ylabel="deflection [m]", color=:red)
+  x_coords = data[:x_coords]
   moms = vcat(fm_df[:, :xl_Moment], fm_df[end, :xr_Moment])
   fors = vcat(fm_df[:, :xl_Force], fm_df[end, :xr_Force])
-  p[2] = plot(fors, lab="Shear force", ylim=(-5, 30), xlabel="element",
+  p[2] = plot(x_coords, fors, lab="Shear force", ylim=(-20.0, 25), xlabel="element",
     ylabel="shear force [N]", palette=:greens,fill=(0,:auto),α=0.6)
-  p[3] = plot(moms, lab="Moment", ylim=(-30, 35), xlabel="element",
+  p[3] = plot(x_coords, moms, lab="Moment", ylim=(-40, 40), xlabel="element",
     ylabel="moment [Nm]", palette=:grays,fill=(0,:auto),α=0.6)
 
   plot(p..., layout=(3, 1))
-  savefig(ProjDir*"/figure.4.16b.png")
+  savefig(ProjDir*"/figure.4.16.png")
+  
 end
 
