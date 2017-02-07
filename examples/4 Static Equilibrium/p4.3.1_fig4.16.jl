@@ -58,14 +58,14 @@ if VERSION.minor > 5
 else
   using DataFrames
   dis_df = DataFrame(
-    translations = m.displacements'[:, 1],
-    rotations = m.displacements'[:, 2]
+    y_translation = round(m.displacements'[:, 1], 5),
+    z_rotation = round(m.displacements'[:, 2], 5)
   )
   fm_df = DataFrame(
-    xl_Force = m.actions[1, :],
-    xl_Moment = m.actions[2, :],
-    xr_Force = m.actions[3, :],
-    xr_Moment = m.actions[4, :]
+    y1_Force = round.(m.actions[1, :], 2),
+    z1_Moment = round.(m.actions[2, :], 2),
+    y2_Force = round.(m.actions[3, :], 2),
+    z2_Moment = round.(m.actions[4, :], 2)
   )
   # Correct element forces and moments for equivalent nodal
   # forces and moments introduced for loading between nodes
@@ -75,7 +75,7 @@ else
 
     for t in eqfm
       for i in 1:k
-        fm_df[t[1], i] -= t[2][i]
+        fm_df[t[1], i] -= round(t[2][i], 2)
       end
     end
   end
@@ -88,18 +88,25 @@ else
   gr(size=(400,600))
 
   p = Vector{Plots.Plot{Plots.GRBackend}}(3)
-  p[1] = plot(m.x_coords, m.displacements[2,:], ylim=(-0.005, 0.005), lab="y Displacement", 
-   xlabel="x [m]", ylabel="deflection [m]", color=:red)
-  x_coords = data[:x_coords]
-  moms = vcat(fm_df[:, :xl_Moment], fm_df[end, :xr_Moment])
-  fors = vcat(fm_df[:, :xl_Force], fm_df[end, :xr_Force])
-  p[2] = plot(x_coords, fors, lab="Shear force", ylim=(-20.0, 25), xlabel="element",
-    ylabel="shear force [N]", palette=:greens,fill=(0,:auto),α=0.6)
-  p[3] = plot(x_coords, moms, lab="Moment", ylim=(-40, 40), xlabel="element",
-    ylabel="moment [Nm]", palette=:grays,fill=(0,:auto),α=0.6)
+  titles = ["p4.3.1 y deflection", "p4.3.1 y shear force", "p4.3.1 z moment"]
+  fors = vcat(fm_df[:, :y1_Force], fm_df[end, :y2_Force])
+  moms = vcat(fm_df[:, :z1_Moment], fm_df[end, :z2_Moment])
+  
+  p[1] = plot(m.displacements[2,:], ylim=(-0.005, 0.005),
+    xlabel="node", ylabel="deflection [m]", color=:red,
+    line=(:dash,1), marker=(:circle,4,0.8,stroke(1,:black)),
+    title=titles[1], leg=false)
+  p[2] = plot(fors, ylim=(-20.0, 25),
+    xlabel="node", ylabel="y shear force [N]", color=:blue,
+    line=(:dash,1), marker=(:circle,4,0.8,stroke(1,:black)),
+    title=titles[2], leg=false)
+  p[3] = plot(moms, ylim=(-40, 40),
+    xlabel="node", ylabel="z moment [Nm]", color=:green,
+    line=(:dash,1), marker=(:circle,4,0.8,stroke(1,:black)),
+    title=titles[3], leg=false)
 
   plot(p..., layout=(3, 1))
-  savefig(ProjDir*"/p4.3.1_fig.4.16.png")
+  savefig(ProjDir*"/p4.3.1_fig4.16.png")
   
 end
 
