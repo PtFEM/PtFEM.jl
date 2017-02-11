@@ -238,7 +238,7 @@ function FE5_6(data::Dict, profiling::Bool=false)
     loads[:] -= u*alpha
     d = diag_precon .* loads
     beta = dot(loads, d)/up
-    #@show [cg_iters beta] 
+    @show [cg_iters beta] 
     p = d + p*beta
     cg_converged = checon!(xnew, x, cg_tol, cg_converged)
     if cg_converged || cg_iters >= cg_limit

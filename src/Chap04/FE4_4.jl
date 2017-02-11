@@ -218,35 +218,6 @@ function FE4_4(data::Dict)
     actions[:, i] = km * eld
   end
 
-  #=
-  @show typeof(actions)
-  @show typeof(bee)
-  @show typeof(coord)
-  @show typeof(gamma)
-  @show typeof(dee)
-  @show typeof(der)
-  @show typeof(deriv)
-  @show typeof(displacements)
-  @show typeof(eld)
-  @show typeof(fun)
-  @show typeof(gc)
-  @show typeof(g_coord)
-  @show typeof(jac)
-  @show typeof(km)
-  @show typeof(mm)
-  @show typeof(kg)
-  @show typeof(kv)
-  @show typeof(gv)
-  @show typeof(loads)
-  @show typeof(points)
-  @show typeof(prop)
-  @show typeof(sigma)
-  @show typeof(value)
-  @show typeof(weights)
-  @show typeof(x_coords)
-  @show typeof(y_coords)
-  =#
-  
   FEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
     etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
     bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
