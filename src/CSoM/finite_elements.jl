@@ -19,7 +19,7 @@ abstract FiniteElement
 * Tetrahedron::FiniteElement   : 3D Tetrahedron(nod, nodof)
 ```
 """
-abstract FiniteElement         # Finite elements
+abstract type FiniteElement end     # Finite elements
 
 """
 ## Line (Interval) 1D type finite element

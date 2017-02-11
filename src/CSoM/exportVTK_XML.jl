@@ -11,9 +11,9 @@ type VTKElement
   vtknum::Int
 end
 
-abstract AbstractVTKXML
+abstract type AbstractVTKXML end
 
-abstract AbstractVTKXMLBinary <: AbstractVTKXML
+abstract type AbstractVTKXMLBinary <: AbstractVTKXML end
 
 function add_data!{T <: AbstractVTKXMLBinary}(vtkxml::T, data)
     write(vtkxml.buffer, data)
@@ -80,16 +80,16 @@ function write_VTKXML(filename::String, nodes::Vector{VTKNode},
 
     if binary
         if compress
-            _write_VTKXML(filename, nodes, fin_els, binary, compress, VTKXMLBinaryCompressed())
+            write_VTKXML1(filename, nodes, fin_els, binary, compress, VTKXMLBinaryCompressed())
         else
-            _write_VTKXML(filename, nodes, fin_els, binary, compress, VTKXMLBinaryUncompressed())
+            write_VTKXML1(filename, nodes, fin_els, binary, compress, VTKXMLBinaryUncompressed())
         end
     else
-        _write_VTKXML(filename, nodes, fin_els, binary, compress, VTKXMLASCII())
+        write_VTKXML1(filename, nodes, fin_els, binary, compress, VTKXMLASCII())
     end
 end
 
-function _write_VTKXML{P <: AbstractVTKXML}(filename::String, nodes::Vector{VTKNode},
+function write_VTKXML1{P <: AbstractVTKXML}(filename::String, nodes::Vector{VTKNode},
                                             fin_els::Vector{VTKElement}, binary::Bool,
                                             compress::Bool, vtkxml::P)
 

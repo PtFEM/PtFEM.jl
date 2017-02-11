@@ -30,7 +30,7 @@ abstract StructuralElement
 ?GenericSolid                     : Help on GenericSolid structural
 ```
 """
-abstract StructuralElement              # Structure fin_el to be modeled
+abstract type StructuralElement end             # Structure fin_el to be modeled
 
 """
 ## Rod
