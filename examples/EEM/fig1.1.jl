@@ -4,7 +4,7 @@ ProjDir = dirname(@__FILE__)
 
 l = 1.0       # Total length [m]
 q = 5.0       # Distributed load [N/m]
-N = 20         # Number of nodes
+N = 10         # Number of nodes
 els = N - 1   # Number of elements
 
 data = Dict(
