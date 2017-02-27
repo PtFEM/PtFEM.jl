@@ -4,27 +4,42 @@ ProjDir = dirname(@__FILE__)
 
 l = 1.0       # Total length [m]
 q = 5.0       # Distributed load [N/m]
-N = 10         # Number of nodes
-els = N - 1   # Number of elements
+N = 10        # Number of nodes
+els = N - 1   # Number of finite elements
+nod = 2       # Number of nodes per finite elements
+nodof = 1     # Degrees of freedom for each node
+
+struct_el = :Rod
+fin_el = :Line
 
 data = Dict(
-  # Rod(nels, np_types, nip, Line(nod, nodof))
-  :struc_el => Rod(N-1, 1, 1, Line(2, 1)),
+  # Rod(nxe, np_types, nip, fin_el(nod, nodof))
+  :struc_el => getfield(Main, Symbol(struct_el))(els, 1, 1,
+    getfield(Main, Symbol(fin_el))(nod, nodof)),
   :properties => [1.0e5;],
   :x_coords => 0.0:l/els:l,
   :support => [(N, [0])],
-)
+  :loaded_nodes => [(i, repeat([0.0], inner=nodof)) for i in 1:N],
+  :eq_nodal_forces_and_moments => [(i, repeat([0.0], inner=nodof*nod)) for i in 1:els]
+);
 
-data[:loaded_nodes] = [(i, [0.0]) for i in 1:N]
-for node in 1:N-1
-  data[:loaded_nodes][node][2][1] += q*l / (2els)
-  data[:loaded_nodes][node+1][2][1] += q*l / (2els)
+# In this example there are only distributed loads. Otherwise set data[:loaded_nodes]
+# to the external forces and moment directly applied to the nodes, e.g.:
+#
+# data[:loaded_nodes][2] = (2, [5.0])
+
+# Determine the distributed loads contribution to nodal forces
+
+for node in 1:els
+  data[:eq_nodal_forces_and_moments][node][2][1] = 1/2*q*l/els
+  data[:eq_nodal_forces_and_moments][node][2][2] = 1/2*q*l/els
 end  
 
-data[:eq_nodal_forces_and_moments] = [(i, [0.0 0.0]) for i in 1:els]
-for node in 1:els
-  data[:eq_nodal_forces_and_moments][node][2][1] = q*l / (2els)
-  data[:eq_nodal_forces_and_moments][node][2][2] = q*l / (2els)
+# Add the equivalent distributed forces and moment to loaded_nodes entry
+
+for node in 1:N-1
+  data[:loaded_nodes][node][2][1] += data[:eq_nodal_forces_and_moments][node][2][1]
+  data[:loaded_nodes][node+1][2][1] += data[:eq_nodal_forces_and_moments][node][2][2]
 end  
 
 data |> display
