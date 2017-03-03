@@ -1,7 +1,7 @@
 """
 ## formnf!
 
-Returns nodal freedom array nf
+Returns nodal freedom numbering array nf
 
 ### Function
 ```julia
