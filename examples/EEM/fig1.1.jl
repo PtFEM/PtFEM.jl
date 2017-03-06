@@ -4,7 +4,7 @@ ProjDir = dirname(@__FILE__)
 
 l = 1.0       # Total length [m]
 q = 5.0       # Distributed load [N/m]
-N = 10        # Number of nodes
+N = 4         # Number of nodes
 els = N - 1   # Number of finite elements
 nod = 2       # Number of nodes per finite elements
 nodof = 1     # Degrees of freedom for each node
@@ -103,6 +103,9 @@ else
     xlabel="x [m]", ylabel="Normal force [N]", color=:blue,
     line=(:dash,1), marker=(:dot,1,0.8,stroke(1,:black)),
     title=titles[2], leg=false)
+  for i in 1:els
+      plot!(p[1], [m.actions[i,1], m.actions[i,1]], [0.0, l/els])
+  end
 
   plot(p..., layout=(2, 1))
   savefig(ProjDir*"/EEM_fig1.1.png")
