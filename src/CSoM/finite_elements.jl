@@ -25,7 +25,9 @@ abstract FiniteElement
 #abstract type FiniteElement end
 
 """
-## Line (Interval) 1D type finite element
+## Line (Interval)
+
+1D type finite element
 
 ### Constructor
 ```julia
@@ -52,7 +54,9 @@ end
 Line(nodof::Int64) = Line(2, nodof)
 
 """
-## Triangle type 2D finite element
+## Triangle
+
+2D type finite element
 
 ### Constructor
 ```julia
@@ -77,7 +81,9 @@ immutable Triangle <: FiniteElement
 end
 
 """
-## Quadrilateral type 2D finite element
+## Quadrilateral
+
+2D type finite element
 
 ### Constructor
 ```julia
@@ -102,7 +108,9 @@ immutable Quadrilateral <: FiniteElement
 end
 
 """
-## Tetrahedron 3D finite element
+## Tetrahedron
+
+3D type finite element
 
 ### Constructor
 ```julia
@@ -129,7 +137,9 @@ end
 Tetrahedron(nodof::Int64) = Tetrahedron(4, nodof)
 
 """
-## hexahedron 3D finite element
+## hexahedron
+
+3D type finite element
 
 ### Constructor
 ```julia
