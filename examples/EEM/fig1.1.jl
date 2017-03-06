@@ -104,7 +104,7 @@ else
     line=(:dash,1), marker=(:dot,1,0.8,stroke(1,:black)),
     title=titles[2], leg=false)
   for i in 1:els
-      plot!(p[1], [m.actions[i,1], m.actions[i,1]], [0.0, l/els])
+      plot!(p[1], [m.actions[i,1], m.actions[i,1]], [(i-1)*l/els, i*l/els])
   end
 
   plot(p..., layout=(2, 1))
