@@ -1,5 +1,4 @@
 *.o *.so *.dylib
 *.svg
 *.vtu
-*.PNG
 notebooks/.ipynb_checkpoints
