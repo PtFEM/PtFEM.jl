@@ -1,7 +1,7 @@
 function pin_jointed!(km::Matrix{Float64}, ea::Float64, coord::Matrix{Float64})
   #
-  # This subroutine forms the stiffness matrix of a
-  # general rod fin_el (1-, 2- or 3-d).
+  # This subroutine forms the global stiffness matrix of a
+  # general pin-joionted structural element (1-, 2- or 3-d).
   #
  ndim = size(coord, 2)
  if ndim == 1

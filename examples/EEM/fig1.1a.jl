@@ -65,11 +65,11 @@ if VERSION.minor > 5
   m.actions' |> display
   println()
 else
-  using DataFrames
-  dis_df = DataFrame(
+  using DataTables
+  dis_dt = DataTable(
     x_translation = m.displacements[:, 1],
   )
-  fm_df = DataFrame(
+  fm_dt = DataTable(
     normal_force_1 = m.actions[:, 1],
     normal_force_2 = m.actions[:, 2],
     normal_force_1_corrected = m.actions[:, 1],
@@ -82,24 +82,26 @@ else
     eqfm = data[:eq_nodal_forces_and_moments]
     k = data[:struc_el].fin_el.nod * data[:struc_el].fin_el.nodof
     for t in eqfm
+      vals = convert(Array, fm_dt[t[1], :])
       for i in 1:k
-        fm_df[t[1], i+2] = round(fm_df[t[1], i] - t[2][i], 5)
+        fm_dt[t[1], i+2] = round(vals[i] - t[2][i], 5)
       end
     end
   end
     
-  display(dis_df)
+  display(dis_dt)
   println()
-  display(fm_df)
+  display(fm_dt)
+  
   
   using Plots
   gr(size=(400,500))
 
   x = 0.0:l/els:l
-  u = dis_df[:x_translation]
+  u = convert(Array, dis_dt[:x_translation])
   N = vcat(
-    fm_df[:normal_force_1_corrected][1],
-    fm_df[:normal_force_2_corrected]
+    convert(Vector, fm_dt[:normal_force_1_corrected])[1],
+    convert(Vector, fm_dt[:normal_force_2_corrected])
   )
     
   p = Vector{Plots.Plot{Plots.GRBackend}}(2)
@@ -108,9 +110,13 @@ else
   p[1]=plot(N, x, yflip=true, xflip=true, xlab="Normal force [N]",
     ylab="x [m]", color=:red, fill=true, fillalpha=0.1, leg=false,
     title=titles[2])
+    vals = convert(Array, fm_dt[:normal_force_2])
   for i in 1:els
       plot!(p[1], 
-        [fm_df[:normal_force_2][i], fm_df[:normal_force_2][i]],
+        [
+          convert(Vector, fm_dt[:normal_force_2])[i],
+          convert(Vector, fm_dt[:normal_force_2])[i]
+        ],
         [(i-1)*l/els, i*l/els], color=:blue)
   end
   
@@ -123,6 +129,7 @@ else
   plot!(p[2], defl(x1), x1, xlim=(0.0, 0.00004), color=:red)
   
   plot(p..., layout=(1, 2))
-  savefig(ProjDir*"/EEM_fig1.1.png")
+  savefig(ProjDir*"/EEM_fig1.1a.png")
+  
   
 end
