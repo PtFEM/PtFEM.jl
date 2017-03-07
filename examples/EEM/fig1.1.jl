@@ -123,6 +123,6 @@ else
   plot!(p[2], defl(x1), x1, xlim=(0.0, 0.00004), color=:red)
   
   plot(p..., layout=(1, 2))
-  savefig(ProjDir*"/EEM_fig1.1.png")
+  savefig(ProjDir*"/fig1.1.png")
   
 end
