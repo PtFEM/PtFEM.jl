@@ -93,7 +93,6 @@ else
   println()
   display(fm_dt)
   
-  
   using Plots
   gr(size=(400,500))
 
@@ -130,6 +129,5 @@ else
   
   plot(p..., layout=(1, 2))
   savefig(ProjDir*"/EEM_fig1.1a.png")
-  
   
 end
