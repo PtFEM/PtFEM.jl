@@ -75,7 +75,7 @@ else
 
     for t in eqfm
       for i in 1:k
-        fm_df[t[1], i] -= round(t[2][i], 2)
+        fm_df[t[1], i] = round(fm_df[t[1], i] - t[2][i], 2)
       end
     end
   end
@@ -106,7 +106,7 @@ else
     title=titles[3], leg=false)
 
   plot(p..., layout=(3, 1))
-  savefig(ProjDir*"/p4.3.1_fig4.16.png")
+  savefig(ProjDir*"/p4.3.1b_fig4.16.png")
   
 end
 
