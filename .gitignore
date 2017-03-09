@@ -2,3 +2,6 @@
 *.svg
 *.vtu
 notebooks/.ipynb_checkpoints
+notebookes/EEM/.pynb_checkpoints
+notebookes/CSoM/.pynb_checkpoints
+
