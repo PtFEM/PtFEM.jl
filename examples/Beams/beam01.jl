@@ -14,7 +14,7 @@ data = Dict(
     (1, [0 0 0 0 0 0])
     ],
   :loaded_nodes => [
-    (21, [10000.0 0.0 0.0 0.0 0.0 0.0])]
+    (21, [-1.0e5 0.0 0.0 0.0 0.0 0.0])]
 )
 
 
@@ -25,9 +25,9 @@ println()
 println()
 
 println("Displacements:")
-m.displacements |> display
+m.displacements' |> display
 println()
 
 println("Actions:")
-m.actions |> display
+m.actions' |> display
 println()
