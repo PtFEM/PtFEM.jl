@@ -197,7 +197,6 @@ function FE4_1(data::Dict{Symbol, Any})
       loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
     end
   end
-  println("After :loaded_nodes processing: $loads")
   
   for i in 1:nels
     km = CSoM.rod_km!(km, prop[etype[i], 1], ell[i])
@@ -223,11 +222,9 @@ function FE4_1(data::Dict{Symbol, Any})
     kv[kdiag[no]] += penalty
     loads[no+1] = kv[kdiag[no]] .* value
   end
-  println("After :fixed_freedoms processioing: $loads")
   
   CSoM.sparin!(kv, kdiag)
   loads[2:end] = CSoM.spabac!(kv, loads[2:end], kdiag)
-  println("After spabac(): $loads")
   println()
 
   displacements = zeros(size(nf))

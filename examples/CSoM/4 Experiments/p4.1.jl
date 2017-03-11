@@ -159,12 +159,13 @@ if :loaded_nodes in keys(data)
     loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
   end
 end
-println("\nAfter :loaded_nodes processing: $(loads[2:end])")
 
+gssm = spzeros(neq, neq)
 for i in 1:nels
   km = CSoM.rod_km!(km, prop[etype[i], 1], ell[i])
   g = g_g[:, i]
-  CSoM.fsparv!(kv, km, g, kdiag)
+  #println("element = $i: ")
+  CSoM.fsparm!(gssm, i, g, km)
 end
 
 fixed_freedoms = 0
@@ -182,15 +183,11 @@ if :fixed_freedoms in keys(data) && fixed_freedoms > 0
     no[i] = nf[sense[i], node[i]]
     value[i] = data[:fixed_freedoms][i][3]
   end
-  kv[kdiag[no]] += penalty
-  loads[no+1] = kv[kdiag[no]] .* value
+  gssm[no, no] += penalty
+  loads[no+1] = gssm[no, no] .* value
 end
-println("After :fixed_freedoms processioing: $(loads[2:end])")
 
-CSoM.sparin!(kv, kdiag)
-loads[2:end] = CSoM.spabac!(kv, loads[2:end], kdiag)
-println("After spabac(): $(loads[2:end])")
-println()
+loads[2:end] = gssm \ loads[2:end]
 
 displacements = zeros(size(nf))
 for i in 1:size(displacements, 1)
@@ -370,12 +367,13 @@ if :loaded_nodes in keys(data)
     loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
   end
 end
-println("\nAfter :loaded_nodes processing: $(loads[2:end])")
 
+gssm = spzeros(neq, neq)
 for i in 1:nels
   km = CSoM.rod_km!(km, prop[etype[i], 1], ell[i])
   g = g_g[:, i]
-  CSoM.fsparv!(kv, km, g, kdiag)
+  #println("element = $i: ")
+  CSoM.fsparm!(gssm, i, g, km)
 end
 
 fixed_freedoms = 0
@@ -393,15 +391,11 @@ if :fixed_freedoms in keys(data) && fixed_freedoms > 0
     no[i] = nf[sense[i], node[i]]
     value[i] = data[:fixed_freedoms][i][3]
   end
-  kv[kdiag[no]] += penalty
-  loads[no+1] = kv[kdiag[no]] .* value
+  gssm[no, no] += penalty
+  loads[no+1] = gssm[no, no] .* value
 end
-println("After :fixed_freedoms processioing: $(loads[2:end])")
 
-CSoM.sparin!(kv, kdiag)
-loads[2:end] = CSoM.spabac!(kv, loads[2:end], kdiag)
-println("After spabac(): $(loads[2:end])")
-println()
+loads[2:end] = gssm \ loads[2:end]
 
 displacements = zeros(size(nf))
 for i in 1:size(displacements, 1)
