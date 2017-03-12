@@ -395,7 +395,8 @@ if :fixed_freedoms in keys(data) && fixed_freedoms > 0
   loads[no+1] = gssm[no, no] .* value
 end
 
-loads[2:end] = gssm \ loads[2:end]
+cgssm = cholfact(gssm)
+loads[2:end] = cgssm \ loads[2:end]
 
 displacements = zeros(size(nf))
 for i in 1:size(displacements, 1)
