@@ -44,7 +44,7 @@ Returns:
 Updated ssm.
 
 "
-function fsparm!(gsm, el, g, km)
+function fsparm!(gsm, g, km)
   #println("g = $g")
   ndof = size(g, 1)
   #println("ndof = $ndof")

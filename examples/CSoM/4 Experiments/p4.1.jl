@@ -164,7 +164,7 @@ gsm = spzeros(neq, neq)
 for i in 1:nels
   km = CSoM.rod_km!(km, prop[etype[i], 1], ell[i])
   g = g_g[:, i]
-  CSoM.fsparm!(gsm, i, g, km)
+  CSoM.fsparm!(gsm, g, km)
 end
 
 fixed_freedoms = 0
@@ -375,7 +375,7 @@ gsm = spzeros(neq, neq)
 for i in 1:nels
   km = CSoM.rod_km!(km, prop[etype[i], 1], ell[i])
   g = g_g[:, i]
-  CSoM.fsparm!(gsm, i, g, km)
+  CSoM.fsparm!(gsm, g, km)
 end
 
 fixed_freedoms = 0
