@@ -191,8 +191,7 @@ for i in 1:nels
   coord = g_coord[:, num]'
   km = CSoM.rigid_jointed!(km, prop, gamma, etype, i, coord)
   g = g_g[:, i]
-  #CSoM.fsparv!(kv, km, g, kdiag)
-  CSoM.fsparm!(gsm, i, g, km)
+  CSoM.fsparm!(gsm, g, km)
 end
 
 #gsm = sparse(CSoM.fromSkyline(kv, kdiag))
