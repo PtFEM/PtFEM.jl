@@ -159,7 +159,7 @@ function FE4_4(data::Dict)
   
   kv = zeros(kdiag[neq])
   gv = zeros(kdiag[neq])
-    
+  
   println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).\n")
   
   for i in 1:nels

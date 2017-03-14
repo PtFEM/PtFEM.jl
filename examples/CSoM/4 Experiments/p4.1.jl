@@ -21,7 +21,7 @@ data = Dict(
   :x_coords => 0.0:l/els:l,
 );
 
-data[:support] = [(N, [0])]
+data[:support] = [(N, [0]);]
 data[:loaded_nodes] = [(1, [5.0])]
 
 # Parse & check FE problem data input dict
@@ -57,25 +57,25 @@ penalty = :penalty in keys(data) ? data[:penalty] : 1e20
 
 # All dynamic arrays
 
-points = zeros(struc_el.nip, ndim)   # 
+points = zeros(struc_el.nip, ndim)       # 
 g = zeros(Int64, ndof)                   # Element steering vector
 g_coord = zeros(ndim,nn)                 # 
-fun = zeros(fin_el.nod)                 #
-coord = zeros(fin_el.nod, ndim)         #
+fun = zeros(fin_el.nod)                  #
+coord = zeros(fin_el.nod, ndim)          #
 gamma = zeros(nels)                      #
 jac = zeros(ndim, ndim)                  #
-g_num = zeros(Int64, fin_el.nod, nels)  # 
-der = zeros(ndim, fin_el.nod)           #
-deriv = zeros(ndim, fin_el.nod)         #
+g_num = zeros(Int64, fin_el.nod, nels)   # 
+der = zeros(ndim, fin_el.nod)            #
+deriv = zeros(ndim, fin_el.nod)          #
 bee = zeros(nst,ndof)                    #
 km = zeros(ndof, ndof)                   #
 mm = zeros(ndof, ndof)                   #
 gm = zeros(ndof, ndof)                   #
 kg = zeros(ndof, ndof)                   #
 eld = zeros(ndof)                        #
-weights = zeros(struc_el.nip)        #
+weights = zeros(struc_el.nip)            #
 g_g = zeros(Int64, ndof, nels)           #
-num = zeros(Int64, fin_el.nod)          #
+num = zeros(Int64, fin_el.nod)           #
 actions = zeros(nels, ndof)              #
 nf = ones(Int64, nodof, nn)              #
 displacements = zeros(size(nf, 1), ndim) #
@@ -87,7 +87,7 @@ x_coords = zeros(nn)                     #
 y_coords = zeros(nn)                     # Not used, needed for FEM constructor
 z_coords = zeros(nn)                     #
 etype = ones(Int64, nels)                #
-ell = zeros(nels)
+ell = zeros(nels)                        #
 
 # Start with arrays to be initialized from input dict
 
@@ -133,7 +133,7 @@ end
 
 CSoM.formnf!(nodof, nn, nf)
 neq = maximum(nf)
-kdiag = zeros(Int64, neq)
+#kdiag = zeros(Int64, neq)
 
 # Set global numbering, coordinates and array sizes
 
@@ -141,17 +141,17 @@ for i in 1:nels
   num = [i; i+1]
   CSoM.num_to_g!(fin_el.nod, nodof, nn, ndof, num, nf, g)
   g_g[:, i] = g
-  CSoM.fkdiag!(ndof, neq, g, kdiag)
+  #CSoM.fkdiag!(ndof, neq, g, kdiag)
 end
 
-for i in 2:neq
-  kdiag[i] = kdiag[i] + kdiag[i-1]
-end
+#for i in 2:neq
+  #kdiag[i] = kdiag[i] + kdiag[i-1]
+#end
 
-kv = zeros(kdiag[neq])
-gv = zeros(kdiag[neq])
+#kv = zeros(kdiag[neq])
+#gv = zeros(kdiag[neq])
 
-println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
+println("There are $(neq) equations.")
   
 loads = zeros(neq+1)
 if :loaded_nodes in keys(data)
@@ -160,11 +160,11 @@ if :loaded_nodes in keys(data)
   end
 end
 
-gssm = spzeros(neq, neq)
+gsm = spzeros(neq, neq)
 for i in 1:nels
   km = CSoM.rod_km!(km, prop[etype[i], 1], ell[i])
   g = g_g[:, i]
-  CSoM.fsparm!(gssm, i, g, km)
+  CSoM.fsparm!(gsm, i, g, km)
 end
 
 fixed_freedoms = 0
@@ -182,21 +182,22 @@ if :fixed_freedoms in keys(data) && fixed_freedoms > 0
     no[i] = nf[sense[i], node[i]]
     value[i] = data[:fixed_freedoms][i][3]
   end
-  gssm[no, no] += penalty
-  loads[no+1] = gssm[no, no] .* value
+  gsm[no, no] += penalty
+  loads[no+1] = gsm[no, no] .* value
 end
 
-loads[2:end] = gssm \ loads[2:end]
+cgsm = cholfact(gsm)
+loads[2:end] = cgsm \ loads[2:end]
 
-displacements = zeros(size(nf))
-for i in 1:size(displacements, 1)
-  for j in 1:size(displacements, 2)
+displacements = zeros(size(nf, 2), size(nf, 1))
+for i in 1:size(displacements, 2)
+  for j in 1:size(displacements, 1)
     if nf[i, j] > 0
-      displacements[i,j] = loads[nf[i, j]+1]
+      displacements[j, i] = loads[nf[i, j]+1]
     end
   end
 end
-displacements = displacements'
+#displacements = displacements'
 
 loads[1] = 0.0
 for i in 1:nels
@@ -206,27 +207,38 @@ for i in 1:nels
   actions[i, :] = km * eld
 end
 
-m = FEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
-  etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
+m = CSoM.jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq,
+  penalty, etype, g, g_g, g_num, nf, no, node, num, sense, actions, 
   bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
-  g_coord, jac, km, mm, gm, kv, gv, loads, points, prop, sigma, value,
+  g_coord, jac, km, mm, gm, cgsm, loads, points, prop, sigma, value,
   weights, x_coords, y_coords, z_coords, axial)
 
 println()
 
-using DataTables
-dis_dt = DataTable(
-  x_translation = m.displacements[:, 1],
-)
-fm_dt = DataTable(
-  normal_force_1 = m.actions[:, 1],
-  normal_force_2 = m.actions[:, 2]
-)
+
+if VERSION.minor > 5
+  println("Displacements:")
+  m.displacements |> display
+  println()
+
+  println("Actions:")
+  m.actions |> display
+  println()
+else
+  using DataTables
+  dis_dt = DataTable(
+    x_translation = m.displacements[:, 1],
+  )
+  fm_dt = DataTable(
+    normal_force_1 = m.actions[:, 1],
+    normal_force_2 = m.actions[:, 2]
+  )
   
-display(dis_dt)
-println()
-display(fm_dt)
-println()
+  display(dis_dt)
+  println()
+  display(fm_dt)
+  println()
+end
 
 data[:loaded_nodes] = []
 data[:fixed_freedoms] = [(1, 1, 0.00005)]
@@ -340,7 +352,7 @@ end
 
 CSoM.formnf!(nodof, nn, nf)
 neq = maximum(nf)
-kdiag = zeros(Int64, neq)
+#kdiag = zeros(Int64, neq)
 
 # Set global numbering, coordinates and array sizes
 
@@ -348,17 +360,9 @@ for i in 1:nels
   num = [i; i+1]
   CSoM.num_to_g!(fin_el.nod, nodof, nn, ndof, num, nf, g)
   g_g[:, i] = g
-  CSoM.fkdiag!(ndof, neq, g, kdiag)
 end
 
-for i in 2:neq
-  kdiag[i] = kdiag[i] + kdiag[i-1]
-end
-
-kv = zeros(kdiag[neq])
-gv = zeros(kdiag[neq])
-
-println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
+println("There are $(neq) equations.")
   
 loads = zeros(neq+1)
 if :loaded_nodes in keys(data)
@@ -367,12 +371,11 @@ if :loaded_nodes in keys(data)
   end
 end
 
-gssm = spzeros(neq, neq)
+gsm = spzeros(neq, neq)
 for i in 1:nels
   km = CSoM.rod_km!(km, prop[etype[i], 1], ell[i])
   g = g_g[:, i]
-  #println("element = $i: ")
-  CSoM.fsparm!(gssm, i, g, km)
+  CSoM.fsparm!(gsm, i, g, km)
 end
 
 fixed_freedoms = 0
@@ -390,12 +393,12 @@ if :fixed_freedoms in keys(data) && fixed_freedoms > 0
     no[i] = nf[sense[i], node[i]]
     value[i] = data[:fixed_freedoms][i][3]
   end
-  gssm[no, no] += penalty
-  loads[no+1] = gssm[no, no] .* value
+  gsm[no, no] += penalty
+  loads[no+1] = gsm[no, no] .* value
 end
 
-cgssm = cholfact(gssm)
-loads[2:end] = cgssm \ loads[2:end]
+cgsm = cholfact(gsm)
+loads[2:end] = cgsm \ loads[2:end]
 
 displacements = zeros(size(nf))
 for i in 1:size(displacements, 1)
@@ -415,22 +418,35 @@ for i in 1:nels
   actions[i, :] = km * eld
 end
 
-m = FEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
-  etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
+mj = CSoM.jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq,
+  penalty, etype, g, g_g, g_num, nf, no, node, num, sense, actions, 
   bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
-  g_coord, jac, km, mm, gm, kv, gv, loads, points, prop, sigma, value,
+  g_coord, jac, km, mm, gm, cgsm, loads, points, prop, sigma, value,
   weights, x_coords, y_coords, z_coords, axial)
 
 println()
 
-dis_dt = DataTable(
-  x_translation = m.displacements[:, 1],
-)
-fm_dt = DataTable(
-  normal_force_1 = m.actions[:, 1],
-  normal_force_2 = m.actions[:, 2]
-)
+if VERSION.minor > 5
+  println("Displacements:")
+  mj.displacements |> display
+  println()
+
+  println("Actions:")
+  mj.actions |> display
+  println()
+else
+  using DataTables
+  dis_dt = DataTable(
+    x_translation = mj.displacements[:, 1],
+  )
+  fm_dt = DataTable(
+    normal_force_1 = mj.actions[:, 1],
+    normal_force_2 = mj.actions[:, 2]
+  )
   
-display(dis_dt)
-println()
-display(fm_dt)
+  display(dis_dt)
+  println()
+  display(fm_dt)
+  println()
+end
+

@@ -122,7 +122,7 @@ immutable jFEM                    # Computationale data and results structure
   km::Array{Float64, 2}           # Element stiffness matrix
   mm::Array{Float64, 2}           # Element mass matrix
   kg::Array{Float64, 2}           # Element geometric matrix
-  csm::Base.SparseArrays.CHOLMOD.Factor{Float64}
+  cfgsm::Base.SparseArrays.CHOLMOD.Factor{Float64}
                                   # Cholesky factored global stiffness matrix
   
   loads::Array{Float64, 1}        # Nodel loads and displacements

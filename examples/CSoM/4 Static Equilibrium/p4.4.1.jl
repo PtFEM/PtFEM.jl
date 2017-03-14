@@ -50,9 +50,9 @@ if VERSION.minor > 5
 else
   using DataFrames
   dis_df = DataFrame(
-    x_translations = m.displacements'[:, 1],
-    y_translations = m.displacements'[:, 2],
-    rotations = m.displacements'[:, 3]
+    x_translations = m.displacements[1, :],
+    y_translations = m.displacements[2, :],
+    rotations = m.displacements[3, :]
   )
   fm_df = DataFrame(
     x1_Force = m.actions[1, :],

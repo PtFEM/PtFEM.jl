@@ -21,7 +21,6 @@ function fsparv!(kv::Vector{Float64}, km::Matrix{Float64},
           if iw >= 0
             ival = kdiag[k] - iw
             kv[ival] += km[i, j]
-            #println([i, j, k, g[j], iw, ival, km[i,j]])
           end
         end
       end
@@ -45,21 +44,29 @@ Returns:
 Updated ssm.
 
 "
-function fsparm!(ssm, el, g, km)
+function fsparm!(gsm, el, g, km)
+  #println("g = $g")
   ndof = size(g, 1)
+  #println("ndof = $ndof")
   for i in 1:ndof
     k = g[i]
+    #println("g[$i] = k = $k")
     if k !== 0
       for j in 1:ndof
+        #println("i = $i, j = $j, g[$j] = $(g[j])")
         if g[j] !== 0
           iw = k - g[j]
+          #println("iw = $iw")
           if iw >= 0
-            if j == i
-              ssm[el+j-1,el+j-1]+=km[i,j]
+            if g[i] == g[j]
+              gsm[g[i], g[j]] += km[i, j]
             else
-              ssm[el+j,el+j-1]+=km[i,j]
-              ssm[el+j-1,el+j]+=km[i,j]
-            end
+              gsm[g[i], g[j]] += km[i, j]
+              gsm[g[j], g[i]] += km[i, j]
+            end  
+            #println("gsm[$(g[i]), $(g[j])] += $(km[i,j])")
+            #full(gsm) |> display
+            #println()
           end
         end
       end
