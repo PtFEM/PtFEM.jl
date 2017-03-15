@@ -224,8 +224,11 @@ if fixed_freedoms > 0
   loads[no + 1] = gsm[no, no] .* value
 end
 
-#sparin!(kv, kdiag)
-#loads[2:end] = spabac!(kv, loads[2:end], kdiag)
+# Compute Cholesky factored global stiffness matrix for
+# future re-use. If re-use is not appropriate the loads
+# can be computed directly using gsm:
+#   loads[2:end] = gsm \ loads[2:end]
+
 cgsm = cholfact(gsm)
 loads[2:end] = cgsm \ loads[2:end]
 

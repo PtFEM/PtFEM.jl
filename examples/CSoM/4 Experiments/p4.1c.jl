@@ -22,7 +22,7 @@ data = Dict(
 );
 
 data[:support] = [(N, [0]);]
-data[:fixed_freedoms] = [(1, 1, 0.00005)]
+data[:loaded_nodes] = [(1, [5.0])]
 
 # Parse & check FE problem data input dict
 
@@ -190,7 +190,6 @@ for i in 1:size(displacements, 2)
     end
   end
 end
-#displacements = displacements'
 
 loads[1] = 0.0
 for i in 1:nels
@@ -207,7 +206,6 @@ m = CSoM.jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq,
   weights, x_coords, y_coords, z_coords, axial)
 
 println()
-
 
 if VERSION.minor > 5
   println("Displacements:")
@@ -231,4 +229,32 @@ else
   println()
   display(fm_dt)
   println()
+end
+
+data[:loaded_nodes] = [(1, [100.0])]
+
+@time m2 = FE4_1(m, data)
+println()
+
+if VERSION.minor > 5
+  println("Displacements:")
+  m2.displacements' |> display
+  println()
+
+  println("Actions:")
+  m2.actions' |> display
+  println()
+else
+  using DataTables
+  dis_dt2 = DataTable(
+    x_translation = m2.displacements[:, 1],
+  )
+  fm_dt2 = DataTable(
+    normal_force_1 = m2.actions[:, 1],
+    normal_force_2 = m2.actions[:, 2]
+  )
+    
+  display(dis_dt2)
+  println()
+  display(fm_dt2)
 end
