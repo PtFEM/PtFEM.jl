@@ -47,7 +47,7 @@ Again, while experimenting with the proper structure of the CSoM toolkit and at 
 
 Fundamental and great development work related to solving partial differential equations is done in several other Julia packages, e.g. [ApproxFun.jl](https://github.com/JuliaApproximation/ApproxFun.jl), [DifferentialEquations.jl](https://github.com/JuliaDiffEq/DifferentialEquations.jl), [JuliaFEM.jl](http://www.juliafem.org) and  [JuaFEM.jl](https://github.com/KristofferC/JuAFEM.jl) to name a few.
 
-Outside of Julia at least 2 other toolkits should be mentions, i.e.  [deal.II](http://dealii.org) and [FEniCS](https://fenicsproject.org).
+Outside of Julia at least 2 other toolkits should be mentioned, i.e.  [deal.II](http://dealii.org) and [FEniCS](https://fenicsproject.org).
 
 A companion package to [CSoM.jl](https://github.com/goedman/CSoM.jl), [NMfE.jl](https://github.com/goedman/NMfE.jl) based on [Numerical Methods for Engineer](https://books.google.com/books?id=lxGPQmuSwBQC&source=gbs_similarbooks) by I M Smith and D V Griffiths, is also under development but development work for this educational set of programs is happening on a slower pace as in my mind it should form a bridge to some of the above mentioned Julia packages related to solving differential equations.
 
