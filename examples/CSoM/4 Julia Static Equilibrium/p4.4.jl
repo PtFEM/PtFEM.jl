@@ -1,5 +1,7 @@
 using CSoM
 
+ProjDir = dirname(@__FILE__)
+
 data = Dict(
   # Frame(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
   :struc_el => Frame(3, 4, 3, 1, 1, Line(2, 3)),
@@ -23,243 +25,72 @@ data = Dict(
 data |> display
 println()
 
-# Parse & check FEdict data
+@time m = CSoM.jFE4_4(data)
+println()
 
-if :struc_el in keys(data)
-  struc_el = data[:struc_el]
+if VERSION.minor > 5
+  println("Displacements:")
+  m.displacements' |> display
+  println()
+
+  println("Actions:")
+  m.actions' |> display
+  println()
 else
-  println("No fin_el type specified.")
-  return
-end
+  using DataFrames
+  dis_df = DataFrame(
+    x_translations = m.displacements[1, :],
+    y_translations = m.displacements[2, :],
+    rotations = m.displacements[3, :]
+  )
+  fm_df = DataFrame(
+    x1_Force = m.actions[1, :],
+    y1_Force = m.actions[2, :],
+    z1_Moment = m.actions[3, :],
+    x2_Force = m.actions[4, :],
+    y2_Force = m.actions[5, :],
+    z2_Moment = m.actions[6, :]
+  )
+  # Correct element forces and moments for equivalent nodal
+  # forces and moments introduced for loading between nodes
+  if :eq_nodal_forces_and_moments in keys(data)
+    eqfm = data[:eq_nodal_forces_and_moments]
+    k = data[:struc_el].fin_el.nod * data[:struc_el].fin_el.nodof
 
-ndim = struc_el.ndim
-nst = struc_el.nst
-
-# Add radial stress
-if ndim == 3 && typeof(struc_el) !== Frame && struc_el.axisymmetric
-  nst = 4
-end
-
-fin_el = struc_el.fin_el
-@assert typeof(fin_el) <: FiniteElement
-
-if typeof(fin_el) == Line
-  if typeof(struc_el) == Frame
-    nels = struc_el.nels
-    nn = struc_el.nn
-  else  
-    (nels, nn) = mesh_size(fin_el, struc_el.nxe)
-  end
-elseif typeof(fin_el) == Triangle || typeof(fin_el) == Quadrilateral
-  (nels, nn) = mesh_size(fin_el, struc_el.nxe, struc_el.nye)
-elseif typeof(fin_el) == Hexahedron
-  (nels, nn) = mesh_size(fin_el, struc_el.nxe, struc_el.nye, struc_el.nze)
-else
-  println("$(typeof(fin_el)) is not a known finite element.")
-  return
-end
-
-nodof = ndim == 2 ? 3 : 6       # Degrees of freedom per node
-ndof = fin_el.nod * nodof      # Degrees of freedom per fin_el
-
-# Update penalty if specified in FEdict
-
-penalty = 1e20
-if :penalty in keys(data)
-  penalty = data[:penalty]
-end
-
-# Allocate all arrays
-
-# Start with arrays to be initialized from FEdict
-
-if :properties in keys(data)
-  prop = zeros(size(data[:properties], 1), size(data[:properties], 2))
-  for i in 1:size(data[:properties], 1)
-    prop[i, :] = data[:properties][i, :]
-  end
-else
-  println("No :properties key found in FEdict")
-end
-
-nf = ones(Int64, nodof, nn)
-
-if :support in keys(data)
-  for i in 1:size(data[:support], 1)
-    nf[:, data[:support][i][1]] = data[:support][i][2]
-  end
-end
-
-
-x_coords = zeros(nn)
-if :x_coords in keys(data)
-  x_coords = data[:x_coords]
-end
-
-y_coords = zeros(nn)
-if :y_coords in keys(data)
-  y_coords = data[:y_coords]
-end
-
-z_coords = zeros(nn)
-if :z_coords in keys(data)
-  z_coords = data[:z_coords]
-end
-
-etype = ones(Int64, nels)
-if :etype in keys(data)
-  etype = data[:etype]
-end
-
-g_num = zeros(Int64, fin_el.nod, nels)
-if :g_num in keys(data)
-  g_num = data[:g_num]
-end
-
-gamma = zeros(nels)
-if :gamma in keys(data)
-  gamma = data[:gamma]
-end
-
-
-# All other arrays
-
-points = zeros(struc_el.nip, ndim)
-g = zeros(Int64, ndof)
-g_coord = zeros(ndim,nn)
-fun = zeros(fin_el.nod)
-coord = zeros(fin_el.nod, ndim)
-jac = zeros(ndim, ndim)
-der = zeros(ndim, fin_el.nod)
-deriv = zeros(ndim, fin_el.nod)
-bee = zeros(nst,ndof)
-km = zeros(ndof, ndof)
-mm = zeros(ndof, ndof)
-gm = zeros(ndof, ndof)
-kg = zeros(ndof, ndof)
-eld = zeros(ndof)
-weights = zeros(struc_el.nip)
-g_g = zeros(Int64, ndof, nels)
-num = zeros(Int64, fin_el.nod)
-actions = zeros(ndof, nels)
-displacements = zeros(size(nf, 1), ndim)
-gc = ones(ndim, ndim)
-dee = zeros(nst,nst)
-sigma = zeros(nst)
-axial = zeros(nels)
-
-# Set global coordinates
-
-g_coord[1,:] = data[:x_coords]
-if ndim > 1
-  g_coord[2,:] = data[:y_coords]
-end
-if ndim > 2
-  g_coord[3,:] = data[:z_coords]
-end
-
-CSoM.formnf!(nodof, nn, nf)
-neq = maximum(nf)
-kdiag = zeros(Int64, neq)
-
-ell = zeros(nels)
-if :x_coords in keys(data)
-  for i in 1:length(data[:x_coords])-1
-    ell[i] = data[:x_coords][i+1] - data[:x_coords][i]
-  end
-end
-
-for i in 1:nels
-  num = g_num[:, i]
-  CSoM.num_to_g!(fin_el.nod, nodof, nn, ndof, num, nf, g)
-  g_g[:, i] = g
-end
-
-println("There are $(neq) equations.\n")
-
-gsm = spzeros(neq, neq)
-for i in 1:nels
-  num = g_num[:, i]
-  coord = g_coord[:, num]'
-  km = CSoM.rigid_jointed!(km, prop, gamma, etype, i, coord)
-  g = g_g[:, i]
-  CSoM.fsparm!(gsm, g, km)
-end
-
-loads = zeros(neq+1)
-if :loaded_nodes in keys(data)
-  for i in 1:size(data[:loaded_nodes], 1)
-    loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
-  end
-end
-
-fixed_freedoms = 0
-if :fixed_freedoms in keys(data)
-  fixed_freedoms = size(data[:fixed_freedoms], 1)
-end
-no = zeros(Int64, fixed_freedoms)
-node = zeros(Int64, fixed_freedoms)
-sense = zeros(Int64, fixed_freedoms)
-value = zeros(Float64, fixed_freedoms)
-if fixed_freedoms > 0
-  for i in 1:fixed_freedoms
-    node[i] = data[:fixed_freedoms][i][1]
-    sense[i] = data[:fixed_freedoms][i][2]
-    no[i] = nf[sense[i], node[i]]
-    value[i] = data[:fixed_freedoms][i][3]
-  end
-  gsm[no, no] += penalty
-  loads[no + 1] = gsm[no, no] .* value
-end
-
-# Compute Cholesky factored global stiffness matrix for
-# future re-use. If re-use is not appropriate the loads
-# can be computed directly using gsm:
-#   loads[2:end] = gsm \ loads[2:end]
-
-cgsm = cholfact(gsm)
-loads[2:end] = cgsm \ loads[2:end]
-
-displacements = zeros(size(nf))
-for i in 1:size(displacements, 1)
-  for j in 1:size(displacements, 2)
-    if nf[i, j] > 0
-      displacements[i,j] = loads[nf[i, j]+1]
+    for t in eqfm
+      for i in 1:k
+        fm_df[t[1], i] -= t[2][i]
+      end
     end
   end
+    
+  display(dis_df)
+  println()
+  display(fm_df)
+  
+  using Plots
+  gr(size=(400,600))
+
+  p = Vector{Plots.Plot{Plots.GRBackend}}(3)
+  titles = ["p4.4.1 rotations", "p4.4.1 y shear force", "p4.4.1 z moment"]
+  moms = vcat(fm_df[:, :z1_Moment], fm_df[end, :z2_Moment])
+  fors = vcat(fm_df[:, :y1_Force], fm_df[end, :y2_Force])
+  x_coords = data[:x_coords]
+  
+  p[1] = plot(m.displacements[3,:], ylim=(-0.002, 0.002),
+    xlabel="node", ylabel="rotation [radians]", color=:red,
+    line=(:dash,1), marker=(:circle,4,0.8,stroke(1,:black)),
+    title=titles[1], leg=false)
+  p[2] = plot(fors, lab="y Shear force", ylim=(-150.0, 250.0),
+    xlabel="node", ylabel="shear force [N]", color=:blue,
+    line=(:dash,1), marker=(:circle,4,0.8,stroke(1,:black)),
+    title=titles[2], leg=false)
+  p[3] = plot(moms, lab="z Moment", ylim=(-10.0, 150.0),
+    xlabel="node", ylabel="z moment [Nm]", color=:green,
+    line=(:dash,1), marker=(:circle,4,0.8,stroke(1,:black)),
+    title=titles[3], leg=false)
+
+  plot(p..., layout=(3, 1))
+  savefig(ProjDir*"/p4.4.1.png")
+  
 end
-
-loads[1] = 0.0
-for i in 1:nels
-  num = g_num[:, i]
-  coord = g_coord[:, num]'
-  g = g_g[:, i]
-  eld = loads[g+1]
-  km = CSoM.rigid_jointed!(km, prop, gamma, etype, i, coord)
-  actions[:, i] = km * eld
-end
-
-#=
-FEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
-  etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
-  bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
-  g_coord, jac, km, mm, gm, kv, gv, loads, points, prop, sigma, value,
-  weights, x_coords, y_coords, z_coords, axial)
-=#
-
-m = CSoM.jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq,
-  penalty, etype, g, g_g, g_num, nf, no, node, num, sense, actions, 
-  bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
-  g_coord, jac, km, mm, gm, cgsm, loads, points, prop, sigma, value,
-  weights, x_coords, y_coords, z_coords, axial)
-
-println()
-
-println("Displacements:")
-m.displacements' |> display
-println()
-
-println("Actions:")
-m.actions' |> display
-println()
-
