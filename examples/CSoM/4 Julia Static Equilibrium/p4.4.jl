@@ -208,8 +208,6 @@ if fixed_freedoms > 0
     no[i] = nf[sense[i], node[i]]
     value[i] = data[:fixed_freedoms][i][3]
   end
-  #kv[kdiag[no]] += penalty
-  #loads[no+1] = kv[kdiag[no]] .* value
   gsm[no, no] += penalty
   loads[no + 1] = gsm[no, no] .* value
 end

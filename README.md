@@ -43,13 +43,13 @@ by
   loads[2:end] = cgsm \ loads[2:end]
 ```
 
-Again, while experimenting with the proper structure of the CSoM toolkit and at the same time remain as compatible as possible with the primary documentation (the PtFEM book), I will store these Julia versions in corresponding subdirectories, e.g. in src/"4 Julia Static Equilibrium" for templates in src/"4 Static Equilibrium".
+Again, while experimenting with the proper structure of the CSoM toolkit and at the same time trying to remain as compatible as possible with the primary documentation (the PtFEM book), I will store these Julia versions in corresponding subdirectories, e.g. in src/"4 Julia Static Equilibrium" for templates in src/"4 Static Equilibrium".
 
 Fundamental and great development work related to solving (partial) differential equations is done in several other Julia packages, e.g. [ApproxFun.jl](https://github.com/JuliaApproximation/ApproxFun.jl), [DifferentialEquations.jl](https://github.com/JuliaDiffEq/DifferentialEquations.jl), [JuliaFEM.jl](http://www.juliafem.org) and  [JuaFEM.jl](https://github.com/KristofferC/JuAFEM.jl) to name a few.
 
 Outside of Julia at least 2 other toolkits should be mentioned, i.e.  [deal.II](http://dealii.org) and [FEniCS](https://fenicsproject.org).
 
-A companion package to [CSoM.jl](https://github.com/goedman/CSoM.jl), [NMfE.jl](https://github.com/goedman/NMfE.jl) based on [Numerical Methods for Engineer](https://books.google.com/books?id=lxGPQmuSwBQC&source=gbs_similarbooks) by I M Smith and D V Griffiths, is also under development but development work for this educational set of programs is happening on a slower pace as in my mind it should form a bridge to some of the above mentioned Julia packages related to solving differential equations.
+A companion package to [CSoM.jl](https://github.com/goedman/CSoM.jl), [NMfE.jl](https://github.com/goedman/NMfE.jl) based on [Numerical Methods for Engineers](https://books.google.com/books?id=lxGPQmuSwBQC&source=gbs_similarbooks) by I M Smith and D V Griffiths, is also under development but development work for this educational set of programs is happening on a slower pace as in my mind it should form a bridge to some of the above mentioned Julia packages related to solving differential equations. Note also the symbolic examples in chapter 7 of NMfE using the Julia Symata package.
 
 Please note that no timeline is set when this work in progress will be finished.
 
@@ -67,6 +67,6 @@ References:
 1. [ApproxFun.jl](https://github.com/JuliaApproximation/ApproxFun.jl)
 1. [DifferentialEquations.jl](https://github.com/JuliaDiffEq/DifferentialEquations.jl)
 1. [JuliaFEM.jl](http://www.juliafem.org)
-1. [Numerical Methods for Engineer](https://books.google.com/books?id=lxGPQmuSwBQC&source=gbs_similarbooks)
+1. [Numerical Methods for Engineers](https://books.google.com/books?id=lxGPQmuSwBQC&source=gbs_similarbooks)
 1. [NMfE.jl](https://github.com/goedman/NMfE.jl)
 1. [Symata.jl](https://github.com/jlapeyre/Symata.jl)
