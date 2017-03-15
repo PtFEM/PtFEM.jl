@@ -10,7 +10,7 @@ This Julia package contains the programs in chapters 4 to 6 as described in "Pro
 
 The package should probably be called PtFEM.jl, but for now I have always related them to Colorado School of Mines (being a mining engineer from Delft University myself :-), hence [CSoM.jl](https://github.com/goedman/CSoM.jl). When I refer to the book I use PtFEM, when I refer to the Julia package I use CSoM.
 
-To use the toolkit and run several test programs, start the Julia REPL and type:
+To use the toolkit and run several test programs, start the [Julia](http://julialang.org) REPL and type:
 
 ```
 Pkg.clone("git@github.com:goedman/CSoM.jl")
@@ -21,7 +21,11 @@ As this shows, the package has not yet been published and is currently only avai
 
 Example programs are in the examples/... and notebooks/... subdirectories. Currently the notebooks are just initial examples (and might not always work) until the structure of the toolkit gels.
 
-Initial focus has been on chapters 4 to 6 of PtFEM in order to figure out how to best structure the toolkit. Currently all 'basic' functions are in the src/CSoM directory while higher level 'computational flow templates' are in src/"chapter title" directories, e.g. src/"4 Static Equilibrium" subdirectory for PtFEM chapter 4 programs. In PtFEM no such intermediate template level is used. The idea of the templates is that they can be used to quickly setup similar models (but the jury is still out which approach is better).
+Initial focus has been on chapters 4 to 6 of PtFEM in order to figure out how to best structure the toolkit. 
+
+For now I have opted for introducing an extra level in CSoM compared with PtFEM. All 'basic' functions can be found in the src/CSoM directory while higher level 'computational flow templates' are in src/"chapter title" directories, e.g. the src/"4 Static Equilibrium" subdirectory for PtFEM chapter 4 programs. In PtFEM no such intermediate template level is used.
+
+The idea of the templates is that they can be used to quickly setup similar models (but the jury is still out which approach is better).
 
 The basic functions are also being reviewed for better approaches in [Julia](http://julialang.org) vs. the current 'translated-from-Fortran' flavor. Examples of these kind of changes are dropping the idea of skyline storage and directly using Julia sparse matrices and replacing the pair sparin() and spabac() by Julia's cholfact() and '\' operation, i.e. in FE4.1
 
