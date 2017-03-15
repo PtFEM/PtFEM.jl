@@ -6,19 +6,39 @@
 
 ##Access to CSoM models
 
-These are (some of) the programs as described in "Programming the Finite Element Method" by I M Smith and D V Griffiths. The package should probably be called PtFEM.jl, but for now I have always related them to Colorado School of Mines (being a mining engineer from Delft University myself), hence [CSoM.jl](https://github.com/goedman/CSoM.jl).
+These are (some of) the programs as described in "Programming the Finite Element Method" by I M Smith, D V Griffiths and L. Margetts. The package should probably be called PtFEM.jl, but for now I have always related them to Colorado School of Mines (being a mining engineer from Delft University myself), hence [CSoM.jl](https://github.com/goedman/CSoM.jl). When I refer to the book zI use PtFEM, when I refer to the Julia package I use CSoM.
 
-Initial focus is on chapters 4 to 6 in order to figure out how to best structure the programs. For inspiration I'm looking of course at the PtFEM book but also a bit at [deal.II](http://dealii.org) and (to a lesser extent) [FEniCS](https://fenicsproject.org). I'm also looking to possibly reuse some of the approaches/features in [JuaFEM](http://kristofferc.github.io/JuAFEM.jl/latest/).
+To use the toolkit and run several test programs, start the Julia REPL and type:
 
-All 'basic' functions are in the src/CSoM directory while higher level computational flow 'templates' are in src/Chapxx directories. The idea of the templates is that they can be used to quickly set up similar models, e.g. 3D beams (see the Beams examples in [CSoM.jl](https://github.com/goedman/CSoM.jl/tree/master/examples/Beams)).
+```
+Pkg.clone("git@github.com:goedman/CSoM.jl")
+Pkg.test("CSoM")
+```
 
-Once the structure has been decided upon the basic functions will be reviewed for better approaches in [Julia](http://julialang.org) vs. the current Fortran flavor. 
+Example programs are in the examples and notebooks subdirectories.
 
-More fundamental and great development work related to solving partial differential equations is done in Julia packages, e.g. [ApproxFun.jl](https://github.com/JuliaApproximation/ApproxFun.jl), [DifferentialEquations.jl](https://github.com/JuliaDiffEq/DifferentialEquations.jl), [JuliaFEM.jl](http://www.juliafem.org) and, as mentioned earlier,  [JuaFEM.jl](https://github.com/KristofferC/JuAFEM.jl) to name a few.
+Initial focus has been on chapters 4 to 6 of PtFEM in order to figure out how to best structure the toolkit. Currently all 'basic' functions are in the src/CSoM directory while higher level 'computational flow templates' are in src/Chapxx directories. In PtFEM no such intermediate template level is used. The idea of the templates is that they can be used to quickly setup similar models (but the jury is still out which approach is better).
 
-Also note the  [NMfE.jl](https://github.com/goedman/NMfE.jl) package, which contains the programs in the book "Numerical Methods for Engineers" by the same authors. NMfE is a great introduction to PtFEM. In particular, examples/ch07 directory of NMfE.jl contains some very interesting [Symata.jl](https://github.com/jlapeyre/Symata.jl) based introductory examples of applying the method of weighted residuals (MRW).
+The basic functions are also being reviewed for better approaches in [Julia](http://julialang.org) vs. the current 'translated-from-Fortran' flavor. Examples of these kind of changes are dropping the idea of skyline storage and directly using Julia sparse matrices and replacing the pair sparin() and spabac() by Julia's cholfact() and '\' operation, i.e. in FE4.1
 
-Currently CSoM.jl has switched Julia v0.6.
+replacing
+
+```
+  CSoM.sparin!(kv, kdiag)
+  loads[2:end] = CSoM.spabac!(kv, loads[2:end], kdiag)
+```
+
+by
+
+```
+  cgsm = cholfact(gsm)
+  loads[2:end] = cgsm \ loads[2:end]
+```
+
+Again, while experimenting with the proper structure of the CSoM toolkit and at the same time remain as compatible as possible with the primary documentation (the PtFEM book), I will store these Julia versions in the "n Experiments"
+
+Fundamental and great development work related to solving partial differential equations is done in several other Julia packages, e.g. [ApproxFun.jl](https://github.com/JuliaApproximation/ApproxFun.jl), [DifferentialEquations.jl](https://github.com/JuliaDiffEq/DifferentialEquations.jl), [JuliaFEM.jl](http://www.juliafem.org) and, as mentioned earlier,  [JuaFEM.jl](https://github.com/KristofferC/JuAFEM.jl) to name a few.
+
 
 Please note that no timeline is set when this work in progress will be finished.
 
