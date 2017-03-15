@@ -23,11 +23,11 @@ Example programs are in the examples/... and notebooks/... subdirectories. Curre
 
 Initial focus has been on chapters 4 to 6 of PtFEM in order to figure out how to best structure the toolkit. 
 
-For now I have opted for introducing an extra level in CSoM compared with PtFEM. All 'basic' functions can be found in the src/CSoM directory while higher level 'computational flow templates' are in src/"chapter title" directories, e.g. the src/"4 Static Equilibrium" subdirectory for PtFEM programs in chapter 4. In PtFEM no such intermediate template level is used.
+For now I have opted for introducing an extra layer in CSoM compared with PtFEM by introducing higher level 'computational flow templates' which can be found in the src/"chapter title" directories, e.g. the src/"4 Static Equilibrium" subdirectory for PtFEM programs in chapter 4. In PtFEM no such intermediate template level is used.
 
 The idea of the templates is that they can be used to quickly setup similar models (but the jury is still out which approach is better).
 
-The basic functions are also being reviewed for better approaches in [Julia](http://julialang.org) vs. the current 'translated-from-Fortran' flavor. Examples of these kind of changes are to drop skyline storage and directly using Julia sparse matrices and replacing the pair sparin() and spabac() by Julia's cholfact() and '\' operation.
+The templates are being reviewed for better approaches in [Julia](http://julialang.org) vs. the current 'translated-from-Fortran' flavor. Examples of these kind of changes are to drop skyline storage and directly using Julia sparse matrices and replacing PtFEM's pair sparin() and spabac() by Julia's cholfact() and "\\" operation.
 
 E.g. an example of this last change is replacing
 
@@ -42,6 +42,10 @@ by
   cgsm = cholfact(gsm)
   loads[2:end] = cgsm \ loads[2:end]
 ```
+
+in src/"4 Julia Static Equilibrium"/jFE4.1.jl. Note the "j" addition to template source file name.
+
+All 'basic' functions such as sparin!() and spabac!() can be found in the src/CSoM directory. Note the use of the "!" in the function name which is the Julia convention for functions that update one or more of the function arguments. If specific Julia versions are required for use in the templates, these are added to the respective source files. Often times Julia's multiple dispatching takes care of selecting the correct version in the templates.
 
 Again, while experimenting with the proper structure of the CSoM toolkit and at the same time trying to remain as compatible as possible with the primary documentation (the PtFEM book), I will store these Julia versions in corresponding subdirectories, e.g. in src/"4 Julia Static Equilibrium" for templates in src/"4 Static Equilibrium".
 

@@ -252,54 +252,6 @@ function jFE4_1(data::Dict{Symbol, Any})
     weights, x_coords, y_coords, z_coords, axial)
 end
 
-function FE4_1(m::CSoM.FEM, data::Dict)
-  loads = zeros(m.neq+1)
-  if :loaded_nodes in keys(data)
-    for i in 1:size(data[:loaded_nodes], 1)
-      loads[m.nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
-    end
-  end
-
-  loads[2:end] = CSoM.spabac!(m.kv, loads[2:end], m.kdiag)
-  println()
-
-  displacements = zeros(size(m.nf))
-  for i in 1:size(displacements, 1)
-    for j in 1:size(displacements, 2)
-      if m.nf[i, j] > 0
-        displacements[i,j] = loads[m.nf[i, j]+1]
-      end
-    end
-  end
-  displacements = displacements'
-
-  # Set lengths of elements
-  ell = zeros(length(m.x_coords)-1)
-  for i in 1:length(m.x_coords)-1
-    ell[i] = m.x_coords[i+1] - m.x_coords[i]
-  end
-
-  km = zeros(m.ndof, m.ndof)
-  g = zeros(Int64, m.ndof)
-  eld = zeros(m.ndof)
-  actions = zeros(m.nels, m.ndof)
-  loads[1] = 0.0
-  for i in 1:m.nels
-    km = CSoM.rod_km!(m.km, m.prop[m.etype[i], 1], ell[i])
-    g = m.g_g[:, i]
-    eld = loads[g+1]
-    actions[i, :] = km * eld
-  end
-
-  FEM(m.struc_el, m.fin_el, m.ndim, m.nels, m.nst, m.ndof, m.nn, m.nodof,
-    m.neq, m.penalty, m.etype, g, m.g_g, m.g_num, m.kdiag, m.nf, m.no,
-    m.node, m.num, m.sense, actions, m.bee, m.coord, m.gamma, m.dee,
-    m.der, m.deriv, displacements, eld, m.fun, m.gc, m.g_coord, m.jac,
-    km, m.mm, m.kg, m.kv, m.gv, loads, m.points, m.prop, m.sigma, m.value,
-    m.weights, m.x_coords, m.y_coords, m.z_coords, m.axial)
-
-end
-
 function FE4_1(m::CSoM.jFEM, data::Dict)
   loads = zeros(m.neq+1)
   if :loaded_nodes in keys(data)
