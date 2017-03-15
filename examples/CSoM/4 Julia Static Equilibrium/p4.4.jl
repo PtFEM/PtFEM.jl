@@ -173,17 +173,9 @@ for i in 1:nels
   num = g_num[:, i]
   CSoM.num_to_g!(fin_el.nod, nodof, nn, ndof, num, nf, g)
   g_g[:, i] = g
-  CSoM.fkdiag!(ndof, neq, g, kdiag)
 end
 
-for i in 2:neq
-  kdiag[i] = kdiag[i] + kdiag[i-1]
-end
-
-kv = zeros(kdiag[neq])
-gv = zeros(kdiag[neq])
-  
-println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).\n")
+println("There are $(neq) equations.\n")
 
 gsm = spzeros(neq, neq)
 for i in 1:nels
@@ -193,8 +185,6 @@ for i in 1:nels
   g = g_g[:, i]
   CSoM.fsparm!(gsm, g, km)
 end
-
-#gsm = sparse(CSoM.fromSkyline(kv, kdiag))
 
 loads = zeros(neq+1)
 if :loaded_nodes in keys(data)

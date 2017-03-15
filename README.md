@@ -23,13 +23,13 @@ Example programs are in the examples/... and notebooks/... subdirectories. Curre
 
 Initial focus has been on chapters 4 to 6 of PtFEM in order to figure out how to best structure the toolkit. 
 
-For now I have opted for introducing an extra level in CSoM compared with PtFEM. All 'basic' functions can be found in the src/CSoM directory while higher level 'computational flow templates' are in src/"chapter title" directories, e.g. the src/"4 Static Equilibrium" subdirectory for PtFEM chapter 4 programs. In PtFEM no such intermediate template level is used.
+For now I have opted for introducing an extra level in CSoM compared with PtFEM. All 'basic' functions can be found in the src/CSoM directory while higher level 'computational flow templates' are in src/"chapter title" directories, e.g. the src/"4 Static Equilibrium" subdirectory for PtFEM programs in chapter 4. In PtFEM no such intermediate template level is used.
 
 The idea of the templates is that they can be used to quickly setup similar models (but the jury is still out which approach is better).
 
-The basic functions are also being reviewed for better approaches in [Julia](http://julialang.org) vs. the current 'translated-from-Fortran' flavor. Examples of these kind of changes are dropping the idea of skyline storage and directly using Julia sparse matrices and replacing the pair sparin() and spabac() by Julia's cholfact() and '\' operation, i.e. in FE4.1
+The basic functions are also being reviewed for better approaches in [Julia](http://julialang.org) vs. the current 'translated-from-Fortran' flavor. Examples of these kind of changes are to drop skyline storage and directly using Julia sparse matrices and replacing the pair sparin() and spabac() by Julia's cholfact() and '\' operation.
 
-replacing
+E.g. an example of this last change is replacing
 
 ```
   CSoM.sparin!(kv, kdiag)
@@ -43,9 +43,9 @@ by
   loads[2:end] = cgsm \ loads[2:end]
 ```
 
-Again, while experimenting with the proper structure of the CSoM toolkit and at the same time remain as compatible as possible with the primary documentation (the PtFEM book), I will store these Julia versions in the corresponding subdirectory, e.g. in src/"4 Julia Static Equuilibrium" for templates in src/"4 Static Equilibrium".
+Again, while experimenting with the proper structure of the CSoM toolkit and at the same time remain as compatible as possible with the primary documentation (the PtFEM book), I will store these Julia versions in corresponding subdirectories, e.g. in src/"4 Julia Static Equilibrium" for templates in src/"4 Static Equilibrium".
 
-Fundamental and great development work related to solving partial differential equations is done in several other Julia packages, e.g. [ApproxFun.jl](https://github.com/JuliaApproximation/ApproxFun.jl), [DifferentialEquations.jl](https://github.com/JuliaDiffEq/DifferentialEquations.jl), [JuliaFEM.jl](http://www.juliafem.org) and  [JuaFEM.jl](https://github.com/KristofferC/JuAFEM.jl) to name a few.
+Fundamental and great development work related to solving (partial) differential equations is done in several other Julia packages, e.g. [ApproxFun.jl](https://github.com/JuliaApproximation/ApproxFun.jl), [DifferentialEquations.jl](https://github.com/JuliaDiffEq/DifferentialEquations.jl), [JuliaFEM.jl](http://www.juliafem.org) and  [JuaFEM.jl](https://github.com/KristofferC/JuAFEM.jl) to name a few.
 
 Outside of Julia at least 2 other toolkits should be mentioned, i.e.  [deal.II](http://dealii.org) and [FEniCS](https://fenicsproject.org).
 

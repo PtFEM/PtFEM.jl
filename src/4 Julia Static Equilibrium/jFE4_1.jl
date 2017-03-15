@@ -1,7 +1,7 @@
 using Documenter
 
 """
-# FE4_1
+# jFE4_1
 
 Backbone method for static equilibrium analysis of a rod.
 
@@ -60,7 +60,7 @@ println()
 ?FiniteElement      : Help on finite element types
 ```
 """
-function FE4_1(data::Dict{Symbol, Any})
+function jFE4_1(data::Dict{Symbol, Any})
   
   # Parse & check FE problem data input dict
   
