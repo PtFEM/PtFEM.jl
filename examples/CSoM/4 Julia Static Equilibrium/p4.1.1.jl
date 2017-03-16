@@ -27,7 +27,7 @@ data[:loaded_nodes] = [(1, [5.0])]
 data |> display
 println()
 
-@time m = CSoM.jFE4_1(data)
+@time m = jFE4_1(data)
 println()
 
 if VERSION.minor > 5

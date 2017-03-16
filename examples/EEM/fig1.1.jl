@@ -48,7 +48,7 @@ end
 data |> display
 println()
 
-@time m = FE4_1(data)
+@time m = CSoM.jFE4_1(data)
 println()
 
 # Stiffness matrix

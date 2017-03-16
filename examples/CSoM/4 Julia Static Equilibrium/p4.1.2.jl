@@ -27,7 +27,7 @@ data[:fixed_freedoms] = [(1, 1, 0.00005)]
 data |> display
 println()
 
-@time m = CSoM.jFE4_1(data)
+@time m = jFE4_1(data)
 println()
 
 if VERSION.minor > 5

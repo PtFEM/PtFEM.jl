@@ -27,7 +27,7 @@ data[:loaded_nodes] = [(1, [5.0])]
 data |> display
 println()
 
-@time m = CSoM.jFE4_1(data)
+@time m = jFE4_1(data)
 println()
 
 if VERSION.minor > 5
@@ -58,7 +58,7 @@ data[:loaded_nodes] = [(1, [100.0])]
 
 # Note the use of multiple dispatch to select the correct version
 # as m is of type jFEM
-@time m2 = CSoM.FE4_1(m, data)
+@time m2 = FE4_1(m, data)
 println()
 
 if VERSION.minor > 5

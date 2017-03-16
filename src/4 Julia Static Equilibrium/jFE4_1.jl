@@ -7,7 +7,7 @@ Backbone method for static equilibrium analysis of a rod.
 
 ### Constructors
 ```julia
-FE4_1(data::Dict)
+jFE4_1(data::Dict)
 ```
 ### Arguments
 ```julia
@@ -41,7 +41,7 @@ data = Dict(
   :loaded_nodes => [(1,[-0.625]),(2,[-1.25]),(3,[-1.25]),(4,[-1.25]),(5,[-0.625])]
 )
 
-m = FE4_1(data)
+m = jFE4_1(data)
 
 println("Displacements:")
 m.displacements |> display
@@ -179,17 +179,9 @@ function jFE4_1(data::Dict{Symbol, Any})
     num = [i; i+1]
     CSoM.num_to_g!(fin_el.nod, nodof, nn, ndof, num, nf, g)
     g_g[:, i] = g
-    CSoM.fkdiag!(ndof, neq, g, kdiag)
   end
   
-  for i in 2:neq
-    kdiag[i] = kdiag[i] + kdiag[i-1]
-  end
-
-  kv = zeros(kdiag[neq])
-  gv = zeros(kdiag[neq])
-  
-  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
+  println("There are $(neq) equations.")
     
   loads = zeros(neq+1)
   if :loaded_nodes in keys(data)
@@ -198,10 +190,11 @@ function jFE4_1(data::Dict{Symbol, Any})
     end
   end
   
+  gsm = spzeros(neq, neq)
   for i in 1:nels
     km = CSoM.rod_km!(km, prop[etype[i], 1], ell[i])
     g = g_g[:, i]
-    CSoM.fsparv!(kv, km, g, kdiag)
+    CSoM.fsparm!(gsm, g, km)
   end
 
   fixed_freedoms = 0
@@ -219,12 +212,12 @@ function jFE4_1(data::Dict{Symbol, Any})
       no[i] = nf[sense[i], node[i]]
       value[i] = data[:fixed_freedoms][i][3]
     end
-    kv[kdiag[no]] += penalty
-    loads[no+1] = kv[kdiag[no]] .* value
+    gsm[no, no] += penalty
+    loads[no + 1] = gsm[no, no] .* value
   end
   
-  CSoM.sparin!(kv, kdiag)
-  loads[2:end] = CSoM.spabac!(kv, loads[2:end], kdiag)
+  cfgsm = cholfact(gsm)
+  loads[2:end] = cfgsm \ loads[2:end]
   println()
 
   displacements = zeros(size(nf))
@@ -245,10 +238,10 @@ function jFE4_1(data::Dict{Symbol, Any})
     actions[i, :] = km * eld
   end
 
-  FEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
-    etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
+  jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
+    etype, g, g_g, g_num, nf, no, node, num, sense, actions, 
     bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
-    g_coord, jac, km, mm, gm, kv, gv, loads, points, prop, sigma, value,
+    g_coord, jac, km, mm, gm, cfgsm, loads, points, prop, sigma, value,
     weights, x_coords, y_coords, z_coords, axial)
 end
 

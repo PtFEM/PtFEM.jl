@@ -83,6 +83,7 @@ include("5 Elastic Solids/FE5_6.jl")
 include("6 Material Nonlinearity/FE6_1.jl")
 
 include("4 Julia Static Equilibrium/jFE4_1.jl")
+include("4 Julia Static Equilibrium/jFE4_2.jl")
 include("4 Julia Static Equilibrium/jFE4_4.jl")
 
 ### Exports ###
@@ -118,9 +119,12 @@ export
   
   # From Chap04
   FE4_1,
+  jFE4_1,
   FE4_2,
+  jFE4_2,
   FE4_3,
   FE4_4,
+  jFE4_4,
   FE4_5,
   FE4_6,
   FE4_7,
