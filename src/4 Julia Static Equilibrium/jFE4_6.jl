@@ -1,4 +1,4 @@
-function jFE4_2(data::Dict)
+function jFE4_6(data::Dict)
   
   # Parse & check FEdict data
   
@@ -9,15 +9,28 @@ function jFE4_2(data::Dict)
     return
   end
   
-  nels = struc_el.nels
-  nn = struc_el.nn
   ndim = struc_el.ndim
-  nip = struc_el.nip
   nst = struc_el.nst
+  
+  # Add radial stress
+  if ndim == 3 && struc_el.axisymmetric
+    nst = 4
+  end
   
   fin_el = struc_el.fin_el
   @assert typeof(fin_el) <: FiniteElement
   
+  if typeof(fin_el) == Line
+    (nels, nn) = mesh_size(fin_el, struc_el.nxe)
+  elseif typeof(fin_el) == Triangle || typeof(fin_el) == Quadrilateral
+    (nels, nn) = mesh_size(fin_el, struc_el.nxe, struc_el.nye)
+  elseif typeof(fin_el) == Hexahedron
+    (nels, nn) = mesh_size(fin_el, struc_el.nxe, struc_el.nye, struc_el.nze)
+  else
+    println("$(typeof(fin_el)) is not a known finite element.")
+    return
+  end
+   
   nodof = ndim                    # Degrees of freedom per node
   ndof = fin_el.nod * nodof      # Degrees of freedom per fin_el
   
@@ -56,15 +69,11 @@ function jFE4_2(data::Dict)
   y_coords = zeros(nn)
   if :y_coords in keys(data)
     y_coords = data[:y_coords]
-  else
-    y_coords = zeros(length(x_coords))
   end
   
   z_coords = zeros(nn)
   if :z_coords in keys(data)
     z_coords = data[:z_coords]
-  else
-    z_coords = zeros(length(z_coords))
   end
 
   etype = ones(Int64, nels)
@@ -106,91 +115,51 @@ function jFE4_2(data::Dict)
   
   # Set global coordinates
   
-  g_coord[1,:] = data[:x_coords]
-  if ndim > 1
-    g_coord[2,:] = data[:y_coords]
-  end
-  if ndim > 2
-    g_coord[3,:] = data[:z_coords]
-  end 
-    
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
+  evec = zeros(neq+1)
+  
+  ell = zeros(nels)
+  if :x_coords in keys(data)
+    for i in 1:length(data[:x_coords])-1
+      ell[i] = data[:x_coords][i+1] - data[:x_coords][i]
+    end
+  end
   
   for i in 1:nels
-    num = g_num[:, i]
+    num = [i; i+1]
     num_to_g!(fin_el.nod, nodof, nn, ndof, num, nf, g)
     g_g[:, i] = g
   end
   
-  println("There are $(neq) equations.")
-  
-  loads = zeros(neq+1)
-  if :loaded_nodes in keys(data)
-    for i in 1:size(data[:loaded_nodes], 1)
-      loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
-    end
-  end
+  println("There are $(neq) equations.\n")
   
   gsm = spzeros(neq, neq)
+  ggm = spzeros(neq, neq)
   for i in 1:nels
-    num = g_num[:, i]
-    coord = g_coord[:, num]'              #'
-    km = pin_jointed!(km, prop[etype[i], 1], coord)
+    km = beam_km!(km, prop[etype[i], 1], ell[i])
+    if size(prop, 2) > 1
+      mm = beam_mm!(mm, prop[etype[i], 2], ell[i])
+    end
+    kg = beam_gm!(kg, ell[i])
     g = g_g[:, i]
-    fsparm!(gsm, g, km)
+    fsparm!(gsm, g, km+mm)
+    fsparm!(ggm, g, kg)
   end
   
-  fixed_freedoms = 0
-  if :fixed_freedoms in keys(data)
-    fixed_freedoms = size(data[:fixed_freedoms], 1)
-  end
-  no = zeros(Int64, fixed_freedoms)
-  node = zeros(Int64, fixed_freedoms)
-  sense = zeros(Int64, fixed_freedoms)
-  value = zeros(Float64, fixed_freedoms)
-  if :fixed_freedoms in keys(data) && fixed_freedoms > 0
-    for i in 1:fixed_freedoms
-      node[i] = data[:fixed_freedoms][i][1]
-      sense[i] = data[:fixed_freedoms][i][2]
-      no[i] = nf[sense[i], node[i]]
-      value[i] = data[:fixed_freedoms][i][3]
-      gsm[no[i], no[i]] += penalty
-      loads[no[i] + 1] = gsm[no[i], no[i]] .* value[i]
-    end
+  limit = 10
+  if :limit in keys(data)
+    limit = data[:limit]
   end
   
-  cfgsm = cholfact(gsm)
-  loads[2:end] = cfgsm \ loads[2:end]
-  println()
-
-  displacements = zeros(size(nf))
-  for i in 1:size(displacements, 1)
-    for j in 1:size(displacements, 2)
-      if nf[i, j] > 0
-        displacements[i,j] = loads[nf[i, j]+1]
-      end
-    end
+  tol = 1.0e-5
+  if :tol in keys(data)
+    tol = data[:tol]
   end
-
-  for i in 1:nels
-    num = g_num[:, i]
-    coord = g_coord[:, num]'              #'
-    g = g_g[:, i]
-    eld = zeros(length(g))
-    for j in 1:length(g)
-      if g[j] != 0
-        eld[j] = loads[g[j]+1]
-      end
-    end
-    km = pin_jointed!(km, prop[etype[i], 1], coord)
-    actions[:, i] = km * eld
-    axial[i] = global_to_axial(actions[:, i], coord)
-  end
-
-  CSoM.jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
-    etype, g, g_g, g_num, nf, no, node, num, sense, actions, 
-    bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
-    g_coord, jac, km, mm, gm, cfgsm, loads, points, prop, sigma, value,
-    weights, x_coords, y_coords, z_coords, axial)
+  
+  ival = 0.0
+  iters = 0
+  (iters, evec, ival) = stability!(kv, gv, kdiag, tol, limit, iters, evec, ival)
+  evec[1] = 0.0
+  (ival, iters, nn, evec, nf)
 end

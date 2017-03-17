@@ -211,9 +211,9 @@ function jFE4_1(data::Dict{Symbol, Any})
       sense[i] = data[:fixed_freedoms][i][2]
       no[i] = nf[sense[i], node[i]]
       value[i] = data[:fixed_freedoms][i][3]
+      gsm[no[i], no[i]] += penalty
+      loads[no[i] + 1] = gsm[no[i], no[i]] .* value[i]
     end
-    gsm[no, no] += penalty
-    loads[no + 1] = gsm[no, no] .* value
   end
   
   cfgsm = cholfact(gsm)
