@@ -46,6 +46,9 @@ by
 
 in src/"4 Julia Static Equilibrium"/jFE4.1.jl. Note the "j" addition to template source file name.
 
+Alternatively, instead of Julia sparse matrices, I'm looking into 
+[BandedMatrices.jl](http://juliamatrices.github.io/BandedMatrices.jl/stable/index.html).
+
 While experimenting with the proper structure for the CSoM toolkit and at the same time trying to remain as compatible as possible with the primary documentation (the PtFEM book), I will store these Julia versions in corresponding subdirectories, e.g. in src/"4 Julia Static Equilibrium" for templates in src/"4 Static Equilibrium" with the added "j" as templates only get a Dictionary as input argument.
 
 All 'basic' functions such as sparin!() and spabac!() can be found in the src/CSoM directory. Note the use of the "!" in the function name which is the Julia convention for functions that update one or more of the function arguments. If specific Julia versions are required for use in the templates, these are added to the respective source files. Often times Julia's multiple dispatching takes care of selecting the correct version in the templates.
