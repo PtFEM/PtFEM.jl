@@ -157,9 +157,7 @@ function jFE4_6(data::Dict)
     tol = data[:tol]
   end
   
-  ival = 0.0
-  iters = 0
-  (iters, evec, ival) = stability!(kv, gv, kdiag, tol, limit, iters, evec, ival)
+  (iters, evec, ival) = stability!(gsm, ggm, tol, limit)
   evec[1] = 0.0
   (ival, iters, nn, evec, nf)
 end

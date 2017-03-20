@@ -1,4 +1,5 @@
-function linmul_sky!(kv::Vector{Float64}, disps::Vector{Float64}, loads::Vector{Float64}, kdiag::Vector{Int64})
+function linmul_sky!(kv::Vector{Float64}, disps::Vector{Float64}, 
+  loads::Vector{Float64}, kdiag::Vector{Int64})
   #
   # This subroutine forms the product of symmetric matrix stored as
   # a skyline and a vector.

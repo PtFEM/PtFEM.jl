@@ -16,7 +16,7 @@ data = Dict(
 data |> display
 println()
 
-@time m = FE4_6(data)
+@time m = jFE4_6(data)
 println()
 
 println("\nThe buckling load = $(m[1])")
