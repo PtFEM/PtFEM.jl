@@ -36,11 +36,11 @@ function stability!(kv::Vector{Float64}, gv::Vector{Float64}, kdiag::Vector{Int6
   (iters, x1, ival)
 end
 
-function stability!(gsm::SparseMatrixCSC{Float64,Int64}, 
+function stability(gsm::SparseMatrixCSC{Float64,Int64}, 
   ggm::SparseMatrixCSC{Float64,Int64}, tol::Float64, limit::Int64)
   #
   # This subroutine computes the smallest eigenvalue in a beam
-  # stability analysis.
+  # stability analysis. This is the Julia version. Notice no !.
   #
   # Updateds iters, evec, ival
   #
