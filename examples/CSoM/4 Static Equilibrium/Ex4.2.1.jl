@@ -22,7 +22,7 @@ data = Dict(
 data |> display
 println()
 
-@time m = jFE4_2(data)
+@time m = p4_2(data)
 println()
 
 if VERSION.minor > 5

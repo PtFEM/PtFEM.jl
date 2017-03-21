@@ -1,22 +1,22 @@
-using Documenter
-
 """
-# FE4_1
+# p4_1
 
-Backbone method for static equilibrium analysis of a rod.
+Method for static equilibrium analysis of a rod.
 
 ### Constructors
 ```julia
-FE4_1(data::Dict)
+p4_1(data::Dict)
+p4_1(m::jFEM, data::Dict) # Used to re-use factiored global stiffness matrix
 ```
 ### Arguments
 ```julia
+* `m`    : Previously created jFEM model
 * `data` : Dictionary containing all input data
 ```
 
 ### Dictionary keys
 ```julia
-* struc_el::StructuralElement                            : Type of  structural fin_el
+* struc_el::StructuralElement                          : Type of  structural fin_el
 * support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
 * loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector
 * properties::Vector{Float64}                          : Material properties
@@ -41,7 +41,7 @@ data = Dict(
   :loaded_nodes => [(1,[-0.625]),(2,[-1.25]),(3,[-1.25]),(4,[-1.25]),(5,[-0.625])]
 )
 
-m = FE4_1(data)
+m = p4_1(data)
 
 println("Displacements:")
 m.displacements |> display
@@ -60,7 +60,7 @@ println()
 ?FiniteElement      : Help on finite element types
 ```
 """
-function FE4_1(data::Dict{Symbol, Any})
+function p4_1(data::Dict{Symbol, Any})
   
   # Parse & check FE problem data input dict
   
@@ -179,17 +179,9 @@ function FE4_1(data::Dict{Symbol, Any})
     num = [i; i+1]
     CSoM.num_to_g!(fin_el.nod, nodof, nn, ndof, num, nf, g)
     g_g[:, i] = g
-    CSoM.fkdiag!(ndof, neq, g, kdiag)
   end
   
-  for i in 2:neq
-    kdiag[i] = kdiag[i] + kdiag[i-1]
-  end
-
-  kv = zeros(kdiag[neq])
-  gv = zeros(kdiag[neq])
-  
-  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
+  println("There are $(neq) equations.")
     
   loads = zeros(neq+1)
   if :loaded_nodes in keys(data)
@@ -198,10 +190,11 @@ function FE4_1(data::Dict{Symbol, Any})
     end
   end
   
+  gsm = spzeros(neq, neq)
   for i in 1:nels
     km = CSoM.rod_km!(km, prop[etype[i], 1], ell[i])
     g = g_g[:, i]
-    CSoM.fsparv!(kv, km, g, kdiag)
+    CSoM.fsparm!(gsm, g, km)
   end
 
   fixed_freedoms = 0
@@ -218,13 +211,13 @@ function FE4_1(data::Dict{Symbol, Any})
       sense[i] = data[:fixed_freedoms][i][2]
       no[i] = nf[sense[i], node[i]]
       value[i] = data[:fixed_freedoms][i][3]
+      gsm[no[i], no[i]] += penalty
+      loads[no[i] + 1] = gsm[no[i], no[i]] .* value[i]
     end
-    kv[kdiag[no]] += penalty
-    loads[no+1] = kv[kdiag[no]] .* value
   end
   
-  CSoM.sparin!(kv, kdiag)
-  loads[2:end] = CSoM.spabac!(kv, loads[2:end], kdiag)
+  cfgsm = cholfact(gsm)
+  loads[2:end] = cfgsm \ loads[2:end]
   println()
 
   displacements = zeros(size(nf))
@@ -245,14 +238,15 @@ function FE4_1(data::Dict{Symbol, Any})
     actions[i, :] = km * eld
   end
 
-  FEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
-    etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
+  jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
+    etype, g, g_g, g_num, nf, no, node, num, sense, actions, 
     bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
-    g_coord, jac, km, mm, gm, kv, gv, loads, points, prop, sigma, value,
+    g_coord, jac, km, mm, gm, cfgsm, loads, points, prop, sigma, value,
     weights, x_coords, y_coords, z_coords, axial)
 end
 
-function FE4_1(m::CSoM.FEM, data::Dict)
+
+function p4_1(m::CSoM.jFEM, data::Dict)
   loads = zeros(m.neq+1)
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
@@ -260,7 +254,7 @@ function FE4_1(m::CSoM.FEM, data::Dict)
     end
   end
 
-  loads[2:end] = CSoM.spabac!(m.kv, loads[2:end], m.kdiag)
+  loads[2:end] = m.cfgsm \ loads[2:end]
   println()
 
   displacements = zeros(size(m.nf))
@@ -291,11 +285,11 @@ function FE4_1(m::CSoM.FEM, data::Dict)
     actions[i, :] = km * eld
   end
 
-  FEM(m.struc_el, m.fin_el, m.ndim, m.nels, m.nst, m.ndof, m.nn, m.nodof,
-    m.neq, m.penalty, m.etype, g, m.g_g, m.g_num, m.kdiag, m.nf, m.no,
+  CSoM.jFEM(m.struc_el, m.fin_el, m.ndim, m.nels, m.nst, m.ndof, m.nn, m.nodof,
+    m.neq, m.penalty, m.etype, g, m.g_g, m.g_num, m.nf, m.no,
     m.node, m.num, m.sense, actions, m.bee, m.coord, m.gamma, m.dee,
     m.der, m.deriv, displacements, eld, m.fun, m.gc, m.g_coord, m.jac,
-    km, m.mm, m.kg, m.kv, m.gv, loads, m.points, m.prop, m.sigma, m.value,
+    km, m.mm, m.kg, m.cfgsm, loads, m.points, m.prop, m.sigma, m.value,
     m.weights, m.x_coords, m.y_coords, m.z_coords, m.axial)
 
 end

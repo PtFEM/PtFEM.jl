@@ -1,4 +1,4 @@
-function FE4_3(data::Dict)
+function p4_6(data::Dict)
   
   # Parse & check FEdict data
   
@@ -21,11 +21,11 @@ function FE4_3(data::Dict)
   @assert typeof(fin_el) <: FiniteElement
   
   if typeof(fin_el) == Line
-    (nels, nn) = CSoM.mesh_size(fin_el, struc_el.nxe)
+    (nels, nn) = mesh_size(fin_el, struc_el.nxe)
   elseif typeof(fin_el) == Triangle || typeof(fin_el) == Quadrilateral
-    (nels, nn) = CSoM.mesh_size(fin_el, struc_el.nxe, struc_el.nye)
+    (nels, nn) = mesh_size(fin_el, struc_el.nxe, struc_el.nye)
   elseif typeof(fin_el) == Hexahedron
-    (nels, nn) = CSoM.mesh_size(fin_el, struc_el.nxe, struc_el.nye, struc_el.nze)
+    (nels, nn) = mesh_size(fin_el, struc_el.nxe, struc_el.nye, struc_el.nze)
   else
     println("$(typeof(fin_el)) is not a known finite element.")
     return
@@ -117,7 +117,7 @@ function FE4_3(data::Dict)
   
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
-  kdiag = zeros(Int64, neq)
+  evec = zeros(neq+1)
   
   ell = zeros(nels)
   if :x_coords in keys(data)
@@ -130,83 +130,35 @@ function FE4_3(data::Dict)
     num = [i; i+1]
     num_to_g!(fin_el.nod, nodof, nn, ndof, num, nf, g)
     g_g[:, i] = g
-    fkdiag!(ndof, neq, g, kdiag)
   end
   
-  for i in 2:neq
-    kdiag[i] = kdiag[i] + kdiag[i-1]
-  end
-
-  kv = zeros(kdiag[neq])
-  gv = zeros(kdiag[neq])
-    
-  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
+  println("There are $(neq) equations.\n")
   
+  gsm = spzeros(neq, neq)
+  ggm = spzeros(neq, neq)
   for i in 1:nels
     km = beam_km!(km, prop[etype[i], 1], ell[i])
-    g = g_g[:, i]
     if size(prop, 2) > 1
       mm = beam_mm!(mm, prop[etype[i], 2], ell[i])
     end
-    fsparv!(kv, km+mm, g, kdiag)
-  end
-  
-  loads = zeros(neq+1)
-  if :loaded_nodes in keys(data)
-    for i in 1:size(data[:loaded_nodes], 1)
-      loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
-    end
-  end
-  
-  fixed_freedoms = 0
-  if :fixed_freedoms in keys(data)
-    fixed_freedoms = size(data[:fixed_freedoms], 1)
-  end
-  no = zeros(Int64, fixed_freedoms)
-  node = zeros(Int64, fixed_freedoms)
-  sense = zeros(Int64, fixed_freedoms)
-  value = zeros(Float64, fixed_freedoms)
-  if fixed_freedoms > 0
-    for i in 1:fixed_freedoms
-      node[i] = data[:fixed_freedoms][i][1]
-      sense[i] = data[:fixed_freedoms][i][2]
-      no[i] = nf[sense[i], node[i]]
-      value[i] = data[:fixed_freedoms][i][3]
-    end
-    kv[kdiag[no]] += penalty
-    loads[no+1] = kv[kdiag[no]] .* value
-  end
-  
-  sparin!(kv, kdiag)
-  loads[2:end] = spabac!(kv, loads[2:end], kdiag)
-
-  displacements = zeros(size(nf))
-  for i in 1:size(displacements, 1)
-    for j in 1:size(displacements, 2)
-      if nf[i, j] > 0
-        displacements[i,j] = loads[nf[i, j]+1]
-      end
-    end
-  end
-
-  for i in 1:nels
-    beam_km!(km, prop[etype[i], 1], ell[i])
+    kg = beam_gm!(kg, ell[i])
     g = g_g[:, i]
-    if size(prop, 2) > 1
-      beam_mm!(mm, prop[etype[i], 2], ell[i])
-    end
-    eld = zeros(length(g))
-    for j in 1:length(g)
-      if g[j] != 0
-        eld[j] = loads[g[j]+1]
-      end
-    end
-    actions[:, i] = (km+mm) * eld
+    fsparm!(gsm, g, km+mm)
+    fsparm!(ggm, g, kg)
   end
-
-  FEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
-    etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
-    bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
-    g_coord, jac, km, mm, gm, kv, gv, loads, points, prop, sigma, value,
-    weights, x_coords, y_coords, z_coords, axial)
+  
+  limit = 10
+  if :limit in keys(data)
+    limit = data[:limit]
+  end
+  
+  tol = 1.0e-5
+  if :tol in keys(data)
+    tol = data[:tol]
+  end
+  
+  # No updates to arguments, drop the ! mark.
+  (iters, evec, ival) = stability(gsm, ggm, tol, limit)
+  evec[1] = 0.0
+  (ival, iters, nn, evec, nf)
 end

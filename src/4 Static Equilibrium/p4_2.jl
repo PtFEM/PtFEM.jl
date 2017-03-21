@@ -1,4 +1,4 @@
-function jFE4_3(data::Dict)
+function p4_2(data::Dict)
   
   # Parse & check FEdict data
   
@@ -9,28 +9,15 @@ function jFE4_3(data::Dict)
     return
   end
   
+  nels = struc_el.nels
+  nn = struc_el.nn
   ndim = struc_el.ndim
+  nip = struc_el.nip
   nst = struc_el.nst
-  
-  # Add radial stress
-  if ndim == 3 && struc_el.axisymmetric
-    nst = 4
-  end
   
   fin_el = struc_el.fin_el
   @assert typeof(fin_el) <: FiniteElement
   
-  if typeof(fin_el) == Line
-    (nels, nn) = CSoM.mesh_size(fin_el, struc_el.nxe)
-  elseif typeof(fin_el) == Triangle || typeof(fin_el) == Quadrilateral
-    (nels, nn) = CSoM.mesh_size(fin_el, struc_el.nxe, struc_el.nye)
-  elseif typeof(fin_el) == Hexahedron
-    (nels, nn) = CSoM.mesh_size(fin_el, struc_el.nxe, struc_el.nye, struc_el.nze)
-  else
-    println("$(typeof(fin_el)) is not a known finite element.")
-    return
-  end
-   
   nodof = ndim                    # Degrees of freedom per node
   ndof = fin_el.nod * nodof      # Degrees of freedom per fin_el
   
@@ -69,11 +56,15 @@ function jFE4_3(data::Dict)
   y_coords = zeros(nn)
   if :y_coords in keys(data)
     y_coords = data[:y_coords]
+  else
+    y_coords = zeros(length(x_coords))
   end
   
   z_coords = zeros(nn)
   if :z_coords in keys(data)
     z_coords = data[:z_coords]
+  else
+    z_coords = zeros(length(z_coords))
   end
 
   etype = ones(Int64, nels)
@@ -115,39 +106,39 @@ function jFE4_3(data::Dict)
   
   # Set global coordinates
   
+  g_coord[1,:] = data[:x_coords]
+  if ndim > 1
+    g_coord[2,:] = data[:y_coords]
+  end
+  if ndim > 2
+    g_coord[3,:] = data[:z_coords]
+  end 
+    
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
   
-  ell = zeros(nels)
-  if :x_coords in keys(data)
-    for i in 1:length(data[:x_coords])-1
-      ell[i] = data[:x_coords][i+1] - data[:x_coords][i]
-    end
-  end
-  
   for i in 1:nels
-    num = [i; i+1]
+    num = g_num[:, i]
     num_to_g!(fin_el.nod, nodof, nn, ndof, num, nf, g)
     g_g[:, i] = g
   end
   
   println("There are $(neq) equations.")
   
-  gsm = spzeros(neq, neq)
-  for i in 1:nels
-    km = beam_km!(km, prop[etype[i], 1], ell[i])
-    g = g_g[:, i]
-    if size(prop, 2) > 1
-      mm = beam_mm!(mm, prop[etype[i], 2], ell[i])
-    end
-    fsparm!(gsm, g, km+mm)
-  end
-  
   loads = zeros(neq+1)
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
       loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
     end
+  end
+  
+  gsm = spzeros(neq, neq)
+  for i in 1:nels
+    num = g_num[:, i]
+    coord = g_coord[:, num]'              #'
+    km = pin_jointed!(km, prop[etype[i], 1], coord)
+    g = g_g[:, i]
+    fsparm!(gsm, g, km)
   end
   
   fixed_freedoms = 0
@@ -158,7 +149,7 @@ function jFE4_3(data::Dict)
   node = zeros(Int64, fixed_freedoms)
   sense = zeros(Int64, fixed_freedoms)
   value = zeros(Float64, fixed_freedoms)
-  if fixed_freedoms > 0
+  if :fixed_freedoms in keys(data) && fixed_freedoms > 0
     for i in 1:fixed_freedoms
       node[i] = data[:fixed_freedoms][i][1]
       sense[i] = data[:fixed_freedoms][i][2]
@@ -183,21 +174,21 @@ function jFE4_3(data::Dict)
   end
 
   for i in 1:nels
-    beam_km!(km, prop[etype[i], 1], ell[i])
+    num = g_num[:, i]
+    coord = g_coord[:, num]'              #'
     g = g_g[:, i]
-    if size(prop, 2) > 1
-      beam_mm!(mm, prop[etype[i], 2], ell[i])
-    end
     eld = zeros(length(g))
     for j in 1:length(g)
       if g[j] != 0
         eld[j] = loads[g[j]+1]
       end
     end
-    actions[:, i] = (km+mm) * eld
+    km = pin_jointed!(km, prop[etype[i], 1], coord)
+    actions[:, i] = km * eld
+    axial[i] = global_to_axial(actions[:, i], coord)
   end
 
-  jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
+  CSoM.jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
     etype, g, g_g, g_num, nf, no, node, num, sense, actions, 
     bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
     g_coord, jac, km, mm, gm, cfgsm, loads, points, prop, sigma, value,

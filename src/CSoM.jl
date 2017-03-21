@@ -65,13 +65,13 @@ include("CSoM/exportVTK_XML.jl")
 include("CSoM/fromSkyline.jl")
 include("CSoM/skyline2sparse.jl")
 
-include("4 Static Equilibrium/FE4_1.jl")
-include("4 Static Equilibrium/FE4_2.jl")
-include("4 Static Equilibrium/FE4_3.jl")
-include("4 Static Equilibrium/FE4_4.jl")
-include("4 Static Equilibrium/FE4_5.jl")
-include("4 Static Equilibrium/FE4_6.jl")
-include("4 Static Equilibrium/FE4_7.jl")
+include("4 Static Equilibrium/p4_1.jl")
+include("4 Static Equilibrium/p4_2.jl")
+include("4 Static Equilibrium/p4_3.jl")
+include("4 Static Equilibrium/p4_4.jl")
+include("4 Static Equilibrium/p4_5.jl")
+include("4 Static Equilibrium/p4_6.jl")
+include("4 Static Equilibrium/p4_7.jl")
 
 include("5 Elastic Solids/FE5_1.jl")
 include("5 Elastic Solids/FE5_2.jl")
@@ -81,14 +81,6 @@ include("5 Elastic Solids/FE5_5.jl")
 include("5 Elastic Solids/FE5_6.jl")
 
 include("6 Material Nonlinearity/FE6_1.jl")
-
-include("4 Julia Static Equilibrium/p4_1.jl")
-include("4 Julia Static Equilibrium/jFE4_2.jl")
-include("4 Julia Static Equilibrium/jFE4_3.jl")
-include("4 Julia Static Equilibrium/jFE4_4.jl")
-include("4 Julia Static Equilibrium/jFE4_5.jl")
-include("4 Julia Static Equilibrium/jFE4_6.jl")
-include("4 Julia Static Equilibrium/jFE4_7.jl")
 
 ### Exports ###
 
@@ -122,20 +114,13 @@ export
   skyline2sparse,
   
   # From Chap04
-  FE4_1,
   p4_1,
-  FE4_2,
-  jFE4_2,
-  FE4_3,
-  jFE4_3,
-  FE4_4,
-  jFE4_4,
-  FE4_5,
-  jFE4_5,
-  FE4_6,
-  jFE4_6,
-  FE4_7,
-  jFE4_7,
+  p4_2,
+  p4_3,
+  p4_4,
+  p4_5,
+  p4_6,
+  p4_7,
   
   # From Chap05
   FE5_1,

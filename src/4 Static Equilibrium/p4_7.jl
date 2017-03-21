@@ -1,4 +1,4 @@
-function jFE4_7(data::Dict)
+function p4_7(data::Dict)
   
   # Setup basic dimensions of arrays
   

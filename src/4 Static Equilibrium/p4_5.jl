@@ -1,4 +1,4 @@
-function jFE4_4(data::Dict)
+function p4_5(data::Dict)
   
   # Parse & check FEdict data
   
@@ -36,7 +36,11 @@ function jFE4_4(data::Dict)
     return
   end
   
-  nodof = ndim == 2 ? 3 : 6       # Degrees of freedom per node
+  if ndim == 1
+    nodof = 2
+  else
+    nodof = ndim == 2 ? 3 : 6     # Degrees of freedom per node
+  end
   ndof = fin_el.nod * nodof      # Degrees of freedom per fin_el
   
   # Update penalty if specified in FEdict
@@ -135,7 +139,7 @@ function jFE4_4(data::Dict)
     g_coord[3,:] = data[:z_coords]
   end
   
-  formnf!(nodof, nn, nf)
+  CSoM.formnf!(nodof, nn, nf)
   neq = maximum(nf)
   
   ell = zeros(nels)
@@ -147,25 +151,57 @@ function jFE4_4(data::Dict)
   
   for i in 1:nels
     num = g_num[:, i]
-    num_to_g!(fin_el.nod, nodof, nn, ndof, num, nf, g)
+    CSoM.num_to_g!(fin_el.nod, nodof, nn, ndof, num, nf, g)
     g_g[:, i] = g
   end
   
-  println("There are $(neq) equations.")
+  println("There are $(neq) equations.\n")
   
   gsm = spzeros(neq, neq)
   for i in 1:nels
     num = g_num[:, i]
     coord = g_coord[:, num]'
-    km = rigid_jointed!(km, prop, gamma, etype, i, coord)
+    km = CSoM.rigid_jointed!(km, prop, gamma, etype, i, coord)
     g = g_g[:, i]
-    fsparm!(gsm, g, km)
+    CSoM.fsparm!(gsm, g, km)
   end
-    
+  
+  limit = 10
+  if :limit in keys(data)
+    limit = data[:limit]
+  end
+  
+  tol = 1.0e-5
+  if :tol in keys(data)
+    tol = data[:tol]
+  end
+  
+  incs = 0
+  if :incs in keys(data)
+    incs = data[:incs]
+  else
+    println("No increments for loads specified.")
+    return
+  end
+  
+  dload = zeros(incs)
+  if :dload in keys(data)
+    dload = data[:dload]
+  end
+  
   loads = zeros(neq+1)
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
       loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
+    end
+  end
+  
+  inode = zeros(Int64, size(data[:loaded_nodes], 1))
+  ival = zeros(size(data[:loaded_nodes], 1), size(data[:loaded_nodes][1][2], 2))
+  if :loaded_nodes in keys(data)
+    for i in 1:size(data[:loaded_nodes], 1)
+      inode[i] = data[:loaded_nodes][i][1]
+      ival[i, :] = data[:loaded_nodes][i][2]
     end
   end
   
@@ -188,37 +224,64 @@ function jFE4_4(data::Dict)
     end
   end
   
-  # Compute Cholesky factored global stiffness matrix for
-  # future re-use. If re-use is not appropriate the loads
-  # can be computed directly using gsm:
-  #   loads[2:end] = gsm \ loads[2:end]
-
   cfgsm = cholfact(gsm)
-  loads[2:end] = cfgsm \ loads[2:end]
-  println()
-
-  displacements = zeros(size(nf))
-  for i in 1:size(displacements, 1)
-    for j in 1:size(displacements, 2)
-      if nf[i, j] > 0
-        displacements[i,j] = loads[nf[i, j]+1]
+  
+  # Special arrays
+  eldtot = zeros(neq+1)
+  holdr = zeros(ndof, nels)
+  react = zeros(ndof)
+  action = zeros(ndof)
+  
+  local converged = true
+  
+  total_load = 0.0
+  for iy in 1:incs
+    total_load += dload[iy]
+    println("\nLoad step: $(iy), load factor: $total_load")
+    bdylds = zeros(neq+1)
+    oldlds = zeros(neq+1)
+    iters = 0
+    while true
+      iters += 1
+      print(".")
+      loads = zeros(neq+1)
+      for i in 1:size(inode, 1)
+        loads[nf[:, data[:loaded_nodes][i][1]]+1] = dload[iy] * ival[i, :]
+      end
+      loads += bdylds
+      bdylds = zeros(neq+1)
+      loads[2:end] = cfgsm \ loads[2:end]
+      converged = checon!(loads, oldlds, tol, converged)
+      for iel in 1:nels
+        num = g_num[:, iel]
+        coord = g_coord[:, num]'
+        g = g_g[:, iel]
+        eld = loads[g+1]
+        km = rigid_jointed!(km, prop, gamma, etype, iel, coord)
+        action = km * eld
+        react = zeros(ndof)
+        if limit !== 1
+          hinge!(coord, holdr, action, react, prop, iel, etype, gamma)
+          #@show react
+          bdylds[g+1] -= react
+          bdylds[1] = 0.0
+        end
+        if iters == limit || converged
+          holdr[:, iel] += react[:] + action[:]
+        end
+      end
+      if iters == limit || converged
+        break
       end
     end
+    eldtot += loads
+    println("\n   Node     Displacement(s) and Rotation(s)  (Iterations: $(iters))")
+    for i in 1:size(inode, 1)
+      println("    $(inode[i])  $(eldtot[nf[:, inode[i]]+1])")
+    end
+    if iters == limit && limit !== 1
+      break
+    end
   end
-  
-  loads[1] = 0.0
-  for i in 1:nels
-    num = g_num[:, i]
-    coord = g_coord[:, num]'
-    g = g_g[:, i]
-    eld = loads[g+1]
-    km = rigid_jointed!(km, prop, gamma, etype, i, coord)
-    actions[:, i] = km * eld
-  end
-
-  jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
-    etype, g, g_g, g_num, nf, no, node, num, sense, actions, 
-    bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
-    g_coord, jac, km, mm, gm, cfgsm, loads, points, prop, sigma, value,
-    weights, x_coords, y_coords, z_coords, axial)
+  (inode[size(inode, 1)], eldtot[nf[:, inode[size(inode, 1)]+1]])
 end
