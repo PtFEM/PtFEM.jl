@@ -30,7 +30,7 @@ data = Dict(
 data |> display
 println()
 
-@time m = FE4_3(data)
+@time m = jFE4_3(data)
 println()
 
 if VERSION.minor > 5

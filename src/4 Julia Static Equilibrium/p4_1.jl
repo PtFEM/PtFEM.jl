@@ -1,13 +1,13 @@
 using Documenter
 
 """
-# jFE4_1
+# p4_1
 
 Backbone method for static equilibrium analysis of a rod.
 
 ### Constructors
 ```julia
-jFE4_1(data::Dict)
+p4_1(data::Dict)
 ```
 ### Arguments
 ```julia
@@ -16,7 +16,7 @@ jFE4_1(data::Dict)
 
 ### Dictionary keys
 ```julia
-* struc_el::StructuralElement                            : Type of  structural fin_el
+* struc_el::StructuralElement                          : Type of  structural fin_el
 * support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
 * loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector
 * properties::Vector{Float64}                          : Material properties
@@ -41,7 +41,7 @@ data = Dict(
   :loaded_nodes => [(1,[-0.625]),(2,[-1.25]),(3,[-1.25]),(4,[-1.25]),(5,[-0.625])]
 )
 
-m = jFE4_1(data)
+m = p4_1(data)
 
 println("Displacements:")
 m.displacements |> display
@@ -60,7 +60,7 @@ println()
 ?FiniteElement      : Help on finite element types
 ```
 """
-function jFE4_1(data::Dict{Symbol, Any})
+function p4_1(data::Dict{Symbol, Any})
   
   # Parse & check FE problem data input dict
   
@@ -245,7 +245,7 @@ function jFE4_1(data::Dict{Symbol, Any})
     weights, x_coords, y_coords, z_coords, axial)
 end
 
-function FE4_1(m::CSoM.jFEM, data::Dict)
+function p4_1(m::CSoM.jFEM, data::Dict)
   loads = zeros(m.neq+1)
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)

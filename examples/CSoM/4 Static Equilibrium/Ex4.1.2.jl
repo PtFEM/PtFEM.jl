@@ -31,7 +31,7 @@ data = Dict(
 data |> display
 println()
 
-@time m = FE4_1(data)
+@time m = p4_1(data)
 println()
 
 if VERSION.minor > 5
@@ -61,16 +61,12 @@ else
 
   x = 0.0:l/els:l
   u = convert(Array, dis_dt[:x_translation])
-  N = vcat(
-    convert(Array, fm_dt[:normal_force_1])[1],
-    convert(Array, fm_dt[:normal_force_2])
-  )
     
   p = Vector{Plots.Plot{Plots.GRBackend}}(2)
-  titles = ["CSoM p4.2.1 u(x)", "CSoM p4.2.1 N(x)"]
+  titles = ["CSoM Ex4.2.1 u(x)", "CSoM Ex4.2.1 N(x)"]
    
   p[1]=plot(ylim=(0.0, 1.0), xlim=(0.0, 70.0),
-    yflip=true, xflip=true, xlab="Normal force [N]",
+    yflip=true, xflip=false, xlab="Normal force [N]",
     ylab="x [m]", title=titles[2]
   )
   vals = convert(Array, fm_dt[:normal_force_2])
@@ -95,6 +91,6 @@ else
     fill=true, fillalpha=0.1, leg=false, title=titles[1])
 
   plot(p..., layout=(1, 2))
-  savefig(ProjDir*"/p4.1.2.png")
+  savefig(ProjDir*"/Ex4.1.2.png")
   
 end
