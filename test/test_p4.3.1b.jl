@@ -22,6 +22,6 @@ data = Dict(
 )
 
 
-@time m = FE4_2(data)
+@time m = p4_2(data)
 
 @test round.(m.displacements[:, 5], 7) == [0.0002569, -0.0005, 7.61e-5]

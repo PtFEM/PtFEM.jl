@@ -19,6 +19,6 @@ data = Dict(
   :penalty => 1e19
 )
 
-@time m = FE4_3(data)
+@time m = p4_3(data)
 
 @test round.(m.displacements[:, 5], 7) == [0.0047132, 0.0023433]
