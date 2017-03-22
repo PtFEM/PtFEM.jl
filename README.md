@@ -21,7 +21,7 @@ As this shows, the package has not yet been published and is currently only avai
 
 Examples are in the examples/... and notebooks/... subdirectories. Currently the notebooks are just initial examples (and might not always work) until the structure of the toolkit gels.
 
-Initial focus has been on chapters 4 and 5 of PtFEM in order to figure out how to best structure the toolkit.
+Initial focus has been on chapters 4 and 5 of PtFEM in order to figure out how to best structure the toolkit. At this point chapter 4 is mostly done.
 
 Please note that no timeline is set when this work in progress will be finished.
 
