@@ -40,28 +40,18 @@ println()
 @time m = p4_1(data)
 println()
 
-if VERSION.minor > 5
-  println("Displacements:")
-  m.displacements' |> display
-  println()
-
-  println("Actions:")
-  m.actions' |> display
-  println()
-else
-  using DataTables
-  dis_dt = DataTable(
-    x_translation = m.displacements[:, 1],
-  )
-  fm_dt = DataTable(
-    normal_force_1 = m.actions[:, 1],
-    normal_force_2 = m.actions[:, 2]
-  )
-    
-  display(dis_dt)
-  println()
-  display(fm_dt)
-end
+using DataTables
+dis_dt = DataTable(
+  x_translation = m.displacements[:, 1],
+)
+fm_dt = DataTable(
+  normal_force_1 = m.actions[:, 1],
+  normal_force_2 = m.actions[:, 2]
+)
+  
+display(dis_dt)
+println()
+display(fm_dt)
 
 # Update (double) the loaded_nodes values
 
@@ -77,25 +67,15 @@ end
 @time m2 = p4_1(m, data)
 println()
 
-if VERSION.minor > 5
-  println("Displacements:")
-  m2.displacements' |> display
-  println()
-
-  println("Actions:")
-  m2.actions' |> display
-  println()
-else
-  using DataTables
-  dis_dt2 = DataTable(
-    x_translation = m2.displacements[:, 1],
-  )
-  fm_dt2 = DataTable(
-    normal_force_1 = m2.actions[:, 1],
-    normal_force_2 = m2.actions[:, 2]
-  )
-    
-  display(dis_dt2)
-  println()
-  display(fm_dt2)
-end
+using DataTables
+dis_dt2 = DataTable(
+  x_translation = m2.displacements[:, 1],
+)
+fm_dt2 = DataTable(
+  normal_force_1 = m2.actions[:, 1],
+  normal_force_2 = m2.actions[:, 2]
+)
+  
+display(dis_dt2)
+println()
+display(fm_dt2)

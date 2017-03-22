@@ -36,28 +36,21 @@ println()
 @time m = p4_1(data)
 println()
 
-if VERSION.minor > 5
-  println("Displacements:")
-  m.displacements' |> display
-  println()
-
-  println("Actions:")
-  m.actions' |> display
-  println()
-else
-  using DataTables
-  dis_dt = DataTable(
-    x_translation = m.displacements[:, 1],
-  )
-  fm_dt = DataTable(
-    normal_force_1 = m.actions[:, 1],
-    normal_force_2 = m.actions[:, 2]
-  )
-    
-  display(dis_dt)
-  println()
-  display(fm_dt)
+using DataTables
+dis_dt = DataTable(
+  x_translation = m.displacements[:, 1],
+)
+fm_dt = DataTable(
+  normal_force_1 = m.actions[:, 1],
+  normal_force_2 = m.actions[:, 2]
+)
   
+display(dis_dt)
+println()
+display(fm_dt)
+  
+if VERSION.minor < 6
+
   using Plots
   gr(size=(400,500))
 
