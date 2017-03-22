@@ -76,7 +76,7 @@ data = Dict(
 data |> display
 println()
 
-@time m = FE4_4(data)
+@time m = p4_4(data)
 println()
 
 if VERSION.minor > 5
@@ -88,13 +88,13 @@ if VERSION.minor > 5
   m.actions' |> display
   println()
 else
-  using DataFrames
-  dis_df = DataFrame(
-    x_translations = m.displacements'[:, 1],
-    y_translations = m.displacements'[:, 2],
-    rotations = m.displacements'[:, 3]
+  using DataTables
+  dis_dt = DataTable(
+    x_translations = m.displacements[1, :],
+    y_translations = m.displacements[2, :],
+    rotations = m.displacements[3, :]
   )
-  fm_df = DataFrame(
+  fm_dt = DataFrame(
     x1_Force = m.actions[1, :],
     y1_Force = m.actions[2, :],
     z1_Moment = m.actions[3, :],
@@ -107,17 +107,17 @@ else
   if :eq_nodal_forces_and_moments in keys(data)
     eqfm = data[:eq_nodal_forces_and_moments]
     k = data[:struc_el].fin_el.nod * data[:struc_el].fin_el.nodof
-
     for t in eqfm
+      vals = convert(Array, fm_dt[t[1], :])
       for i in 1:k
-        fm_df[t[1], i] -= t[2][i]
+        fm_dt[t[1], i] = round(vals[i] - t[2][i], 2)
       end
     end
   end
     
-  display(dis_df)
+  display(dis_dt)
   println()
-  display(fm_df)
+  display(fm_dt)
   
   using Plots
   gr(size=(400,600))
@@ -126,8 +126,14 @@ else
   titles = ["p4.4.1 translations", "p4.4.1 rotations",
     "p4.4.1 y shear force", "p4.4.1 z moment"]
   indxs = [1,2,3,4,5,6,7,9,10,11,12,13,14,16,17]
-  moms = vcat(fm_df[indxs, :z1_Moment], fm_df[end, :z2_Moment])
-  fors = vcat(fm_df[indxs, :y1_Force], fm_df[end, :y2_Force])
+  moms = vcat(
+    convert(Array, fm_dt[:, :z1_Moment]), 
+    convert(Array, fm_dt[:, :z2_Moment])[end]
+  )
+  fors = vcat(
+    convert(Array, fm_dt[:, :y1_Force]), 
+    convert(Array, fm_dt[:, :y2_Force])[end]
+  )
   x_coords = data[:x_coords]
   
   indxs = [1,2,3,4,5,6,7,9,10,11,12,13,14,16,17]
@@ -149,6 +155,6 @@ else
     title=titles[4], leg=false)
 
   plot(p..., layout=(4, 1))
-  savefig(ProjDir*"/p4.4.1a.png")
+  savefig(ProjDir*"/Ex4.4.1a.png")
   
 end

@@ -44,7 +44,7 @@ data[:loaded_nodes]
 data |> display
 println()
 
-@time m = FE4_3(data)
+@time m = p4_3(data)
 println()
 
 if VERSION.minor > 5
@@ -56,41 +56,47 @@ if VERSION.minor > 5
   m.actions' |> display
   println()
 else
-  using DataFrames
-  dis_df = DataFrame(
-    y_translation = round(m.displacements'[:, 1], 5),
-    z_rotation = round(m.displacements'[:, 2], 5)
+  using DataTables
+  dis_dt = DataTable(
+    Y_translations = m.displacements[1, :],
+    z_rotations = m.displacements[2, :]
   )
-  fm_df = DataFrame(
-    y1_Force = round.(m.actions[1, :], 2),
-    z1_Moment = round.(m.actions[2, :], 2),
-    y2_Force = round.(m.actions[3, :], 2),
-    z2_Moment = round.(m.actions[4, :], 2)
+  fm_dt = DataTable(
+    y1_Force = m.actions[1, :],
+    z1_Moment = m.actions[2, :],
+    y2_Force = m.actions[3, :],
+    z2_Moment = m.actions[4, :]
   )
   # Correct element forces and moments for equivalent nodal
   # forces and moments introduced for loading between nodes
   if :eq_nodal_forces_and_moments in keys(data)
     eqfm = data[:eq_nodal_forces_and_moments]
     k = data[:struc_el].fin_el.nod * data[:struc_el].fin_el.nodof
-
     for t in eqfm
+      vals = convert(Array, fm_dt[t[1], :])
       for i in 1:k
-        fm_df[t[1], i] = round(fm_df[t[1], i] - t[2][i], 2)
+        fm_dt[t[1], i] = round(vals[i] - t[2][i], 2)
       end
     end
   end
     
-  display(dis_df)
+  display(dis_dt)
   println()
-  display(fm_df)
+  display(fm_dt)
   
   using Plots
   gr(size=(400,600))
 
   p = Vector{Plots.Plot{Plots.GRBackend}}(3)
   titles = ["p4.3.1 y deflection", "p4.3.1 y shear force", "p4.3.1 z moment"]
-  fors = vcat(fm_df[:, :y1_Force], fm_df[end, :y2_Force])
-  moms = vcat(fm_df[:, :z1_Moment], fm_df[end, :z2_Moment])
+  fors = vcat(
+    convert(Array, fm_dt[:, :y1_Force]), 
+    convert(Array, fm_dt[:, :y2_Force])[end]
+  )
+  moms = vcat(
+    convert(Array, fm_dt[:, :z1_Moment]),
+    convert(Array, fm_dt[:, :z2_Moment])[end]
+  )
   
   p[1] = plot(m.displacements[2,:], ylim=(-0.005, 0.005),
     xlabel="node", ylabel="deflection [m]", color=:red,
@@ -106,7 +112,7 @@ else
     title=titles[3], leg=false)
 
   plot(p..., layout=(3, 1))
-  savefig(ProjDir*"/p4.3.1b_fig4.16.png")
-  
+  savefig(ProjDir*"/Ex4.3.1b_fig4.16.png")
+
 end
 

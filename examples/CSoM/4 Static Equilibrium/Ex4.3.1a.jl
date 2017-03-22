@@ -26,7 +26,7 @@ data = Dict(
 data |> display
 println()
 
-@time m = FE4_3(data)
+@time m = p4_3(data)
 println()
 
 if VERSION.minor > 5
@@ -38,12 +38,12 @@ if VERSION.minor > 5
   m.actions' |> display
   println()
 else
-  using DataFrames
-  dis_df = DataFrame(
-    translations = round(m.displacements'[:, 1], 5),
-    rotations = round(m.displacements'[:, 2], 5)
+  using DataTables
+  dis_dt = DataTable(
+    translations = m.displacements[1, :],
+    rotations = m.displacements[2, :]
   )
-  fm_df = DataFrame(
+  fm_dt = DataTable(
     xl_Force = m.actions[1, :],
     xl_Moment = m.actions[2, :],
     xr_Force = m.actions[3, :],
@@ -54,15 +54,15 @@ else
   if :eq_nodal_forces_and_moments in keys(data)
     eqfm = data[:eq_nodal_forces_and_moments]
     k = data[:struc_el].fin_el.nod * data[:struc_el].fin_el.nodof
-
     for t in eqfm
+      vals = convert(Array, fm_dt[t[1], :])
       for i in 1:k
-        fm_df[t[1], i] = round(fm_df[t[1], i] - t[2][i], 2)
+        fm_dt[t[1], i] = round(vals[i] - t[2][i], 2)
       end
     end
   end
     
-  display(dis_df)
+  display(dis_dt)
   println()
-  display(fm_df)
+  display(fm_dt)
 end
