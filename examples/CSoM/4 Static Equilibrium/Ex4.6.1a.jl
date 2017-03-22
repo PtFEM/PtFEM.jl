@@ -43,7 +43,7 @@ if VERSION.minor < 6
     marker=(:circle,1,0.1,stroke(1,:black)),
     title=titles[1], leg=false)
   p[2] = plot(
-    convert(Array, buckling_df[:rotation]),
+    convert(Array, buckling_dt[:rotation]),
     ylim=(-1.0, 1.0), xlabel="node", 
     ylabel="rotation [radians]", color=:red,
     marker=(:circle,1,0.1,stroke(1,:black)),
