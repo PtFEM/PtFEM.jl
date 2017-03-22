@@ -1,7 +1,5 @@
 using CSoM
 
-include("FE4_5.jl")
-
 data = Dict(
   # Frame(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
   :struc_el => Frame(12, 10, 3, 1, 1, Line(2, 3)),
@@ -45,5 +43,5 @@ data = Dict(
 data |> display
 println()
 
-@time m = FE4_5(data)
+@time m = p4_5(data)
 println()
