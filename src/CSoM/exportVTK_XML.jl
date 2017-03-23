@@ -11,10 +11,10 @@ type VTKElement
   vtknum::Int
 end
 
-abstract AbstractVTKXML
+@compat abstract type AbstractVTKXML end
 #abstract type AbstractVTKXML end
 
-abstract AbstractVTKXMLBinary <: AbstractVTKXML
+@compat abstract type AbstractVTKXMLBinary <: AbstractVTKXML end
 #abstract type AbstractVTKXMLBinary <: AbstractVTKXML end
 
 function add_data!{T <: AbstractVTKXMLBinary}(vtkxml::T, data)

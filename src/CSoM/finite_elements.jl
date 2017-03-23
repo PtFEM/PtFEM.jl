@@ -21,8 +21,7 @@ abstract FiniteElement
 * Tetrahedron::FiniteElement   : 3D Tetrahedron(nod, nodof)
 ```
 """
-abstract FiniteElement
-#abstract type FiniteElement end
+@compat abstract type FiniteElement end
 
 """
 ## Line (Interval)
