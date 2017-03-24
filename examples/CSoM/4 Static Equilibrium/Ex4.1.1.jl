@@ -42,9 +42,24 @@ dis_dt = DataTable(
 )
 fm_dt = DataTable(
   normal_force_1 = m.actions[:, 1],
-  normal_force_2 = m.actions[:, 2]
+  normal_force_2 = m.actions[:, 2],
+  normal_force_1_corrected = m.actions[:, 1],
+  normal_force_2_corrected = m.actions[:, 2]
 )
   
+# Correct element forces and moments for equivalent nodal
+# forces and moments introduced for loading between nodes
+if :eq_nodal_forces_and_moments in keys(data)
+  eqfm = data[:eq_nodal_forces_and_moments]
+  k = data[:struc_el].fin_el.nod * data[:struc_el].fin_el.nodof
+  for t in eqfm
+    vals = convert(Array, fm_dt[t[1], :])
+    for i in 1:k
+      fm_dt[t[1]+2, i] = round(vals[i] - t[2][i], 2)
+    end
+  end
+end
+
 display(dis_dt)
 println()
 display(fm_dt)
