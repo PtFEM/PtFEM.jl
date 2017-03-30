@@ -8,7 +8,7 @@
 
 This Julia package contains the programs in chapters 4 to 6 as described in "Programming the Finite Element Method" by I M Smith, D V Griffiths and L. Margetts ([PtFEM]( http://www.wiley.com/WileyCDA/WileyTitle/productCd-1119973341.html )). 
 
-The package should probably be called PtFEM.jl, but for now I have always related them to Colorado School of Mines (being a mining engineer from Delft University myself :-), hence [CSoM.jl](https://github.com/goedman/CSoM.jl). When I refer to the book I use PtFEM, when I refer to the Julia package I use CSoM.
+The package will be called PtFEM.jl when published on MetaData.jl, but for now I have always related them to Colorado School of Mines (being a mining engineer from Delft University myself :-), hence [CSoM.jl](https://github.com/goedman/CSoM.jl). When I refer to the book I use PtFEM, when I refer to the Julia package I use CSoM.
 
 To use the toolkit and run several test programs, start the [Julia](http://julialang.org) REPL and type:
 
@@ -17,7 +17,7 @@ Pkg.clone("git@github.com:goedman/CSoM.jl")
 Pkg.test("CSoM")
 ```
 
-As this shows, the package has not yet been published and is currently only available through cloning from my github account. I will approach the authors if they will allow me to publish the CSoM toolkit.
+As this shows, the package has not yet been published and is currently only available through cloning from my github account. The authors have given permission to publish the Julia version of the CSoM toolkit.
 
 Examples are in the examples/... and notebooks/... subdirectories. Currently the notebooks are just initial examples (and might not always work) until the structure of the toolkit gels.
 
