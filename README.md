@@ -10,6 +10,9 @@ This Julia package contains the programs in chapters 4 to 6 as described in "Pro
 
 The package will be called PtFEM.jl when published on MetaData.jl, but for now I have always related them to Colorado School of Mines (being a mining engineer from Delft University myself :-), hence [CSoM.jl](https://github.com/goedman/CSoM.jl). When I refer to the book I use PtFEM, when I refer to the Julia package I use CSoM.
 
+The total set of programs in PtFEM will be published in 3 steps, 1) chapters 4-6,
+2) chapters 7-9 and 3) remaining chapters.
+
 To use the toolkit and run several test programs, start the [Julia](http://julialang.org) REPL and type:
 
 ```
@@ -17,7 +20,7 @@ Pkg.clone("git@github.com:goedman/CSoM.jl")
 Pkg.test("CSoM")
 ```
 
-As this shows, the package has not yet been published and is currently only available through cloning from my github account. The authors have given permission to publish the Julia version of the CSoM toolkit.
+As this shows, the package has not yet been published and is currently only available through cloning from my github account. The authors have given permission to publish the Julia version of the CSoM toolkit. Please refer to the [LICENSE](https://github.com/goedman/CSoM.jl/blob/master/LICENSE.md) file for more details.
 
 Examples are in the examples/... and notebooks/... subdirectories. Currently the notebooks are just initial examples (and might not always work) until the structure of the toolkit gels.
 
@@ -57,7 +60,7 @@ Fundamental and great development work related to solving (partial) differential
 
 Outside of Julia at least 2 other toolkits should be mentioned, i.e.  [deal.II](http://dealii.org) and [FEniCS](https://fenicsproject.org).
 
-A companion package to [CSoM.jl](https://github.com/goedman/CSoM.jl), [NMfE.jl](https://github.com/goedman/NMfE.jl) based on [Numerical Methods for Engineers](https://www.crcpress.com/Numerical-Methods-for-Engineers-Second-Edition/Griffiths-Smith/p/book/9781584884019) by I M Smith and D V Griffiths, is also under development but development work for this educational set of programs is happening on a slower pace as in my mind it should form a bridge to some of the above mentioned Julia packages related to solving differential equations. Note also the symbolic examples in chapter 7 of NMfE using the Julia Symata package.
+A companion package to [CSoM.jl](https://github.com/goedman/CSoM.jl), [NMfE.jl](https://github.com/goedman/NMfE.jl) along the lines of [Numerical Methods for Engineers](https://www.crcpress.com/Numerical-Methods-for-Engineers-Second-Edition/Griffiths-Smith/p/book/9781584884019) by I M Smith and D V Griffiths, is also being considered but development work for this educational set of programs is happening on a slower pace as 1) in my mind it should form a bridge to some of the above mentioned Julia packages related to solving differential equations and 2) it is less directly derived from the original Fortran programs, e.g. the symbolic examples in chapter 7 of NMfE using the Julia Symata package.
 
 ## References
 
