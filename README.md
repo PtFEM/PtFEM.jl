@@ -10,7 +10,7 @@ This Julia package contains the programs in chapters 4 to 6 as described in "Pro
 
 I use PtFEM when referring to the book and PtFEM.jl when referring to the Julia package.
 
-PtFEM.jl is the central package in the PtFEM organisation. More details about the plans for the PtFEM organisation are given below in the "Futures" section.
+PtFEM.jl is the central package in the Github PtFEM organisation. More details about the plans for the PtFEM organisation are given below in the "Futures" section.
 
 PtFEM.jl will be published in 3 steps, 1) chapters 4-6, 2) chapters 7-9 and 3) remaining chapters in PtFEM.
 
@@ -61,9 +61,17 @@ Fundamental and great development work related to solving (partial) differential
 
 Outside of Julia at least 2 other toolkits should be mentioned, i.e.  [deal.II](http://dealii.org) and [FEniCS](https://fenicsproject.org).
 
-## Futures
+## The future of the GitHub PtFEM organisation
 
-A companion package to [PtFEM.jl](https://github.com/goedman/PtFEM.jl), [NMfE.jl](https://github.com/goedman/NMfE.jl) along the lines of [Numerical Methods for Engineers](https://www.crcpress.com/Numerical-Methods-for-Engineers-Second-Edition/Griffiths-Smith/p/book/9781584884019) by I M Smith and D V Griffiths, is also included in the PtFEM organisation but development work for this educational set of programs is happening on a slower pace as 1) in my mind it should form a bridge to some of the above mentioned Julia packages related to solving differential equations and 2) it is less directly derived from the original Fortran programs, e.g. the symbolic examples in chapter 7 of NMfE using the Julia Symata package.
+A GitHub organisation is basically a place to collect a set of related packages, in this case Julia packages around the "Prohramming the Finite Element Method" toolkit.
+
+As stated above, PtFEM.jl is the central package in this mini-PtFEM-ecosystem and most other packages will be using PtFEM.jl as the starting point. 
+
+Occasionally a package might be temporarily selfstanding, e.g. ClassicalLaminateTheory.jl at present. The intention is to in the future upgrade/extend/incorporate that package to handle composite Bottom Hole Assembly modeling or extended reach casing installation.
+
+A companion package to [PtFEM.jl](https://github.com/goedman/PtFEM.jl), [NMfE.jl](https://github.com/goedman/NMfE.jl) along the lines of [Numerical Methods for Engineers](https://www.crcpress.com/Numerical-Methods-for-Engineers-Second-Edition/Griffiths-Smith/p/book/9781584884019) by I M Smith and D V Griffiths, is also included in the PtFEM organisation but development work for this educational set of programs is happening on a slower pace because:
+1. In my mind it should form a bridge to some of the above mentioned Julia packages related to solving differential equations
+2. It is less directly derived from the original Fortran programs, e.g. the symbolic examples in chapter 7 of NMfE using the Julia Symata package.
 
 Over time several more packages are envisaged to be added to PtFEM.
 
