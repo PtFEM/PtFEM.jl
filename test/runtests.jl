@@ -10,7 +10,7 @@ if VERSION.minor == 3
 end
 
 code_tests = [
-  "test_csom1.jl",
+  "test_PtFEM.jl",
   "test_p4.1.1.jl",
   "test_p4.1.2.jl",
   "test_p4.2.2.jl",
