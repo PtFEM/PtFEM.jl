@@ -61,7 +61,7 @@ Fundamental and great development work related to solving (partial) differential
 
 Outside of Julia at least 2 other toolkits should be mentioned, i.e.  [deal.II](http://dealii.org) and [FEniCS](https://fenicsproject.org).
 
-# Futures
+## Futures
 
 A companion package to [PtFEM.jl](https://github.com/goedman/PtFEM.jl), [NMfE.jl](https://github.com/goedman/NMfE.jl) along the lines of [Numerical Methods for Engineers](https://www.crcpress.com/Numerical-Methods-for-Engineers-Second-Edition/Griffiths-Smith/p/book/9781584884019) by I M Smith and D V Griffiths, is also included in the PtFEM organisation but development work for this educational set of programs is happening on a slower pace as 1) in my mind it should form a bridge to some of the above mentioned Julia packages related to solving differential equations and 2) it is less directly derived from the original Fortran programs, e.g. the symbolic examples in chapter 7 of NMfE using the Julia Symata package.
 
