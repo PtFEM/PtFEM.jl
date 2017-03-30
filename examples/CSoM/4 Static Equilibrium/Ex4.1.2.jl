@@ -1,4 +1,4 @@
-using CSoM
+using PtFEM
 
 ProjDir = dirname(@__FILE__)
 
@@ -55,7 +55,7 @@ if VERSION.minor < 5
   u = convert(Array, dis_dt[:x_translation])
     
   p = Vector{Plots.Plot{Plots.GRBackend}}(2)
-  titles = ["CSoM Ex4.2.1 u(x)", "CSoM Ex4.2.1 N(x)"]
+  titles = ["PtFEM Ex4.2.1 u(x)", "PtFEM Ex4.2.1 N(x)"]
    
   p[1]=plot(ylim=(0.0, 1.0), xlim=(0.0, 70.0),
     yflip=true, xflip=false, xlab="Normal force [N]",

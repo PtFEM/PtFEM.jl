@@ -1,4 +1,4 @@
-using CSoM
+using PtFEM
 
 data = Dict(
   # Beam(ndim, nst, nxe, nip, finite_element(nod, nodof), axisymmetric)

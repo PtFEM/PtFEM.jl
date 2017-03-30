@@ -1,7 +1,7 @@
-using CSoM
+using PtFEM
 
-nf_path = Pkg.dir("CSoM", "examples", "5 Elastic Solids", "p5.7.1.nf.dat")
-loads_path = Pkg.dir("CSoM", "examples", "5 Elastic Solids", "p5.7.1.loads.dat")
+nf_path = Pkg.dir("PtFEM", "examples", "5 Elastic Solids", "p5.7.1.nf.dat")
+loads_path = Pkg.dir("PtFEM", "examples", "5 Elastic Solids", "p5.7.1.loads.dat")
 
 data = Dict(
   # Solid(ndim, nst, nxe, nye, nze, nip, direction=:r, finite_element(nod, nodof))
@@ -30,8 +30,8 @@ data = Dict(
    -1.3500, -1.4000, -1.4500, -1.5000, -1.5500, -1.6000, -1.6500, -1.7000, -1.7500,
    -1.8000, -1.8500, -1.9000, -1.9500, -2.0000
   ],
-  :support => CSoM.read_nf_file(nf_path),
-  :loaded_nodes => CSoM.read_loads_file(loads_path),
+  :support => PtFEM.read_nf_file(nf_path),
+  :loaded_nodes => PtFEM.read_loads_file(loads_path),
   :cg_tol => 1.0e-5,
   :cg_limit => 2000
 )

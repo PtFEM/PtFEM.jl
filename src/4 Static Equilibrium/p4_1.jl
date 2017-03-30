@@ -30,7 +30,7 @@ p4_1(m::jFEM, data::Dict) # Used to re-use factiored global stiffness matrix
 
 ### Examples
 ```julia
-using CSoM
+using PtFEM
 
 data = Dict(
   # Rod(nels, np_types, nip, finite_element(nod, nodof))
@@ -70,7 +70,7 @@ function p4_1(data::Dict{Symbol, Any})
     throw("No structural element type specified.")
   end
   
-  if typeof(struc_el) == CSoM.Rod
+  if typeof(struc_el) == PtFEM.Rod
     ndim = 1
     nst = struc_el.np_types
   else
@@ -81,7 +81,7 @@ function p4_1(data::Dict{Symbol, Any})
   @assert typeof(fin_el) <: FiniteElement
   
   if typeof(fin_el) == Line
-    (nels, nn) = CSoM.mesh_size(fin_el, struc_el.nxe)
+    (nels, nn) = PtFEM.mesh_size(fin_el, struc_el.nxe)
   else
     throw("FE4_1 expects a Line (Interval) finite element.")
   end
@@ -169,7 +169,7 @@ function p4_1(data::Dict{Symbol, Any})
   
   # Done with input dict and allocations, re-do nf (assign number to each dof)
   
-  CSoM.formnf!(nodof, nn, nf)
+  PtFEM.formnf!(nodof, nn, nf)
   neq = maximum(nf)
   kdiag = zeros(Int64, neq)
   
@@ -177,7 +177,7 @@ function p4_1(data::Dict{Symbol, Any})
   
   for i in 1:nels
     num = [i; i+1]
-    CSoM.num_to_g!(fin_el.nod, nodof, nn, ndof, num, nf, g)
+    PtFEM.num_to_g!(fin_el.nod, nodof, nn, ndof, num, nf, g)
     g_g[:, i] = g
   end
   
@@ -192,9 +192,9 @@ function p4_1(data::Dict{Symbol, Any})
   
   gsm = spzeros(neq, neq)
   for i in 1:nels
-    km = CSoM.rod_km!(km, prop[etype[i], 1], ell[i])
+    km = PtFEM.rod_km!(km, prop[etype[i], 1], ell[i])
     g = g_g[:, i]
-    CSoM.fsparm!(gsm, g, km)
+    PtFEM.fsparm!(gsm, g, km)
   end
 
   fixed_freedoms = 0
@@ -232,7 +232,7 @@ function p4_1(data::Dict{Symbol, Any})
 
   loads[1] = 0.0
   for i in 1:nels
-    km = CSoM.rod_km!(km, prop[etype[i], 1], ell[i])
+    km = PtFEM.rod_km!(km, prop[etype[i], 1], ell[i])
     g = g_g[:, i]
     eld = loads[g+1]
     actions[i, :] = km * eld
@@ -246,7 +246,7 @@ function p4_1(data::Dict{Symbol, Any})
 end
 
 
-function p4_1(m::CSoM.jFEM, data::Dict)
+function p4_1(m::PtFEM.jFEM, data::Dict)
   loads = zeros(m.neq+1)
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
@@ -279,13 +279,13 @@ function p4_1(m::CSoM.jFEM, data::Dict)
   actions = zeros(m.nels, m.ndof)
   loads[1] = 0.0
   for i in 1:m.nels
-    km = CSoM.rod_km!(m.km, m.prop[m.etype[i], 1], ell[i])
+    km = PtFEM.rod_km!(m.km, m.prop[m.etype[i], 1], ell[i])
     g = m.g_g[:, i]
     eld = loads[g+1]
     actions[i, :] = km * eld
   end
 
-  CSoM.jFEM(m.struc_el, m.fin_el, m.ndim, m.nels, m.nst, m.ndof, m.nn, m.nodof,
+  PtFEM.jFEM(m.struc_el, m.fin_el, m.ndim, m.nels, m.nst, m.ndof, m.nn, m.nodof,
     m.neq, m.penalty, m.etype, g, m.g_g, m.g_num, m.nf, m.no,
     m.node, m.num, m.sense, actions, m.bee, m.coord, m.gamma, m.dee,
     m.der, m.deriv, displacements, eld, m.fun, m.gc, m.g_coord, m.jac,

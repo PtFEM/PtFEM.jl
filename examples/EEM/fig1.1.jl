@@ -1,4 +1,4 @@
-using CSoM
+using PtFEM
 
 ProjDir = dirname(@__FILE__)
 
@@ -48,7 +48,7 @@ end
 data |> display
 println()
 
-@time m = CSoM.p4_1(data)
+@time m = PtFEM.p4_1(data)
 println()
 
 # Stiffness matrix

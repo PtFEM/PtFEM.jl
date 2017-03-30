@@ -188,7 +188,7 @@ function p4_2(data::Dict)
     axial[i] = global_to_axial(actions[:, i], coord)
   end
 
-  CSoM.jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
+  PtFEM.jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
     etype, g, g_g, g_num, nf, no, node, num, sense, actions, 
     bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
     g_coord, jac, km, mm, gm, cfgsm, loads, points, prop, sigma, value,

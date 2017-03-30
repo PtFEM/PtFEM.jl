@@ -1,4 +1,4 @@
-using CSoM, Base.Test
+using PtFEM, Base.Test
 
 data = Dict(
   # Frame(nels, nn, ndim, nst, nip, finite_element(nod, nodof))

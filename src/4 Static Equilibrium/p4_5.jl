@@ -139,7 +139,7 @@ function p4_5(data::Dict)
     g_coord[3,:] = data[:z_coords]
   end
   
-  CSoM.formnf!(nodof, nn, nf)
+  PtFEM.formnf!(nodof, nn, nf)
   neq = maximum(nf)
   
   ell = zeros(nels)
@@ -151,7 +151,7 @@ function p4_5(data::Dict)
   
   for i in 1:nels
     num = g_num[:, i]
-    CSoM.num_to_g!(fin_el.nod, nodof, nn, ndof, num, nf, g)
+    PtFEM.num_to_g!(fin_el.nod, nodof, nn, ndof, num, nf, g)
     g_g[:, i] = g
   end
   
@@ -161,9 +161,9 @@ function p4_5(data::Dict)
   for i in 1:nels
     num = g_num[:, i]
     coord = g_coord[:, num]'
-    km = CSoM.rigid_jointed!(km, prop, gamma, etype, i, coord)
+    km = PtFEM.rigid_jointed!(km, prop, gamma, etype, i, coord)
     g = g_g[:, i]
-    CSoM.fsparm!(gsm, g, km)
+    PtFEM.fsparm!(gsm, g, km)
   end
   
   limit = 10

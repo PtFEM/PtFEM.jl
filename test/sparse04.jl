@@ -39,7 +39,7 @@ println()
 @show sparse((F[:Rs] .* A)[F[:p], F[:q]])
 println()
 
-@show CSoM.lufac(A)
+@show PtFEM.lufac(A)
 println()
 
 cd(old)

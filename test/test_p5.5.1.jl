@@ -1,4 +1,4 @@
-using Base.Test, CSoM
+using Base.Test, PtFEM
 
 data = Dict(
   # Plane(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)

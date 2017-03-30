@@ -1,4 +1,4 @@
-using CSoM
+using PtFEM
 
 data = Dict(
 # Plane(ndim, nst, nxe, nye, nip, direction=(:x|:y), finite_element(nod, nodof), axisymmetric=false)

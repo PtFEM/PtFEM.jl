@@ -1,4 +1,4 @@
-using CSoM
+using PtFEM
 using Base.Test
 
 # write your own tests here
@@ -55,7 +55,7 @@ code_tests_0_6 = [
   "test_p6.1.1.jl",
 ]
 
-if isfile(Pkg.dir("CSoM", "deps", "src", "CSoM", "4th_ed", "libcsom.dylib"))
+if isfile(Pkg.dir("PtFEM", "deps", "src", "PtFEM", "4th_ed", "libcsom.dylib"))
   push!(code_tests, "test_csom2.jl")
 end
 

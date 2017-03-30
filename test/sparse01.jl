@@ -1,7 +1,7 @@
-using CSoM
+using PtFEM
 
 old = pwd()
-ProjDir = joinpath(Pkg.dir("CSoM"), "examples", "4 Static Equilibrium")
+ProjDir = joinpath(Pkg.dir("PtFEM"), "examples", "4 Static Equilibrium")
 #cd(ProjDir)
 
 include(joinpath(ProjDir, "p4.1.1.jl"))

@@ -1,4 +1,4 @@
-using CSoM, Base.Test
+using PtFEM, Base.Test
 
 data = Dict(
   # Beam(ndim, nst, nxe, nip, direction, finite_element(nod, nodof), axisymmetric)

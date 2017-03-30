@@ -1,4 +1,4 @@
-using CSoM
+using PtFEM
 
 data = Dict(
   # Solid(ndim, nst, nxe, nye, nze, nip, direction=:r, finite_element(nod, nodof))

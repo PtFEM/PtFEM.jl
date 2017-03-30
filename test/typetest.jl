@@ -1,4 +1,4 @@
-using CSoM
+using PtFEM
 
 data = Dict{Symbol, Any}(
   :struc_el => Beam(1, 1, 4, 1, :x, Line(2, 1), false)
@@ -12,7 +12,7 @@ function test_type(dct::Dict{Symbol, Any})
   else
     println("No fin_el type specified.")
     exit_code = 1
-    return (exit_code, ndim, CSoM.UnknownStructuralElement())
+    return (exit_code, ndim, PtFEM.UnknownStructuralElement())
   end
   
   ndim::Int64 = struc_el.ndim
@@ -35,7 +35,7 @@ function test_type(dct::Dict{Symbol, Any})
   else
     println("$(typeof(fin_el)) is not a known finite element in an $(typeof(struc_el)).")
     exit_code = 2
-    return (exit_code, ndim, CSoM.UnknownStructuralElement())
+    return (exit_code, ndim, PtFEM.UnknownStructuralElement())
   end
   
   @show typeof(nels)
