@@ -1,10 +1,10 @@
 # PtFEM
 
 
-![Build Status](https://travis-ci.org/PtFEM/PtFEM.jl.svg?branch=master)
+[![Travis Build Status](https://travis-ci.org/PtFEM/PtFEM.jl.svg?branch=master)](https://travis-ci.org/PtFEM/PtFEM.jl)
 
 
-##Access to PtFEM models
+## Access to PtFEM models
 
 This Julia package contains the programs in chapters 4 to 6 as described in "Programming the Finite Element Method" by I M Smith, D V Griffiths and L. Margetts ([PtFEM]( http://www.wiley.com/WileyCDA/WileyTitle/productCd-1119973341.html )).
 
