@@ -1,7 +1,7 @@
 # PtFEM
 
 
-[![Build Status](https://travis-ci.org/goedman/PtFEM.jl.svg?branch=master)](https://travis-ci.org/goedman/PtFEM.jl)
+![Build Status](https://travis-ci.org/PtFEM/PtFEM.jl.svg?branch=master)
 
 
 ##Access to PtFEM models
