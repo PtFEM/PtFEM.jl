@@ -1,2 +1,3 @@
 src/*.jl linguist-language=Julia
-notebooks/*.ipynb linguist-vendored
+notebooks/CSoM/*.ipynb linguist-vendored
+notebooks/EEM/*.ipynb linguist-vendored
