@@ -1,1 +1,2 @@
 src/*.jl linguist-language=Julia
+notebooks/* linguist-vendored
