@@ -1,3 +1,0 @@
-src/*.jl linguist-language=Julia
-notebooks/CSoM/* linguist-vendored
-notebooks/EEM/* linguist-vendored
