@@ -27,7 +27,7 @@ data = Dict(
 data |> display
 println()
 
-m = FE4_4(data)
+m = p4_4(data)
 
 println("Displacements:")
 m.displacements |> display
