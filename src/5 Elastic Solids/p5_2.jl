@@ -1,4 +1,4 @@
-function FE5_2(data::Dict)
+function p5_2(data::Dict)
   
   # Setup basic dimensions of arrays
   # Parse & check FEdict data

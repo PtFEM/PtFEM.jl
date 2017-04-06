@@ -1,4 +1,4 @@
-function FE6_1(data::Dict)
+function p6_1(data::Dict)
   
   # Setup basic dimensions of arrays
   
