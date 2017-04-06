@@ -25,8 +25,25 @@ data = Dict(
     ( 1, [0.0 0.0  0.0417]), ( 2, [0.0 0.0 -0.1667]), ( 3, [0.0 0.0 0.0417]),
     (14, [0.0 0.0 -0.1667]), (15, [0.0 0.0 -0.1667]), (20, [0.0 0.0 0.0417]),
     (21, [0.0 0.0 -0.1667]), (22, [0.0 0.0  0.0417])
-    ]
+    ],
+  :cg_tol => 1.0e-6,
+  :cg_limit => 200
 )
 
-@time m = FE5_3(data)
+function test_p5_6(data::Dict, N::Int64)
+  for i in 1:N
+    m = p5_6(data, true)
+  end
+end
+
+@time m = p5_6(data, true)
+
+#=
+Profile.clear()  # in case we have any previous profiling data
+@profile test_p5_6(data, 20)
+using ProfileView
+ProfileView.view()
+=#
+
+@time m = p5_6(data)
 println()

@@ -1,7 +1,7 @@
 using PtFEM
 
-nf_path = Pkg.dir("PtFEM", "examples", "5 Elastic Solids", "p5.7.1.nf.dat")
-loads_path = Pkg.dir("PtFEM", "examples", "5 Elastic Solids", "p5.7.1.loads.dat")
+nf_path = Pkg.dir("PtFEM", "examples", "5 Elastic Solids", "Ex5.7.1.nf.dat")
+loads_path = Pkg.dir("PtFEM", "examples", "5 Elastic Solids", "Ex5.7.1.loads.dat")
 
 data = Dict(
   # Solid(ndim, nst, nxe, nye, nze, nip, direction=:r, finite_element(nod, nodof))
@@ -34,7 +34,7 @@ data = Dict(
   :loaded_nodes => PtFEM.read_loads_file(loads_path)
 )
 
-@time m = FE5_3(data)
+@time m = p5_3(data)
 
-@time m = FE5_3(data)
+@time m = p5_3(data)
 println()

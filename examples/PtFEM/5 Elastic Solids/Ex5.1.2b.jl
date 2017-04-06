@@ -37,5 +37,5 @@ data = Dict(
 data |> display
 println()
 
-@time m = FE5_1(data);
+@time m = p5_1(data;
 println()

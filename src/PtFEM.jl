@@ -73,14 +73,14 @@ include("4 Static Equilibrium/p4_5.jl")
 include("4 Static Equilibrium/p4_6.jl")
 include("4 Static Equilibrium/p4_7.jl")
 
-include("5 Elastic Solids/FE5_1.jl")
-include("5 Elastic Solids/FE5_2.jl")
-include("5 Elastic Solids/FE5_3.jl")
-include("5 Elastic Solids/FE5_4.jl")
-include("5 Elastic Solids/FE5_5.jl")
-include("5 Elastic Solids/FE5_6.jl")
+include("5 Elastic Solids/p5_1.jl")
+include("5 Elastic Solids/p5_2.jl")
+include("5 Elastic Solids/p5_3.jl")
+include("5 Elastic Solids/p5_4.jl")
+include("5 Elastic Solids/p5_5.jl")
+include("5 Elastic Solids/p5_6.jl")
 
-include("6 Material Nonlinearity/FE6_1.jl")
+include("6 Material Nonlinearity/p6_1.jl")
 
 ### Exports ###
 
@@ -123,15 +123,15 @@ export
   p4_7,
   
   # From Chap05
-  FE5_1,
-  FE5_2,
-  FE5_3,
-  FE5_4,
-  FE5_5,
-  FE5_6,
+  p5_1,
+  p5_2,
+  p5_3,
+  p5_4,
+  p5_5,
+  p5_6,
   
   # From Chap05
-  FE6_1
+  p6_1
   
 ### Deprecated ###
   
