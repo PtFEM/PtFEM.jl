@@ -81,6 +81,7 @@ include("5 Elastic Solids/p5_5.jl")
 include("5 Elastic Solids/p5_6.jl")
 
 include("6 Material Nonlinearity/p6_1.jl")
+include("6 Material Nonlinearity/p6_2.jl")
 
 ### Exports ###
 
@@ -131,7 +132,8 @@ export
   p5_6,
   
   # From Chap05
-  p6_1
+  p6_1,
+  p6_2
   
 ### Deprecated ###
   

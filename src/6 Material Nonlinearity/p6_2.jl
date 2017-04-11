@@ -1,4 +1,4 @@
-function FE6_1(data::Dict)
+function p6_2(data::Dict)
   
   # Setup basic dimensions of arrays
   
@@ -41,6 +41,18 @@ function FE6_1(data::Dict)
   penalty = 1e20
   if :penalty in keys(data)
     penalty = data[:penalty]
+  end
+  
+  if :cg_tol in keys(data)
+    cg_tol = data[:cg_tol]
+  else
+    cg_tol = 1.0e-5
+  end
+  
+  if :cg_limit in keys(data)
+    cg_limit = data[:cg_limit]
+  else
+    cg_tol = Int(1e3)
   end
   
   # Allocate all arrays
@@ -157,6 +169,13 @@ function FE6_1(data::Dict)
 
   println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
   
+  d = zero(neq+1)
+  diag_precon = zeros(neq+1)
+  p = zeros(neq + 1)
+  storkm = zeros(ndof, ndof, nels)
+  x = zeros(neq+1)
+  xnew = zeros(neq+1)
+  
   teps = zeros(nst)
   tload = zeros(neq+1)
   dtemp = zeros(nn)
@@ -168,16 +187,6 @@ function FE6_1(data::Dict)
   dsbar = 0.0
   ddt = 0.0
   lode_theta = 0.0
-  
-  tol = 1.0e-10
-  if :tol in keys(data)
-    tol = copy(data[:tol])
-  end
-  
-  limit = 100
-  if :limit in keys(data)
-    limit = copy(data[:limit])
-  end
   
   sample!(fin_el, points, weights)
   for iel in 1:nels
@@ -199,8 +208,14 @@ function FE6_1(data::Dict)
       beemat!(bee, deriv)
       km += (bee')*dee*bee*detm*weights[i]
     end
-    fsparv!(kv, km, g, kdiag)
+    storkm[:,:,iel] = km
+    for k in 1:ndof
+      diag_precon[g[k]+1] = diag_precon[g[k]+1] + km[k,k]
+    end
   end
+  
+  println(diag_precon[1:8])
+  diag_precon = 1 ./ diag_precon
   
   loaded_nodes = 0
   node = Int64[]
@@ -218,7 +233,16 @@ function FE6_1(data::Dict)
     end
   end
 
-  sparin!(kv, kdiag)
+  tol = 1.0e-10
+  if :tol in keys(data)
+    tol = copy(data[:tol])
+  end
+  
+  limit = 100
+  if :limit in keys(data)
+    limit = copy(data[:limit])
+  end
+    
   nf1 = deepcopy(nf) + 1
   println("   step     load        disp          iters")
 
