@@ -43,6 +43,16 @@ function p6_2(data::Dict)
     penalty = data[:penalty]
   end
   
+  tol = 1.0e-10
+  if :tol in keys(data)
+    tol = copy(data[:tol])
+  end
+  
+  limit = 100
+  if :limit in keys(data)
+    limit = copy(data[:limit])
+  end
+    
   if :cg_tol in keys(data)
     cg_tol = data[:cg_tol]
   else
@@ -52,7 +62,7 @@ function p6_2(data::Dict)
   if :cg_limit in keys(data)
     cg_limit = data[:cg_limit]
   else
-    cg_tol = Int(1e3)
+    cg_limit = Int(1e3)
   end
   
   # Allocate all arrays
@@ -145,10 +155,22 @@ function p6_2(data::Dict)
   
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
-  kdiag = zeros(Int64, neq)
   
   @assert :qincs in keys(data)
-  qincs = deepcopy(data[:qincs])
+  qincs = data[:qincs]
+  
+  println("There are $(neq) equations.")
+  
+  loads = zeros(Float64, neq+1)
+  bdylds = zeros(Float64, neq+1)
+  oldis = zeros(Float64, neq+1)
+  totd = zeros(Float64, neq+1)
+  p = zeros(nst, struc_el.nip, nels)
+  x = zeros(neq+1)
+  u = zeros(neq+1)
+  xnew = zeros(neq+1)
+  diag_precon = zeros(neq+1)
+  d = zeros(neq+1)
   
   # Find global array sizes
   for iel in 1:nels
@@ -157,26 +179,14 @@ function p6_2(data::Dict)
     g_num[:, iel] = num
     g_coord[:, num] = coord'
     g_g[:, iel] = g
-    fkdiag!(kdiag, g)
   end
-  
-  for i in 2:neq
-    kdiag[i] = kdiag[i] + kdiag[i-1]
-  end
-  
-  kv = zeros(kdiag[neq])
-  gv = zeros(kdiag[neq])
 
-  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
+  # Plot the mesh, commented out for now
+  #mesh!(g_coord, g_num, )
   
-  d = zero(neq+1)
-  diag_precon = zeros(neq+1)
-  p = zeros(neq + 1)
+  tensor = zeros(nst, struc_el.nip, nels)
   storkm = zeros(ndof, ndof, nels)
-  x = zeros(neq+1)
-  xnew = zeros(neq+1)
-  
-  teps = zeros(nst)
+  #teps = zeros(nst)
   tload = zeros(neq+1)
   dtemp = zeros(nn)
   dtel = zeros(fin_el.nod)
@@ -214,8 +224,10 @@ function p6_2(data::Dict)
     end
   end
   
-  println(diag_precon[1:8])
   diag_precon = 1 ./ diag_precon
+  println()
+  println(diag_precon[2:8])
+  println()
   
   loaded_nodes = 0
   node = Int64[]
@@ -233,33 +245,23 @@ function p6_2(data::Dict)
     end
   end
 
-  tol = 1.0e-10
-  if :tol in keys(data)
-    tol = copy(data[:tol])
-  end
-  
-  limit = 100
-  if :limit in keys(data)
-    limit = copy(data[:limit])
-  end
-    
   nf1 = deepcopy(nf) + 1
   println("   step     load        disp          iters")
 
   converged = false
   ptot = 0.0
-  loads = zeros(Float64, neq+1)
-  oldis = zeros(Float64, neq+1)
-  totd = zeros(Float64, neq+1)
-  tensor = zeros(nst, struc_el.nip, nels)
-  bdylds = zeros(Float64, neq+1)
   iy = 0
   iters = 0
+  cg_tot = 0
+  
   for iy in 1:size(qincs, 1)
     ptot = ptot + qincs[iy]
     iters = 0
     bdylds = zeros(Float64, neq+1)
     evpt = zeros(nst, struc_el.nip, nels)
+    cg_tot = 0
+    cg_iters = 0
+    cg_converged = false
     
     while true
       iters += 1
@@ -268,15 +270,44 @@ function p6_2(data::Dict)
         loads[nf1[:,node[i]]] = val[i,:] * qincs[iy]
       end
       loads += bdylds
-      loads[2:end] = spabac!(kv, loads[2:end], kdiag)
-      converged = checon!(loads, oldis, tol, converged)
-      if iters == 1
-        converged = false
+      d = diag_precon .* loads
+      p = d
+      x = zeros(neq+1)
+      cg_iters = 0
+  
+      while true
+        cg_iters += 1
+        u = zeros(neq+1)
+        
+        for iel in 1:nels
+          g = g_g[:, iel]
+          km = storkm[:, :, iel]
+          u[g+1] += km * p[g+1]
+        end
+        up = loads .* d
+        alpha = up ./ (p .* u)
+        xnew = x + p .* alpha
+        loads -= u .* alpha
+        d = diag_precon .* loads
+        beta = (loads .* d) ./ up
+        p = d + p .* beta
+        checon!(xnew, x, cg_tol, cg_converged)
+        if cg_converged || (cg_iters == cg_limit)
+          break
+        end
       end
-      if converged || iters == limit
+      cg_tot += cg_iters
+      loads = xnew
+      loads[1] = 0.0
+      
+      # Check plastic convergence
+      
+      checon!(loads, oldis, tol, converged)
+      iters == 1 && (converged = false)
+      if converged || (iters==limit)
         bdylds = zeros(Float64, neq+1)
       end
-  
+      
       for iel in 1:nels
         deemat!(dee, prop[etype[iel], 2], prop[etype[iel], 3])
         num = g_num[:, iel]
