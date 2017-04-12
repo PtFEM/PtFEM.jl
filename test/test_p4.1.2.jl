@@ -14,6 +14,6 @@ data = Dict(
     ]
 )
 
-@time m = p4_1(data)
+@time m = p41(data)
 
 @test round.(m.displacements, 7) == [0.0 0.0166667 0.0333333 0.0416667 0.05]'

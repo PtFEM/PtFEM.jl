@@ -65,20 +65,20 @@ include("PtFEM/exportVTK_XML.jl")
 include("PtFEM/fromSkyline.jl")
 include("PtFEM/skyline2sparse.jl")
 
-include("4 Static Equilibrium/p4_1.jl")
-include("4 Static Equilibrium/p4_2.jl")
-include("4 Static Equilibrium/p4_3.jl")
-include("4 Static Equilibrium/p4_4.jl")
-include("4 Static Equilibrium/p4_5.jl")
-include("4 Static Equilibrium/p4_6.jl")
-include("4 Static Equilibrium/p4_7.jl")
+include("4 Static Equilibrium/p41.jl")
+include("4 Static Equilibrium/p42.jl")
+include("4 Static Equilibrium/p43.jl")
+include("4 Static Equilibrium/p44.jl")
+include("4 Static Equilibrium/p45.jl")
+include("4 Static Equilibrium/p46.jl")
+include("4 Static Equilibrium/p47.jl")
 
-include("5 Elastic Solids/p5_1.jl")
-include("5 Elastic Solids/p5_2.jl")
-include("5 Elastic Solids/p5_3.jl")
-include("5 Elastic Solids/p5_4.jl")
-include("5 Elastic Solids/p5_5.jl")
-include("5 Elastic Solids/p5_6.jl")
+include("5 Elastic Solids/p51.jl")
+include("5 Elastic Solids/p52.jl")
+include("5 Elastic Solids/p53.jl")
+include("5 Elastic Solids/p54.jl")
+include("5 Elastic Solids/p55.jl")
+include("5 Elastic Solids/p56.jl")
 
 include("6 Material Nonlinearity/p61.jl")
 include("6 Material Nonlinearity/p62.jl")
@@ -115,21 +115,21 @@ export
   skyline2sparse,
   
   # From Chap04
-  p4_1,
-  p4_2,
-  p4_3,
-  p4_4,
-  p4_5,
-  p4_6,
-  p4_7,
+  p41,
+  p42,
+  p43,
+  p44,
+  p45,
+  p46,
+  p47,
   
   # From Chap05
-  p5_1,
-  p5_2,
-  p5_3,
-  p5_4,
-  p5_5,
-  p5_6,
+  p51,
+  p52,
+  p53,
+  p54,
+  p55,
+  p56,
   
   # From Chap05
   p61,
