@@ -186,16 +186,14 @@ function p62(data::Dict)
   
   tensor = zeros(nst, struc_el.nip, nels)
   storkm = zeros(ndof, ndof, nels)
-  #teps = zeros(nst)
-  tload = zeros(neq+1)
-  dtemp = zeros(nn)
-  dtel = zeros(fin_el.nod)
-  epsi = zeros(nst)
+  #tload = zeros(neq+1)
+  #dtemp = zeros(nn)
+  #dtel = zeros(fin_el.nod)
+  #epsi = zeros(nst)
   dt = 1.0e15
-  ptot = 0.0
+  ddt = 0.0
   sigm = 0.0
   dsbar = 0.0
-  ddt = 0.0
   lode_theta = 0.0
   
   sample!(fin_el, points, weights)
@@ -250,7 +248,8 @@ function p62(data::Dict)
   nf1 = deepcopy(nf) + 1
   
   # Load increment loop
-  println("\n   step     load        disp          iters    cg_iters")
+  
+  println("\nstep     load        disp       iters    cg/plastic iters")
 
   converged = false
   ptot = 0.0
@@ -268,6 +267,8 @@ function p62(data::Dict)
     cg_tot = 0
     cg_converged = false
     
+    # Plastic iteration loop
+    
     while true
       iters += 1
       loads = zeros(Float64, neq+1)
@@ -279,6 +280,8 @@ function p62(data::Dict)
       p = d
       x = zeros(neq+1)
       cg_iters = 0
+      
+      # Pcg equation solution
       
       while true
         cg_iters += 1
@@ -296,23 +299,28 @@ function p62(data::Dict)
         loads -= u .* alpha
         d = diag_precon .* loads
         beta = dot(loads, d) ./ up
-        p = d + p .* beta
-        checon!(xnew, x, cg_tol, cg_converged)
+        p = d + p * beta
+        cg_converged = checon!(xnew, x, cg_tol)
         if cg_converged || (cg_iters == cg_limit)
           break
         end
       end
       cg_tot += cg_iters
+      iy < 4 && println([iters cg_iters cg_tot])
       loads = xnew
       loads[1] = 0.0
       
       # Check plastic convergence
-      
-      checon!(loads, oldis, tol, converged)
-      iters == 1 && (converged = false)
-      if converged || (iters==limit)
+
+      converged = checon!(loads, oldis, tol)
+      if iters == 1
+        converged = false
+      end
+      if converged || (iters == limit)
         bdylds = zeros(Float64, neq+1)
       end
+      
+      # Go round the Gauss point
       
       for iel in 1:nels
         deemat!(dee, prop[etype[iel], 2], prop[etype[iel], 3])
@@ -333,6 +341,9 @@ function p62(data::Dict)
           sigma = dee*eps
           stress = sigma + tensor[:, i, iel]
           (sigm, dsbar, lode_theta) = invar!(stress, sigm, dsbar, lode_theta)
+          
+          # Check whether yield is violated
+          
           f = dsbar - sqrt(3.0)*prop[etype[iel], 1]
           if converged || iters == limit
             devp = deepcopy(stress)
@@ -353,10 +364,16 @@ function p62(data::Dict)
             eload = devp' * bee
             bload += eload' .* detm .* weights[i]
           end
+          
+          # Update the Gauss point stresses
+          
           if converged || iters == limit
             tensor[:,i,iel] = stress
           end
         end
+        
+        # Compute the total bodyloads vector
+        
         bdylds[g+1] += bload
         bdylds[1] = 0.0
       end
@@ -367,9 +384,9 @@ function p62(data::Dict)
     totd += loads
     totdstr = @sprintf("%+.4e", totd[nf1[2, node[1]]])
     if iy < 10
-      println("    $(iy)       $(ptot)    $(totdstr)       $(iters)    $(cg_tot)")
+      println(" $(iy)       $(ptot)    $(totdstr)    $(iters)       $(round(cg_tot/iters, 2))")
     else
-      println("   $(iy)       $(ptot)    $(totdstr)       $(iters)    $(cg_tot)")
+      println("$(iy)       $(ptot)    $(totdstr)    $(iters)       $(round(cg_tot/iters, 2))")
     end
   end
   println()

@@ -245,7 +245,7 @@ function p61(data::Dict)
       end
       loads += bdylds
       loads[2:end] = spabac!(kv, loads[2:end], kdiag)
-      converged = checon!(loads, oldis, tol, converged)
+      converged = checon!(loads, oldis, tol)
       if iters == 1
         converged = false
       end

@@ -240,7 +240,7 @@ function p5_6(data::Dict, profiling::Bool=false)
     beta = dot(loads, d)/up
     @show [cg_iters beta] 
     p = d + p*beta
-    cg_converged = checon!(xnew, x, cg_tol, cg_converged)
+    cg_converged = checon!(xnew, x, cg_tol)
     if cg_converged || cg_iters >= cg_limit
       break
     end
