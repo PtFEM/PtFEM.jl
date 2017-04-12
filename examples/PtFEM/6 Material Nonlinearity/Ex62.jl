@@ -33,7 +33,6 @@ println()
 @time m = p62(data)
 println()
 m |> display
-println()
 
 using Plots
 gr(size=(400,400))
