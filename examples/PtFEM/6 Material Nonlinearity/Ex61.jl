@@ -26,5 +26,5 @@ data = Dict(
 data |> display
 println()
 
-@time m = p6_1(data)
+@time m = p61(data)
 println()

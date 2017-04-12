@@ -1,4 +1,4 @@
-using PtFEM
+using Base.Test, PtFEM, Compat
 
 data = Dict(
   # Plane(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)
@@ -25,8 +25,6 @@ data = Dict(
   :cg_limit => 100
 )
 
-data |> display
-println()
-
 @time m = p62(data)
-println()
+
+@test round(m, 6) == round([10,519.0,-0.0710794,250], 6)

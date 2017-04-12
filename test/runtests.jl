@@ -34,7 +34,8 @@ code_tests_0_5 = [
   "p5.4.2_0_5.jl",
   "p5.5.1_0_5.jl",
   "p5.6.1_0_5.jl",
-  "p6.1.1_0_5.jl"
+  "p6.1.1_0_5.jl",
+  "p6.2.1_0_5.jl"
 ]
 
 code_tests_0_6 = [
@@ -53,6 +54,7 @@ code_tests_0_6 = [
   "p5.5.1.jl",
   "p5.6.1.jl",
   "p6.1.1.jl",
+  "p6.2.1.jl"
 ]
 
 if isfile(Pkg.dir("PtFEM", "deps", "src", "PtFEM", "4th_ed", "libcsom.dylib"))
