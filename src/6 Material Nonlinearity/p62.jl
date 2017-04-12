@@ -300,9 +300,9 @@ function p62(data::Dict)
         d = diag_precon .* loads
         beta = dot(loads, d) ./ up
         p = d + p * beta
-        tmpconvcrit =  maximum(abs.(xnew-x))/maximum(abs.(xnew))
+        #tmpconvcrit =  maximum(abs.(xnew-x))/maximum(abs.(xnew))
         cg_converged = checon!(xnew, x, cg_tol)
-        iy < 2 && println([iters cg_iters cg_tot+cg_iters tmpconvcrit])
+        #iy < 2 && println([iters cg_iters cg_tot+cg_iters tmpconvcrit])
         if cg_converged || (cg_iters == cg_limit)
           break
         end
