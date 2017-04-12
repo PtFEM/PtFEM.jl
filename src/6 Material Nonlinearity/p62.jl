@@ -282,6 +282,7 @@ function p62(data::Dict)
       cg_iters = 0
       
       # Pcg equation solution
+      tmpconvcrit = 0.0
       
       while true
         cg_iters += 1
@@ -293,20 +294,20 @@ function p62(data::Dict)
           u[g+1] += km * p[g+1]
         end
         up = dot(loads, d)
-        #println("cg_iters = $(cg_iters), up = $(up)"
         alpha = up ./ dot(p, u)
         xnew = x + p .* alpha
         loads -= u .* alpha
         d = diag_precon .* loads
         beta = dot(loads, d) ./ up
         p = d + p * beta
+        tmpconvcrit =  maximum(abs.(xnew-x))/maximum(abs.(xnew))
         cg_converged = checon!(xnew, x, cg_tol)
+        iy < 2 && println([iters cg_iters cg_tot+cg_iters tmpconvcrit])
         if cg_converged || (cg_iters == cg_limit)
           break
         end
       end
       cg_tot += cg_iters
-      iy < 4 && println([iters cg_iters cg_tot])
       loads = xnew
       loads[1] = 0.0
       
