@@ -1,6 +1,6 @@
 module PtFEM
 
-using Compat
+using DataTables, Compat
 
 if !isdefined(Main, :JULIA_SVG_BROWSER)
   JULIA_SVG_BROWSER = ""

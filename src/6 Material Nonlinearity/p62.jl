@@ -249,7 +249,7 @@ function p62(data::Dict)
   
   # Load increment loop
   
-  println("\nstep     load        disp       iters    cg/plastic iters")
+  #println("\nstep     load        disp       iters    cg/plastic iters")
 
   converged = false
   ptot = 0.0
@@ -257,6 +257,13 @@ function p62(data::Dict)
   cg_tot = 0
   diag_precon[1] = 0.0
   iy = 0
+  
+  # DataTable arrays
+  
+  loaddt = Float64[]
+  dispdt = Float64[]
+  itersdt = Int[]
+  ratiodt = Float64[]
   
   #for iy in 1:1
   for iy in 1:size(qincs, 1)
@@ -383,15 +390,27 @@ function p62(data::Dict)
       end
     end
     totd += loads
-    totdstr = @sprintf("%+.4e", totd[nf1[2, node[1]]])
+    #totdstr = @sprintf("%+.4e", totd[nf1[2, node[1]]])
+    
+    append!(loaddt, [ptot])
+    append!(dispdt, [totd[nf1[2, node[1]]]])
+    append!(itersdt, [iters])
+    append!(ratiodt, [round(cg_tot/iters, 2)])
+    #=
     if iy < 10
       println(" $(iy)       $(ptot)    $(totdstr)    $(iters)       $(round(cg_tot/iters, 2))")
     else
       println("$(iy)       $(ptot)    $(totdstr)    $(iters)       $(round(cg_tot/iters, 2))")
     end
+    =#
   end
   println()
   
-  [iy, ptot, totd[nf1[2, node[1]]], iters]
+  dt = DataTable()
+  dt[:loads] = loaddt
+  dt[:disp] = dispdt
+  dt[:iters] = itersdt
+  dt[:ratio] = ratiodt
+  dt
 end
 
