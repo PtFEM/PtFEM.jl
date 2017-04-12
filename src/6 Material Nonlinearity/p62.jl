@@ -250,7 +250,7 @@ function p62(data::Dict)
   nf1 = deepcopy(nf) + 1
   
   # Load increment loop
-  println("\n   step     load        disp          iters")
+  println("\n   step     load        disp          iters    cg_iters")
 
   converged = false
   ptot = 0.0
@@ -259,8 +259,8 @@ function p62(data::Dict)
   diag_precon[1] = 0.0
   iy = 0
   
-  for iy in 1:1
-  #for iy in 1:size(qincs, 1)
+  #for iy in 1:1
+  for iy in 1:size(qincs, 1)
     ptot = ptot + qincs[iy]
     iters = 0
     bdylds = zeros(Float64, neq+1)
@@ -288,22 +288,9 @@ function p62(data::Dict)
           g = g_g[:, iel]
           km = storkm[:, :, iel]
           u[g+1] += km * p[g+1]
-          #=
-          if iy < 2 && cg_iters < 2 && iel < 2 && iters < 3
-            println()
-            println("\niy = $iy, cg_iters = $(cg_iters), iel = $iel, iters = $iters")
-            println("\nsize(km) = $(size(km))")
-            println("\ndet(km = $(det(km))")
-            println("\nkm = $km")
-            println("\ng = $g")
-            println("\np[1:41] = $p[1:41]")
-            println("\nu[1:31]: $(u[1:31])")
-            println()
-          end
-          =#
         end
         up = dot(loads, d)
-        println("cg_iters = $(cg_iters), up = $(up)")
+        #println("cg_iters = $(cg_iters), up = $(up)"
         alpha = up ./ dot(p, u)
         xnew = x + p .* alpha
         loads -= u .* alpha
@@ -380,9 +367,9 @@ function p62(data::Dict)
     totd += loads
     totdstr = @sprintf("%+.4e", totd[nf1[2, node[1]]])
     if iy < 10
-      println("    $(iy)       $(ptot)    $(totdstr)       $(iters)")
+      println("    $(iy)       $(ptot)    $(totdstr)       $(iters)    $(cg_tot)")
     else
-      println("   $(iy)       $(ptot)    $(totdstr)       $(iters)")
+      println("   $(iy)       $(ptot)    $(totdstr)       $(iters)    $(cg_tot)")
     end
   end
   println()
