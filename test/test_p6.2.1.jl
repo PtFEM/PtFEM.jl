@@ -27,4 +27,5 @@ data = Dict(
 
 @time m = p62(data)
 
-@test round(m, 6) == round([10,519.0,-0.0710794,250], 6)
+@test m == [10,519.0,-0.0710794,250] atol=1.0e-6
+
