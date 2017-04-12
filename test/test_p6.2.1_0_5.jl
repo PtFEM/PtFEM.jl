@@ -27,4 +27,10 @@ data = Dict(
 
 @time m = p62(data)
 
-@test round(m, 6) == round([10,519.0,-0.0710794,250], 6)
+disp = convert(Array, m[:disp])
+iters = convert(Array, m[:iters])
+
+@test round(disp, 6) == round([-0.006592,-0.011549,-0.016301,-0.023168,
+  -0.033209,-0.042347,-0.050963,-0.056795,-0.061011,-0.071079], 6)
+
+@test iters == [2,11,20,33,45,65,82,100,156,250]
