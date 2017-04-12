@@ -1,4 +1,4 @@
-function p6_1(data::Dict)
+function p62(data::Dict)
   
   # Setup basic dimensions of arrays
   
@@ -41,6 +41,28 @@ function p6_1(data::Dict)
   penalty = 1e20
   if :penalty in keys(data)
     penalty = data[:penalty]
+  end
+  
+  tol = 1.0e-10
+  if :tol in keys(data)
+    tol = copy(data[:tol])
+  end
+  
+  limit = 100
+  if :limit in keys(data)
+    limit = copy(data[:limit])
+  end
+    
+  if :cg_tol in keys(data)
+    cg_tol = data[:cg_tol]
+  else
+    cg_tol = 1.0e-5
+  end
+  
+  if :cg_limit in keys(data)
+    cg_limit = data[:cg_limit]
+  else
+    cg_limit = Int(1e3)
   end
   
   # Allocate all arrays
@@ -133,10 +155,22 @@ function p6_1(data::Dict)
   
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
-  kdiag = zeros(Int64, neq)
   
   @assert :qincs in keys(data)
-  qincs = deepcopy(data[:qincs])
+  qincs = data[:qincs]
+  
+  println("There are $(neq) equations.")
+  
+  loads = zeros(Float64, neq+1)
+  bdylds = zeros(Float64, neq+1)
+  oldis = zeros(Float64, neq+1)
+  totd = zeros(Float64, neq+1)
+  p = zeros(nst, struc_el.nip, nels)
+  x = zeros(neq+1)
+  u = zeros(neq+1)
+  xnew = zeros(neq+1)
+  diag_precon = zeros(neq+1)
+  d = zeros(neq+1)
   
   # Find global array sizes
   for iel in 1:nels
@@ -145,19 +179,14 @@ function p6_1(data::Dict)
     g_num[:, iel] = num
     g_coord[:, num] = coord'
     g_g[:, iel] = g
-    fkdiag!(kdiag, g)
   end
-  
-  for i in 2:neq
-    kdiag[i] = kdiag[i] + kdiag[i-1]
-  end
-  
-  kv = zeros(kdiag[neq])
-  gv = zeros(kdiag[neq])
 
-  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
+  # Plot the mesh, commented out for now
+  #mesh!(g_coord, g_num, )
   
-  teps = zeros(nst)
+  tensor = zeros(nst, struc_el.nip, nels)
+  storkm = zeros(ndof, ndof, nels)
+  #teps = zeros(nst)
   tload = zeros(neq+1)
   dtemp = zeros(nn)
   dtel = zeros(fin_el.nod)
@@ -169,17 +198,10 @@ function p6_1(data::Dict)
   ddt = 0.0
   lode_theta = 0.0
   
-  tol = 1.0e-10
-  if :tol in keys(data)
-    tol = copy(data[:tol])
-  end
-  
-  limit = 100
-  if :limit in keys(data)
-    limit = copy(data[:limit])
-  end
-  
   sample!(fin_el, points, weights)
+  
+  # element stiffnes integration, storage and conditioner
+  
   for iel in 1:nels
     ddt = 4.0*(1.0+prop[etype[iel], 3])/(3.0*prop[etype[iel], 2])
     if ddt < dt
@@ -199,8 +221,15 @@ function p6_1(data::Dict)
       beemat!(bee, deriv)
       km += (bee')*dee*bee*detm*weights[i]
     end
-    fsparv!(kv, km, g, kdiag)
+    storkm[:,:,iel] = km
+    for k in 1:ndof
+      diag_precon[g[k]+1] = diag_precon[g[k]+1] + km[k,k]
+    end
   end
+  
+  diag_precon = 1 ./ diag_precon
+  
+  # Read load weightings
   
   loaded_nodes = 0
   node = Int64[]
@@ -218,24 +247,26 @@ function p6_1(data::Dict)
     end
   end
 
-  sparin!(kv, kdiag)
   nf1 = deepcopy(nf) + 1
-  println("   step     load        disp          iters")
+  
+  # Load increment loop
+  println("\n   step     load        disp          iters")
 
   converged = false
   ptot = 0.0
-  loads = zeros(Float64, neq+1)
-  oldis = zeros(Float64, neq+1)
-  totd = zeros(Float64, neq+1)
-  tensor = zeros(nst, struc_el.nip, nels)
-  bdylds = zeros(Float64, neq+1)
-  iy = 0
   iters = 0
-  for iy in 1:size(qincs, 1)
+  cg_tot = 0
+  diag_precon[1] = 0.0
+  iy = 0
+  
+  for iy in 1:1
+  #for iy in 1:size(qincs, 1)
     ptot = ptot + qincs[iy]
     iters = 0
     bdylds = zeros(Float64, neq+1)
     evpt = zeros(nst, struc_el.nip, nels)
+    cg_tot = 0
+    cg_converged = false
     
     while true
       iters += 1
@@ -244,15 +275,58 @@ function p6_1(data::Dict)
         loads[nf1[:,node[i]]] = val[i,:] * qincs[iy]
       end
       loads += bdylds
-      loads[2:end] = spabac!(kv, loads[2:end], kdiag)
-      converged = checon!(loads, oldis, tol, converged)
-      if iters == 1
-        converged = false
+      d = diag_precon .* loads
+      p = d
+      x = zeros(neq+1)
+      cg_iters = 0
+      
+      while true
+        cg_iters += 1
+        u = zeros(neq+1)
+        
+        for iel in 1:nels
+          g = g_g[:, iel]
+          km = storkm[:, :, iel]
+          u[g+1] += km * p[g+1]
+          #=
+          if iy < 2 && cg_iters < 2 && iel < 2 && iters < 3
+            println()
+            println("\niy = $iy, cg_iters = $(cg_iters), iel = $iel, iters = $iters")
+            println("\nsize(km) = $(size(km))")
+            println("\ndet(km = $(det(km))")
+            println("\nkm = $km")
+            println("\ng = $g")
+            println("\np[1:41] = $p[1:41]")
+            println("\nu[1:31]: $(u[1:31])")
+            println()
+          end
+          =#
+        end
+        up = dot(loads, d)
+        println("cg_iters = $(cg_iters), up = $(up)")
+        alpha = up ./ dot(p, u)
+        xnew = x + p .* alpha
+        loads -= u .* alpha
+        d = diag_precon .* loads
+        beta = dot(loads, d) ./ up
+        p = d + p .* beta
+        checon!(xnew, x, cg_tol, cg_converged)
+        if cg_converged || (cg_iters == cg_limit)
+          break
+        end
       end
-      if converged || iters == limit
+      cg_tot += cg_iters
+      loads = xnew
+      loads[1] = 0.0
+      
+      # Check plastic convergence
+      
+      checon!(loads, oldis, tol, converged)
+      iters == 1 && (converged = false)
+      if converged || (iters==limit)
         bdylds = zeros(Float64, neq+1)
       end
-  
+      
       for iel in 1:nels
         deemat!(dee, prop[etype[iel], 2], prop[etype[iel], 3])
         num = g_num[:, iel]

@@ -20,13 +20,13 @@ data = Dict(
   ],
   :tol => 0.001,
   :limit => 250,
-  :qincs => [200.0, 100.0, 50.0, 50.0, 50.0, 30.0, 20.0, 10.0, 5.0, 5.0],
-  :cg_tol => 0.00001,
+  :qincs => [200.0, 100.0, 50.0, 50.0, 50.0, 30.0, 20.0, 10.0, 5.0, 4.0],
+  :cg_tol => 0.0001,
   :cg_limit => 100
 )
 
 data |> display
 println()
 
-@time m = p6_2(data)
+@time m = p62(data)
 println()
