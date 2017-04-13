@@ -44,7 +44,7 @@ else
   gr(size=(400,600))
 
   p = Vector{Plots.Plot{Plots.GRBackend}}(2)
-  titles = ["p4.6.2a translation", "p4.6.2a rotation"]
+  titles = ["p46.2a translation", "p46.2a rotation"]
   p[1] = plot(convert(Array, buckling_dt[:translation]),
     ylim=(-0.1, 0.1), xlabel="node",
     ylabel="y translation [m]", color=:blue,

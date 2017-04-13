@@ -80,7 +80,7 @@ if VERSION.minor < 6
   gr(size=(400,600))
 
   p = Vector{Plots.Plot{Plots.GRBackend}}(3)
-  titles = ["p4.3.1 y deflection", "p4.3.1 y shear force", "p4.3.1 z moment"]
+  titles = ["p43.1 y deflection", "p43.1 y shear force", "p43.1 z moment"]
   fors = vcat(
     convert(Array, fm_dt[:, :y1_Force]), 
     convert(Array, fm_dt[:, :y2_Force])[end]
@@ -104,7 +104,7 @@ if VERSION.minor < 6
     title=titles[3], leg=false)
 
   plot(p..., layout=(3, 1))
-  savefig(ProjDir*"/Ex43.1b_fig4.16.png")
+  savefig(ProjDir*"/Ex43.1b.png")
 
 end
 
