@@ -16,7 +16,7 @@ PtFEM.jl is the central package in the Github [PtFEM organisation](https://githu
 
 Changes in PtFEM.jl with respect to the Fortran programs in PtFEM are summarized in the CHANGES.md file.
 
-PtFEM.jl will be published in a couple of steps, e.g. 1) chapters 4-6, 2) chapters 7-9, 3) remaining chapters in PtFEM and 4) VTK output and multiprocessing aspects, although I might start to mix in item 4) earlier. Several examples use [Plots.jl](https://juliaplots.github.io) based graphics.
+PtFEM.jl will be published in a couple of steps, e.g. 1) chapters 4-6, 2) chapters 7-9, 3) remaining chapters in PtFEM and 4) VTK output and multiprocessing aspects, although I might start to mix in item 4) earlier.
 
 To use the toolkit and run the test programs, start the [Julia](http://julialang.org) REPL and type:
 
@@ -27,7 +27,7 @@ Pkg.test("PtFEM")
 
 As this shows, the package has not yet been published and is currently only available through cloning from my github account. The authors have given permission to publish the Julia version of the PtFEM toolkit. Please refer to the [LICENSE](https://github.com/goedman/PtFEM.jl/blob/master/LICENSE.md) file for more details.
 
-Examples are in the examples/...  subdirectories. 
+Examples are in the examples/...  subdirectories. Please note that several examples use [Plots.jl](https://juliaplots.github.io) based graphics. If have not made Plots.jl a REQUIREd file for PtFEM.jl.
 
 I also have some [notebooks](https://github.com/goedman/RobGoedmansNotebooks.jl/tree/master/notebooks/PtFEM). At this point in time, the notebooks are just initial examples (and might not always work) until the structure of the toolkit gels.
 

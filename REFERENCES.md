@@ -12,3 +12,4 @@
 1. [Numerical Methods for Engineers](https://www.crcpress.com/Numerical-Methods-for-Engineers-Second-Edition/Griffiths-Smith/p/book/9781584884019)
 1. [NMfE.jl](https://github.com/goedman/NMfE.jl)
 1. [Symata.jl](https://github.com/jlapeyre/Symata.jl)
+1. [Plots.jl](https://juliaplots.github.io)
