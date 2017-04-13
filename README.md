@@ -12,9 +12,9 @@ This Julia package contains the programs in chapters 4 to 6 as described in "Pro
 
 I use PtFEM when referring to the book and PtFEM.jl when referring to the Julia package.
 
-PtFEM.jl is the central package in the Github [PtFEM organisation](https://github.com/PtFEM). More details about the plans for the PtFEM organisation are given in the FUTURES.md file.
+PtFEM.jl is the central package in the Github [PtFEM organisation](https://github.com/PtFEM). More details about the plans for the PtFEM organisation are given in the [FUTURES](https://github.com/PtFEM/PtFEM.jl/blob/master/FUTURES.md) file.
 
-Changes in PtFEM.jl with respect to the Fortran programs in PtFEM are summarized in the CHANGES.md file.
+Changes in PtFEM.jl with respect to the Fortran programs in PtFEM are summarized in the [CHANGES](https://github.com/PtFEM/PtFEM.jl/blob/master/CHANGES.md) file.
 
 PtFEM.jl will be published in a couple of steps, e.g. 1) chapters 4-6, 2) chapters 7-9, 3) remaining chapters in PtFEM and 4) VTK output and multiprocessing aspects, although I might start to mix in item 4) earlier.
 
