@@ -34,12 +34,12 @@ examples = [
   "PtFEM/6 Material Nonlinearity/Ex62.1.jl"
 ]
 
-println("Running examples:")
+println("\nRunning examples:\n")
 
 if VERSION.minor == 5
   println("\nRunning Julia 0.5 examples\n")
   for ex in examples
-    println("\n\nRunnung $(ex).\n\n")
+    println("\n\nRunning $(ex).\n\n")
     include(Pkg.dir("PtFEM")*"/examples/$(ex)")
   end
 end
