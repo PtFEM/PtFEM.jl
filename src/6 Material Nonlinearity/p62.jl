@@ -390,7 +390,7 @@ function p62(data::Dict)
       end
     end
     totd += loads
-    #totdstr = @sprintf("%+.4e", totd[nf1[2, node[1]]])
+    totdstr = @sprintf("%+.4e", totd[nf1[2, node[1]]])
     
     append!(loaddt, [ptot])
     append!(dispdt, [totd[nf1[2, node[1]]]])
