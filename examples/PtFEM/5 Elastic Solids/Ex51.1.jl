@@ -23,5 +23,5 @@ data = Dict(
 data |> display
 println()
 
-@time m = p51(data
+@time m = p51(data)
 println()
