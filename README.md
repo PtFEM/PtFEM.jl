@@ -27,7 +27,7 @@ Pkg.test("PtFEM")
 
 As this shows, the package has not yet been published and is currently only available through cloning from my github account. The authors have given permission to publish the Julia version of the PtFEM toolkit. Please refer to [LICENSE](https://github.com/goedman/PtFEM.jl/blob/master/LICENSE.md) for more details.
 
-Examples are in the examples/...  subdirectories. Please note that several examples use [Plots.jl](https://juliaplots.github.io) based graphics. If have not made Plots.jl a REQUIREd file for PtFEM.jl.
+Examples are in the examples/...  subdirectories. Please note that several examples use [Plots.jl](https://juliaplots.github.io) based graphics. If have not made Plots.jl a REQUIREd file for PtFEM.jl. In the test directory there is a [runexamples](https://github.com/PtFEM/PtFEM.jl/blob/master/test/runexamples.jl) script that will run all examples.
 
 I also have some [notebooks](https://github.com/goedman/RobGoedmansNotebooks.jl/tree/master/notebooks/PtFEM). At this point in time, the notebooks are just initial examples (and might not always work) until the structure of the toolkit gels.
 
