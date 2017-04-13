@@ -12,9 +12,9 @@ This Julia package contains the programs in chapters 4 to 6 as described in "Pro
 
 I use PtFEM when referring to the book and PtFEM.jl when referring to the Julia package.
 
-PtFEM.jl is the central package in the Github [PtFEM organisation](https://github.com/PtFEM). More details about the plans for the PtFEM organisation are given in the [FUTURES](https://github.com/PtFEM/PtFEM.jl/blob/master/FUTURES.md) file.
+PtFEM.jl is the central package in the Github [PtFEM organisation](https://github.com/PtFEM). More details about the plans for the PtFEM organisation are given in  [FUTURES](https://github.com/PtFEM/PtFEM.jl/blob/master/FUTURES.md).
 
-Changes in PtFEM.jl with respect to the Fortran programs in PtFEM are summarized in the [CHANGES](https://github.com/PtFEM/PtFEM.jl/blob/master/CHANGES.md) file.
+Changes in PtFEM.jl with respect to the Fortran programs in PtFEM are summarized in [CHANGES](https://github.com/PtFEM/PtFEM.jl/blob/master/CHANGES.md).
 
 PtFEM.jl will be published in a couple of steps, e.g. 1) chapters 4-6, 2) chapters 7-9, 3) remaining chapters in PtFEM and 4) VTK output and multiprocessing aspects, although I might start to mix in item 4) earlier.
 
@@ -25,7 +25,7 @@ Pkg.clone("https://github.com/PtFEM/PtFEM.jl")
 Pkg.test("PtFEM")
 ```
 
-As this shows, the package has not yet been published and is currently only available through cloning from my github account. The authors have given permission to publish the Julia version of the PtFEM toolkit. Please refer to the [LICENSE](https://github.com/goedman/PtFEM.jl/blob/master/LICENSE.md) file for more details.
+As this shows, the package has not yet been published and is currently only available through cloning from my github account. The authors have given permission to publish the Julia version of the PtFEM toolkit. Please refer to [LICENSE](https://github.com/goedman/PtFEM.jl/blob/master/LICENSE.md) for more details.
 
 Examples are in the examples/...  subdirectories. Please note that several examples use [Plots.jl](https://juliaplots.github.io) based graphics. If have not made Plots.jl a REQUIREd file for PtFEM.jl.
 
@@ -44,5 +44,5 @@ Fundamental and great development work related to solving (partial) differential
 
 Outside of Julia at least 2 other toolkits should be mentioned, i.e.  [deal.II](http://dealii.org) and [FEniCS](https://fenicsproject.org).
 
-References will be kept in the REFERENCES.md file.
+References will be kept in [REFERENCES](https://github.com/PtFEM/PtFEM.jl/blob/master/REFERENCES.md).
 
