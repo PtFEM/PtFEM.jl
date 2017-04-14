@@ -22,39 +22,11 @@ data = Dict(
   ],
   :tol => 0.001,
   :limit => 250,
-  :qincs => [200.0, 100.0, 50.0, 50.0, 50.0, 30.0, 20.0, 10.0, 5.0, 4.0],
+  :qincs => [200.0, 100.0, 50.0, 50.0, 50.0, 30.0, 20.0, 10.0, 5.0, 4.0, 4.0, 4.0],
   :cg_tol => 0.0001,
   :cg_limit => 100
 )
 
-data |> display
-println()
-
-@time m = p62(data)
+@time m = p62a(data)
 println()
 m |> display
-
-if VERSION.minor < 6
-
-  using Plots
-  gr(size=(400,400))
-
-  disp = convert(Array, m[:disp])
-  qcu = convert(Array, m[:loads]) / 100.0
-  iters = convert(Array, m[:iters])
-
-  plot(qcu, disp, leg=false,
-    xlim=(0, 6), ylim = (-0.08, 0.0),
-    ylab="Centerline displacement", xlab="Bearing stress"
-  )
-  for i in 1:size(m, 1 )
-    tf = "$(iters[i])"
-    annotate!([(qcu[i], disp[i], text(tf, 8, :red, :center))])
-  end
-  plot!([5.14, 5.14], [-0.02, -0.045], color=:darkblue)
-  plot!([5.14, 5.14], [-0.046, -0.065], line=(:dash), color=:darkblue)
-  scatter!([5.14], [-0.045], marker=(Plots._shape_keys[9], 6), color=:darkblue)
-  annotate!([(5.14, -0.015, text("Prandtl", 8, :black, :center))])
-  annotate!([(5.14, -0.018, text("5.14", 8, :black, :center))])
-  savefig(ProjDir*"/fig6.11.png")
-end
