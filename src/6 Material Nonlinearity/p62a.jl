@@ -388,13 +388,13 @@ end
 
 function p62a(data)
   lst = [deepcopy(data) for i in 1:length(data[:qincs])];
-  for i in 1:length(data[:qincs])
-    lst[i][:qincs] = [sum(data[:qincs][1:i])]
+  for i in 2:length(data[:qincs])
+    lst[i][:qincs] = [sum(data[:qincs][1:(i-1)]), data[:qincs][i]]
   end
   np = nprocs()  # determine the number of processes available
   n = length(lst)
   results = Vector{Any}(n)
-  i = 1
+  i = 2
   # function to produce the next work item from the queue.
   # in this case it's just an index.
   nextidx() = (idx=i; i+=1; idx)
@@ -413,5 +413,5 @@ function p62a(data)
           end
       end
   end
-  results
+  results[2:end]
 end

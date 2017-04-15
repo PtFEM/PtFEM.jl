@@ -319,7 +319,8 @@ function p62(data::Dict)
       loads[1] = 0.0
       
       # Check plastic convergence
-
+      
+      tmp = maximum(abs.(loads-oldis))/maximum(abs.(loads))
       converged = checon!(loads, oldis, tol)
       if iters == 1
         converged = false
