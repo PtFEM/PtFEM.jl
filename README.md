@@ -12,6 +12,8 @@ This Julia package currently contains the programs in chapters 4, 5 and early se
 
 I use PtFEM when referring to the book and PtFEM.jl when referring to the Julia package.
 
+PtFEM is a very versatile toolkit to numerically solve problems consisting of physical components using FEM methods (to distinguish it from systems primarily focused on solving symbolic partial differential equations).
+
 PtFEM.jl is the central package in the Github [PtFEM organisation](https://github.com/PtFEM). More details about the plans for the PtFEM organisation are given in  [FUTURES](https://github.com/PtFEM/PtFEM.jl/blob/master/FUTURES.md).
 
 Changes in PtFEM.jl with respect to the Fortran programs in PtFEM are summarized in [CHANGES](https://github.com/PtFEM/PtFEM.jl/blob/master/CHANGES.md).
