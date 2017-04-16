@@ -8,7 +8,7 @@ A version of a Julia package is labeled (tagged) as v"major.minor.patch".
 My intention is to update the patch level whenever I make updates to programs which are not
 visible to the then existing examples. This also includes adding new chapters and examples.
 
-Changes that require updates to the some examples bump the minor level.
+Changes that require updates to some examples bump the minor level.
 
 Updates for new releases of Julia bump the major level.
 
