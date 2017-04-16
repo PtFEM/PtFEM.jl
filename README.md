@@ -31,11 +31,18 @@ As this shows, the package has not yet been published and is currently only avai
 
 Examples are in the examples/...  subdirectories. Please note that several examples use [Plots.jl](https://juliaplots.github.io) based graphics. I have not made Plots.jl REQUIREd for PtFEM.jl. In the test directory there is a [runexamples](https://github.com/PtFEM/PtFEM.jl/blob/master/test/runexamples.jl) script that will run all examples.
 
+ PtFEM will always remain the primary documentation for this package. Additional programming documentation will be available through Julia's documentor package, e.g. after installing the package:
+ 
+```
+use PtFEM
+?Line
+```
+
 I also have some [notebooks](https://github.com/goedman/RobGoedmansNotebooks.jl/tree/master/notebooks/PtFEM). At this point in time, the notebooks are just initial examples (and might not always work) until the structure of the toolkit gels.
 
 Initial focus has been on chapters 4, 5 and early sections of 6 of PtFEM in order to figure out how to best structure the toolkit. At this point chapter 4 is mostly done, chapters 5 and 6 are being reviewed.
 
-Please note that no timeline is set when this work in progress will be finished.
+Please note that no timeline is set when this work in progress will be finished. [TODO](https://github.com/goedman/PtFEM.jl/blob/master/TODO.md) contains a list of next steps.
 
 Rob J Goedman
 March 2017

@@ -10,7 +10,7 @@ Note the use of the "!" in some function names which is the Julia convention for
 
 ### Replacing skyline storage by Julia sparse matrices
 
-In the prorams for chapter 4, the skyline storage idea has been replaced by Julia sparse matrices and, accordingly, PtFEM's pair sparin() and spabac() by Julia's cholfact() and "\\" operator.
+In the programs for chapter 4, the skyline storage idea has been replaced by Julia sparse matrices and, accordingly, PtFEM's pair sparin() and spabac() by Julia's cholfact() and "\\" operator.
 
 Thus
 
