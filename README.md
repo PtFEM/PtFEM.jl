@@ -42,7 +42,7 @@ I also have some [notebooks](https://github.com/goedman/RobGoedmansNotebooks.jl/
 
 Initial focus has been on chapters 4, 5 and early sections of 6 of PtFEM in order to figure out how to best structure the toolkit. At this point chapter 4 is mostly done, chapters 5 and 6 are being reviewed.
 
-Please note that no timeline is set when this work in progress will be finished. [TODO](https://github.com/goedman/PtFEM.jl/blob/master/TODO.md) contains a list of next steps.
+Please note that no timeline is set when this work in progress will be finished. [TODO](https://github.com/goedman/PtFEM.jl/blob/master/TODO.md) contains a list of next steps. [VERSIONS](https://github.com/goedman/PtFEM.jl/blob/master/VERSIONS.md) holds the version history.
 
 Rob J Goedman
 March 2017
