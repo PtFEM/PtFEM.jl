@@ -1,6 +1,8 @@
 using PtFEM
 using Base.Test
 
+ProjDir = dirname(@__FILE__)
+
 #=
 Compare formulas at:
 http://www.awc.org/pdf/codes-standards/publications/design-aids/AWC-DA6-BeamFormulas-0710.pdf
