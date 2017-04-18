@@ -1,7 +1,5 @@
 *.o *.so *.dylib
 *.svg
 *.vtu
-notebooks/.ipynb_checkpoints
-notebookes/EEM/.ipynb_checkpoints
-notebookes/CSoM/.ipynb_checkpoints
-
+output
+output/*
