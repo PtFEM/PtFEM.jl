@@ -36,8 +36,8 @@ function p44(data::Dict)
     return
   end
   
-  nodof = ndim == 2 ? 3 : 6       # Degrees of freedom per node
-  ndof = fin_el.nod * nodof      # Degrees of freedom per fin_el
+  nodof = Int64(ndim == 2 ? 3 : 6)      # Degrees of freedom per node
+  ndof = fin_el.nod * nodof             # Degrees of freedom per fin_el
   
   # Update penalty if specified in FEdict
   
