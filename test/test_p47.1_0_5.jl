@@ -23,6 +23,6 @@ data = Dict(
 )
 
 
-@time m = p47(data)
+@time fm_dt, sigma_dt = p47(data)
 
-@test m == [-0.12113940612422724,-0.12113940612422731,-0.033472050966241285]
+@test round(convert(Array,sigma_dt[4,:]), 4) == round([-0.1211  -0.1211  -0.0335], 4)
