@@ -126,6 +126,8 @@ function p47(data::Dict)
     g_g[:, iel] = g
   end
   println()
+  g_coord |> display
+  println()
   for i in 2:neq
     kdiag[i] = kdiag[i] + kdiag[i-1]
   end
@@ -151,7 +153,6 @@ function p47(data::Dict)
     d = e * data[:thickness]^3 / (12.0 * (1.0 - v * v))
     g = g_g[:, iel]
     km = zeros(km)
-    println()
     for i in 1:struc_el.nip
       fmplat!(d2x, d2y, d2xy, points, aa, bb, i)
       for k in 1:ndof
@@ -195,27 +196,42 @@ function p47(data::Dict)
   
   println("\nNode       Disp            Rot-x         Rot-y           Twist-xy")
   
-  tmp = []
   for i in 1:nn
-    tmp = vcat(tmp, loads[nf1[:,i]])
+    #tmp = vcat(tmp, loads[nf1[:,i]])
     Disp = @sprintf("%+.4e", loads[nf1[1,i]])
     Rotx = @sprintf("%+.4e", loads[nf1[2,i]])
     Roty = @sprintf("%+.4e", loads[nf1[3,i]])
     Twistxy = @sprintf("%+.4e", loads[nf1[4,i]])
     println("  $(i)    $(Disp)     $(Rotx)    $(Roty)     $(Twistxy)")
   end
-  #println(round(reshape(float(tmp), 2, 9)', 15))
+  
+  disp = Float64[]
+  rotx = Float64[]
+  roty = Float64[]
+  twistxy = Float64[]
+  for i in 1:nn
+    append!(disp, loads[nf1[1,i]])
+    append!(rotx, loads[nf1[2,i]])
+    append!(roty, loads[nf1[3,i]])
+    append!(twistxy, loads[nf1[4,i]])
+  end
+  fm_dt = DataTable(
+    disp = disp,
+    rotx = rotx,
+    roty = roty,
+    twistxy = twistxy
+  )
+  
+  sigx = Float64[]
+  sigy = Float64[]
+  tauxy = Float64[]
   
   struc_el.nip = 1
   points = zeros(struc_el.nip, ndim)
   weights = zeros(struc_el.nip)
   sample!(fin_el, points, weights)
   println("\nThe integration point (nip = $(struc_el.nip)) stresses are:")
-  if struc_el.axisymmetric
-    println("\nElement     sig_r          sig_z            tau_rz            sig_t")
-  else
-    println("\nElement     sig_x          sig_y            tau_xy")
-  end
+  println("\nElement     sig_x          sig_y            tau_xy")
   bm = Vector{Float64}
   for iel in 1:nels
     e = prop[etype[iel], 1]
@@ -234,11 +250,17 @@ function p47(data::Dict)
       bm2 = @sprintf("%+.4e", bm[2])
       bm3 = @sprintf("%+.4e", bm[3])
       println("   $(iel)     $(bm1)     $(bm2)      $(bm3)")
+      append!(sigx, bm[1])
+      append!(sigy, bm[2])
+      append!(tauxy, bm[3])
     end
   end
-  for iel in 1:nels
-  end
+  sigma_dt = DataTable(
+    sigx = sigx,
+    sigy = sigy,
+    tauxy = tauxy
+  )
   println()
-  bm
+  (fm_dt, sigma_dt)
 end
 
