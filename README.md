@@ -4,7 +4,7 @@
 [![Project Status: WIP - Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
 
 [![Travis Build Status](https://travis-ci.org/PtFEM/PtFEM.jl.svg?branch=master)](https://travis-ci.org/PtFEM/PtFEM.jl)
-[![Build status](https://ci.appveyor.com/api/projects/status/github/PtFEM/PtFEM.jl?branch=master)](https://ci.appveyor.com/project/ptfem/ptfem-jl/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/PtFEM/PtFEM.jl?branch=master)](https://ci.appveyor.com/project/goedman/ptfem-jl)
 
 
 
