@@ -64,6 +64,7 @@ include("PtFEM/formm.jl")
 include("PtFEM/exportVTK_XML.jl")
 include("PtFEM/fromSkyline.jl")
 include("PtFEM/skyline2sparse.jl")
+include("graphics/plots/mesh.jl")
 
 include("4 Static Equilibrium/p41.jl")
 include("4 Static Equilibrium/p42.jl")
@@ -109,9 +110,13 @@ export
   # From FEmodel.jl
   FEmodel,
   
+  # From graphics/plots/mesh.jl
+  mesh,
+  
   write_VTKXML,
   VTKNode,
   VTKElement,
+  
   fromSkyline,
   skyline2sparse,
   

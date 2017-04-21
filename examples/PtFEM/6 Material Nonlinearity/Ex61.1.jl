@@ -26,5 +26,12 @@ data = Dict(
 data |> display
 println()
 
-@time m = p61(data)
+@time g_coord, g_num, loads, nf = p61(data)
 println()
+
+using Plots
+gr(size=(400, 400))
+
+plot()
+xa, ya = mesh(g_coord, g_num)
+scatter!(xa, ya, marker=(:circle,4,0.8,stroke(1,:black)))

@@ -313,6 +313,6 @@ function p61(data::Dict)
   end
   println()
   
-  [iy, ptot, totd[nf1[2, node[1]]], iters]
+  (g_coord, g_num, totd, nf1)
 end
 
