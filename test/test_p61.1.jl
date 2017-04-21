@@ -23,6 +23,6 @@ data = Dict(
   :qincs => [200.0, 100.0, 50.0, 50.0, 50.0, 30.0, 20.0, 10.0, 5.0, 4.0]
 )
 
-@time m = p61(data)
+@time g_coord, g_num, loads, nf = p61(data)
 
-@test m ≈ [10,519.0,-0.07134906003311133,250]
+@test round(loads[nf[2,1]], 5)≈ round(-7.1349e-02, 5)
