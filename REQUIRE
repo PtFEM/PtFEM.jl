@@ -7,3 +7,4 @@ Codecs 0.2.0
 Interpolations 0.3.6
 #BandedMatrices 0.2.1
 DataTables 0.0.2
+WriteVTK 0.5.1
