@@ -20,7 +20,9 @@ PtFEM.jl is the central package in the Github [PtFEM organisation](https://githu
 
 Changes in PtFEM.jl with respect to the Fortran programs in PtFEM are summarized in [CHANGES](https://github.com/PtFEM/PtFEM.jl/blob/master/CHANGES.md).
 
-PtFEM.jl will be published in a couple of steps, e.g. 1) chapters 4-6, 2) chapters 7-9, 3) remaining chapters in PtFEM and 4) VTK output and multiprocessing aspects, although I might start to mix in item 4) earlier.
+As mentioned in [CHANGES](https://github.com/PtFEM/PtFEM.jl/blob/master/CHANGES.md), graphics are introduced in 2 forms, VTK based recipes (e.g. for display in Paraview) and plotrecipes using the Julia package Plots.jl. This first release is more or less a proof of concept for this approach.
+
+PtFEM.jl will be published in a couple of steps, e.g. 1) chapters 4-6, 2) chapters 7-9, 3) remaining chapters in PtFEM and 4) graphics and multiprocessing aspects, although I will start to mix in item 4) earlier.
 
 To use the toolkit and run the test programs, start the [Julia](http://julialang.org) REPL and type:
 
