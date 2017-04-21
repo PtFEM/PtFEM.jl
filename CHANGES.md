@@ -29,6 +29,16 @@ has been replaced by
 
 All 'basic' functions such as sparin!() and spabac!() can be found in the src/PtFEM directory.
 
+### Separate equivalent loads data
+
+E.g. p44.
+
+### Graphics
+
+#### Plots.jl
+
+#### VTK (ParaView)
+
 ### Initial introduction of parallel programming in Julia
 
 Some examples will show simple ways of using Julia's capabilities in this area.
