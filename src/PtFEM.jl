@@ -1,19 +1,6 @@
 module PtFEM
 
 using DataTables, Compat
-
-if !isdefined(Main, :JULIA_SVG_BROWSER)
-  JULIA_SVG_BROWSER = ""
-  try
-    JULIA_SVG_BROWSER = ENV["JULIA_SVG_BROWSER"]
-  catch e
-    println("Environment variable JULIA_SVG_BROWSER not found.")
-    JULIA_SVG_BROWSER = ""
-  end
-end
-
-export
-  JULIA_SVG_BROWSER
        
 # package code goes here
 ### Imports ###
@@ -111,7 +98,7 @@ export
   # From FEmodel.jl
   FEmodel,
   
-  # From graphics/plots/mesh.jl
+  # From graphics/plotrecipes/mesh.jl
   mesh,
   
   write_VTKXML,
