@@ -311,8 +311,17 @@ function p61(data::Dict)
       println("   $(iy)       $(ptot)    $(totdstr)       $(iters)")
     end
   end
-  println()
   
-  (g_coord, g_num, totd, nf1)
+  println()
+  displacements = zeros(size(nf))
+  for i in 1:size(displacements, 1)
+    for j in 1:size(displacements, 2)
+      if nf[i, j] > 0
+        displacements[i,j] = totd[nf[i, j]+1]
+      end
+    end
+  end
+  
+  (g_coord, g_num, displacements')
 end
 

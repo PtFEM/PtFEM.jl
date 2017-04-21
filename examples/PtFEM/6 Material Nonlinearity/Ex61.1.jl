@@ -1,5 +1,7 @@
 using PtFEM
 
+ProjDir = dirname(@__FILE__)
+
 data = Dict(
   # Plane(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)
   :struc_el => Plane(2, 4, 8, 4, 4, :y, Quadrilateral(8, 2), false),
@@ -26,12 +28,8 @@ data = Dict(
 data |> display
 println()
 
-@time g_coord, g_num, loads, nf = p61(data)
+@time g_coord, g_num, disp = p61(data)
 println()
 
-using Plots
-gr(size=(400, 400))
-
-plot()
-xa, ya = mesh(g_coord, g_num)
-scatter!(xa, ya, marker=(:circle,4,0.8,stroke(1,:black)))
+ampl = 10.0       # Displacement amplification
+mesh(data, g_coord, g_num, disp, ampl, ProjDir)
