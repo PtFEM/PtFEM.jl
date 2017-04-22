@@ -33,11 +33,19 @@ All 'basic' functions such as sparin!() and spabac!() can be found in the src/Pt
 
 E.g. p44.
 
+### Custom array indices
+
+Julia by default uses 1 as the first index into an array, but has the ability to use arbitrary indexing as well. The PtFEM Fortran programs use 0-based indexing in a number of places. For now in those cases I have shifted all indices by 1. This practice will be reviewed later on in the project. I'm leaning towards simply using OffsetArrays.jl for this purpose.
+
 ### Graphics
 
 #### Plots.jl
 
+E.g. Ex41.1.jl, Ex61.1.jl and Ex62.1.jl
+
 #### VTK (ParaView)
+
+E.g. Ex47.1.jl
 
 ### Initial introduction of parallel programming in Julia
 
@@ -47,4 +55,4 @@ In Chapter 6, example Exp62.1a.jl calls p62a.jl which uses Julia pmap() for this
 
 _Note 1_: In example Ex62.1a.jl could have called the p62(data) as Ex62.1.jl does; pp62(data) is identical but produces less output.
 
-_Note 2_: I have not done a profiling pass through p62.jl, it allocates way too much memory, so I expect performance improvements are possible.
+_Note 2_: I have not done a profiling pass through p62.jl, it allocates way too much memory, so I expect significant performance improvements are possible.
