@@ -1,6 +1,6 @@
 module PtFEM
 
-using DataTables, Compat
+using DataTables, OffsetArrays, Compat
        
 # package code goes here
 ### Imports ###
