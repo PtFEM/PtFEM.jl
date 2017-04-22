@@ -5,7 +5,6 @@ Plots 0.10.3
 GR 0.19.0
 Codecs 0.2.0
 Interpolations 0.3.6
-#BandedMatrices 0.2.1
 DataTables 0.0.2
 WriteVTK 0.5.1
 OffsetArrays 0.3.0
