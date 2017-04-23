@@ -6,7 +6,7 @@ Method for static equilibrium analysis of a rod.
 ### Constructors
 ```julia
 p41(data::Dict)
-p41(m::jFEM, data::Dict) # Used to re-use factiored global stiffness matrix
+p41(m::jFEM, data::Dict) # Used to re-use factored global stiffness matrix
 ```
 ### Arguments
 ```julia
@@ -238,11 +238,53 @@ function p41(data::Dict{Symbol, Any})
     actions[i, :] = km * eld
   end
 
-  jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
-    etype, g, g_g, g_num, nf, no, node, num, sense, actions, 
-    bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
-    g_coord, jac, km, mm, gm, cfgsm, loads, points, prop, sigma, value,
+  dis_dt = DataTable(
+    x_translation = displacements[:, 1],
+  )
+
+  if :eq_nodal_forces_and_moments in keys(data)
+    fm_dt = DataTable(
+      normal_force_1 = actions[:, 1],
+      normal_force_2 = actions[:, 2],
+      nf_1_uncorrected = actions[:, 1],
+      nf_2_uncorrected = actions[:, 2]
+    )
+  else
+    fm_dt = DataTable(
+      normal_force_1 = actions[:, 1],
+      normal_force_2 = actions[:, 2]
+    )
+  end
+  
+  fm_dt |> display
+  println()
+  
+  # Correct element forces and moments for equivalent nodal
+  # forces and moments introduced for loading between nodes
+  if :eq_nodal_forces_and_moments in keys(data)
+    eqfm = data[:eq_nodal_forces_and_moments]
+    k = data[:struc_el].fin_el.nod * data[:struc_el].fin_el.nodof
+    for t in eqfm
+      vals = convert(Array, fm_dt[t[1], :])
+      for i in 1:k
+        println(i)
+        println(t)
+        println(fm_dt[t[1], i])
+        println(vals)
+        println(round(vals[i] - t[2][i], 2))
+        fm_dt[t[1], i] = round(vals[i] - t[2][i], 2)
+      end
+    end
+  end
+
+  fem = PtFEM.jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof,
+    neq, penalty, etype, g, g_g, g_num, nf, no,
+    node, num, sense, actions, bee, coord, gamma, dee,
+    der, deriv, displacements, eld, fun, gc, g_coord, jac,
+    km, mm, kg, cfgsm, loads, points, prop, sigma, value,
     weights, x_coords, y_coords, z_coords, axial)
+
+  (fem, dis_dt, fm_dt)
 end
 
 
@@ -284,12 +326,44 @@ function p41(m::PtFEM.jFEM, data::Dict)
     eld = loads[g+1]
     actions[i, :] = km * eld
   end
+  
+  dis_dt = DataTable(
+    x_translation = displacements[:, 1],
+  )
 
-  PtFEM.jFEM(m.struc_el, m.fin_el, m.ndim, m.nels, m.nst, m.ndof, m.nn, m.nodof,
+  if :eq_nodal_forces_and_moments in keys(data)
+    fm_dt = DataTable(
+      normal_force_1 = actions[:, 1],
+      normal_force_2 = actions[:, 2],
+      normal_force_1_corrected = actions[:, 1],
+      normal_force_2_corrected = actions[:, 2]
+    )
+  else
+    fm_dt = DataTable(
+      normal_force_1 = actions[:, 1],
+      normal_force_2 = actions[:, 2]
+    )
+  end
+  
+  # Correct element forces and moments for equivalent nodal
+  # forces and moments introduced for loading between nodes
+  if :eq_nodal_forces_and_moments in keys(data)
+    eqfm = data[:eq_nodal_forces_and_moments]
+    k = data[:struc_el].fin_el.nod * data[:struc_el].fin_el.nodof
+    for t in eqfm
+      vals = convert(Array, fm_dt[t[1], :])
+      for i in 1:k
+        fm_dt[t[1]+2, i] = round(vals[i] - t[2][i], 2)
+      end
+    end
+  end
+
+  fem = PtFEM.jFEM(m.struc_el, m.fin_el, m.ndim, m.nels, m.nst, m.ndof, m.nn, m.nodof,
     m.neq, m.penalty, m.etype, g, m.g_g, m.g_num, m.nf, m.no,
     m.node, m.num, m.sense, actions, m.bee, m.coord, m.gamma, m.dee,
     m.der, m.deriv, displacements, eld, m.fun, m.gc, m.g_coord, m.jac,
     km, m.mm, m.kg, m.cfgsm, loads, m.points, m.prop, m.sigma, m.value,
     m.weights, m.x_coords, m.y_coords, m.z_coords, m.axial)
 
+  (fem, dis_dt, fm_dt)
 end

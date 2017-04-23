@@ -197,9 +197,37 @@ function p43(data::Dict)
     actions[:, i] = (km+mm) * eld
   end
 
-  jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
-    etype, g, g_g, g_num, nf, no, node, num, sense, actions, 
-    bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
-    g_coord, jac, km, mm, gm, cfgsm, loads, points, prop, sigma, value,
+  dis_dt = DataTable(
+    translations = displacements[1, :],
+    rotations = displacements[2, :]
+  )
+
+  fm_dt = DataTable(
+    xl_Force = actions[1, :],
+    xl_Moment = actions[2, :],
+    xr_Force = actions[3, :],
+    xr_Moment = actions[4, :]
+  )
+  
+  # Correct element forces and moments for equivalent nodal
+  # forces and moments introduced for loading between nodes
+  if :eq_nodal_forces_and_moments in keys(data)
+    eqfm = data[:eq_nodal_forces_and_moments]
+    k = data[:struc_el].fin_el.nod * data[:struc_el].fin_el.nodof
+    for t in eqfm
+      vals = convert(Array, fm_dt[t[1], :])
+      for i in 1:k
+        fm_dt[t[1], i] = round(vals[i] - t[2][i], 2)
+      end
+    end
+  end
+
+  fem = PtFEM.jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof,
+    neq, penalty, etype, g, g_g, g_num, nf, no,
+    node, num, sense, actions, bee, coord, gamma, dee,
+    der, deriv, displacements, eld, fun, gc, g_coord, jac,
+    km, mm, kg, cfgsm, loads, points, prop, sigma, value,
     weights, x_coords, y_coords, z_coords, axial)
+
+  (fem, dis_dt, fm_dt)
 end

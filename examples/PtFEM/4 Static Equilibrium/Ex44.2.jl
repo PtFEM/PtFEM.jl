@@ -23,14 +23,13 @@ data = Dict(
 data |> display
 println()
 
-@time m = p44(data)
+@time fem, dis_dt, fm_dt = p44(data)
 println()
 
-println("Displacements:")
-m.displacements' |> display
+dis_dt |> display
 println()
 
 println("Actions:")
-m.actions' |> display
+fm_dt |> display
 println()
 

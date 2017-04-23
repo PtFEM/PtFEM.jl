@@ -37,21 +37,8 @@ data = Dict(
 data |> display
 println()
 
-@time m = p41(data)
+@time fem, dis_dt, fm_dt = p41(data)
 println()
-
-using DataTables
-dis_dt = DataTable(
-  x_translation = m.displacements[:, 1],
-)
-fm_dt = DataTable(
-  normal_force_1 = m.actions[:, 1],
-  normal_force_2 = m.actions[:, 2]
-)
-  
-display(dis_dt)
-println()
-display(fm_dt)
 
 # Update (double) the loaded_nodes values
 
@@ -64,18 +51,9 @@ end
 
 # Pass in m so m.cfgsm can be re-used with this new load vector.
 
-@time m2 = p41(m, data)
+@time fem2, dis_dt2, fm_dt2 = p41(fem, data)
 println()
 
-using DataTables
-dis_dt2 = DataTable(
-  x_translation = m2.displacements[:, 1],
-)
-fm_dt2 = DataTable(
-  normal_force_1 = m2.actions[:, 1],
-  normal_force_2 = m2.actions[:, 2]
-)
-  
 display(dis_dt2)
 println()
 display(fm_dt2)

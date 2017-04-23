@@ -24,25 +24,9 @@ data = Dict(
 data |> display
 println()
 
-@time m = p42(data)
+@time fem, dis_dt, fm_dt = p42(data)
 println()
 
-using DataTables
-dis_dt = DataTable(
-  x_translation = m.displacements[1, :],
-  y_translation = m.displacements[2, :],
-  z_translation = m.displacements[3, :],
-)
-fm_dt = DataTable(
-  x_force_1 = m.actions[1, :],
-  y_force_1 = m.actions[2, :],
-  z_force_1 = m.actions[3, :],
-  x_force_2 = m.actions[4, :],
-  y_force_2 = m.actions[5, :],
-  z_force_2 = m.actions[6, :],
-  axial_force = m.axial
-)
-  
 display(dis_dt)
 println()
 display(fm_dt)

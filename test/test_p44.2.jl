@@ -20,7 +20,7 @@ data = Dict(
     (2, [0.0 -100.0 0.0 0.0 0.0 0.0])]
 )
 
-@time m = p44(data)
+@time m, dis_dt, fm_dt = p44(data)
 
 @test round.(m.actions[:, 3], 3) == [
   -2.431, 36.287, 27.539, 24.027, 9.49, 80.616,

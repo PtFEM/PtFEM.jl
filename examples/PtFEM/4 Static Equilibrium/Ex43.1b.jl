@@ -44,33 +44,9 @@ data[:loaded_nodes]
 data |> display
 println()
 
-@time m = p43(data)
+@time fem, dis_dt, fm_dt = p43(data)
 println()
 
-using DataTables
-dis_dt = DataTable(
-  Y_translations = m.displacements[1, :],
-  z_rotations = m.displacements[2, :]
-)
-fm_dt = DataTable(
-  y1_Force = m.actions[1, :],
-  z1_Moment = m.actions[2, :],
-  y2_Force = m.actions[3, :],
-  z2_Moment = m.actions[4, :]
-)
-# Correct element forces and moments for equivalent nodal
-# forces and moments introduced for loading between nodes
-if :eq_nodal_forces_and_moments in keys(data)
-  eqfm = data[:eq_nodal_forces_and_moments]
-  k = data[:struc_el].fin_el.nod * data[:struc_el].fin_el.nodof
-  for t in eqfm
-    vals = convert(Array, fm_dt[t[1], :])
-    for i in 1:k
-      fm_dt[t[1], i] = round(vals[i] - t[2][i], 2)
-    end
-  end
-end
-  
 display(dis_dt)
 println()
 display(fm_dt)
@@ -82,15 +58,15 @@ if VERSION.minor < 6
   p = Vector{Plots.Plot{Plots.GRBackend}}(3)
   titles = ["p43.1 y deflection", "p43.1 y shear force", "p43.1 z moment"]
   fors = vcat(
-    convert(Array, fm_dt[:, :y1_Force]), 
-    convert(Array, fm_dt[:, :y2_Force])[end]
+    convert(Array, fm_dt[:, :xl_Force]), 
+    convert(Array, fm_dt[:, :xr_Force])[end]
   )
   moms = vcat(
-    convert(Array, fm_dt[:, :z1_Moment]),
-    convert(Array, fm_dt[:, :z2_Moment])[end]
+    convert(Array, fm_dt[:, :xl_Moment]),
+    convert(Array, fm_dt[:, :xr_Moment])[end]
   )
   
-  p[1] = plot(m.displacements[2,:], ylim=(-0.005, 0.005),
+  p[1] = plot(fem.displacements[2,:], ylim=(-0.005, 0.005),
     xlabel="node", ylabel="deflection [m]", color=:red,
     line=(:dash,1), marker=(:circle,4,0.8,stroke(1,:black)),
     title=titles[1], leg=false)

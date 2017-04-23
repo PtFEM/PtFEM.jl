@@ -36,39 +36,13 @@ data = Dict(
 data |> display
 println()
 
-@time m = p44(data)
+@time fem, dis_dt, fm_dt = p44(data)
 println()
 
-using DataTables
-dis_dt = DataTable(
-  x_translations = m.displacements[1, :],
-  y_translations = m.displacements[2, :],
-  rotations = m.displacements[3, :]
-)
-fm_dt = DataTable(
-  x1_Force = m.actions[1, :],
-  y1_Force = m.actions[2, :],
-  z1_Moment = m.actions[3, :],
-  x2_Force = m.actions[4, :],
-  y2_Force = m.actions[5, :],
-  z2_Moment = m.actions[6, :]
-)
-# Correct element forces and moments for equivalent nodal
-# forces and moments introduced for loading between nodes
-if :eq_nodal_forces_and_moments in keys(data)
-  eqfm = data[:eq_nodal_forces_and_moments]
-  k = data[:struc_el].fin_el.nod * data[:struc_el].fin_el.nodof
-  for t in eqfm
-    vals = convert(Array, fm_dt[t[1], :])
-    for i in 1:k
-      fm_dt[t[1], i] = round(vals[i] - t[2][i], 2)
-    end
-  end
-end
-  
 display(dis_dt)
 println()
 display(fm_dt)
+println()
   
 if VERSION.minor < 6
   using Plots
@@ -86,7 +60,7 @@ if VERSION.minor < 6
   )
   x_coords = data[:x_coords]
   
-  p[1] = plot(m.displacements[3,:], ylim=(-0.002, 0.002),
+  p[1] = plot(fem.displacements[3,:], ylim=(-0.002, 0.002),
     xlabel="node", ylabel="rotation [radians]", color=:red,
     line=(:dash,1), marker=(:circle,4,0.8,stroke(1,:black)),
     title=titles[1], leg=false)

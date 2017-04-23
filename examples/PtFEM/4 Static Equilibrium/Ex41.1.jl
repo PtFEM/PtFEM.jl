@@ -4,23 +4,23 @@ ProjDir = dirname(@__FILE__)
 
 l = 1.0       # Total length [m]
 N = 5         # Number of nodes
-els = N - 1   # Number of finite elements
+els = N - 1   # Number of finite elements (in x direction)
 nod = 2       # Number of nodes per finite elements
 nodof = 1     # Degrees of freedom for each node
-np_types = 1  # Number of proerty types
+np_types = 1  # Number of property types
 EA = 1.0e5    # Strain stiffness
 nip = 1       # Number of integration points
 
-struct_el = :Rod
-fin_el = :Line
-
 data = Dict(
-  # Rod(nxe, np_types, nip, fin_el(nod, nodof))
-  :struc_el => getfield(Main, Symbol(struct_el))(els, np_types, nip,
-    getfield(Main, Symbol(fin_el))(nod, nodof)),
+  # StructuralElement(nxe, np_types, nip, FiniteElement(nod, nodof))
+  :struc_el => Rod(els, np_types, nip, Line(nod, nodof)),
   :properties => [EA;],
+  # Compute x_coords using length l and number of elements, els
   :x_coords => 0.0:l/els:l,
+  # Define a support for node N
+  # In this case fix the single dof (x direction displacement)
   :support => [(N, [0])],
+  # External forces are applied to nodes 1 to 5.
   :loaded_nodes => [
       (1, [-0.625]),
       (2, [-1.25]),
@@ -30,39 +30,18 @@ data = Dict(
     ]
 );
 
+# Display the data dictionary
 data |> display
 println()
 
-@time m = p41(data)
+# Solve the FEM model
+@time fem, dis_dt, fm_dt = p41(data)
 println()
-
-using DataTables
-dis_dt = DataTable(
-  x_translation = m.displacements[:, 1],
-)
-fm_dt = DataTable(
-  normal_force_1 = m.actions[:, 1],
-  normal_force_2 = m.actions[:, 2],
-  normal_force_1_corrected = m.actions[:, 1],
-  normal_force_2_corrected = m.actions[:, 2]
-)
-  
-# Correct element forces and moments for equivalent nodal
-# forces and moments introduced for loading between nodes
-if :eq_nodal_forces_and_moments in keys(data)
-  eqfm = data[:eq_nodal_forces_and_moments]
-  k = data[:struc_el].fin_el.nod * data[:struc_el].fin_el.nodof
-  for t in eqfm
-    vals = convert(Array, fm_dt[t[1], :])
-    for i in 1:k
-      fm_dt[t[1]+2, i] = round(vals[i] - t[2][i], 2)
-    end
-  end
-end
 
 display(dis_dt)
 println()
 display(fm_dt)
+println()
   
 if VERSION.minor < 6
 
