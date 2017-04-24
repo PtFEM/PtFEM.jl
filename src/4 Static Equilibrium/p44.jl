@@ -1,3 +1,91 @@
+"""
+# p44
+
+Method for static equilibrium analysis of a rod.
+
+### Constructors
+```julia
+p44(data::Dict)
+```
+### Arguments
+```julia
+* `data` : Dictionary containing all input data
+```
+
+### Dictionary keys
+```julia
+* struc_el::StructuralElement                          : Type of  structural fin_el
+* support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
+* loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector
+* properties::Vector{Float64}                          : Material properties
+* x_coords::LinSpace{Float64}                          : x coordinate vector
+* y_coords::LinSpace{Float64}                          : y coordinate vector
+* g_num::Array{Int64,2}                                : Element node connections
+* fixed_freedoms::Array{Tuple{Vector{Int64}}           : Fixed freedoms
+```
+
+### Optional dictionary keys
+```julia
+* etype::Vector{Int64}                                 : Element material vector
+* penalty::Float64                                     : Penalty for fixed freedoms
+* eq_nodal_forces_and_moments                          : Equivalent nodal loads
+* z_coords::LinSpace{Float64}                          : z coordinate vector
+```
+
+### Examples
+```julia
+using PtFEM
+
+data = Dict(
+  # Frame(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
+  :struc_el => Frame(6, 6, 2, 1, 1, Line(2, 3)),
+  :properties => [
+    5.0e9 6.0e4;
+    1.0e9  2.0e4],
+  :etype => [1, 1, 1, 2, 2, 2],
+  :x_coords => [0.0, 6.0, 6.0, 12.0, 12.0, 14.0],
+  :y_coords => [0.0, 0.0, -4.0, 0.0, -5.0, 0.0],
+  :g_num => [
+    1 2 4 3 3 5;
+    2 4 6 2 4 4],
+  :support => [
+    (1, [0 0 1]),
+    (3, [0 0 0]),
+    (5, [0 0 0])
+    ],
+  :loaded_nodes => [
+    (1, [0.0 -60.0 -60.0]),
+    (2, [0.0 -180.0 -80.0]),
+    (4, [0.0 -140.0 133.33]),
+    (6, [0.0 -20.0 6.67])
+    ],
+  :penalty => 1e19,
+  :eq_nodal_forces_and_moments => [
+    (1, [0.0 -60.0 -60.0 0.0 -60.0 60.0]),
+    (2, [0.0 -120.0 -140.0 0.0 -120.0 140.0]),
+    (3, [0.0 -20.0 -6.67 0.0 -20.0 6.67])
+  ]
+)
+
+fem, dis_dt, fm_dt = p44(data)
+
+println("Displacements:")
+dis_dt |> display
+println()
+
+println("Actions:")
+fm_dt |> display
+println()
+
+```
+
+### Related help
+```julia
+?StructuralElement  : Help on structural elements
+?Rod                : Help on a Rod structural fin_el
+?FiniteElement      : Help on finite element types
+```
+"""
 function p44(data::Dict)
   
   # Parse & check FEdict data
@@ -162,10 +250,11 @@ function p44(data::Dict)
     fsparm!(gsm, g, km)
   end
     
-  loads = zeros(neq+1)
+  lastind = neq + 1
+  loads = OffsetArray(zeros(lastind+1), 0:lastind)
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
-      loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
+      loads[nf[:, data[:loaded_nodes][i][1]]] = data[:loaded_nodes][i][2]
     end
   end
   
@@ -184,34 +273,34 @@ function p44(data::Dict)
       no[i] = nf[sense[i], node[i]]
       value[i] = data[:fixed_freedoms][i][3]
       gsm[no[i], no[i]] += penalty
-      loads[no[i] + 1] = gsm[no[i], no[i]] .* value[i]
+      loads[no[i]] = gsm[no[i], no[i]] .* value[i]
     end
   end
   
   # Compute Cholesky factored global stiffness matrix for
   # future re-use. If re-use is not appropriate the loads
   # can be computed directly using gsm:
-  #   loads[2:end] = gsm \ loads[2:end]
+  #   loads[1:neq] = gsm \ loads[1:neq]
 
   cfgsm = cholfact(gsm)
-  loads[2:end] = cfgsm \ loads[2:end]
+  loads[1:neq] = cfgsm \ loads[1:neq]
   println()
 
   displacements = zeros(size(nf))
   for i in 1:size(displacements, 1)
     for j in 1:size(displacements, 2)
       if nf[i, j] > 0
-        displacements[i,j] = loads[nf[i, j]+1]
+        displacements[i,j] = loads[nf[i, j]]
       end
     end
   end
   
-  loads[1] = 0.0
+  loads[0] = 0.0
   for i in 1:nels
     num = g_num[:, i]
     coord = g_coord[:, num]'
     g = g_g[:, i]
-    eld = loads[g+1]
+    eld = loads[g]
     km = rigid_jointed!(km, prop, gamma, etype, i, coord)
     actions[:, i] = km * eld
   end

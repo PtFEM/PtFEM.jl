@@ -1,6 +1,8 @@
 module PtFEM
 
-using DataTables, OffsetArrays, Compat
+using DataTables, Compat
+
+using OffsetArrays
        
 # package code goes here
 ### Imports ###
@@ -129,7 +131,10 @@ export
   p61,
   p62,
   pp62,
-  p62a
+  p62a,
+  
+  # From OffsetArrays
+  OffsetArray
   
 ### Deprecated ###
   
