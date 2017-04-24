@@ -39,18 +39,25 @@ See [PtFEM/EEM.jl](https://github.com/PtFEM/EEM.jl) for further examples.
 
 ### Custom array indices
 
-Julia by default uses 1 as the first index into an array, but has the ability to use arbitrary indexing as well. The PtFEM Fortran programs use 0-based indexing for the loads vector. For now I have shifted all indices by 1. This practice will be reviewed later on in the project. I'm leaning towards simply using OffsetArrays.jl for this purpose, i.e:
+Julia by default uses 1 as the first index into an array, but has the ability to use arbitrary indexing as well. The PtFEM Fortran programs use 0-based indexing for the loads vector. In programs p41 through to p44 in chapter 4 I have used OffsetArrays.jl for this purpose, i.e:
 
 ```
+using OffsetArrays
 neq = 10
 loads = OffsetArray(zeros(neq+1), 0:neq)
 ```
 
+I'm planning to use the same approach in all other chapters.
+
 ### Graphics
+
+Graphics will be mostly implemented using the Julia pacckage Plots.jl (using the GR.jl backend).
 
 #### Plots.jl
 
 E.g. Ex41.1.jl, Ex61.1.jl and Ex62.1.jl
+
+Several programs will generate VTK output.
 
 #### VTK (ParaView)
 
