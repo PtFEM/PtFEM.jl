@@ -29,7 +29,8 @@ examples = [
   "PtFEM/5 Elastic Solids/Ex54.2.jl",
   "PtFEM/5 Elastic Solids/Ex55.1.jl",
   "PtFEM/5 Elastic Solids/Ex56.1.jl",
-  #"PtFEM/5 Elastic Solids/Ex57.1.jl",
+  #"PtFEM/5 Elastic Solids/Ex57.1.jl",        # Takes a while ...
+  "PtFEM/5 Elastic Solids/Ex57.1b.jl",
   "PtFEM/6 Material Nonlinearity/Ex61.1.jl",
   "PtFEM/6 Material Nonlinearity/Ex62.1.jl"
 ]

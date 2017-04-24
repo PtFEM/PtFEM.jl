@@ -1,7 +1,7 @@
 using PtFEM
 
-nf_path = Pkg.dir("PtFEM", "examples", "5 Elastic Solids", "Ex57.1.nf.dat")
-loads_path = Pkg.dir("PtFEM", "examples", "5 Elastic Solids", "Ex57.1.loads.dat")
+nf_path = Pkg.dir("PtFEM", "examples", "PtFEM", "5 Elastic Solids", "Ex57.1.nf.dat")
+loads_path = Pkg.dir("PtFEM", "examples", "PtFEM", "5 Elastic Solids", "Ex57.1.loads.dat")
 
 data = Dict(
   # Solid(ndim, nst, nxe, nye, nze, nip, direction=:r, finite_element(nod, nodof))

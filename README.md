@@ -16,7 +16,7 @@ I use PtFEM when referring to the book and PtFEM.jl when referring to the Julia 
 
 PtFEM is a very versatile toolkit to numerically solve problems consisting of physical components using FEM methods (to distinguish it from systems primarily focused on solving symbolic partial differential equations).
 
-PtFEM.jl is the central package in the Github [PtFEM organisation](https://github.com/PtFEM). More details about the plans for the PtFEM organisation are given in  [FUTURES](https://github.com/PtFEM/PtFEM.jl/blob/master/FUTURES.md).
+PtFEM.jl is the central package in the Github [PtFEM organisation](https://github.com/PtFEM). More details on the plans for the PtFEM organisation are given in  [FUTURES](https://github.com/PtFEM/PtFEM.jl/blob/master/FUTURES.md).
 
 Changes in PtFEM.jl with respect to the Fortran programs in PtFEM are summarized in [CHANGES](https://github.com/PtFEM/PtFEM.jl/blob/master/CHANGES.md).
 
@@ -31,9 +31,9 @@ Pkg.clone("https://github.com/PtFEM/PtFEM.jl")
 Pkg.test("PtFEM")
 ```
 
-As this shows, the package has not yet been published and is currently only available through cloning from my github account. The authors have given permission to publish the Julia version of the PtFEM toolkit. Please refer to [LICENSE](https://github.com/goedman/PtFEM.jl/blob/master/LICENSE.md) for more details.
+As above lines show, the package has not yet been published and is currently only available through cloning from my github account. The authors have given permission to publish the Julia version of the PtFEM toolkit. Please refer to [LICENSE](https://github.com/goedman/PtFEM.jl/blob/master/LICENSE.md) for more details.
 
-Examples are in the examples/...  subdirectories. Please note that several examples use [Plots.jl](https://juliaplots.github.io) based graphics. I have not made Plots.jl REQUIREd for PtFEM.jl. In the test directory there is a [runexamples](https://github.com/PtFEM/PtFEM.jl/blob/master/test/runexamples.jl) script that will run all examples.
+Examples are in the examples/...  subdirectories. Please note that several examples use [Plots.jl](https://juliaplots.github.io) based graphics. In the test directory there is a [runexamples](https://github.com/PtFEM/PtFEM.jl/blob/master/test/runexamples.jl) script that will run all examples.
 
  PtFEM will always remain the primary documentation for this package. Additional programming documentation will be available through Julia's documentor package, e.g. after installing the package:
  
@@ -49,7 +49,7 @@ Initial focus has been on chapters 4, 5 and early sections of 6 of PtFEM in orde
 Please note that no timeline is set when this work in progress will be finished. [TODO](https://github.com/goedman/PtFEM.jl/blob/master/TODO.md) contains a list of next steps. [VERSIONS](https://github.com/goedman/PtFEM.jl/blob/master/VERSIONS.md) holds the version history.
 
 Rob J Goedman
-March 2017
+April 2017
 
 ## Related work
 
