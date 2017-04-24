@@ -16,6 +16,6 @@ Updates for new releases of Julia bump the major level.
 
 #### v"0.0.1"
 
-Initial release of PtFEM/PtFEM.jl. Contains the programs in chapters 4 and 5 and
+Initial release of PtFEM/PtFEM.jl. Contains the programs in chapters 4, 5 and
 the first 2 programs of chapter 6.
 

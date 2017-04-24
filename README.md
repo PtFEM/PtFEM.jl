@@ -4,7 +4,7 @@
 [![Project Status: WIP - Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
 
 Unix/OSX:  [![Travis Build Status](https://travis-ci.org/PtFEM/PtFEM.jl.svg?branch=master)](https://travis-ci.org/PtFEM/PtFEM.jl)
-Windows(64bit):  [![Build status](https://ci.appveyor.com/api/projects/status/github/PtFEM/PtFEM.jl?branch=master)](https://ci.appveyor.com/project/goedman/ptfem-jl)
+, Windows(64bit):  [![Build status](https://ci.appveyor.com/api/projects/status/github/PtFEM/PtFEM.jl?branch=master)](https://ci.appveyor.com/project/goedman/ptfem-jl)
 
 
 
@@ -14,7 +14,7 @@ This Julia package currently contains the programs in chapters 4, 5 and early se
 
 I use PtFEM when referring to the book and PtFEM.jl when referring to the Julia package.
 
-PtFEM is a very versatile toolkit to numerically solve problems consisting of physical components using FEM methods (to distinguish it from systems primarily focused on solving symbolic partial differential equations).
+PtFEM is a very versatile FEM toolkit to numerically solve problems consisting of physical components (to distinguish it from systems primarily focused on solving symbolic partial differential equations).
 
 PtFEM.jl is the central package in the Github [PtFEM organisation](https://github.com/PtFEM). More details on the plans for the PtFEM organisation are given in  [FUTURES](https://github.com/PtFEM/PtFEM.jl/blob/master/FUTURES.md).
 
@@ -33,13 +33,13 @@ Pkg.test("PtFEM")
 
 As above lines show, the package has not yet been published and is currently only available through cloning from my github account. The authors have given permission to publish the Julia version of the PtFEM toolkit. Please refer to [LICENSE](https://github.com/goedman/PtFEM.jl/blob/master/LICENSE.md) for more details.
 
-Examples are in the examples/...  subdirectories. Please note that several examples use [Plots.jl](https://juliaplots.github.io) based graphics. In the test directory there is a [runexamples](https://github.com/PtFEM/PtFEM.jl/blob/master/test/runexamples.jl) script that will run all examples.
+Examples are in the examples/...  subdirectories. In the test directory there is a [runexamples](https://github.com/PtFEM/PtFEM.jl/blob/master/test/runexamples.jl) script that will run all examples.
 
- PtFEM will always remain the primary documentation for this package. Additional programming documentation will be available through Julia's documentor package, e.g. after installing the package:
+ PtFEM, the book, will always remain the primary documentation for this package. Additional programming documentation will be available through Julia's documentor package, e.g. after installing the package:
  
 ```
 use PtFEM
-?Line
+?StructuralElement
 ```
 
 I also have some [notebooks](https://github.com/goedman/RobGoedmansNotebooks.jl/tree/master/notebooks/PtFEM). At this point in time, the notebooks are just initial examples (and might not always work) until the structure of the toolkit gels.

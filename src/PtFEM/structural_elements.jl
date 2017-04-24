@@ -22,13 +22,13 @@ abstract StructuralElement
 
 ### Related help
 ```julia
-?FiniteEelement                   : Show all finite elements
+?FiniteElement                   : Show all finite elements
 ?Rod                              : Help on Rod structural element
 ?Beam                             : Help on Beam structural element
 ?Frame                            : Help on Frame structural element
 ?Plane                            : Help on Plane structural element
 ?Solid                            : Help on Solid structural element
-?GenericSolid                     : Help on GenericSolid structural
+?GenericSolid                     : Help on GenericSolid structural element
 ```
 """
 @compat abstract type StructuralElement end
