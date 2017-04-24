@@ -41,14 +41,14 @@ data = Dict(
   :loaded_nodes => [(1,[-0.625]),(2,[-1.25]),(3,[-1.25]),(4,[-1.25]),(5,[-0.625])]
 )
 
-m = p41(data)
+fem, dis_dt, fm_dt = p41(data)
 
 println("Displacements:")
-m.displacements |> display
+dis_dt |> display
 println()
 
 println("Actions:")
-m.actions |> display
+fm_dt |> display
 println()
 
 ```
@@ -267,11 +267,6 @@ function p41(data::Dict{Symbol, Any})
     for t in eqfm
       vals = convert(Array, fm_dt[t[1], :])
       for i in 1:k
-        println(i)
-        println(t)
-        println(fm_dt[t[1], i])
-        println(vals)
-        println(round(vals[i] - t[2][i], 2))
         fm_dt[t[1], i] = round(vals[i] - t[2][i], 2)
       end
     end
