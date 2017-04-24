@@ -183,10 +183,11 @@ function p41(data::Dict{Symbol, Any})
   
   println("There are $(neq) equations.")
     
-  loads = zeros(neq+1)
+  lastind = neq + 1
+  loads = OffsetArray(zeros(lastind+1), 0:lastind)
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
-      loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
+      loads[nf[:, data[:loaded_nodes][i][1]]] = data[:loaded_nodes][i][2]
     end
   end
   
@@ -212,29 +213,29 @@ function p41(data::Dict{Symbol, Any})
       no[i] = nf[sense[i], node[i]]
       value[i] = data[:fixed_freedoms][i][3]
       gsm[no[i], no[i]] += penalty
-      loads[no[i] + 1] = gsm[no[i], no[i]] .* value[i]
+      loads[no[i]] = gsm[no[i], no[i]] .* value[i]
     end
   end
   
   cfgsm = cholfact(gsm)
-  loads[2:end] = cfgsm \ loads[2:end]
+  loads[1:neq] = cfgsm \ loads[1:neq]
   println()
 
   displacements = zeros(size(nf))
   for i in 1:size(displacements, 1)
     for j in 1:size(displacements, 2)
       if nf[i, j] > 0
-        displacements[i,j] = loads[nf[i, j]+1]
+        displacements[i,j] = loads[nf[i, j]]
       end
     end
   end
   displacements = displacements'
 
-  loads[1] = 0.0
+  loads[0] = 0.0
   for i in 1:nels
     km = PtFEM.rod_km!(km, prop[etype[i], 1], ell[i])
     g = g_g[:, i]
-    eld = loads[g+1]
+    eld = loads[g]
     actions[i, :] = km * eld
   end
 
@@ -281,21 +282,22 @@ end
 
 
 function p41(m::PtFEM.jFEM, data::Dict)
-  loads = zeros(m.neq+1)
+  lastind = m.neq + 1
+  loads = OffsetArray(zeros(lastind+1), 0:lastind)
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
-      loads[m.nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
+      loads[m.nf[:, data[:loaded_nodes][i][1]]] = data[:loaded_nodes][i][2]
     end
   end
 
-  loads[2:end] = m.cfgsm \ loads[2:end]
+  loads[1:m.neq] = m.cfgsm \ loads[1:m.neq]
   println()
 
   displacements = zeros(size(m.nf))
   for i in 1:size(displacements, 1)
     for j in 1:size(displacements, 2)
       if m.nf[i, j] > 0
-        displacements[i,j] = loads[m.nf[i, j]+1]
+        displacements[i,j] = loads[m.nf[i, j]]
       end
     end
   end
@@ -311,11 +313,11 @@ function p41(m::PtFEM.jFEM, data::Dict)
   g = zeros(Int64, m.ndof)
   eld = zeros(m.ndof)
   actions = zeros(m.nels, m.ndof)
-  loads[1] = 0.0
+  loads[0] = 0.0
   for i in 1:m.nels
     km = PtFEM.rod_km!(m.km, m.prop[m.etype[i], 1], ell[i])
     g = m.g_g[:, i]
-    eld = loads[g+1]
+    eld = loads[g]
     actions[i, :] = km * eld
   end
   
@@ -325,10 +327,10 @@ function p41(m::PtFEM.jFEM, data::Dict)
 
   if :eq_nodal_forces_and_moments in keys(data)
     fm_dt = DataTable(
-      normal_force_1 = actions[:, 1],
-      normal_force_2 = actions[:, 2],
-      normal_force_1_corrected = actions[:, 1],
-      normal_force_2_corrected = actions[:, 2]
+    normal_force_1 = actions[:, 1],
+    normal_force_2 = actions[:, 2],
+    nf_1_uncorrected = actions[:, 1],
+    nf_2_uncorrected = actions[:, 2]
     )
   else
     fm_dt = DataTable(
@@ -345,7 +347,7 @@ function p41(m::PtFEM.jFEM, data::Dict)
     for t in eqfm
       vals = convert(Array, fm_dt[t[1], :])
       for i in 1:k
-        fm_dt[t[1]+2, i] = round(vals[i] - t[2][i], 2)
+        fm_dt[t[1], i] = round(vals[i] - t[2][i], 2)
       end
     end
   end

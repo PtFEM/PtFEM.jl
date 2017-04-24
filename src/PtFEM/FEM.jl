@@ -125,7 +125,7 @@ immutable jFEM                    # Computationale data and results structure
   cfgsm::Base.SparseArrays.CHOLMOD.Factor{Float64}
                                   # Cholesky factored global stiffness matrix
   
-  loads::Array{Float64, 1}        # Nodel loads and displacements
+  loads::OffsetArray{Float64, 1}  # Nodel loads and displacements
   points::Array{Float64, 2}       # Integrating point lacal coordinates
   prop::Array{Float64, 2}         # Element properties (E and nu for each fin_el)
   sigma::Array{Float64, 1}        # Stress terms

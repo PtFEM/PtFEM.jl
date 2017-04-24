@@ -1,3 +1,85 @@
+"""
+# p43
+
+Method for static equilibrium analysis of a rod.
+
+### Constructors
+```julia
+p43(data::Dict)
+```
+### Arguments
+```julia
+* `data` : Dictionary containing all input data
+```
+
+### Dictionary keys
+```julia
+* struc_el::StructuralElement                          : Type of  structural fin_el
+* support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
+* loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector
+* properties::Vector{Float64}                          : Material properties
+* x_coords::LinSpace{Float64}                          : x coordinate vector
+* g_num::Array{Int64,2}                                : Element node connections
+* fixed_freedoms::Array{Tuple{Vector{Int64}}           : Fixed freedoms
+```
+
+### Optional dictionary keys
+```julia
+* etype::Vector{Int64}                                 : Element material vector
+* penalty::Float64                                     : Penalty for fixed freedoms
+* eq_nodal_forces_and_moments                          : Equivalent nodal loads
+```
+
+### Examples
+```julia
+using PtFEM
+
+data = Dict(
+  # Beam(ndim, nst, nxe, nip, direction, finite_element(nod, nodof), axisymmet
+  :struc_el => Beam(2, 1, 4, 1, :x, Line(2, 2), false),
+  :properties => [4.0e4; 2.0e4],
+  :etype => [1, 1, 2, 2],
+  :x_coords => [0.0, 2.5, 5.0, 8.0, 10.0],
+  :support => [
+      (1, [0 1]),
+      (4, [0 1])
+    ],
+  :loaded_nodes => [
+      (2, [-20.0 0.0]),
+      (3, [-6.0 -3.0]),
+      (4, [-8.8 2.2]),
+      (5, [-1.2 0.5333])
+    ],
+  :fixed_freedoms => [
+      (1, 2, -0.001),
+      (3, 1, -0.005)
+    ],
+  :penalty => 1e19,
+  :eq_nodal_forces_and_moments => [
+    (3, [-6.0 -3.0 -6.0 3.0]),
+    (4, [-2.8 -0.8 -1.2  0.5333])
+  ]
+)
+
+fem, dis_dt, fm_dt = p43(data)
+
+println("Displacements:")
+dis_dt |> display
+println()
+
+println("Actions:")
+fm_dt |> display
+println()
+
+```
+
+### Related help
+```julia
+?StructuralElement  : Help on structural elements
+?Rod                : Help on a Rod structural fin_el
+?FiniteElement      : Help on finite element types
+```
+"""
 function p43(data::Dict)
   
   # Parse & check FEdict data
@@ -143,10 +225,11 @@ function p43(data::Dict)
     fsparm!(gsm, g, km+mm)
   end
   
-  loads = zeros(neq+1)
+  lastind = neq + 1
+  loads = OffsetArray(zeros(lastind+1), 0:lastind)
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
-      loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
+      loads[nf[:, data[:loaded_nodes][i][1]]] = data[:loaded_nodes][i][2]
     end
   end
   
@@ -165,19 +248,19 @@ function p43(data::Dict)
       no[i] = nf[sense[i], node[i]]
       value[i] = data[:fixed_freedoms][i][3]
       gsm[no[i], no[i]] += penalty
-      loads[no[i] + 1] = gsm[no[i], no[i]] .* value[i]
+      loads[no[i]] = gsm[no[i], no[i]] .* value[i]
     end
   end
   
   cfgsm = cholfact(gsm)
-  loads[2:end] = cfgsm \ loads[2:end]
+  loads[1:neq] = cfgsm \ loads[1:neq]
   println()
 
   displacements = zeros(size(nf))
   for i in 1:size(displacements, 1)
     for j in 1:size(displacements, 2)
       if nf[i, j] > 0
-        displacements[i,j] = loads[nf[i, j]+1]
+        displacements[i,j] = loads[nf[i, j]]
       end
     end
   end
@@ -191,7 +274,7 @@ function p43(data::Dict)
     eld = zeros(length(g))
     for j in 1:length(g)
       if g[j] != 0
-        eld[j] = loads[g[j]+1]
+        eld[j] = loads[g[j]]
       end
     end
     actions[:, i] = (km+mm) * eld
