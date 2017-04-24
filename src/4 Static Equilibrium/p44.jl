@@ -216,24 +216,51 @@ function p44(data::Dict)
     actions[:, i] = km * eld
   end
 
-  dis_dt = DataTable(
-    x_translation = displacements[1, :],
-    y_translation = displacements[2, :],
-    rotation = displacements[3, :]
-  )
-  fm_dt = DataTable(
-    x1_Force = actions[1, :],
-    y1_Force = actions[2, :],
-    z1_Moment = actions[3, :],
-    x2_Force = actions[4, :],
-    y2_Force = actions[5, :],
-    z2_Moment = actions[6, :]
-  )
+  
+  if ndim == 2
+    dis_dt = DataTable(
+      x_translation = displacements[1, :],
+      y_translation = displacements[2, :],
+      rotation = displacements[3, :]
+    )
+    fm_dt = DataTable(
+      x1_Force = actions[1, :],
+      y1_Force = actions[2, :],
+      z1_Moment = actions[3, :],
+      x2_Force = actions[4, :],
+      y2_Force = actions[5, :],
+      z2_Moment = actions[6, :]
+    )
+  elseif ndim == 3
+    dis_dt = DataTable(
+      x_translation = displacements[1, :],
+      y_translation = displacements[2, :],
+      z_translation = displacements[3, :],
+      x_rotation = displacements[4, :],
+      y_rotation = displacements[5, :],
+      z_rotation = displacements[6, :]
+    )
+    fm_dt = DataTable(
+      x1_Force = actions[1, :],
+      y1_Force = actions[2, :],
+      z1_Force = actions[3, :],
+      x1_Moment = actions[4, :],
+      y1_Moment = actions[5, :],
+      z1_Moment = actions[6, :],
+      x2_Force = actions[7, :],
+      y2_Force = actions[8, :],
+      z2_Force = actions[9, :],
+      x2_Moment = actions[10, :],
+      y2_Moment = actions[11, :],
+      z2_Moment = actions[12, :]
+    )
+  end
+  
   # Correct element forces and moments for equivalent nodal
   # forces and moments introduced for loading between nodes
   if :eq_nodal_forces_and_moments in keys(data)
-    eqfm = data[:eq_nodal_forces_and_moments]
     k = data[:struc_el].fin_el.nod * data[:struc_el].fin_el.nodof
+    eqfm = data[:eq_nodal_forces_and_moments]
     for t in eqfm
       vals = convert(Array, fm_dt[t[1], :])
       for i in 1:k

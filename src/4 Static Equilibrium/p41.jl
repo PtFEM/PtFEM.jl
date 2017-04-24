@@ -256,9 +256,6 @@ function p41(data::Dict{Symbol, Any})
     )
   end
   
-  fm_dt |> display
-  println()
-  
   # Correct element forces and moments for equivalent nodal
   # forces and moments introduced for loading between nodes
   if :eq_nodal_forces_and_moments in keys(data)

@@ -188,15 +188,35 @@ function p42(data::Dict)
     axial[i] = global_to_axial(actions[:, i], coord)
   end
 
-  dis_dt = DataTable(
-    x_translation = displacements[:, 1],
-  )
-
-  fm_dt = DataTable(
-    normal_force_1 = actions[:, 1],
-    normal_force_2 = actions[:, 2],
-  )
-  
+  if ndim == 2
+    dis_dt = DataTable(
+      x_translation = displacements[1, :],
+      y_translation = displacements[2, :],
+    )
+    fm_dt = DataTable(
+      x_force_1 = actions[1, :],
+      y_force_1 = actions[2, :],
+      x_force_2 = actions[3, :],
+      y_force_2 = actions[4, :],
+      axial_force = axial
+    )
+  elseif ndim == 3
+    dis_dt = DataTable(
+      x_translation = displacements[1, :],
+      y_translation = displacements[2, :],
+      z_translation = displacements[3, :],
+    )
+    fm_dt = DataTable(
+      x_force_1 = actions[1, :],
+      y_force_1 = actions[2, :],
+      z_force_1 = actions[3, :],
+      x_force_2 = actions[4, :],
+      y_force_2 = actions[5, :],
+      z_force_2 = actions[6, :],
+      axial_force = axial
+    )
+    
+  end
   # Correct element forces and moments for equivalent nodal
   # forces and moments introduced for loading between nodes
   if :eq_nodal_forces_and_moments in keys(data)
