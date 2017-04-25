@@ -3,12 +3,6 @@ using Base.Test
 
 # write your own tests here
 
-if VERSION.minor == 3
-  isfile("example.vtu") && rm("example.vtu")
-  isfile("example_bin.vtu") && rm("example_bin.vtu")
-  isfile("example_compressed_bin.vtu") && rm("example_compressed_bin.vtu")
-end
-
 examples = [
   "PtFEM/4 Static Equilibrium/Ex41.1.jl",
   "PtFEM/4 Static Equilibrium/Ex41.2.jl",
@@ -32,7 +26,10 @@ examples = [
   #"PtFEM/5 Elastic Solids/Ex57.1.jl",        # Takes a while ...
   #"PtFEM/5 Elastic Solids/Ex57.1b.jl",       # Requires too much memory
   "PtFEM/6 Material Nonlinearity/Ex61.1.jl",
-  "PtFEM/6 Material Nonlinearity/Ex62.1.jl"
+  "PtFEM/6 Material Nonlinearity/Ex62.1.jl",
+  "Nodal Formulas/figure-23.jl",
+  "Nodal Formulas/figure-23b.jl",
+  "Nodal Formulas/figure-24.jl",
 ]
 
 println("\nRunning examples:\n")
