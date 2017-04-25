@@ -44,9 +44,11 @@ use PtFEM
 
 I also have some [notebooks](https://github.com/goedman/RobGoedmansNotebooks.jl/tree/master/notebooks/PtFEM). At this point in time, the notebooks are just initial examples (and might not always work) until the structure of the toolkit gels.
 
-Initial focus has been on chapters 4, 5 and early sections of 6 of PtFEM in order to figure out how to best structure the toolkit. At this point chapter 4 is mostly done, chapters 5 and 6 are being reviewed.
+Initial focus has been on chapters 4, 5 and early sections of 6 of PtFEM in order to figure out how to best structure the toolkit. At this point chapter 4 is basically done, chapters 5 and 6 are being reviewed.
 
-Please note that no timeline is set when this work in progress will be finished. [TODO](https://github.com/goedman/PtFEM.jl/blob/master/TODO.md) contains a list of next steps. [VERSIONS](https://github.com/goedman/PtFEM.jl/blob/master/VERSIONS.md) holds the version history.
+Please note that no hard timeline is set when this work in progress will be finished. [TODO](https://github.com/goedman/PtFEM.jl/blob/master/TODO.md) contains a list of next steps. [VERSIONS](https://github.com/goedman/PtFEM.jl/blob/master/VERSIONS.md) holds the version history.
+
+As always, feedback is welcome, please send me an email, file an issue on Github or generate a pull request (PR). 
 
 Rob J Goedman
 April 2017
