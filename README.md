@@ -20,7 +20,7 @@ PtFEM.jl is the central package in the Github [PtFEM organisation](https://githu
 
 Changes in PtFEM.jl with respect to the Fortran programs in PtFEM are summarized in [CHANGES](https://github.com/PtFEM/PtFEM.jl/blob/master/CHANGES.md).
 
-As mentioned in [CHANGES](https://github.com/PtFEM/PtFEM.jl/blob/master/CHANGES.md), graphics are introduced in 2 forms, VTK based recipes (e.g. for display in Paraview) and plotrecipes using the Julia package Plots.jl. This first release is more or less a proof of concept for this approach.
+As mentioned in [CHANGES](https://github.com/PtFEM/PtFEM.jl/blob/master/CHANGES.md), graphics are introduced in 2 forms, VTK based recipes (e.g. for display in Paraview) and plot recipes using the Julia package Plots.jl. This first release is more or less a proof of concept for this approach.
 
 PtFEM.jl will be published in a couple of steps, e.g. 1) chapters 4-6, 2) chapters 7-9, 3) remaining chapters in PtFEM and 4) graphics and multiprocessing aspects, although I will start to mix in item 4) earlier.
 
@@ -35,7 +35,7 @@ As above lines show, the package has not yet been published and is currently onl
 
 Examples are in the examples/...  subdirectories. In the test directory there is a [runexamples](https://github.com/PtFEM/PtFEM.jl/blob/master/test/runexamples.jl) script that will run all examples.
 
- PtFEM, the book, will always remain the primary documentation for this package. Additional programming documentation will be available through Julia's documentor package, e.g. after installing the package:
+ PtFEM, the book, will always remain the primary documentation for this package. Additional programming documentation will be available through Julia's documenter package, e.g. after installing the package:
  
 ```
 use PtFEM

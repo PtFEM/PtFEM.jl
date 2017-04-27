@@ -2,7 +2,7 @@
 
 1. Remaining programs in chapter 6
 1. Complete plot recipes for chapters 4 to 6
-1. Setup/complete documentation system using documentor.jl
+1. Setup/complete documentation system using documenter.jl
 1. Rework chapters 5 and 6 for Julia sparse matrices
 1. Update notebooks
 1. Add generalized WriteVTK.jl recipes
