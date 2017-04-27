@@ -4,11 +4,33 @@ The structure of PtFEM is directly derived from the Fortran programs that accomp
 
 The Julia versions have been derived by Rob Goedman and are contained in the Julia package PtFEM.jl. 
 
-## Copyright notice
+## Copyright notice and limited liability
 
-The original Fortran source code has no license clause included which means it is protected by copyright.
+PtFEM and the original Fortran source code is protected by copyright:
 
-The authors have given permission to publish this Julia version provided the publishing organisation is not for profit.
+> “All rights reserved. No part of this publication may be reproduced, stored in a 
+> retrieval system, or transmitted, in any form or by any means, electronic,
+>  mechanical, photocopying, recording or otherwise, except as permitted by the UK
+>  Copyright, Designs and Patents Act 1988, without the prior permission of the
+>  publisher.”
+
+Limit of liability/Disclaimer of Warranty:
+
+> “While the publisher and author have used their best efforts in 
+>  preparing this book, they make no representations or warranties 
+>  with respect to the accuracy or completeness of the contents of this
+>  book and specifically disclaim any implied warranties of merchantability or
+>  fitness for a particular purpose. It is sold on the understanding that the
+>  publisher is not engaged in rendering professional services and neither the
+>  publisher nor the author shall be liable for damages arising herefrom. If
+>  professional advice or other expert assistance is required, the services of a
+>  competent professional should be sought.”
+
+For complete details, please check the copyright section in the book ["Programming the Finite Element Method"](http://www.wiley.com//legacy/wileychi/smith_griffiths_margetts)
+
+## Permission to publish the Julia version
+
+The authors and publisher have given permission to publish this Julia version provided the publishing organisation is not for profit.
 
  Copyright of the Julia version remains with the current and future developers of the Fortran and Julia versions.
 
