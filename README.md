@@ -6,7 +6,7 @@
 Unix/OSX:  [![Travis Build Status](https://travis-ci.org/PtFEM/PtFEM.jl.svg?branch=master)](https://travis-ci.org/PtFEM/PtFEM.jl)
 , Windows(64bit):  [![Build status](https://ci.appveyor.com/api/projects/status/github/PtFEM/PtFEM.jl?branch=master)](https://ci.appveyor.com/project/goedman/ptfem-jl)
 
-
+[Documentation](https://goedman.github.io/PtFEM/PtFEM.jl/latest)
 
 ## Access to PtFEM models
 
