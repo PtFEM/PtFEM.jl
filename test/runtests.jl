@@ -11,6 +11,7 @@ end
 
 code_tests = [
   "PtFEM.jl",
+  #=
   "p41.1.jl",
   "p41.2.jl",
   "p42.2.jl",
@@ -33,6 +34,7 @@ code_tests = [
   "p56.1.jl",
   "p61.1.jl",
   "p62.1.jl"
+  =#
 ]
 
 if isfile(Pkg.dir("PtFEM", "deps", "src", "PtFEM", "4th_ed", "libcsom.dylib"))
