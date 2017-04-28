@@ -16,11 +16,11 @@ I use PtFEM when referring to the book and PtFEM.jl when referring to the Julia 
 
 PtFEM is a very versatile toolkit to construct FEM programs for practical engineering and scientific problems (to distinguish it somewhat from systems primarily focused on solving symbolic partial differential equations). Each chapter in the book gradually develops a set of related programs that can be used as a starting point for a particular type of problem.
 
-PtFEM.jl is the central package in the Github [PtFEM organisation](https://github.com/PtFEM). More details on the plans for the PtFEM organisation are given in  [FUTURES](https://github.com/PtFEM/PtFEM.jl/blob/master/FUTURES.md).
+PtFEM.jl is the central package in the Github [PtFEM organisation](https://github.com/PtFEM/PtFEM.jl/blob/master/docs/src/FUTURES.md). More details on the plans for the PtFEM organisation are given in  [FUTURES](https://github.com/PtFEM/PtFEM.jl/blob/master/docs/src/FUTURES.md).
 
-Changes in PtFEM.jl with respect to the Fortran programs in PtFEM are summarized in [CHANGES](https://github.com/PtFEM/PtFEM.jl/blob/master/CHANGES.md).
+Changes in PtFEM.jl with respect to the Fortran programs in PtFEM are summarized in [CHANGES](https://github.com/PtFEM/PtFEM.jl/blob/master/docs/src/CHANGES.md).
 
-As mentioned in [CHANGES](https://github.com/PtFEM/PtFEM.jl/blob/master/CHANGES.md), graphics are introduced in 2 forms, VTK based recipes (e.g. for display in Paraview) and plot recipes using the Julia package Plots.jl. This first release is more or less a proof of concept for this approach.
+As mentioned in [CHANGES](https://github.com/PtFEM/PtFEM.jl/blob/master/docs/src/CHANGES.md), graphics are introduced in 2 forms, VTK based recipes (e.g. for display in Paraview) and plot recipes using the Julia package Plots.jl. This first release is more or less a proof of concept for this approach.
 
 PtFEM.jl will be published in a couple of steps, e.g. 1) chapters 4-6, 2) chapters 7-9, 3) remaining chapters in PtFEM and 4) graphics and multiprocessing aspects, although I will start to mix in item 4) earlier.
 
@@ -46,7 +46,7 @@ I also have some [notebooks](https://github.com/goedman/RobGoedmansNotebooks.jl/
 
 Initial focus has been on chapters 4, 5 and early sections of 6 of PtFEM in order to figure out how to best structure the toolkit. At this point chapter 4 is basically done, chapters 5 and 6 are being reviewed.
 
-Please note that no hard timeline is set when this work in progress will be finished. [TODO](https://github.com/goedman/PtFEM.jl/blob/master/TODO.md) contains a list of next steps. [VERSIONS](https://github.com/goedman/PtFEM.jl/blob/master/VERSIONS.md) holds the version history.
+Please note that no hard timeline is set when this work in progress will be finished. [TODO](https://github.com/goedman/PtFEM.jl/blob/master/docs/src/TODO.md) contains a list of next steps. [VERSIONS](https://github.com/goedman/PtFEM.jl/blob/master/docs/src/VERSIONS.md) holds the version history.
 
 As always, feedback is welcome, please send me an email, file an issue on Github or generate a pull request (PR). 
 
@@ -59,5 +59,5 @@ Fundamental and great development work related to solving (partial) differential
 
 Outside of Julia at least 2 other toolkits should be mentioned, i.e.  [deal.II](http://dealii.org) and [FEniCS](https://fenicsproject.org).
 
-References will be kept in [REFERENCES](https://github.com/PtFEM/PtFEM.jl/blob/master/REFERENCES.md).
+References will be kept in [REFERENCES](https://github.com/PtFEM/PtFEM.jl/blob/master/docs/src/REFERENCES.md).
 
