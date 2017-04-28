@@ -1,4 +1,5 @@
-## TODO list
+# TODO list
+
 
 1. Remaining programs in chapter 6
 1. Complete plot recipes for chapters 4 to 6
@@ -14,9 +15,9 @@
 1. Complete chapter 11
 1. Complete chapter 12 (late 2017?)
 1. Port BHATheoreticalPerformance from Fortran/R/Julia to using PtFEM.jl  (early 2018?)
-1. Port BHALockup from Fortran/R to using PtFEM.jl (2018?)
+1. Port BHALockup from Fortran/R to using PtFEM.jl (mid 2018?)
 
-## And also:
+## And also ():
 
 1. Add thin shell model to compare results with the beam model
 1. Add composite thin shell models

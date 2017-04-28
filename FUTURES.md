@@ -1,4 +1,5 @@
-## The future of the GitHub PtFEM organisation
+# The future of the GitHub PtFEM organisation
+
 
 A GitHub organisation is basically a place to collect a set of related packages, in this case Julia packages around the "Programming the Finite Element Method" toolkit.
 

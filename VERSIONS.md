@@ -1,7 +1,7 @@
-## Version approach and history
+# Version approach and history
 
 
-### Approach
+## Approach
 
 A version of a Julia package is labeled (tagged) as v"major.minor.patch".
 
@@ -12,9 +12,9 @@ Changes that require updates to some examples bump the minor level.
 
 Updates for new releases of Julia bump the major level.
 
-### Version history
+## Version history
 
-#### v"0.0.1"
+### v"0.0.1"
 
 Initial release of PtFEM/PtFEM.jl. Contains the programs in chapters 4, 5 and
 the first 2 programs of chapter 6.

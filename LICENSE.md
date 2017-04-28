@@ -1,4 +1,5 @@
-## Origin of these programs
+# Origin of these programs
+
 
 The structure of PtFEM is directly derived from the Fortran programs that accompany the book ["Programming the Finite Element Method"](http://www.wiley.com//legacy/wileychi/smith_griffiths_margetts) by I M Smith, D V Griffiths and L Margetts.
 

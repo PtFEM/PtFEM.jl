@@ -1,4 +1,5 @@
-## References
+# References
+
 
 1. [Programming the Finite Element Method](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1119973341.html)
 1. [PtFEM.jl](https://github.com/goedman/PtFEM.jl)
