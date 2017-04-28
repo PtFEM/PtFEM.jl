@@ -1,8 +1,8 @@
 *.o *.so *.dylib
 *.svg
 *.vtu
-output
+output/
 output/*
-docs/build
-docs/build/*
+docs/build/
+docs/site/
 

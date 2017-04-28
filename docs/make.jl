@@ -4,14 +4,7 @@ makedocs(
     format = :html,
     sitename = "PtFEM",
     pages = Any[
-        "Home" => "index.md",
-        #"Programs" => Any[
-        #    "4 Static Equilibrium/p41.md",
-        #    "4 Static Equilibrium/p42.md",
-        #    ],
-        #"BuildingBlocks" => Any[
-        #    "PtFEM/Line.md",
-        #   ],
+        "PtFEM.jl documentation" => "index.md",
         "FUTURES" => "FUTURES.md",
         "CHANGES" => "CHANGES.md",
         "VERSIONS" => "VERSIONS.md",
@@ -23,6 +16,8 @@ makedocs(
 deploydocs(
     repo = "github.com/PtFEM/PtFEM.jl.git",
     target = "build",
+    #julia = "0.5",
+    #osname = "linux",
     deps = nothing,
-    make = nothing,
+    make = nothing
 )
