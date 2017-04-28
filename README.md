@@ -6,8 +6,6 @@
 Unix/OSX:  [![Travis Build Status](https://travis-ci.org/PtFEM/PtFEM.jl.svg?branch=master)](https://travis-ci.org/PtFEM/PtFEM.jl)
 , Windows(64bit):  [![Build status](https://ci.appveyor.com/api/projects/status/github/PtFEM/PtFEM.jl?branch=master)](https://ci.appveyor.com/project/goedman/ptfem-jl)
 
-[Documentation](https://goedman.github.io/PtFEM/PtFEM.jl/latest)
-
 ## Access to PtFEM models
 
 This Julia package currently contains the programs in chapters 4, 5 and early sections of 6 as described in "Programming the Finite Element Method" by I M Smith, D V Griffiths and L. Margetts ([PtFEM]( http://www.wiley.com/WileyCDA/WileyTitle/productCd-1119973341.html )).
@@ -35,7 +33,8 @@ As above lines show, the package has not yet been published and is currently onl
 
 Examples are in the examples/...  subdirectories. In the test directory there is a [runexamples](https://github.com/PtFEM/PtFEM.jl/blob/master/test/runexamples.jl) script that will run all examples.
 
- PtFEM, the book, will always remain the primary documentation for this package. Additional programming documentation will be available through Julia's documenter package, e.g. after installing the package:
+ PtFEM, the book, will always remain the primary documentation for this package. Additional programming [documentation](https://ptfem.github.io/PtFEM/PtFEM.jl)
+will be available through Julia's documenter package, e.g. after installing the package:
  
 ```
 use PtFEM
