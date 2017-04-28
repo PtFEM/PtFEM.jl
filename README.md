@@ -33,8 +33,7 @@ As above lines show, the package has not yet been published and is currently onl
 
 Examples are in the examples/...  subdirectories. In the test directory there is a [runexamples](https://github.com/PtFEM/PtFEM.jl/blob/master/test/runexamples.jl) script that will run all examples.
 
- PtFEM, the book, will always remain the primary documentation for this package. Additional programming [documentation](https://ptfem.github.io/PtFEM.jl/)
-will be available through Julia's documenter package, e.g. after installing the package:
+ PtFEM, the book, will always remain the primary documentation for this package. Additional programming will be available through Julia's documenter package, e.g. after installing the package:
  
 ```
 use PtFEM
@@ -60,3 +59,4 @@ Outside of Julia at least 2 other toolkits should be mentioned, i.e.  [deal.II](
 
 References will be kept in [REFERENCES](https://github.com/PtFEM/PtFEM.jl/blob/master/docs/src/REFERENCES.md).
 
+[Documentation](https://ptfem.github.io/PtFEM.jl/)
