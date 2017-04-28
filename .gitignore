@@ -3,3 +3,6 @@
 *.vtu
 output
 output/*
+docs/build
+docs/build/*
+

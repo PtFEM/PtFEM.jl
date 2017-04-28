@@ -1,3 +1,19 @@
+"""
+## fromSkyline
+
+Helper function to convert a Skyline vector to a full matrix.
+
+### Type
+```julia
+fromSkyline(skyline::Vector{Float64}, kdiag::Vector{Int64})
+```
+
+### Arguments
+```julia
+* skyline::Vector{Float64}     : 1D Line(nod, nodof)
+* kdiag::Vector{Int64}         : 2D Triangle(nod, nodof)
+```
+"""
 function fromSkyline(skyline::Vector{Float64}, kdiag::Vector{Int64})
 	neq = size(kdiag, 1)
 	km = zeros(neq, neq)
