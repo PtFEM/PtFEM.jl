@@ -37,9 +37,10 @@ PtFEM.sparin!(kv::Vector{Float64}, kdiag::Vector{Int64})
 ```@index
 ```
 
-
+#=
 - link to [PtFEM.jl Documentation](@ref)
 - link to [Programs](@ref)
 - link to [Structural Elements](@ref)
 - link to [Finite Elements](@ref)
 - link to [PtFEM](@ref)
+=#
