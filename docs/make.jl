@@ -17,7 +17,7 @@ deploydocs(
     repo = "github.com/PtFEM/PtFEM.jl.git",
     target = "build",
     julia = "0.5",
-    #osname = "linux",
+    osname = "linux",
     deps = nothing,
     make = nothing
 )
