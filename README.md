@@ -6,8 +6,8 @@
 Unix/OSX:  [![Travis Build Status](https://travis-ci.org/PtFEM/PtFEM.jl.svg?branch=master)](https://travis-ci.org/PtFEM/PtFEM.jl)
 , Windows(64bit):  [![Build status](https://ci.appveyor.com/api/projects/status/github/PtFEM/PtFEM.jl?branch=master)](https://ci.appveyor.com/project/goedman/ptfem-jl)
 
-Documentation - Stable: [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://USER_NAME.github.io/PACKAGE_NAME.jl/stable), Latest:
-[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://USER_NAME.github.io/PACKAGE_NAME.jl/latest)
+Documentation - Stable: [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://ptfem.github.io/PtFEM.jl/stable), Latest:
+[![](https://img.shields.io/badge/docs-latest-blue.svg)](https://ptfem.github.io/PtFEM.jl/latest)
 
 ## Access to PtFEM models
 
