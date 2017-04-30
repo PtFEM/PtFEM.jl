@@ -133,7 +133,7 @@ var documenterSearchIndex = {"docs": [
     "page": "PtFEM.jl documentation",
     "title": "Index",
     "category": "section",
-    "text": "link to PtFEM.jl Documentation\nlink to Programs\nlink to Structural Elements\nlink to Finite Elements\nlink to PtFEM"
+    "text": "#=link to PtFEM.jl Documentation\nlink to Programs\nlink to Structural Elements\nlink to Finite Elements\nlink to PtFEM=#"
 },
 
 {
@@ -293,15 +293,23 @@ var documenterSearchIndex = {"docs": [
     "page": "TODO",
     "title": "TODO list",
     "category": "section",
-    "text": "Remaining programs in chapter 6\nComplete plot recipes for chapters 4 to 6\nSetup/complete documentation system using documenter.jl\nRework chapters 5 and 6 for Julia sparse matrices\nUpdate notebooks\nAdd generalized WriteVTK.jl recipes\nProfile p5. and p6. programs (summer 2017?)\nComplete chapter 7\nComplete chapter 8\nComplete chapter 9 (fall 2017?)\nComplete chapter 10\nComplete chapter 11\nComplete chapter 12 (late 2017?)\nPort BHATheoreticalPerformance from Fortran/R/Julia to using PtFEM.jl  (early 2018?)\nPort BHALockup from Fortran/R to using PtFEM.jl (mid 2018?)"
+    "text": ""
 },
 
 {
-    "location": "TODO.html#And-also-():-1",
+    "location": "TODO.html#Planned-work-1",
     "page": "TODO",
-    "title": "And also ():",
+    "title": "Planned work",
     "category": "section",
-    "text": "Add thin shell model to compare results with the beam model\nAdd composite thin shell models\nAdd statistical modeling components"
+    "text": "Complete inital framework, including documentation (May 2017)\nRemaining programs in chapter 6 (June 2017)\nReview and complete plot recipes for chapters 4 to 6 (June 2017)\nRework chapters 5 and 6 for Julia sparse matrices (May 2017)\nUpdate notebooks (July 2017)\nAdd generalized WriteVTK.jl recipes\nProfile p5. and p6. programs (summer 2017?)\nComplete chapter 7\nComplete chapter 8 (Sep 2017)\nComplete chapter 9 (fall 2017?)\nComplete chapter 10\nComplete chapter 11\nComplete chapter 12 (late 2017?)\nPort BHATheoreticalPerformance from Fortran/R/Julia to using PtFEM.jl  (early 2018?)\nPort BHALockup from Fortran/R to using PtFEM.jl (mid 2018?)"
+},
+
+{
+    "location": "TODO.html#Intended-extensions-but-not-yest-planned-1",
+    "page": "TODO",
+    "title": "Intended extensions but not yest planned",
+    "category": "section",
+    "text": "Add thin shell model to compare results with the beam model\nAdd composite (thin shell?) models\nTemperature and pressure considerations\nAdd statistical modeling components"
 },
 
 {
