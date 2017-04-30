@@ -11,7 +11,6 @@ end
 
 code_tests = [
   "PtFEM.jl",
-  #=
   "p41.1.jl",
   "p41.2.jl",
   "p42.2.jl",
@@ -34,22 +33,17 @@ code_tests = [
   "p56.1.jl",
   "p61.1.jl",
   "p62.1.jl"
-  =#
 ]
 
-if isfile(Pkg.dir("PtFEM", "deps", "src", "PtFEM", "4th_ed", "libcsom.dylib"))
-  push!(code_tests, "csom2.jl")
-end
-
-println("Running tests:")
+println("\n\nRunning PtFEM/PtFEM.jl tests:\n\n")
 
 for my_test in code_tests
-    println("\n  * $(my_test) *")
+    println("\n\n  * $(my_test) *\n")
     include("test_"*my_test)
 end
 
-println("\nPerforming Julia 0.6+ tests\n")
+println("\n\nPerforming Julia 0.6+ tests\n\n")
 for my_test in code_tests
-  println("\n  * $(my_test) *")
+  println("\n\n  * $(my_test) n")
   include("test_"*my_test)
 end
