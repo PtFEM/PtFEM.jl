@@ -6,7 +6,7 @@
 Unix/OSX:  [![Travis Build Status](https://travis-ci.org/PtFEM/PtFEM.jl.svg?branch=master)](https://travis-ci.org/PtFEM/PtFEM.jl)
 , Windows(64bit):  [![Build status](https://ci.appveyor.com/api/projects/status/github/PtFEM/PtFEM.jl?branch=master)](https://ci.appveyor.com/project/goedman/ptfem-jl)
 
-Documentation - Stable: [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://ptfem.github.io/PtFEM.jl/stable), Latest:
+Documentation:
 [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://ptfem.github.io/PtFEM.jl/latest)
 
 ## Access to PtFEM models
@@ -61,5 +61,3 @@ Fundamental and great development work related to solving (partial) differential
 Outside of Julia at least 2 other toolkits should be mentioned, i.e.  [deal.II](http://dealii.org) and [FEniCS](https://fenicsproject.org).
 
 References will be kept in [REFERENCES](https://github.com/PtFEM/PtFEM.jl/blob/master/docs/src/REFERENCES.md).
-
-[Documentation](https://ptfem.github.io/PtFEM.jl/latest)
