@@ -4,12 +4,14 @@ makedocs(
     format = :html,
     sitename = "PtFEM",
     pages = Any[
-        "PtFEM.jl documentation" => "index.md",
-        "FUTURES" => "FUTURES.md",
-        "CHANGES" => "CHANGES.md",
-        "VERSIONS" => "VERSIONS.md",
-        "TODO" => "TODO.md",
-        "REFERENCES" => "REFERENCES.md",
+        "Introduction" => "INTRO.md",
+        "Getting started" => "GETTINGSTARTED.md",
+        "Futures" => "FUTURES.md",
+        "Changes" => "CHANGES.md",
+        "Versions" => "VERSIONS.md",
+        "Todo" => "TODO.md",
+        "References" => "REFERENCES.md",
+        "PtFEM.jl programmer's documentation" => "index.md",
     ]
 )
 
