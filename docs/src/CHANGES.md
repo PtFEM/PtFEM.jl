@@ -1,7 +1,7 @@
 # Changes with respect to the PtFEM book
 
 
-The PtFEM book is the primary source to understand how the Fortran toolkit can be used to build FEM programs. This is also true for the Julia version of the PtFEM toolkiit, PtFEM.jl.
+The PtFEM book is the primary source to understand how the Fortran toolkit can be used to build FEM programs. This is also true for the Julia version of the PtFEM toolkit, PtFEM.jl.
 
 But even with this restriction in place, there are many ways to port the PtFEM toolkit to Julia. Julia can in fact call the lower level Fortran "building blocks" (subroutines) directly. But that would make it harder to modify those functions.
 PtFEM.jl is entirely written in Julia end takes a middle of the road approach in replacing Fortran functionality by "typical" Julia features. These cases are documented in this file.
@@ -73,10 +73,14 @@ Some examples will show simple ways of using Julia's capabilities in this area.
 
 In Chapter 6, example Exp62.1a.jl calls p62a.jl which uses Julia pmap() for this purpose. This is too small a problem to really show performance improvements, but it shows an easy approach.
 
-_Note 1_: In example Ex62.1a.jl could have called the p62(data) as Ex62.1.jl does; pp62(data) is identical but produces less output.
+**Detail:** Example Ex62.1a.jl could have called the p62(data) as Ex62.1.jl does; pp62(data) is identical but produces less output.
 
-_Note 2_: I have not done a profiling pass through p62.jl, it allocates way too much memory, so I expect significant performance improvements are possible.
+**Note:**  have not done a profiling pass through p62.jl, it allocates way too much memory, so I expect significant performance improvements are possible.
 
 ## Integration - for now using PtFEM's approach
 
 Currently I have not replaced numerical integration by e.g. Julia quadgk() for 1D integration of a function.
+
+## Gradient descent - for now using PtFEM's approach
+
+## Derivatives - for now using PtFEM's approach
