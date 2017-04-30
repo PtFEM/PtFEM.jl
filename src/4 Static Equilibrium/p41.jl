@@ -25,8 +25,8 @@ p41(m::jFEM, data::Dict) # Used to re-use factored global stiffness matrix
 
 ### Optional additional data dictionary keys
 ```julia
-* etype::Vector{Int64}         : Element material vector
-* penalty::Float64             : Penalty used for fixed degrees of freedoms
+* penalty = 1e20               : Penalty used for fixed degrees of freedoms
+* etype::Vector{Int64}         : Element material vector if np_types > 1
 * eq_nodal_forces_and_moments  : Contribution of distributed loads to loaded_nodes
 ```
 
