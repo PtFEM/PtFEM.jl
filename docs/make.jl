@@ -6,6 +6,7 @@ makedocs(
     pages = Any[
         "Introduction" => "INTRO.md",
         "Getting started" => "GETTINGSTARTED.md",
+        "Examples" => "EXAMPLES.md"
         "Futures" => "FUTURES.md",
         "Changes" => "CHANGES.md",
         "Versions" => "VERSIONS.md",

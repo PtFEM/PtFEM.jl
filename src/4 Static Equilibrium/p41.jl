@@ -1,7 +1,7 @@
 """
-# p41
+# Method p41 
 
-Method for static equilibrium analysis of a rod.
+One dimensional analysis of axially loaded elastic rods using 2-node rod elements. 
 
 ### Constructors
 ```julia
@@ -14,50 +14,38 @@ p41(m::jFEM, data::Dict) # Used to re-use factored global stiffness matrix
 * `data` : Dictionary containing all input data
 ```
 
-### Dictionary keys
+### Required data dictionary keys
 ```julia
 * struc_el::StructuralElement                          : Type of  structural fin_el
 * support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
 * loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector
 * properties::Vector{Float64}                          : Material properties
-* x_coords::LinSpace{Float64}                          : Xcoordinate vector
+* x_coords::0.0:0.1:1.0                                : x-coordinate vector
 ```
 
-### Optional dictionary keys
+### Optional additional data dictionary keys
 ```julia
-* etype::Vector{Int64}                                 : Element material vector
+* etype::Vector{Int64}         : Element material vector
+* penalty::Float64             : Penalty used for fixed degrees of freedoms
+* eq_nodal_forces_and_moments  : Contribution of distributed loads to loaded_nodes
 ```
 
-### Examples
+### Return values
 ```julia
-using PtFEM
-
-data = Dict(
-  # Rod(nels, np_types, nip, finite_element(nod, nodof))
-  :struc_el => Rod(4, 1, 1, Line(2, 1)),
-  :properties => [1.0e5;],
-  :x_coords => linspace(0, 1, 5),
-  :support => [(1, [0])],
-  :loaded_nodes => [(1,[-0.625]),(2,[-1.25]),(3,[-1.25]),(4,[-1.25]),(5,[-0.625])]
-)
-
-fem, dis_dt, fm_dt = p41(data)
-
-println("Displacements:")
-dis_dt |> display
-println()
-
-println("Actions:")
-fm_dt |> display
-println()
-
+* (jfem, dis_dt, fm_dt)        : Tuple of jFem, dis_dt and fm_dt
+                                 where:
+                                    jfem::jFem    : Computational result type
+                                    dis_dt        : Displacement data table
+                                    fm_dt         : Forces and moments data table
 ```
+
 
 ### Related help
 ```julia
-?StructuralElement  : Help on structural elements
-?Rod                : Help on a Rod structural fin_el
-?FiniteElement      : Help on finite element types
+?StructuralElement             : List of available structural element types
+?Rod                           : Help on a Rod structural element
+?FiniteElement                 : List finite element types
+?Line                          : Help on Line finite element
 ```
 """
 function p41(data::Dict{Symbol, Any})
@@ -74,7 +62,7 @@ function p41(data::Dict{Symbol, Any})
     ndim = 1
     nst = struc_el.np_types
   else
-    throw("FE4_1 expects a Rod structural element.")
+    throw("p41 expects a Rod structural element.")
   end
   
   fin_el = struc_el.fin_el
@@ -83,7 +71,7 @@ function p41(data::Dict{Symbol, Any})
   if typeof(fin_el) == Line
     (nels, nn) = PtFEM.mesh_size(fin_el, struc_el.nxe)
   else
-    throw("FE4_1 expects a Line (Interval) finite element.")
+    throw("p41 expects a Line (Interval) finite element.")
   end
    
   nodof = fin_el.nodof         # Degrees of freedom per node
