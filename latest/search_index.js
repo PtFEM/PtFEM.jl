@@ -33,6 +33,30 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "EXAMPLES.html#",
+    "page": "Examples",
+    "title": "Examples",
+    "category": "page",
+    "text": ""
+},
+
+{
+    "location": "EXAMPLES.html#Examples-1",
+    "page": "Examples",
+    "title": "Examples",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "EXAMPLES.html#Ex41.1.jl-1",
+    "page": "Examples",
+    "title": "Ex41.1.jl",
+    "category": "section",
+    "text": "using PtFEM\n\nProjDir = dirname(@__FILE__)\n\nl = 1.0       # Total length [m]\nN = 5         # Number of nodes\nels = N - 1   # Number of finite elements (in x direction)\nnod = 2       # Number of nodes per finite elements\nnodof = 1     # Degrees of freedom for each node\nnp_types = 1  # Number of property types\nEA = 1.0e5    # Strain stiffness\nnip = 1       # Number of integration points\n\ndata = Dict(\n  # StructuralElement(nxe, np_types, nip, FiniteElement(nod, nodof))\n  :struc_el => Rod(els, np_types, nip, Line(nod, nodof)),\n  :properties => [EA;],\n  # Compute x_coords using length l and number of elements, els\n  :x_coords => 0.0:l/els:l,\n  # Define a support for node N\n  # In this case fix the single dof (x direction displacement)\n  :support => [(N, [0])],\n  # External forces are applied to nodes 1 to 5.\n  :loaded_nodes => [\n      (1, [-0.625]),\n      (2, [-1.25]),\n      (3, [-1.25]),\n      (4, [-1.25]),\n      (5, [-0.625])\n    ]\n);\n\n# Display the data dictionary\ndata |> display\nprintln()\n\n# Solve the FEM model\n@time fem, dis_dt, fm_dt = p41(data)\nprintln()\n\ndisplay(dis_dt)\nprintln()\ndisplay(fm_dt)\nprintln()\n  \nif VERSION.minor < 6\n\n  using Plots\n  gr(size=(400,500))\n\n  x = 0.0:l/els:l\n  u = convert(Array, dis_dt[:x_translation])\n    \n  p = Vector{Plots.Plot{Plots.GRBackend}}(2)\n  titles = [\"PtFEM Ex41.1 u(x)\", \"PtFEM Ex41.1 N(x)\"]\n   \n  p[1]=plot(ylim=(0.0, 1.0), xlim=(0.0, 5.0),\n    yflip=true, xflip=false, xlab=\"Normal force [N]\",\n    ylab=\"x [m]\", title=titles[2]\n  )\n  vals = convert(Array, fm_dt[:normal_force_2])\n  for i in 1:els\n      plot!(p[1], \n        [vals[i], vals[i]],\n        [(i-1)*l/els, i*l/els], color=:blue,\n        color=:blue, fill=true, fillalpha=0.1, leg=false\n      )\n      delta = abs(((i-1)*l/els) - (i*l/els)) / 20.0\n      y1 = collect(((i-1)*l/els):delta:(i*l/els))\n      for j in 1:length(y1)\n        plot!(p[1],\n          [vals[i], 0.0],\n          [y1[j], y1[j]], color=:blue, alpha=0.5\n        )\n      end\n  end\n  \n  p[2] = plot(u, x, xlim=(-0.00003, 0.0), yflip=true,\n    xlab=\"Displacement [m]\", ylab=\"x [m]\",\n    fillto=0.0, fillalpha=0.1, leg=false, title=titles[1])\n\n  plot(p..., layout=(1, 2))\n  savefig(ProjDir*\"/Ex41.1.png\")\n  \nend"
+},
+
+{
     "location": "FUTURES.html#",
     "page": "Futures",
     "title": "Futures",
@@ -261,7 +285,7 @@ var documenterSearchIndex = {"docs": [
     "page": "PtFEM.jl programmer's documentation",
     "title": "PtFEM.p41",
     "category": "Method",
-    "text": "p41\n\nMethod for static equilibrium analysis of a rod.\n\nConstructors\n\np41(data::Dict)\np41(m::jFEM, data::Dict) # Used to re-use factored global stiffness matrix\n\nArguments\n\n* `m`    : Previously created jFEM model\n* `data` : Dictionary containing all input data\n\nDictionary keys\n\n* struc_el::StructuralElement                          : Type of  structural fin_el\n* support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector\n* loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector\n* properties::Vector{Float64}                          : Material properties\n* x_coords::LinSpace{Float64}                          : Xcoordinate vector\n\nOptional dictionary keys\n\n* etype::Vector{Int64}                                 : Element material vector\n\nExamples\n\nusing PtFEM\n\ndata = Dict(\n  # Rod(nels, np_types, nip, finite_element(nod, nodof))\n  :struc_el => Rod(4, 1, 1, Line(2, 1)),\n  :properties => [1.0e5;],\n  :x_coords => linspace(0, 1, 5),\n  :support => [(1, [0])],\n  :loaded_nodes => [(1,[-0.625]),(2,[-1.25]),(3,[-1.25]),(4,[-1.25]),(5,[-0.625])]\n)\n\nfem, dis_dt, fm_dt = p41(data)\n\nprintln(\"Displacements:\")\ndis_dt |> display\nprintln()\n\nprintln(\"Actions:\")\nfm_dt |> display\nprintln()\n\n\nRelated help\n\n?StructuralElement  : Help on structural elements\n?Rod                : Help on a Rod structural fin_el\n?FiniteElement      : Help on finite element types\n\n\n\n"
+    "text": "Method p41\n\nOne dimensional analysis of axially loaded elastic rods using 2-node rod elements. \n\nConstructors\n\np41(data::Dict)\np41(m::jFEM, data::Dict) # Used to re-use factored global stiffness matrix\n\nArguments\n\n* `m`    : Previously created jFEM model\n* `data` : Dictionary containing all input data\n\nRequired data dictionary keys\n\n* struc_el::StructuralElement                          : Type of  structural fin_el\n* support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector\n* loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector\n* properties::Vector{Float64}                          : Material properties\n* x_coords::0.0:0.1:1.0                                : x-coordinate vector\n\nOptional additional data dictionary keys\n\n* penalty = 1e20               : Penalty used for fixed degrees of freedoms\n* etype::Vector{Int64}         : Element material vector if np_types > 1\n* eq_nodal_forces_and_moments  : Contribution of distributed loads to loaded_nodes\n\nReturn values\n\n* (jfem, dis_dt, fm_dt)        : Tuple of jFem, dis_dt and fm_dt\n                                 where:\n                                    jfem::jFem    : Computational result type\n                                    dis_dt        : Displacement data table\n                                    fm_dt         : Forces and moments data table\n\nRelated help\n\n?StructuralElement             : List of available structural element types\n?Rod                           : Help on a Rod structural element\n?FiniteElement                 : List finite element types\n?Line                          : Help on Line finite element\n\n\n\n"
 },
 
 {
