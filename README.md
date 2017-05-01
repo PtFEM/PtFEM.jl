@@ -15,6 +15,8 @@ This Julia package currently contains the programs in chapters 4, 5 and early se
 
 I use PtFEM when referring to the book and PtFEM.jl when referring to the Julia package.  The authors and publisher have given permission to publish the Julia version of the PtFEM toolkit. Please refer to [LICENSE](https://github.com/PtFEM/PtFEM.jl/blob/master/LICENSE.md) for more details.
 
+## Documentation
+
  PtFEM, the book, will always remain the primary documentation for this package. Additional programming documentation will be available through Julia's documenter package, e.g. in-line after installing the package:
  
 ```
@@ -24,7 +26,11 @@ use PtFEM
 
 and [here](http://ptfem.github.io/PtFEM.jl/latest/INTRO.html).
 
+## Timeline
+
 Please note that no hard timeline is set when this work in progress will be finished. [TODO](https://github.com/PtFEM/PtFEM.jl/blob/master/docs/src/TODO.md) contains a list of next steps. [VERSIONS](https://github.com/PtFEM/PtFEM.jl/blob/master/docs/src/VERSIONS.md) holds the tagged version history.
+
+## Participation and feeedback
 
 As always, feedback is welcome, please send me an email, file an issue on Github or generate a pull request (PR). 
 
@@ -37,4 +43,6 @@ Fundamental and great development work related to solving (partial) differential
 
 Outside of Julia and PtFEM at least 2 other toolkits should be mentioned, i.e.  [deal.II](http://dealii.org) and [FEniCS](https://fenicsproject.org).
 
-References will be kept in [REFERENCES](https://github.com/PtFEM/PtFEM.jl/blob/master/docs/src/REFERENCES.md).
+## Rerences
+
+References will be kept in [here](https://github.com/PtFEM/PtFEM.jl/blob/master/docs/src/REFERENCES.md).
