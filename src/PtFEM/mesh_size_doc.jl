@@ -1,5 +1,3 @@
-using Documenter
-
 """
 # mesh_size
 

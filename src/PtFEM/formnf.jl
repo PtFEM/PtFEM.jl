@@ -5,7 +5,7 @@ Returns nodal freedom numbering array nf
 
 ### Function
 ```julia
-formnf!(nodof::Int64, nn::Int64, nf::Matrix{Int64})
+formnf!(nodof, nn, nf)
 ```
 
 ### Arguments
