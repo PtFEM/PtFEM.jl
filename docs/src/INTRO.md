@@ -12,9 +12,9 @@ I use PtFEM when referring to the book and PtFEM.jl when referring to the Julia 
 
 For many years a colleague and I have used the Fortran version of the PtFEM toolkit  to verify aspects of a (larger) software program developed to analyse the behavior of bottom hole assemblies (BHAs). PtFEM has been extremely valuable for that purpose and that alone in my opinion justifies the creation of PtFEM.jl.
 
-We are now at a point where we would like to publish the results of our work in a reproducable (and maintainable) format. Thus an important secundairy motivation for creating PtFEM.jl is to subsequently publish 2 additional packages, [BHATheoreticalPerformance.jl](https://github.com/PtFEM/BHATheoreticalPerformance.jl) and [BHALockup.jl](https://github.com/PtFEM/BHALockup.jl), on the basis of a well documented toolkit.
+We are now at a point where we would like to publish the results of our work in a reproducable (and maintainable) format. Thus an important secundairy motivation for creating PtFEM.jl is to be able to subsequently publish 2 additional packages, [BHATheoreticalPerformance.jl](https://github.com/PtFEM/BHATheoreticalPerformance.jl) and [BHALockup.jl](https://github.com/PtFEM/BHALockup.jl), on the basis of a well documented toolkit.
 
-The goal of the PtFEM eco system is to not only make our results easily reproducable but also the usage of PtFEM extensible, e.g. see the xamples towards the end of  [TODO](https://github.com/PtFEM/PtFEM.jl/blob/master/docs/src/TODO.md). If there is long term interest to contribute to the PtFEM organisation, please consider becoming a team member or outside collaborator.
+The goal of the PtFEM eco system is to not only make our results easily reproducable but also the usage of PtFEM extensible, e.g. see the examples towards the end of  [TODO](https://github.com/PtFEM/PtFEM.jl/blob/master/docs/src/TODO.md). If there is long term interest to contribute to the PtFEM organisation, please consider becoming a team member or outside collaborator.
 
 The PtFEM eco system exists as a Github organization. A GitHub organisation is basically a place to collect a set of related packages, in this case Julia packages around the "Programming the Finite Element Method" toolkit.
 

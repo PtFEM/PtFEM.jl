@@ -1,7 +1,7 @@
 """
 # p43
 
-Method for static equilibrium analysis of a rod.
+Method for static equilibrium analysis of a beam.
 
 ### Constructors
 ```julia

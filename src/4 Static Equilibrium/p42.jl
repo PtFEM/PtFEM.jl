@@ -1,7 +1,8 @@
 """
-# p42
+# Method p42
 
-Method for static equilibrium analysis of a rod.
+Analysis of elastic pin-jointed frames using 2-node rod elements in 2- or
+3-dimensions 
 
 ### Constructors
 ```julia
@@ -14,61 +15,39 @@ p42(data::Dict)
 
 ### Dictionary keys
 ```julia
-* struc_el::StructuralElement                          : Type of  structural fin_el
+* struc_el::StructuralElement                          : Type of structural element
 * support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
 * loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector
 * properties::Vector{Float64}                          : Material properties
-* x_coords::LinSpace{Float64}                          : x coordinate vector
-* y_coords::LinSpace{Float64}                          : y coordinate vector
+* x_coords::Vector{Float64}                            : x coordinate vector
+* y_coords::Vector{Float64}                            : y coordinate vector
 * g_num::Array{Int64,2}                                : Element node connections
 ```
 
 ### Optional dictionary keys
 ```julia
-* etype::Vector{Int64}                                 : Element material vector
-* penalty::Float64                                     : Penalty for fixed freedoms
+* penalty::Float64             : Penalty for fixed freedoms
+* etype::Vector{Int64}         : Element material vector
+* z_coords::Vector{Float64}    : z coordinate vector (3D)
+* eq_nodal_forces_and_moments  : Contribution of distributed loads to loaded_nodes
 ```
 
-### Examples
+### Return values
 ```julia
-using PtFEM
-
-data = Dict(
-  # Frame(nels, nn, ndim, np_types, nip, finite_element(nod, nodof))
-  :struc_el => Frame(10, 6, 2, 1, 1, Line(2, 2)),
-  :properties => [2.0e5;],
-  :x_coords => [0.0, 4.0, 4.0, 8.0, 8.0, 12.0],
-  :y_coords => [3.0, 0.0, 3.0, 3.0, 0.0, 0.0],
-  :g_num => [
-    1 1 3 3 3 2 2 5 4 5;
-    2 3 4 5 2 4 5 4 6 6
-  ],
-  :support => [
-    (1, [0 0]),
-    (2, [1 0])
-    ],
-  :loaded_nodes => [
-    (6, [0.0 -10.0])],
-  :penalty => 1e19
-)
-
-fem, dis_dt, fm_dt = p42(data)
-
-println("Displacements:")
-dis_dt |> display
-println()
-
-println("Actions:")
-fm_dt |> display
-println()
-
+* (jfem, dis_dt, fm_dt)        : Tuple of jFem, dis_dt and fm_dt
+                                 where:
+                                    jfem::jFem    : Computational result type
+                                    dis_dt        : Displacement data table
+                                    fm_dt         : Forces and moments data table
 ```
+
 
 ### Related help
 ```julia
-?StructuralElement  : Help on structural elements
-?Rod                : Help on a Rod structural fin_el
-?FiniteElement      : Help on finite element types
+?StructuralElement  : List structural element types
+?Frame              : Help on a Rod structural fin_el
+?FiniteElement      : List finite element types
+?Line               : Help on Line finite element
 ```
 """
 function p42(data::Dict)
