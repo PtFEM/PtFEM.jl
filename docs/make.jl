@@ -6,13 +6,11 @@ makedocs(
     pages = Any[
         "Introduction" => "INTRO.md",
         "Getting started" => "GETTINGSTARTED.md",
-        "Examples" => "EXAMPLES.md",
-        "Futures" => "FUTURES.md",
-        "Changes" => "CHANGES.md",
+        "Changes w.r.t. PtFEM" => "CHANGES.md",
+        "PtFEM.jl programmer's documentation" => "index.md",
         "Versions" => "VERSIONS.md",
         "Todo" => "TODO.md",
         "References" => "REFERENCES.md",
-        "PtFEM.jl programmer's documentation" => "index.md",
     ]
 )
 

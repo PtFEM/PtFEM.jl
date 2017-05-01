@@ -1,7 +1,7 @@
 # Changes with respect to the PtFEM book
 
 
-The PtFEM book is the primary source to understand how the Fortran toolkit can be used to build FEM programs. This is also true for the Julia version of the PtFEM toolkit, PtFEM.jl.
+The PtFEM book is the primary source to understand how the Fortran toolkit can be used to build FEM programs. This is also the case for the Julia version of the PtFEM toolkit, PtFEM.jl.
 
 But even with this restriction in place, there are many ways to port the PtFEM toolkit to Julia. Julia can in fact call the lower level Fortran "building blocks" (subroutines) directly. But that would make it harder to modify those functions.
 PtFEM.jl is entirely written in Julia end takes a middle of the road approach in replacing Fortran functionality by "typical" Julia features. These cases are documented in this file.
@@ -49,7 +49,7 @@ All 'basic' functions such as sparin!() and spabac!() can be found in the src/Pt
 
 E.g. p44. 
 
-In p44 corections are applied if :eq_nodal_forces_and_moments is defined in the data dictionary.
+In p44 corrections are applied if :eq_nodal_forces_and_moments is defined in the data dictionary.
 
 See [PtFEM/EEM.jl](https://github.com/PtFEM/EEM.jl) for further examples.
 

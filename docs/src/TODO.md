@@ -18,10 +18,11 @@
 1. Port BHATheoreticalPerformance from Fortran/R/Julia to using PtFEM.jl  (early 2018?)
 1. Port BHALockup from Fortran/R to using PtFEM.jl (mid 2018?)
 
-## Intended extensions but not yest planned
+## Intended extensions but not yet planned
 
 1. Add thin shell model to compare results with the beam model
 1. Add composite (thin shell?) models
 1. Temperature and pressure considerations
 1. Add statistical modeling components
+1. Geomechanics applications, e.g. bore hole stability
 

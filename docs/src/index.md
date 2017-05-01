@@ -1,7 +1,5 @@
 # PtFEM.jl Documentation
 
-```@contents
-```
 
 ## Programs
 
