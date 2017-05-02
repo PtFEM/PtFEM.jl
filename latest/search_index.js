@@ -329,19 +329,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#PtFEM.formnf!-Tuple{Int64,Int64,Array{Int64,2}}",
-    "page": "PtFEM.jl documentation",
-    "title": "PtFEM.formnf!",
-    "category": "Method",
-    "text": "formnf!\n\nReturns nodal freedom numbering array nf\n\nFunction\n\nformnf!(nodof, nn, nf)\n\nArguments\n\n* nodof::Int64       : Number of degrees of freedom for each node\n* nn::Int64          : Number of nodes in mesh\n* nf::Array{Int64,2} : Nodal freedom matrix (updated)\n\n\n\n"
-},
-
-{
     "location": "index.html#PtFEM-Main-1",
     "page": "PtFEM.jl documentation",
     "title": "PtFEM - Main",
     "category": "section",
-    "text": "PtFEM.formnf!(nodof::Int64, nn::Int64, nf::Matrix{Int64})"
+    "text": "PtFEM.beam_gm!(gm::Matrix{Float64}, ell::Float64)\nPtFEM.beam_km!(km::Matrix{Float64}, ei::Float64, ell::Float64)\nPtFEM.beam_mm!(mm::Matrix{Float64}, fs::Float64, ell::Float64)\nPtFEM.beemat_nonaxi!(bee::Matrix{Float64}, radius::Float64, coord::Matrix{Float64}, deriv::Matrix{Float64}, fun::Vector{Float64}, iflag::Int64, lth::Int64)\nPtFEM.beemat!(bee::Matrix{Float64},deriv::Matrix{Float64})\nPtFEM.checon!(loads::Vector{Float64}, oldlds::Vector{Float64}, tol::Float64)\nPtFEM.deemat!(dee::Array{Float64, 2}, e::Float64, v::Float64)\nPtFEM.fkdiag!(ndof::Int64, neq::Int64, g::Vector{Int64}, kdiag::Vector{Int64})\nPtFEM.fkdiag!(kdiag::Vector{Int64}, g::Vector{Int64})\nPtFEM.fmplat!(d2x::Vector{Float64}, d2y::Vector{Float64}, d2xy::Vector{Float64}, points::Matrix{Float64}, aa::Float64, bb::Float64, i::Int64)\nPtFEM.formm!(stress::Vector{Float64}, m1::Matrix{Float64}, m2::Matrix{Float64}, m3::Matrix{Float64})\nPtFEM.formnf!(nodof::Int64, nn::Int64, nf::Matrix{Int64})\nPtFEM.glob_to_loc!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float64, coord::Matrix{Float64})\nPtFEM.global_to_axial(glob::Vector{Float64}, coord::Matrix{Float64})"
 },
 
 {
@@ -349,7 +341,7 @@ var documenterSearchIndex = {"docs": [
     "page": "PtFEM.jl documentation",
     "title": "PtFEM - Geom",
     "category": "section",
-    "text": "PtFEM.geom_rect!(fin_el::Quadrilateral, iel::Int64, x_coords::Array{Float64, 1}, y_coords::Array{Float64, 1}, coord::Matrix{Float64}, num::Vector{Int64}, dir::Symbol)\nPtFEM.geom_rect!(fin_el::Triangle, iel::Int64, x_coords::Array{Float64, 1}, y_coords::Array{Float64, 1}, coord::Matrix{Float64}, num::Vector{Int64}, dir::Symbol)\nPtFEM.mesh_size(fe::Line, nxe::Int64)\nPtFEM.mesh_size(fe::Triangle, nxe::Int64, nye::Int64)\nPtFEM.mesh_size(fe::Quadrilateral, nxe::Int64, nye::Int64)\nPtFEM.mesh_size(fe::Hexahedron, nxe::Int64, nye::Int64, nze::Int64)"
+    "text": "PtFEM.geom_rect!(fin_el::Quadrilateral, iel::Int64, x_coords::Array{Float64, 1}, y_coords::Array{Float64, 1}, coord::Matrix{Float64}, num::Vector{Int64}, dir::Symbol)\nPtFEM.geom_rect!(fin_el::Triangle, iel::Int64, x_coords::Array{Float64, 1}, y_coords::Array{Float64, 1}, coord::Matrix{Float64}, num::Vector{Int64}, dir::Symbol)\nhexahedron_xz!(iel::Int64, x_coords::Vector{Float64}, y_coords::Vector{Float64}, z_coords::Vector{Float64}, coord::Matrix{Float64}, num::Vector{Int64})\nPtFEM.mesh_size(fe::Line, nxe::Int64)\nPtFEM.mesh_size(fe::Triangle, nxe::Int64, nye::Int64)\nPtFEM.mesh_size(fe::Quadrilateral, nxe::Int64, nye::Int64)\nPtFEM.mesh_size(fe::Hexahedron, nxe::Int64, nye::Int64, nze::Int64)"
 },
 
 {
