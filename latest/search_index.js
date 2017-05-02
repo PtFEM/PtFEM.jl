@@ -329,11 +329,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "index.html#Other-Julia-Types-1",
+    "page": "PtFEM.jl documentation",
+    "title": "Other Julia Types",
+    "category": "section",
+    "text": "jFEM\nFeModel"
+},
+
+{
     "location": "index.html#PtFEM-Main-1",
     "page": "PtFEM.jl documentation",
     "title": "PtFEM - Main",
     "category": "section",
-    "text": "PtFEM.beam_gm!(gm::Matrix{Float64}, ell::Float64)\nPtFEM.beam_km!(km::Matrix{Float64}, ei::Float64, ell::Float64)\nPtFEM.beam_mm!(mm::Matrix{Float64}, fs::Float64, ell::Float64)\nPtFEM.beemat_nonaxi!(bee::Matrix{Float64}, radius::Float64, coord::Matrix{Float64}, deriv::Matrix{Float64}, fun::Vector{Float64}, iflag::Int64, lth::Int64)\nPtFEM.beemat!(bee::Matrix{Float64},deriv::Matrix{Float64})\nPtFEM.checon!(loads::Vector{Float64}, oldlds::Vector{Float64}, tol::Float64)\nPtFEM.deemat!(dee::Array{Float64, 2}, e::Float64, v::Float64)\nPtFEM.fkdiag!(ndof::Int64, neq::Int64, g::Vector{Int64}, kdiag::Vector{Int64})\nPtFEM.fkdiag!(kdiag::Vector{Int64}, g::Vector{Int64})\nPtFEM.fmplat!(d2x::Vector{Float64}, d2y::Vector{Float64}, d2xy::Vector{Float64}, points::Matrix{Float64}, aa::Float64, bb::Float64, i::Int64)\nPtFEM.formm!(stress::Vector{Float64}, m1::Matrix{Float64}, m2::Matrix{Float64}, m3::Matrix{Float64})\nPtFEM.formnf!(nodof::Int64, nn::Int64, nf::Matrix{Int64})\nPtFEM.glob_to_loc!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float64, coord::Matrix{Float64})\nPtFEM.global_to_axial(glob::Vector{Float64}, coord::Matrix{Float64})"
+    "text": "PtFEM.beam_gm!(gm::Matrix{Float64}, ell::Float64)\nPtFEM.beam_km!(km::Matrix{Float64}, ei::Float64, ell::Float64)\nPtFEM.beam_mm!(mm::Matrix{Float64}, fs::Float64, ell::Float64)\nPtFEM.beemat_nonaxi!(bee::Matrix{Float64}, radius::Float64, coord::Matrix{Float64}, deriv::Matrix{Float64}, fun::Vector{Float64}, iflag::Int64, lth::Int64)\nPtFEM.beemat!(bee::Matrix{Float64},deriv::Matrix{Float64})\nPtFEM.checon!(loads::Vector{Float64}, oldlds::Vector{Float64}, tol::Float64)\nPtFEM.deemat!(dee::Array{Float64, 2}, e::Float64, v::Float64)\nPtFEM.fkdiag!(ndof::Int64, neq::Int64, g::Vector{Int64}, kdiag::Vector{Int64})\nPtFEM.fkdiag!(kdiag::Vector{Int64}, g::Vector{Int64})\nPtFEM.fmplat!(d2x::Vector{Float64}, d2y::Vector{Float64}, d2xy::Vector{Float64}, points::Matrix{Float64}, aa::Float64, bb::Float64, i::Int64)\nPtFEM.formm!(stress::Vector{Float64}, m1::Matrix{Float64}, m2::Matrix{Float64}, m3::Matrix{Float64})\nPtFEM.formnf!(nodof::Int64, nn::Int64, nf::Matrix{Int64})\nPtFEM.glob_to_loc!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float64, coord::Matrix{Float64})\nPtFEM.global_to_axial(glob::Vector{Float64}, coord::Matrix{Float64})\nPtFEM.hinge!(coord::Matrix{Float64}, holdr::Matrix{Float64}, action::Vector{Float64}, react::Vector{Float64}, prop::Matrix{Float64}, iel, etype::Vector{Int64}, gamma::Vector{Float64})\nPtFEM.invar!(stress::Vector{Float64}, sigm::Float64, dsbar::Float64, theta::Float64)\nPtFEM.linmul_sky!(kv::Vector{Float64}, disps::Vector{Float64}, loads::Vector{Float64}, kdiag::Vector{Int64})\nPtFEM.loc_to_glob!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float64, coord::Matrix{Float64})\nPtFEM.num_to_g!(num::Vector{Int64}, nf::Matrix{Int64}, g::Vector{Int64})\nPtFEM.pin_jointed!(km::Matrix{Float64}, ea::Float64, coord::Matrix{Float64})\nPtFEM.rigid_jointed!(km::Matrix{Float64}, prop::Matrix{Float64}, gamma::Vector{Float64}, etype::Vector{Int64}, iel::Int64, coord::Matrix{Float64})\nPtFEM.rod_km!(km::Matrix{Float64}, ea::Float64, length::Float64)\nPtFEM.format_nf_line!(l::AbstractString, t::Array{Tuple})\nPtFEM.read_nf_file(f::AbstractString)\nPtFEM.format_loads_line!(l::AbstractString, t::Array{Tuple})\nPtFEM.read_loads_file(f::AbstractString)\nPtFEM.rod_mm!(mm::Matrix{Float64}, length::Float64)\nPtFEM.sample!(fin_el::Hexahedron, s::Matrix{Float64} , wt::Vector{Float64})\nPtFEM.sample!(fin_el::Line, s::Matrix{Float64} , wt::Vector{Float64})\nPtFEM.sample!(fin_el::Quadrilateral, s::Matrix{Float64} , wt::Vector{Float64})\nPtFEM.sample!(fin_el::Tetrahedron, s::Matrix{Float64} , wt::Vector{Float64})\nPtFEM.sample!(fin_el::Triangle, s::Matrix{Float64} , wt::Vector{Float64})\nPtFEM.shape_der!(der::Matrix{Float64}, points::Matrix{Float64}, i::Int64)\nPtFEM.shape_fun!(fun::Vector{Float64}, points::Matrix{Float64}, i::Int64)\nPtFEM.stability(gsm::SparseMatrixCSC{Float64,Int64}, ggm::SparseMatrixCSC{Float64,Int64}, tol::Float64, limit::Int64)"
 },
 
 {
@@ -377,35 +385,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#PtFEM.fromSkyline-Tuple{Array{Float64,1},Array{Int64,1}}",
-    "page": "PtFEM.jl documentation",
-    "title": "PtFEM.fromSkyline",
-    "category": "Method",
-    "text": "fromSkyline\n\nHelper function to convert a Skyline vector to a full matrix.\n\nType\n\nfromSkyline(skyline::Vector{Float64}, kdiag::Vector{Int64})\n\nArguments\n\n* skyline::Vector{Float64}     : 1D Line(nod, nodof)\n* kdiag::Vector{Int64}         : 2D Triangle(nod, nodof)\n\n\n\n"
-},
-
-{
-    "location": "index.html#PtFEM-Other-1",
-    "page": "PtFEM.jl documentation",
-    "title": "PtFEM - Other",
-    "category": "section",
-    "text": "fromSkyline(skyline::Vector{Float64}, kdiag::Vector{Int64})"
-},
-
-{
-    "location": "index.html#PtFEM.sparin!-Tuple{Array{Float64,1},Array{Int64,1}}",
-    "page": "PtFEM.jl documentation",
-    "title": "PtFEM.sparin!",
-    "category": "Method",
-    "text": "Function sparin! performs Cholesky factorisation on a symmetric skyline global matrix. The vector kv is updated.\n\nArguments to sparin!(kv, kdiag):\n\nkv::Vector{Float64}   : Skyline vector of global stiffness matrix\n\nkdiag::Vector{Int64}  : Diagonal fin_el vector\n\n\n\n"
-},
-
-{
     "location": "index.html#PtFEM-No-longer-used-1",
     "page": "PtFEM.jl documentation",
     "title": "PtFEM - No longer used",
     "category": "section",
-    "text": "PtFEM.sparin!(kv::Vector{Float64}, kdiag::Vector{Int64})"
+    "text": "PtFEM.sparin!(kv::Vector{Float64}, kdiag::Vector{Int64})\nPtFEM.spabac!(kv::Vector{Float64}, loads::Vector{Float64}, kdiag::Vector{Int64})\nfromSkyline(skyline::Vector{Float64}, kdiag::Vector{Int64})\nPtFEM.skyline2sparse(skyline::Vector{Float64}, kdiag::Vector{Int64})\nPtFEM.stability!(kv::Vector{Float64}, gv::Vector{Float64}, kdiag::Vector{Int64}, tol::Float64, limit::Int64, iters::Int64, evec::Vector{Float64}, ival::Float64)"
 },
 
 {
