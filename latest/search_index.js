@@ -333,7 +333,7 @@ var documenterSearchIndex = {"docs": [
     "page": "PtFEM.jl documentation",
     "title": "Other Julia Types",
     "category": "section",
-    "text": "jFEM\nFeModel"
+    "text": "FEM\njFEM"
 },
 
 {
@@ -377,11 +377,43 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "index.html#Base.LinAlg.cholfact",
+    "page": "PtFEM.jl documentation",
+    "title": "Base.LinAlg.cholfact",
+    "category": "Function",
+    "text": "cholfact(A, [uplo::Symbol,] Val{false}) -> Cholesky\n\nCompute the Cholesky factorization of a dense symmetric positive definite matrix A and return a Cholesky factorization. The matrix A can either be a Symmetric or Hermitian StridedMatrix or a perfectly symmetric or Hermitian StridedMatrix. In the latter case, the optional argument uplo may be :L for using the lower part or :U for the upper part of A. The default is to use :U. The triangular Cholesky factor can be obtained from the factorization F with: F[:L] and F[:U]. The following functions are available for Cholesky objects: size, \\, inv, det. A PosDefException exception is thrown in case the matrix is not positive definite.\n\n\n\ncholfact(A, [uplo::Symbol,] Val{true}; tol = 0.0) -> CholeskyPivoted\n\nCompute the pivoted Cholesky factorization of a dense symmetric positive semi-definite matrix A and return a CholeskyPivoted factorization. The matrix A can either be a Symmetric or Hermitian StridedMatrix or a perfectly symmetric or Hermitian StridedMatrix. In the latter case, the optional argument uplo may be :L for using the lower part or :U for the upper part of A. The default is to use :U. The triangular Cholesky factor can be obtained from the factorization F with: F[:L] and F[:U]. The following functions are available for PivotedCholesky objects: size, \\, inv, det, and rank. The argument tol determines the tolerance for determining the rank. For negative values, the tolerance is the machine precision.\n\n\n\ncholfact(A; shift = 0.0, perm = Int[]) -> CHOLMOD.Factor\n\nCompute the Cholesky factorization of a sparse positive definite matrix A. A must be a SparseMatrixCSC, Symmetric{SparseMatrixCSC}, or Hermitian{SparseMatrixCSC}. Note that even if A doesn't have the type tag, it must still be symmetric or Hermitian. A fill-reducing permutation is used. F = cholfact(A) is most frequently used to solve systems of equations with F\\b, but also the methods diag, det, logdet are defined for F. You can also extract individual factors from F, using F[:L]. However, since pivoting is on by default, the factorization is internally represented as A == P'*L*L'*P with a permutation matrix P; using just L without accounting for P will give incorrect answers. To include the effects of permutation, it's typically preferable to extact \"combined\" factors like PtL = F[:PtL] (the equivalent of P'*L) and LtP = F[:UP] (the equivalent of L'*P).\n\nSetting optional shift keyword argument computes the factorization of A+shift*I instead of A. If the perm argument is nonempty, it should be a permutation of 1:size(A,1) giving the ordering to use (instead of CHOLMOD's default AMD ordering).\n\nnote: Note\nThis method uses the CHOLMOD library from SuiteSparse, which only supports doubles or complex doubles. Input matrices not of those element types will be converted to SparseMatrixCSC{Float64} or SparseMatrixCSC{Complex128} as appropriate.Many other functions from CHOLMOD are wrapped but not exported from the Base.SparseArrays.CHOLMOD module.\n\n\n\n"
+},
+
+{
+    "location": "index.html#Base.:\\",
+    "page": "PtFEM.jl documentation",
+    "title": "Base.:\\",
+    "category": "Function",
+    "text": "\\(x, y)\n\nLeft division operator: multiplication of y by the inverse of x on the left. Gives floating-point results for integer arguments.\n\n\n\n\\(A, B)\n\nMatrix division using a polyalgorithm. For input matrices A and B, the result X is such that A*X == B when A is square. The solver that is used depends upon the structure of A.  If A is upper or lower triangular (or diagonal), no factorization of A is required and the system is solved with either forward or backward substitution. For non-triangular square matrices, an LU factorization is used.\n\nFor rectangular A the result is the minimum-norm least squares solution computed by a pivoted QR factorization of A and a rank estimate of A based on the R factor.\n\nWhen A is sparse, a similar polyalgorithm is used. For indefinite matrices, the LDLt factorization does not use pivoting during the numerical factorization and therefore the procedure can fail even for invertible matrices.\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM-Julia-functions-and-operators-1",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM - Julia functions & operators",
+    "category": "section",
+    "text": "cholfact\n\\"
+},
+
+{
+    "location": "index.html#Base.pmap",
+    "page": "PtFEM.jl documentation",
+    "title": "Base.pmap",
+    "category": "Function",
+    "text": "pmap([::AbstractWorkerPool], f, c...; distributed=true, batch_size=1, on_error=nothing, retry_n=0, retry_max_delay=DEFAULT_RETRY_MAX_DELAY, retry_on=DEFAULT_RETRY_ON) -> collection\n\nTransform collection c by applying f to each element using available workers and tasks.\n\nFor multiple collection arguments, apply f elementwise.\n\nNote that f must be made available to all worker processes; see Code Availability and Loading Packages for details.\n\nIf a worker pool is not specified, all available workers, i.e., the default worker pool is used.\n\nBy default, pmap distributes the computation over all specified workers. To use only the local process and distribute over tasks, specify distributed=false. This is equivalent to asyncmap.\n\npmap can also use a mix of processes and tasks via the batch_size argument. For batch sizes greater than 1, the collection is split into multiple batches, which are distributed across workers. Each such batch is processed in parallel via tasks in each worker. The specified batch_size is an upper limit, the actual size of batches may be smaller and is calculated depending on the number of workers available and length of the collection.\n\nAny error stops pmap from processing the remainder of the collection. To override this behavior you can specify an error handling function via argument on_error which takes in a single argument, i.e., the exception. The function can stop the processing by rethrowing the error, or, to continue, return any value which is then returned inline with the results to the caller.\n\nFailed computation can also be retried via retry_on, retry_n, retry_max_delay, which are passed through to retry as arguments retry_on, n and max_delay respectively. If batching is specified, and an entire batch fails, all items in the batch are retried.\n\nThe following are equivalent:\n\npmap(f, c; distributed=false) and asyncmap(f,c)\npmap(f, c; retry_n=1) and asyncmap(retry(remote(f)),c)\npmap(f, c; retry_n=1, on_error=e->e) and asyncmap(x->try retry(remote(f))(x) catch e; e end, c)\n\n\n\n"
+},
+
+{
     "location": "index.html#PtFEM-Parallel-processing-1",
     "page": "PtFEM.jl documentation",
     "title": "PtFEM - Parallel processing",
     "category": "section",
-    "text": ""
+    "text": "pmap"
 },
 
 {
