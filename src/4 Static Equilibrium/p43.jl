@@ -1,15 +1,16 @@
 """
 # p43
 
-Method for static equilibrium analysis of a beam.
+Analysis of elastic beams using 2-node Beam structural elements and Line
+finite elements. Elastic foundation is optional.
 
 ### Constructors
 ```julia
-p43(data::Dict)
+p43(data)
 ```
 ### Arguments
 ```julia
-* `data` : Dictionary containing all input data
+* `data::Dict{Symbol, Any}` : Dictionary containing all input data
 ```
 
 ### Dictionary keys
@@ -23,55 +24,22 @@ p43(data::Dict)
 * fixed_freedoms::Array{Tuple{Vector{Int64}}           : Fixed freedoms
 ```
 
-### Optional dictionary keys
+### Optional additional dictionary keys
 ```julia
 * etype::Vector{Int64}                                 : Element material vector
 * penalty::Float64                                     : Penalty for fixed freedoms
 * eq_nodal_forces_and_moments                          : Equivalent nodal loads
 ```
 
-### Examples
+### Return values
 ```julia
-using PtFEM
-
-data = Dict(
-  # Beam(ndim, nst, nxe, nip, direction, finite_element(nod, nodof), axisymmet
-  :struc_el => Beam(2, 1, 4, 1, :x, Line(2, 2), false),
-  :properties => [4.0e4; 2.0e4],
-  :etype => [1, 1, 2, 2],
-  :x_coords => [0.0, 2.5, 5.0, 8.0, 10.0],
-  :support => [
-      (1, [0 1]),
-      (4, [0 1])
-    ],
-  :loaded_nodes => [
-      (2, [-20.0 0.0]),
-      (3, [-6.0 -3.0]),
-      (4, [-8.8 2.2]),
-      (5, [-1.2 0.5333])
-    ],
-  :fixed_freedoms => [
-      (1, 2, -0.001),
-      (3, 1, -0.005)
-    ],
-  :penalty => 1e19,
-  :eq_nodal_forces_and_moments => [
-    (3, [-6.0 -3.0 -6.0 3.0]),
-    (4, [-2.8 -0.8 -1.2  0.5333])
-  ]
-)
-
-fem, dis_dt, fm_dt = p43(data)
-
-println("Displacements:")
-dis_dt |> display
-println()
-
-println("Actions:")
-fm_dt |> display
-println()
-
+* (jfem, dis_dt, fm_dt)        : Tuple of jFem, dis_dt and fm_dt
+                                 where:
+                                    jfem::jFem    : Computational result type
+                                    dis_dt        : Displacement data table
+                                    fm_dt         : Forces and moments data table
 ```
+
 
 ### Related help
 ```julia

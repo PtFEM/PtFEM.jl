@@ -1,17 +1,16 @@
 """
 # Method p41 
 
-One dimensional analysis of axially loaded elastic rods using 2-node rod elements. 
+One dimensional analysis of an axially loaded elastic Rod using 2-node 
+Line elements. 
 
 ### Constructors
 ```julia
-p41(data::Dict)
-p41(m::jFEM, data::Dict) # Used to re-use factored global stiffness matrix
+p41(data)
 ```
 ### Arguments
 ```julia
-* `m`    : Previously created jFEM model
-* `data` : Dictionary containing all input data
+* `data::Dict{Symbol, Any}`  : Dictionary containing all input data
 ```
 
 ### Required data dictionary keys
@@ -20,7 +19,7 @@ p41(m::jFEM, data::Dict) # Used to re-use factored global stiffness matrix
 * support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
 * loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector
 * properties::Vector{Float64}                          : Material properties
-* x_coords::0.0:0.1:1.0                                : x-coordinate vector
+* x_coords::FloatRange{Float64}                        : x-coordinate vector
 ```
 
 ### Optional additional data dictionary keys
@@ -269,6 +268,56 @@ function p41(data::Dict{Symbol, Any})
 end
 
 
+"""
+# Method p41 
+
+One dimensional analysis of an axially loaded elastic Rod using 2-node 
+Line elements. 
+
+### Constructors
+```julia
+p41(m, data) # Re-use factored global stiffness matrix
+```
+### Arguments
+```julia
+* `m::jFEM`                  : Previously created jFEM model
+* `data::Dict{Symbol, Any}`  : Dictionary containing all input data
+```
+
+### Required data dictionary keys
+```julia
+* struc_el::StructuralElement                          : Type of  structural fin_el
+* support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
+* loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector
+* properties::Vector{Float64}                          : Material properties
+* x_coords::FloatRange{Float64}                        : x-coordinate vector
+```
+
+### Optional additional data dictionary keys
+```julia
+* penalty = 1e20               : Penalty used for fixed degrees of freedoms
+* etype::Vector{Int64}         : Element material vector if np_types > 1
+* eq_nodal_forces_and_moments  : Contribution of distributed loads to loaded_nodes
+```
+
+### Return values
+```julia
+* (jfem, dis_dt, fm_dt)        : Tuple of jFem, dis_dt and fm_dt
+                                 where:
+                                    jfem::jFem    : Computational result type
+                                    dis_dt        : Displacement data table
+                                    fm_dt         : Forces and moments data table
+```
+
+
+### Related help
+```julia
+?StructuralElement             : List of available structural element types
+?Rod                           : Help on a Rod structural element
+?FiniteElement                 : List finite element types
+?Line                          : Help on Line finite element
+```
+"""
 function p41(m::PtFEM.jFEM, data::Dict)
   lastind = m.neq + 1
   loads = OffsetArray(zeros(lastind+1), 0:lastind)

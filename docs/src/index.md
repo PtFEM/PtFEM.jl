@@ -3,7 +3,7 @@
 ## 4 Static Equilibrium Programs
 
 ```@docs
-p41(data::Dict{Symbol, Any})
+p41
 p42(data::Dict{Symbol, Any})
 p43(data::Dict{Symbol, Any})
 p44(data::Dict{Symbol, Any})

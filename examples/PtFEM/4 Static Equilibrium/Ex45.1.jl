@@ -28,8 +28,6 @@ data = Dict(
   :tol => 0.0001,
   :incs => 8,
   :dload => [0.5; 0.3; 0.2; 0.2; 0.1; 0.05; 0.02; 0.01]
-  #:incs => 1,
-  #:dload => [0.5;]
 )
 
 data |> display

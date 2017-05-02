@@ -2,15 +2,15 @@
 # Method p42
 
 Analysis of elastic pin-jointed frames using 2-node rod elements in 2- or
-3-dimensions 
+3-dimensions.
 
 ### Constructors
 ```julia
-p42(data::Dict)
+p42(data)
 ```
 ### Arguments
 ```julia
-* `data` : Dictionary containing all input data
+* `data::Dict{Symbol, Any}`  : Dictionary containing all input data
 ```
 
 ### Dictionary keys
@@ -24,7 +24,7 @@ p42(data::Dict)
 * g_num::Array{Int64,2}                                : Element node connections
 ```
 
-### Optional dictionary keys
+### Optional additional dictionary keys
 ```julia
 * penalty::Float64             : Penalty for fixed freedoms
 * etype::Vector{Int64}         : Element material vector

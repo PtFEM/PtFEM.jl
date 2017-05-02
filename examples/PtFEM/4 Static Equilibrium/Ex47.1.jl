@@ -1,5 +1,8 @@
 using PtFEM
 
+ProjDir = dirname(@__FILE__)
+exname = split(@__FILE__)[end][1:end-3]
+
 data = Dict(
   # Plane(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)
   :struc_el => Plane(2, 3, 2, 2, 16, :x, Quadrilateral(4, 4), false),
@@ -25,5 +28,11 @@ data = Dict(
 data |> display
 println()
 
-@time m = p47(data)
+@time fm_dt, sigma_dt = p47(data)
 println()
+
+PtFEM.vtk(data, fm_dt, sigma_dt, ProjDir, "Ex47.1")
+
+fm_dt |> display
+println()
+sigma_dt |> display

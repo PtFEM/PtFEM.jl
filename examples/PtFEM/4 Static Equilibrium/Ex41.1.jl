@@ -18,7 +18,7 @@ data = Dict(
   # Compute x_coords using length l and number of elements, els
   :x_coords => 0.0:l/els:l,
   # Define a support for node N
-  # In this case fix the single dof (x direction displacement)
+  # Fix the single dof (x direction displacement) of node N
   :support => [(N, [0])],
   # External forces are applied to nodes 1 to 5.
   :loaded_nodes => [

@@ -1,15 +1,17 @@
 """
 # p44
 
-Method for static equilibrium analysis of a beam.
+Analysis of elastic rigid-joonted frames using a 2-node
+Frame structural element and Line finite elements
+in 2 or 3 dimensions.
 
 ### Constructors
 ```julia
-p44(data::Dict)
+p44(data)
 ```
 ### Arguments
 ```julia
-* `data` : Dictionary containing all input data
+* `data::Dict{Symbol, Any}` : Dictionary containing all input data
 ```
 
 ### Dictionary keys
@@ -18,24 +20,24 @@ p44(data::Dict)
 * support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
 * loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector
 * properties::Vector{Float64}                          : Material properties
-* x_coords::LinSpace{Float64}                          : x coordinate vector
-* y_coords::LinSpace{Float64}                          : y coordinate vector
+* x_coords::FloatRange{Float64}                        : x coordinate vector
+* y_coords::FloatRange{Float64}                        : y coordinate vector
 * g_num::Array{Int64,2}                                : Element node connections
 * fixed_freedoms::Array{Tuple{Vector{Int64}}           : Fixed freedoms
 ```
 
-### Optional dictionary keys
+### Optional additional dictionary keys
 ```julia
 * etype::Vector{Int64}                                 : Element material vector
 * penalty::Float64                                     : Penalty for fixed freedoms
+* z_coords::FloatRange{Float64}                        : z coordinate vector
 * eq_nodal_forces_and_moments                          : Equivalent nodal loads
-* z_coords::LinSpace{Float64}                          : z coordinate vector
 ```
 
 ### Related help
 ```julia
 ?StructuralElement  : Help on structural elements
-?Rod                : Help on a Rod structural fin_el
+?Beam               : Help on a Beam structural fin_el
 ?FiniteElement      : Help on finite element types
 ```
 """

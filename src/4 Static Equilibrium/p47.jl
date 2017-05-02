@@ -1,50 +1,50 @@
 """
 # Method p47 
 
-One dimensional analysis of axially loaded elastic rods using 2-node rod elements. 
+Analysis of plates (Plne structural element) using 4-node Quadrilateral
+finite elements. Homogeneous material with identical elements. Mesh
+numbered in x or y direction.
 
 ### Constructors
 ```julia
-p47(data::Dict)
+p47(data)
 ```
 ### Arguments
 ```julia
-* `m`    : Previously created jFEM model
-* `data` : Dictionary containing all input data
+* `data::Dict{Symbol, Any}` : Dictionary containing all input data
 ```
 
 ### Required data dictionary keys
 ```julia
-* struc_el::StructuralElement                          : Type of  structural fin_el
+* struc_el::StructuralElement                          : Structural element
 * support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
 * loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector
 * properties::Vector{Float64}                          : Material properties
-* x_coords::0.0:0.1:1.0                                : x-coordinate vector
+* x_coords::FloatRange{Floalt64}                       : x-coordinate vector
+* y_coords::FloatRange{Floalt64}                       : y-coordinate vector
+* thickness:: Float64                                  : Thickness of plate
 ```
 
 ### Optional additional data dictionary keys
 ```julia
 * penalty = 1e20               : Penalty used for fixed degrees of freedoms
 * etype::Vector{Int64}         : Element material vector if np_types > 1
-* eq_nodal_forces_and_moments  : Contribution of distributed loads to loaded_nodes
 ```
 
 ### Return values
 ```julia
-* (jfem, dis_dt, fm_dt)        : Tuple of jFem, dis_dt and fm_dt
-                                 where:
-                                    jfem::jFem    : Computational result type
-                                    dis_dt        : Displacement data table
+* (fm_dt, sigma_dt)            : Tuple of jFem, dis_dt and fm_dt
+                                  where:
                                     fm_dt         : Forces and moments data table
+                                    sigma_dt      : Stresses data table
 ```
-
 
 ### Related help
 ```julia
 ?StructuralElement             : List of available structural element types
-?Rod                           : Help on a Rod structural element
+?Plane                         : Help on a Plane structural element
 ?FiniteElement                 : List finite element types
-?Line                          : Help on Line finite element
+?Quadrilateral                 : Help on Quadrilateral finite element
 ```
 """
 function p47(data::Dict{Symbol, Any})
