@@ -181,9 +181,6 @@ function p62(data::Dict)
     g_g[:, iel] = g
   end
 
-  # Plot the mesh, commented out for now
-  #mesh!(g_coord, g_num, )
-  
   tensor = zeros(nst, struc_el.nip, nels)
   storkm = zeros(ndof, ndof, nels)
   #tload = zeros(neq+1)

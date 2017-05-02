@@ -179,9 +179,6 @@ function pp62(data::Dict)
     g_g[:, iel] = g
   end
 
-  # Plot the mesh, commented out for now
-  #mesh!(g_coord, g_num, )
-  
   tensor = zeros(nst, struc_el.nip, nels)
   storkm = zeros(ndof, ndof, nels)
   dt = 1.0e15
