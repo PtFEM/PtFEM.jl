@@ -1,7 +1,7 @@
 """
 # p44
 
-Analysis of elastic rigid-joonted frames using a 2-node
+Analysis of elastic rigid-jointed frames using a 2-node
 Frame structural element and Line finite elements
 in 2 or 3 dimensions.
 
@@ -32,6 +32,15 @@ p44(data)
 * penalty::Float64                                     : Penalty for fixed freedoms
 * z_coords::FloatRange{Float64}                        : z coordinate vector
 * eq_nodal_forces_and_moments                          : Equivalent nodal loads
+```
+
+### Return values
+```julia
+* (jfem, dis_dt, fm_dt)        : Tuple of jFem, dis_dt and fm_dt
+                                 where:
+                                    jfem::jFem    : Computational result type
+                                    dis_dt        : Displacement data table
+                                    fm_dt         : Forces and moments data table
 ```
 
 ### Related help
