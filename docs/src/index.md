@@ -53,6 +53,13 @@ Hexahedron
 Tetrahedron
 ```
 
+## Other Julia Types
+
+```@docs
+jFEM
+FeModel
+```
+
 ## PtFEM - Main
 
 ```@docs
@@ -70,6 +77,27 @@ PtFEM.formm!(stress::Vector{Float64}, m1::Matrix{Float64}, m2::Matrix{Float64}, 
 PtFEM.formnf!(nodof::Int64, nn::Int64, nf::Matrix{Int64})
 PtFEM.glob_to_loc!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float64, coord::Matrix{Float64})
 PtFEM.global_to_axial(glob::Vector{Float64}, coord::Matrix{Float64})
+PtFEM.hinge!(coord::Matrix{Float64}, holdr::Matrix{Float64}, action::Vector{Float64}, react::Vector{Float64}, prop::Matrix{Float64}, iel, etype::Vector{Int64}, gamma::Vector{Float64})
+PtFEM.invar!(stress::Vector{Float64}, sigm::Float64, dsbar::Float64, theta::Float64)
+PtFEM.linmul_sky!(kv::Vector{Float64}, disps::Vector{Float64}, loads::Vector{Float64}, kdiag::Vector{Int64})
+PtFEM.loc_to_glob!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float64, coord::Matrix{Float64})
+PtFEM.num_to_g!(num::Vector{Int64}, nf::Matrix{Int64}, g::Vector{Int64})
+PtFEM.pin_jointed!(km::Matrix{Float64}, ea::Float64, coord::Matrix{Float64})
+PtFEM.rigid_jointed!(km::Matrix{Float64}, prop::Matrix{Float64}, gamma::Vector{Float64}, etype::Vector{Int64}, iel::Int64, coord::Matrix{Float64})
+PtFEM.rod_km!(km::Matrix{Float64}, ea::Float64, length::Float64)
+PtFEM.format_nf_line!(l::AbstractString, t::Array{Tuple})
+PtFEM.read_nf_file(f::AbstractString)
+PtFEM.format_loads_line!(l::AbstractString, t::Array{Tuple})
+PtFEM.read_loads_file(f::AbstractString)
+PtFEM.rod_mm!(mm::Matrix{Float64}, length::Float64)
+PtFEM.sample!(fin_el::Hexahedron, s::Matrix{Float64} , wt::Vector{Float64})
+PtFEM.sample!(fin_el::Line, s::Matrix{Float64} , wt::Vector{Float64})
+PtFEM.sample!(fin_el::Quadrilateral, s::Matrix{Float64} , wt::Vector{Float64})
+PtFEM.sample!(fin_el::Tetrahedron, s::Matrix{Float64} , wt::Vector{Float64})
+PtFEM.sample!(fin_el::Triangle, s::Matrix{Float64} , wt::Vector{Float64})
+PtFEM.shape_der!(der::Matrix{Float64}, points::Matrix{Float64}, i::Int64)
+PtFEM.shape_fun!(fun::Vector{Float64}, points::Matrix{Float64}, i::Int64)
+PtFEM.stability(gsm::SparseMatrixCSC{Float64,Int64}, ggm::SparseMatrixCSC{Float64,Int64}, tol::Float64, limit::Int64)
 ```
 
 ## PtFEM - Geom
@@ -101,16 +129,14 @@ PtFEM.vtk(data::Dict, fm_dt, sigma_dt, dir, fname)
 ```@docs
 ```
 
-## PtFEM - Other
-
-```@docs
-fromSkyline(skyline::Vector{Float64}, kdiag::Vector{Int64})
-```
-
 ## PtFEM - No longer used
 
 ```@docs
 PtFEM.sparin!(kv::Vector{Float64}, kdiag::Vector{Int64})
+PtFEM.spabac!(kv::Vector{Float64}, loads::Vector{Float64}, kdiag::Vector{Int64})
+fromSkyline(skyline::Vector{Float64}, kdiag::Vector{Int64})
+PtFEM.skyline2sparse(skyline::Vector{Float64}, kdiag::Vector{Int64})
+PtFEM.stability!(kv::Vector{Float64}, gv::Vector{Float64}, kdiag::Vector{Int64}, tol::Float64, limit::Int64, iters::Int64, evec::Vector{Float64}, ival::Float64)
 ```
 
 ## Index

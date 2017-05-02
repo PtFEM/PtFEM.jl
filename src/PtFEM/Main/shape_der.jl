@@ -1,6 +1,6 @@
 function shape_der!(der::Matrix{Float64}, points::Matrix{Float64}, i::Int64)
   #
-  #   This subroutine produces derivatives of shape functions withe respect
+  #   This subroutine produces derivatives of shape functions with respect
   #   to local coordinates.
   #
 
