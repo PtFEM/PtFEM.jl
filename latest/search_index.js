@@ -209,11 +209,43 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "index.html#PtFEM.p44-Tuple{Dict{Symbol,Any}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.p44",
+    "category": "Method",
+    "text": "p44\n\nMethod for static equilibrium analysis of a beam.\n\nConstructors\n\np44(data::Dict)\n\nArguments\n\n* `data` : Dictionary containing all input data\n\nDictionary keys\n\n* struc_el::StructuralElement                          : Type of  structural fin_el\n* support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector\n* loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector\n* properties::Vector{Float64}                          : Material properties\n* x_coords::LinSpace{Float64}                          : x coordinate vector\n* y_coords::LinSpace{Float64}                          : y coordinate vector\n* g_num::Array{Int64,2}                                : Element node connections\n* fixed_freedoms::Array{Tuple{Vector{Int64}}           : Fixed freedoms\n\nOptional dictionary keys\n\n* etype::Vector{Int64}                                 : Element material vector\n* penalty::Float64                                     : Penalty for fixed freedoms\n* eq_nodal_forces_and_moments                          : Equivalent nodal loads\n* z_coords::LinSpace{Float64}                          : z coordinate vector\n\nRelated help\n\n?StructuralElement  : Help on structural elements\n?Rod                : Help on a Rod structural fin_el\n?FiniteElement      : Help on finite element types\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.p45-Tuple{Dict{Symbol,Any}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.p45",
+    "category": "Method",
+    "text": "Method p45\n\nOne dimensional analysis of axially loaded elastic rods using 2-node rod elements. \n\nConstructors\n\np45(data::Dict)\n\nArguments\n\n* `m`    : Previously created jFEM model\n* `data` : Dictionary containing all input data\n\nRequired data dictionary keys\n\n* struc_el::StructuralElement                          : Type of  structural fin_el\n* support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector\n* loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector\n* properties::Vector{Float64}                          : Material properties\n* x_coords::0.0:0.1:1.0                                : x-coordinate vector\n\nOptional additional data dictionary keys\n\n* penalty = 1e20               : Penalty used for fixed degrees of freedoms\n* etype::Vector{Int64}         : Element material vector if np_types > 1\n* eq_nodal_forces_and_moments  : Contribution of distributed loads to loaded_nodes\n\nReturn values\n\n* (jfem, dis_dt, fm_dt)        : Tuple of jFem, dis_dt and fm_dt\n                                 where:\n                                    jfem::jFem    : Computational result type\n                                    dis_dt        : Displacement data table\n                                    fm_dt         : Forces and moments data table\n\nRelated help\n\n?StructuralElement             : List of available structural element types\n?Rod                           : Help on a Rod structural element\n?FiniteElement                 : List finite element types\n?Line                          : Help on Line finite element\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.p46-Tuple{Dict{Symbol,Any}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.p46",
+    "category": "Method",
+    "text": "Method p46\n\nOne dimensional analysis of axially loaded elastic rods using 2-node rod elements. \n\nConstructors\n\np46(data::Dict)\n\nArguments\n\n* `m`    : Previously created jFEM model\n* `data` : Dictionary containing all input data\n\nRequired data dictionary keys\n\n* struc_el::StructuralElement                          : Type of  structural fin_el\n* support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector\n* loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector\n* properties::Vector{Float64}                          : Material properties\n* x_coords::0.0:0.1:1.0                                : x-coordinate vector\n\nOptional additional data dictionary keys\n\n* penalty = 1e20               : Penalty used for fixed degrees of freedoms\n* etype::Vector{Int64}         : Element material vector if np_types > 1\n* eq_nodal_forces_and_moments  : Contribution of distributed loads to loaded_nodes\n\nReturn values\n\n* (jfem, dis_dt, fm_dt)        : Tuple of jFem, dis_dt and fm_dt\n                                 where:\n                                    jfem::jFem    : Computational result type\n                                    dis_dt        : Displacement data table\n                                    fm_dt         : Forces and moments data table\n\nRelated help\n\n?StructuralElement             : List of available structural element types\n?Rod                           : Help on a Rod structural element\n?FiniteElement                 : List finite element types\n?Line                          : Help on Line finite element\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.p47-Tuple{Dict{Symbol,Any}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.p47",
+    "category": "Method",
+    "text": "Method p47\n\nOne dimensional analysis of axially loaded elastic rods using 2-node rod elements. \n\nConstructors\n\np47(data::Dict)\n\nArguments\n\n* `m`    : Previously created jFEM model\n* `data` : Dictionary containing all input data\n\nRequired data dictionary keys\n\n* struc_el::StructuralElement                          : Type of  structural fin_el\n* support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector\n* loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector\n* properties::Vector{Float64}                          : Material properties\n* x_coords::0.0:0.1:1.0                                : x-coordinate vector\n\nOptional additional data dictionary keys\n\n* penalty = 1e20               : Penalty used for fixed degrees of freedoms\n* etype::Vector{Int64}         : Element material vector if np_types > 1\n* eq_nodal_forces_and_moments  : Contribution of distributed loads to loaded_nodes\n\nReturn values\n\n* (jfem, dis_dt, fm_dt)        : Tuple of jFem, dis_dt and fm_dt\n                                 where:\n                                    jfem::jFem    : Computational result type\n                                    dis_dt        : Displacement data table\n                                    fm_dt         : Forces and moments data table\n\nRelated help\n\n?StructuralElement             : List of available structural element types\n?Rod                           : Help on a Rod structural element\n?FiniteElement                 : List finite element types\n?Line                          : Help on Line finite element\n\n\n\n"
+},
+
+{
     "location": "index.html#Static-Equilibrium-Programs-1",
     "page": "PtFEM.jl documentation",
     "title": "4 Static Equilibrium Programs",
     "category": "section",
-    "text": "p41(data::Dict{Symbol, Any})\np42(data::Dict{Symbol, Any})\np43(data::Dict{Symbol, Any})"
+    "text": "p41(data::Dict{Symbol, Any})\np42(data::Dict{Symbol, Any})\np43(data::Dict{Symbol, Any})\np44(data::Dict{Symbol, Any})\np45(data::Dict{Symbol, Any})\np46(data::Dict{Symbol, Any})\np47(data::Dict{Symbol, Any})"
 },
 
 {
@@ -221,7 +253,7 @@ var documenterSearchIndex = {"docs": [
     "page": "PtFEM.jl documentation",
     "title": "5 Elastic Solids Programs",
     "category": "section",
-    "text": "p51(data::Dict{Symbol, Any})\np52(data::Dict{Symbol, Any})"
+    "text": "p51(data::Dict{Symbol, Any})\np52(data::Dict{Symbol, Any})\np53(data::Dict{Symbol, Any})\np54(data::Dict{Symbol, Any})\np55(data::Dict{Symbol, Any})\np56(data::Dict{Symbol, Any})"
 },
 
 {
@@ -313,43 +345,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#PtFEM.mesh_size-Tuple{PtFEM.Line,Int64}",
-    "page": "PtFEM.jl documentation",
-    "title": "PtFEM.mesh_size",
-    "category": "Method",
-    "text": "mesh_size\n\nFunction mesh_size returns the number of fin_els (nels) and the number of nodes (nn) in a 1, 2 or 3-d geometry-created mesh.\n\nMethod\n\n(nels, nn) = mesh_size(fin_el, nxe, [nye[, nze]])\n\nArguments\n\n* fe::Element           : Shape of finite element\n                          1D: Line\n                          2D: Trangle or Quadrilateral\n                          3D: Hexahedron\n* nxe::Int64            : Number of fin_els in x direction\n* nye::Int64            : Number of fin_els in y direction (for 2D and 3D)\n* nze::Int64            : Number of fin_els in z direction (3D only)\n\n\n\n"
-},
-
-{
-    "location": "index.html#PtFEM.mesh_size-Tuple{PtFEM.Triangle,Int64,Int64}",
-    "page": "PtFEM.jl documentation",
-    "title": "PtFEM.mesh_size",
-    "category": "Method",
-    "text": "mesh_size\n\nmesh_size: The function mesh_size returns the number of fin_els (nels) and the number of nodes (nn) in a 2-d geometry-created mesh.\n\nMethod\n\n(nels, nn) = mesh_size(fin_el, nxe)\n\nArguments\n\n* `fin_el` : Shape of 2D finite element (Triangle)\n* `nxe` : Number of fin_els in x direction\n* `nxe` : Number of fin_els in y direction\n\n\n\n"
-},
-
-{
-    "location": "index.html#PtFEM.mesh_size-Tuple{PtFEM.Quadrilateral,Int64,Int64}",
-    "page": "PtFEM.jl documentation",
-    "title": "PtFEM.mesh_size",
-    "category": "Method",
-    "text": "mesh_size\n\nmesh_size: The function mesh_size returns the number of fin_els (nels) and the number of nodes (nn) in a 2-d geometry-created mesh.\n\nMethod\n\n(nels, nn) = mesh_size(fin_el, nxe, nye)\n\nArguments\n\n* `fin_el` : Shape of 2D finite element (Quadrilateral)\n* `nxe` : Number of fin_els in x direction\n* `nye` : Number of fin_els in y direction\n\n\n\n"
-},
-
-{
-    "location": "index.html#PtFEM.mesh_size-Tuple{PtFEM.Hexahedron,Int64,Int64,Int64}",
-    "page": "PtFEM.jl documentation",
-    "title": "PtFEM.mesh_size",
-    "category": "Method",
-    "text": "mesh_size\n\nmesh_size: The function mesh_size returns the number of fin_els (nels) and the number of nodes (nn) in a 3-d geometry-created mesh.\n\nMethod\n\n(nels, nn) = mesh_size(fin_el, nxe, nye, nze)\n\nArguments\n\n* `fin_el` : Shape of 2D finite element (Hexahedron)\n* `nxe` : Number of fin_els in x direction\n* `nye` : Number of fin_els in y direction\n* `nxe` : Number of fin_els in x direction\n\n\n\n"
-},
-
-{
     "location": "index.html#PtFEM-Geom-1",
     "page": "PtFEM.jl documentation",
     "title": "PtFEM - Geom",
     "category": "section",
-    "text": "PtFEM.mesh_size(fe::Line, nxe::Int64)\nPtFEM.mesh_size(fe::Triangle, nxe::Int64, nye::Int64)\nPtFEM.mesh_size(fe::Quadrilateral, nxe::Int64, nye::Int64)\nPtFEM.mesh_size(fe::Hexahedron, nxe::Int64, nye::Int64, nze::Int64)"
+    "text": "PtFEM.geom_rect!(fin_el::Quadrilateral, iel::Int64, x_coords::Array{Float64, 1}, y_coords::Array{Float64, 1}, coord::Matrix{Float64}, num::Vector{Int64}, dir::Symbol)\nPtFEM.geom_rect!(fin_el::Triangle, iel::Int64, x_coords::Array{Float64, 1}, y_coords::Array{Float64, 1}, coord::Matrix{Float64}, num::Vector{Int64}, dir::Symbol)\nPtFEM.mesh_size(fe::Line, nxe::Int64)\nPtFEM.mesh_size(fe::Triangle, nxe::Int64, nye::Int64)\nPtFEM.mesh_size(fe::Quadrilateral, nxe::Int64, nye::Int64)\nPtFEM.mesh_size(fe::Hexahedron, nxe::Int64, nye::Int64, nze::Int64)"
 },
 
 {
@@ -373,7 +373,7 @@ var documenterSearchIndex = {"docs": [
     "page": "PtFEM.jl documentation",
     "title": "PtFEM - VTK methods",
     "category": "section",
-    "text": ""
+    "text": "PtFEM.vtk(data::Dict, fm_dt, sigma_dt, dir, fname)"
 },
 
 {
