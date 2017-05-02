@@ -345,11 +345,35 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "index.html#PtFEM.geom_rect!",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.geom_rect!",
+    "category": "Function",
+    "text": "geom_rect!\n\nThis subroutine forms the coordinates and connectivity for a rectangular mesh of right angled triangular elements (3, 6, 10 or 15-node) or quadrilateral elements (4, 8 or 9-node) counting in the x- or y-dir. \n\nMethod\n\ngeom_rect!(fin_el, iel, x_coords, y_coords, coord, num, dir)\n\nArguments\n\n* fin_el::FiniteElement            : Shape of finite element\n                                     (Trangle or Quadrilateral)\n* iel::Int64                       : Element number\n* x_coords::FloatRange{Float64}    : x coordinates\n* y_coords::FloatRange{Float64}    : y coordinates\n* coord::Matrix{Float64}           : Nodal coordinates (Updated)\n* num::Vector{Int64}               : Node numbers (Updated)\n* dir::Symbol                      : Node numbering direction\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.hexahedron_xz!",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.hexahedron_xz!",
+    "category": "Function",
+    "text": "hexahedron_xz!\n\nThis subroutine generates nodal coordinates and numbering for 8, 14 or 20-node \"bricks\" counting x-z planes in the y-direction. \n\nMethod\n\nhexahedron_xz!(iel, x_coords, y_coords, z_coords, coord, num)\n\nArguments\n\n* iel::Int64                       : Element number\n* x_coords::FloatRange{Float64}    : x coordinates\n* y_coords::FloatRange{Float64}    : y coordinates\n* z_coords::FloatRange{Float64}    : y coordinates\n* coord::Matrix{Float64}           : Nodal coordinates (Updated)\n* num::Vector{Int64}               : Node numbers (Updated)\n* dir::Symbol                      : Node numbering direction\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.mesh_size",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.mesh_size",
+    "category": "Function",
+    "text": "mesh_size\n\nFunction mesh_size returns the number of fin_els (nels) and the number of nodes (nn) in a 1, 2 or 3-d geometry-created mesh.\n\nMethod\n\n(nels, nn) = mesh_size(fin_el, nxe, [nye[, nze]])\n\nArguments\n\n* fin_el::FiniteElement   : Shape of finite element\n                            1D: Line\n                            2D: Trangle or Quadrilateral\n                            3D: Hexahedron\n* nxe::Int64              : Number of fin_els in x direction\n* nye::Int64              : Number of fin_els in y direction (for 2D and 3D)\n* nze::Int64              : Number of fin_els in z direction (3D only)\n\n\n\nmesh_size\n\nmesh_size: The function mesh_size returns the number of fin_els (nels) and the number of nodes (nn) in a 2-d geometry-created mesh.\n\nMethod\n\n(nels, nn) = mesh_size(fin_el, nxe)\n\nArguments\n\n* `fin_el` : Shape of 2D finite element (Triangle)\n* `nxe` : Number of fin_els in x direction\n* `nxe` : Number of fin_els in y direction\n\n\n\nmesh_size\n\nmesh_size: The function mesh_size returns the number of fin_els (nels) and the number of nodes (nn) in a 2-d geometry-created mesh.\n\nMethod\n\n(nels, nn) = mesh_size(fin_el, nxe, nye)\n\nArguments\n\n* `fin_el` : Shape of 2D finite element (Quadrilateral)\n* `nxe` : Number of fin_els in x direction\n* `nye` : Number of fin_els in y direction\n\n\n\nmesh_size\n\nmesh_size: The function mesh_size returns the number of fin_els (nels) and the number of nodes (nn) in a 3-d geometry-created mesh.\n\nMethod\n\n(nels, nn) = mesh_size(fin_el, nxe, nye, nze)\n\nArguments\n\n* `fin_el` : Shape of 2D finite element (Hexahedron)\n* `nxe` : Number of fin_els in x direction\n* `nye` : Number of fin_els in y direction\n* `nxe` : Number of fin_els in x direction\n\n\n\n"
+},
+
+{
     "location": "index.html#PtFEM-Geom-1",
     "page": "PtFEM.jl documentation",
     "title": "PtFEM - Geom",
     "category": "section",
-    "text": "PtFEM.geom_rect!(fin_el::Quadrilateral, iel::Int64, x_coords::Array{Float64, 1}, y_coords::Array{Float64, 1}, coord::Matrix{Float64}, num::Vector{Int64}, dir::Symbol)\nPtFEM.geom_rect!(fin_el::Triangle, iel::Int64, x_coords::Array{Float64, 1}, y_coords::Array{Float64, 1}, coord::Matrix{Float64}, num::Vector{Int64}, dir::Symbol)\nhexahedron_xz!(iel::Int64, x_coords::Vector{Float64}, y_coords::Vector{Float64}, z_coords::Vector{Float64}, coord::Matrix{Float64}, num::Vector{Int64})\nPtFEM.mesh_size(fe::Line, nxe::Int64)\nPtFEM.mesh_size(fe::Triangle, nxe::Int64, nye::Int64)\nPtFEM.mesh_size(fe::Quadrilateral, nxe::Int64, nye::Int64)\nPtFEM.mesh_size(fe::Hexahedron, nxe::Int64, nye::Int64, nze::Int64)"
+    "text": "PtFEM.geom_rect!\nPtFEM.hexahedron_xz!\nPtFEM.mesh_size"
 },
 
 {
@@ -417,11 +441,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#PtFEM-No-longer-used-1",
+    "location": "index.html#PtFEM-Deprecated-1",
     "page": "PtFEM.jl documentation",
-    "title": "PtFEM - No longer used",
+    "title": "PtFEM - Deprecated",
     "category": "section",
-    "text": "PtFEM.sparin!(kv::Vector{Float64}, kdiag::Vector{Int64})\nPtFEM.spabac!(kv::Vector{Float64}, loads::Vector{Float64}, kdiag::Vector{Int64})\nfromSkyline(skyline::Vector{Float64}, kdiag::Vector{Int64})\nPtFEM.skyline2sparse(skyline::Vector{Float64}, kdiag::Vector{Int64})\nPtFEM.stability!(kv::Vector{Float64}, gv::Vector{Float64}, kdiag::Vector{Int64}, tol::Float64, limit::Int64, iters::Int64, evec::Vector{Float64}, ival::Float64)"
+    "text": "PtFEM.sparin!(kv::Vector{Float64}, kdiag::Vector{Int64})\nPtFEM.spabac!(kv::Vector{Float64}, loads::Vector{Float64}, kdiag::Vector{Int64})\nPtFEM.fromSkyline(skyline::Vector{Float64}, kdiag::Vector{Int64})\nPtFEM.skyline2sparse(skyline::Vector{Float64}, kdiag::Vector{Int64})\nPtFEM.stability!(kv::Vector{Float64}, gv::Vector{Float64}, kdiag::Vector{Int64}, tol::Float64, limit::Int64, iters::Int64, evec::Vector{Float64}, ival::Float64)"
 },
 
 {
