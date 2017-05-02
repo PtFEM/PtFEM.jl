@@ -1,3 +1,53 @@
+"""
+# Method p51 
+
+Plane or axisymmetric strain analysis of an elastic solid (Plane
+structural element) using 3-, 6-, 10- or 15-node right-angled triangles
+(Triangle finite elements) or 4-, 8- or 9-node rectangular quadrilaterals
+(Quadrilateral finite elements). Mesh numbered in x(r)- or y(z)- direction.
+
+### Constructors
+```julia
+p51(data)
+```
+### Arguments
+```julia
+* `data::Dict{Symbol, Any}` : Dictionary containing all input data
+```
+
+### Required data dictionary keys
+```julia
+* struc_el::StructuralElement                          : Structural element
+* support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
+* loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector
+* properties::Vector{Float64}                          : Material properties
+* x_coords::FloatRange{Floalt64}                       : x-coordinate vector
+* y_coords::FloatRange{Floalt64}                       : y-coordinate vector
+* thickness:: Float64                                  : Thickness of plate
+```
+
+### Optional additional data dictionary keys
+```julia
+* penalty = 1e20               : Penalty used for fixed degrees of freedoms
+* etype::Vector{Int64}         : Element material vector if np_types > 1
+```
+
+### Return values
+```julia
+* (fm_dt, sigma_dt)            : Tuple of jFem, dis_dt and fm_dt
+                                  where:
+                                    fm_dt         : Forces and moments data table
+                                    sigma_dt      : Stresses data table
+```
+
+### Related help
+```julia
+?StructuralElement             : List of available structural element types
+?Plane                         : Help on a Plane structural element
+?FiniteElement                 : List finite element types
+?Quadrilateral                 : Help on Quadrilateral finite element
+```
+"""
 function p51(data::Dict{Symbol, Any})
   
   # Setup basic dimensions of arrays

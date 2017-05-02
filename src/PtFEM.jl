@@ -51,8 +51,7 @@ include("PtFEM/Main/fromSkyline.jl")
 include("PtFEM/Main/skyline2sparse.jl")
 
 include("PtFEM/Geom/mesh_size.jl")
-include("PtFEM/Geom/geom_rect_triangle.jl")
-include("PtFEM/Geom/geom_rect_quadrilateral.jl")
+include("PtFEM/Geom/geom_rect.jl")
 include("PtFEM/Geom/hexahedron_xz.jl")
 
 include("graphics/plotrecipes/mesh.jl")
@@ -99,19 +98,10 @@ export
   
   # From FEM.jl
   FEM,
-  
-  # From FEmodel.jl
-  #FEmodel,
+  jFEM,
   
   # From graphics/plotrecipes/mesh.jl
   mesh,
-  
-  #write_VTKXML,
-  #VTKNode,
-  #VTKElement,
-  
-  #fromSkyline,
-  #skyline2sparse,
   
   # From Chap04
   p41,

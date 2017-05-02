@@ -11,13 +11,13 @@ of nodes (nn) in a 1, 2 or 3-d geometry-created mesh.
 
 ### Arguments
 ```julia
-* fe::Element           : Shape of finite element
-                          1D: Line
-                          2D: Trangle or Quadrilateral
-                          3D: Hexahedron
-* nxe::Int64            : Number of fin_els in x direction
-* nye::Int64            : Number of fin_els in y direction (for 2D and 3D)
-* nze::Int64            : Number of fin_els in z direction (3D only)
+* fin_el::FiniteElement   : Shape of finite element
+                            1D: Line
+                            2D: Trangle or Quadrilateral
+                            3D: Hexahedron
+* nxe::Int64              : Number of fin_els in x direction
+* nye::Int64              : Number of fin_els in y direction (for 2D and 3D)
+* nze::Int64              : Number of fin_els in z direction (3D only)
 ```
 """
 function mesh_size(fe::Line, nxe::Int64)

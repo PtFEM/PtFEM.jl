@@ -103,13 +103,9 @@ PtFEM.stability(gsm::SparseMatrixCSC{Float64,Int64}, ggm::SparseMatrixCSC{Float6
 ## PtFEM - Geom
 
 ```@docs
-PtFEM.geom_rect!(fin_el::Quadrilateral, iel::Int64, x_coords::Array{Float64, 1}, y_coords::Array{Float64, 1}, coord::Matrix{Float64}, num::Vector{Int64}, dir::Symbol)
-PtFEM.geom_rect!(fin_el::Triangle, iel::Int64, x_coords::Array{Float64, 1}, y_coords::Array{Float64, 1}, coord::Matrix{Float64}, num::Vector{Int64}, dir::Symbol)
-hexahedron_xz!(iel::Int64, x_coords::Vector{Float64}, y_coords::Vector{Float64}, z_coords::Vector{Float64}, coord::Matrix{Float64}, num::Vector{Int64})
-PtFEM.mesh_size(fe::Line, nxe::Int64)
-PtFEM.mesh_size(fe::Triangle, nxe::Int64, nye::Int64)
-PtFEM.mesh_size(fe::Quadrilateral, nxe::Int64, nye::Int64)
-PtFEM.mesh_size(fe::Hexahedron, nxe::Int64, nye::Int64, nze::Int64)
+PtFEM.geom_rect!
+PtFEM.hexahedron_xz!
+PtFEM.mesh_size
 ```
 
 ## PtFEM - Plot methods
@@ -137,12 +133,12 @@ cholfact
 pmap
 ```
 
-## PtFEM - No longer used
+## PtFEM - Deprecated
 
 ```@docs
 PtFEM.sparin!(kv::Vector{Float64}, kdiag::Vector{Int64})
 PtFEM.spabac!(kv::Vector{Float64}, loads::Vector{Float64}, kdiag::Vector{Int64})
-fromSkyline(skyline::Vector{Float64}, kdiag::Vector{Int64})
+PtFEM.fromSkyline(skyline::Vector{Float64}, kdiag::Vector{Int64})
 PtFEM.skyline2sparse(skyline::Vector{Float64}, kdiag::Vector{Int64})
 PtFEM.stability!(kv::Vector{Float64}, gv::Vector{Float64}, kdiag::Vector{Int64}, tol::Float64, limit::Int64, iters::Int64, evec::Vector{Float64}, ival::Float64)
 ```
