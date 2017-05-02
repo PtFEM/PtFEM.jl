@@ -56,8 +56,8 @@ Tetrahedron
 ## Other Julia Types
 
 ```@docs
+FEM
 jFEM
-FeModel
 ```
 
 ## PtFEM - Main
@@ -124,9 +124,17 @@ PtFEM.mesh(data::Dict, g_coord::Array{Float64,2}, g_num::Array{Int, 2}, disp, am
 PtFEM.vtk(data::Dict, fm_dt, sigma_dt, dir, fname)
 ```
 
+## PtFEM - Julia functions & operators
+
+```@docs
+cholfact
+\
+```
+
 ## PtFEM - Parallel processing
 
 ```@docs
+pmap
 ```
 
 ## PtFEM - No longer used

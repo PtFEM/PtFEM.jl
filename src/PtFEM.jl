@@ -11,7 +11,7 @@ using OffsetArrays
 include("PtFEM/Types/finite_elements.jl")
 include("PtFEM/Types/structural_elements.jl")
 include("PtFEM/Types/FEM.jl")
-include("PtFEM/Types/FEmodel.jl")
+#include("PtFEM/Types/FEmodel.jl")
 
 include("PtFEM/Main/formnf.jl")
 include("PtFEM/Main/num_to_g.jl")
@@ -101,17 +101,17 @@ export
   FEM,
   
   # From FEmodel.jl
-  FEmodel,
+  #FEmodel,
   
   # From graphics/plotrecipes/mesh.jl
   mesh,
   
-  write_VTKXML,
-  VTKNode,
-  VTKElement,
+  #write_VTKXML,
+  #VTKNode,
+  #VTKElement,
   
-  fromSkyline,
-  skyline2sparse,
+  #fromSkyline,
+  #skyline2sparse,
   
   # From Chap04
   p41,
