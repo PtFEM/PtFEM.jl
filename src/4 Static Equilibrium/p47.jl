@@ -1,7 +1,7 @@
 """
 # Method p47 
 
-Analysis of plates (Plne structural element) using 4-node Quadrilateral
+Analysis of plates (Plane structural element) using 4-node Quadrilateral
 finite elements. Homogeneous material with identical elements. Mesh
 numbered in x or y direction.
 
