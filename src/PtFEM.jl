@@ -8,10 +8,11 @@ using OffsetArrays
 ### Imports ###
 
 ### Includes ###
-include("PtFEM/Main/finite_elements.jl")
-include("PtFEM/Main/structural_elements.jl")
-include("PtFEM/Main/FEM.jl")
-include("PtFEM/Main/FEmodel.jl")
+include("PtFEM/Types/finite_elements.jl")
+include("PtFEM/Types/structural_elements.jl")
+include("PtFEM/Types/FEM.jl")
+include("PtFEM/Types/FEmodel.jl")
+
 include("PtFEM/Main/formnf.jl")
 include("PtFEM/Main/num_to_g.jl")
 include("PtFEM/Main/fkdiag.jl")
@@ -46,7 +47,6 @@ include("PtFEM/Main/fmplat.jl")
 include("PtFEM/Main/read_generated_data.jl")
 include("PtFEM/Main/invar.jl")
 include("PtFEM/Main/formm.jl")
-include("PtFEM/Main/exportVTK_XML.jl")
 include("PtFEM/Main/fromSkyline.jl")
 include("PtFEM/Main/skyline2sparse.jl")
 
@@ -57,6 +57,7 @@ include("PtFEM/Geom/hexahedron_xz.jl")
 
 include("graphics/plotrecipes/mesh.jl")
 include("graphics/vtkrecipes/vtk.jl")
+include("graphics/vtkrecipes/exportVTK_XML.jl")
 
 include("4 Static Equilibrium/p41.jl")
 include("4 Static Equilibrium/p42.jl")
