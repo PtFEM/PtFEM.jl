@@ -6,6 +6,10 @@
 p41(data::Dict{Symbol, Any})
 p42(data::Dict{Symbol, Any})
 p43(data::Dict{Symbol, Any})
+p44(data::Dict{Symbol, Any})
+p45(data::Dict{Symbol, Any})
+p46(data::Dict{Symbol, Any})
+p47(data::Dict{Symbol, Any})
 ```
 
 ## 5 Elastic Solids Programs
@@ -13,6 +17,10 @@ p43(data::Dict{Symbol, Any})
 ```@docs
 p51(data::Dict{Symbol, Any})
 p52(data::Dict{Symbol, Any})
+p53(data::Dict{Symbol, Any})
+p54(data::Dict{Symbol, Any})
+p55(data::Dict{Symbol, Any})
+p56(data::Dict{Symbol, Any})
 ```
 
 ## 6 Material Nonlinearity Programs
@@ -54,6 +62,8 @@ PtFEM.formnf!(nodof::Int64, nn::Int64, nf::Matrix{Int64})
 ## PtFEM - Geom
 
 ```@docs
+PtFEM.geom_rect!(fin_el::Quadrilateral, iel::Int64, x_coords::Array{Float64, 1}, y_coords::Array{Float64, 1}, coord::Matrix{Float64}, num::Vector{Int64}, dir::Symbol)
+PtFEM.geom_rect!(fin_el::Triangle, iel::Int64, x_coords::Array{Float64, 1}, y_coords::Array{Float64, 1}, coord::Matrix{Float64}, num::Vector{Int64}, dir::Symbol)
 PtFEM.mesh_size(fe::Line, nxe::Int64)
 PtFEM.mesh_size(fe::Triangle, nxe::Int64, nye::Int64)
 PtFEM.mesh_size(fe::Quadrilateral, nxe::Int64, nye::Int64)
@@ -69,6 +79,7 @@ PtFEM.mesh(data::Dict, g_coord::Array{Float64,2}, g_num::Array{Int, 2}, disp, am
 ## PtFEM - VTK methods
 
 ```@docs
+PtFEM.vtk(data::Dict, fm_dt, sigma_dt, dir, fname)
 ```
 
 ## PtFEM - Parallel processing

@@ -6,7 +6,7 @@ using DataTables, WriteVTK
 import Compat.UTF8String
 const FloatType = Float32
 
-function vtk(data::Dict, fm_dt::DataTable, sigma_dt::DataTable, dir, fname)
+function vtk(data::Dict, fm_dt, sigma_dt, dir, fname)
   vtk_filename_noext = dir*"/"*fname
   dim = data[:struc_el].ndim
   
