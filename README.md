@@ -24,25 +24,26 @@ use PtFEM
 ?StructuralElement
 ```
 
-and [here](http://ptfem.github.io/PtFEM.jl/latest/INTRO.html).
+and [here](http://ptfem.github.io/PtFEM.jl/latest/INTRO.html). 
 
 ## Timeline
 
 Please note that no hard timeline is set when this work in progress will be finished. [TODO](https://github.com/PtFEM/PtFEM.jl/blob/master/docs/src/TODO.md) contains a list of next steps. [VERSIONS](https://github.com/PtFEM/PtFEM.jl/blob/master/docs/src/VERSIONS.md) holds the tagged version history.
 
-## Participation and feeedback
+## Related work
+
+Fundamental and great development work related to solving (partial) differential equations is done in several other Julia packages, e.g. [ApproxFun.jl](https://github.com/JuliaApproximation/ApproxFun.jl), [DifferentialEquations.jl](https://github.com/JuliaDiffEq/DifferentialEquations.jl), [JuliaFEM.jl](http://www.juliafem.org) and  [JuaFEM.jl](https://github.com/KristofferC/JuAFEM.jl) to name a few.
+
+Outside of Julia at least 2 other toolkits should be mentioned, i.e.  [deal.II](http://dealii.org) and [FEniCS](https://fenicsproject.org).
+
+## Rerences
+
+References will be kept [here](https://github.com/PtFEM/PtFEM.jl/blob/master/docs/src/REFERENCES.md).
+
+## Participation and feedback
 
 As always, feedback is welcome, please send me an email, file an issue on Github or generate a pull request (PR). 
 
 Rob J Goedman
 May 2017
 
-## Related work
-
-Fundamental and great development work related to solving (partial) differential equations is done in several other Julia packages, e.g. [ApproxFun.jl](https://github.com/JuliaApproximation/ApproxFun.jl), [DifferentialEquations.jl](https://github.com/JuliaDiffEq/DifferentialEquations.jl), [JuliaFEM.jl](http://www.juliafem.org) and  [JuaFEM.jl](https://github.com/KristofferC/JuAFEM.jl) to name a few.
-
-Outside of Julia and PtFEM at least 2 other toolkits should be mentioned, i.e.  [deal.II](http://dealii.org) and [FEniCS](https://fenicsproject.org).
-
-## Rerences
-
-References will be kept in [here](https://github.com/PtFEM/PtFEM.jl/blob/master/docs/src/REFERENCES.md).
