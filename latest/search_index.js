@@ -337,11 +337,227 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "index.html#PtFEM.beam_gm!-Tuple{Array{Float64,2},Float64}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.beam_gm!",
+    "category": "Method",
+    "text": "beam_gm!\n\nThis subroutine forms the beam geometric matrix for stability analysis.\n\nMethod\n\nbeam_gm!(gm::Matrix{Float64}, ell::Float64)\n\nArguments\n\n* gm::::Matrix{Float64}     : Geometric matrix for beam element (Updated)\n* ell::Float64              : Element length\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.beam_km!-Tuple{Array{Float64,2},Float64,Float64}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.beam_km!",
+    "category": "Method",
+    "text": "beam_km!\n\nThis subroutine forms the stiffness matrix of a beam element (bending only).\n\nMethod\n\nbeam_km!(km, ei, ell)\n\nArguments\n\n* km::::Matrix{Float64}     : Stiiness matrix for beam element (Updated)\n* ei::Float64               : Element stiffness\n* ell::Float64              : Element length\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.beam_mm!-Tuple{Array{Float64,2},Float64,Float64}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.beam_mm!",
+    "category": "Method",
+    "text": "beam_mm!\n\nThis subroutine forms the stiffness matrix of a beam element (bending only).\n\nMethod\n\nbeam_mm!(mm, ei, ell)\n\nArguments\n\n* mm::::Matrix{Float64}     : Mass matrix for beam element (Updated)\n* fs::Float64               : Element density\n* ell::Float64              : Element length\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.beemat!-Tuple{Array{Float64,2},Array{Float64,2}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.beemat!",
+    "category": "Method",
+    "text": "beemat!\n\nThis subroutine forms the strain-displacement matrix for axisymmetric solids subjected to non-axisymmetric loading.\n\nMethod\n\nbeemat!(bee, deriv)\n\nArguments\n\n* bee::Matrix{Float64}         : Bee matrix (Updated)\n* deriv::Matrix{Float64}       : Derivative\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.bmat_nonaxi!-Tuple{Array{Float64,2},Float64,Array{Float64,2},Array{Float64,2},Array{Float64,1},Int64,Int64}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.bmat_nonaxi!",
+    "category": "Method",
+    "text": "bmat_nonaxi!\n\nThis subroutine forms the strain-displacement matrix for axisymmetric solids subjected to non-axisymmetric loading.\n\nMethod\n\nbmat_nonaxi!(bee, radius, coord, deriv, fun, iflag, lth)\n\nArguments\n\n* bee::Matrix{Float64}         : Bee matrix (Updated)\n* radius::Float64              : r coordinate of the Gauss point\n* coord::Matrix{Float64}       : Nodal coordinate matrix\n* deriv::Matrix{Float64}       : Derivative\n* fun::Vector{Float64}         : Shape function\n* iflag::Int64                 : 1 = symmetric, -1 = anti-symmetric\n* lth::Int64                   : Harmonic\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.checon!-Tuple{Array{Float64,1},Array{Float64,1},Float64}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.checon!",
+    "category": "Method",
+    "text": "checon!\n\nThis subroutine sets converged to .FALSE. if relative change in loads and oldlds is greater than tol and updates oldlds.\n\nMethod\n\nchecon!(loads, oldlds, tol)\n\nArguments\n\n* loads::Vector{Float64}        : Displacements vector\n* oldlds::Vector{Float64}       : Previous displacement vector\n* tol::Float64                  : Convergence tolerance\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.deemat!-Tuple{Array{Float64,2},Float64,Float64}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.deemat!",
+    "category": "Method",
+    "text": "deemat!\n\nThis subroutine returns the elastic dee matrix for ih=3 (plane strain), ih=4 (axisymmetry or plane strain elastoplasticity) or ih=6 (three dimensions).\n\nMethod\n\ndeemat!(dee, e, v)\n\nArguments\n\n* dee::Matrix{Float64}         : Dee matrix (Updated)\n* e::Float64                   : Young's modulus\n* v::Float64                   : Poisson's ratio\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.fkdiag!-Tuple{Array{Int64,1},Array{Int64,1}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.fkdiag!",
+    "category": "Method",
+    "text": "fkdiag!\n\nThis subroutine returns the elastic dee matrix for ih=3 (plane strain), ih=4 (axisymmetry or plane strain elastoplasticity) or ih=6 (three dimensions).\n\nMethod\n\nfkdiag!(kdiag, g)\n\nArguments\n\n* kdiag::Vector{Int64}      : Bandwidth vector (Updated)\n* g::Vector{Int64}          : Element steering vector\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.fmplat!-Tuple{Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,2},Float64,Float64,Int64}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.fmplat!",
+    "category": "Method",
+    "text": "fmplat!\n\nThis subroutine forms the 2nd derivatives for rectangular plate bending fin_els.\n\nMethod\n\nfmplat!(d2x, d2y, d2xy, points, aa, bb, i)\n\nArguments\n\n* d2x::Vector{Float64}       : x derivative term (Updated)\n* d2y::Vector{Float64}       : y derivative term (Updated)\n* d2xy::Vector{Float64}      : x,y derivative term (Updated)\n* points::Matrix{Float64}    : Location of Gauss points\n* aa::Float64                : Dimension of plate\n* bb::Float64                : Dimension of plate\n* i::Int64                   : Gauss point to use\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.formm!-Tuple{Array{Float64,1},Array{Float64,2},Array{Float64,2},Array{Float64,2}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.formm!",
+    "category": "Method",
+    "text": "formm!\n\nThis subroutine forms the derivatives of the invariants with respect to stress in 2- or 3-d. See equation 6.25.\n\nFunction\n\nformm!(stress, m1, m2, m3)\n\nArguments\n\n* stress::Vector{Float64}    : Stress vector, see eq 6.25\n* m1::Matrix{Float64}        : m1 matrix\n* m2::Matrix{Float64}        : m2 matrix\n* m3::Matrix{Float64}        : m3 matrix\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.formnf!-Tuple{Int64,Int64,Array{Int64,2}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.formnf!",
+    "category": "Method",
+    "text": "formnf!\n\nReturns nodal freedom numbering array nf\n\nFunction\n\nformnf!(nodof, nn, nf)\n\nArguments\n\n* nodof::Int64       : Number of degrees of freedom for each node\n* nn::Int64          : Number of nodes in mesh\n* nf::Array{Int64,2} : Nodal freedom matrix (updated)\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.fsparm!-Tuple{Any,Any,Any}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.fsparm!",
+    "category": "Method",
+    "text": "fsparm!\n\nFunction fsparm assembles fin_el matrices into a Julia sparse global stiffness matrix.\n\nMethod\n\nfsparm!(gsm, g, km)\n\nArguments\n\n* gsm::SparseArrays{Float64, Float64}   : Sparse stiffnes matrix (Updated)\n* g::Vector{Int64}                      : Global coordinate vector.\n* km::Matrix{Float64}                   : Stiffness matrix.\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.glob_to_loc!-Tuple{Array{Float64,1},Array{Float64,1},Float64,Array{Float64,2}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.glob_to_loc!",
+    "category": "Method",
+    "text": "glob_to_loc!\n\nThis subroutine transforms the global end reactions and moments into the local system (2- or 3-d). Called from hinge!().\n\nFunction\n\nglob_to_loc!(loc, glob, gamma, coord)\n\nArguments\n\n* loc::Vector{Float64}       : Local force and momemts (Updated)\n* glob::Vector{Float64}      : Globale forces and moments\n* gamma::Float64             : Element orientation angle (3D)\n* coord::Matrix{Float64}     : Nodal coordinates\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.glob_to_axial-Tuple{Array{Float64,1},Array{Float64,2}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.glob_to_axial",
+    "category": "Method",
+    "text": "glob_to_axial!\n\nThis subroutine transforms the global end reactions into an axial force for rod fin_els (2- or 3-d).\n\nFunction\n\nglob_to_axial!(glob, coord)\n\nArguments\n\n* glob::Vector{Float64}      : Globale forces and moments\n* coord::Matrix{Float64}     : Nodal coordinates\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.hinge!-Tuple{Array{Float64,2},Array{Float64,2},Array{Float64,1},Array{Float64,1},Array{Float64,2},Any,Array{Int64,1},Array{Float64,1}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.hinge!",
+    "category": "Method",
+    "text": "hinge!\n\nThis subroutine forms the end forces and moments to be applied to a member if a joint has gone plastic.\n\nFunction\n\nhinge!(coord, holdr, action, react, prop, iel, etype, gamma)\n\nArguments\n\n* coord::Matrix{Float64}     : Nodal coordinates\n* holdr::Matrix{Float64}     : Existing reactions\n* action::Vector{Float64}    : Incremental reactions\n* react::Vector{Float64}     : Correction to reactions (Updated)\n* prop::Matrix{Float64}      : Beam properties\n* iel::Int64                 : Element number\n* etype::Vector{Int64}       : Element type\n* gamma::Vector{Float64}     : Element orientation (3D)\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.invar!-Tuple{Array{Float64,1},Float64,Float64,Float64}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.invar!",
+    "category": "Method",
+    "text": "invar!\n\nThis subroutine forms the stress invariants in 2- or 3-d. See equations 6.3 and 6.4\n\nFunction\n\ninvar!(stress, sigm, dsbar, theta)\n\nArguments\n\n* stress::Vector{Float64}    : Stress vector\n* sigm::Float64              : Invariant, eq 6.4 (Updated)\n* dsbar::Float64             : Invariant, eq 6.4 (Updated)\n* theta::Float64             : Invariant, eq 6.3 (Updated)\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.linmul_sky!-Tuple{Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Int64,1}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.linmul_sky!",
+    "category": "Method",
+    "text": "linmul_sky!\n\nThis subroutine forms the product of symmetric matrix stored as a skyline and a vector.\n\nMethod\n\nlinmul_sky!(kv, disps, loads, kdiag)\n\nArguments\n\n* kv::Vector{Float64}       : Sparse stiffnes matrix (Skyline format)\n* disps::Vector{Float64}    : Displacements\n* loads::Vector{Float64}    : Loads vector (Updated)\n* kdiag::Vector{Int64}      : Bandwidth vector\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.loc_to_glob!-Tuple{Array{Float64,1},Array{Float64,1},Float64,Array{Float64,2}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.loc_to_glob!",
+    "category": "Method",
+    "text": "loc_to_glob!\n\nThis subroutine transforms the local end reactions and moments into the global system (3-d).\n\nFunction\n\nloc_to_glob!(loc, glob, gamma, coord)\n\nArguments\n\n* loc::Vector{Float64}       : Local force and momemts (Updated)\n* glob::Vector{Float64}      : Globale forces and moments\n* gamma::Float64             : Element orientation angle (3D)\n* coord::Matrix{Float64}     : Nodal coordinates\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.num_to_g!-Tuple{Array{Int64,1},Array{Int64,2},Array{Int64,1}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.num_to_g!",
+    "category": "Method",
+    "text": "num_to_g!\n\nReturns the element steering vector g from the element node numbering num and the nodal freedom array nf.\n\nFunction\n\nnum_to_g!(num, nf, g)\n\nArguments\n\n* num::Vector{Int64}       : Node numbering vector\n* nf::Matrix{Int64}        : Nodal freedom array\n* g::Vector{Int64}         : Element steering vector (Updated)\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.pin_jointed!-Tuple{Array{Float64,2},Float64,Array{Float64,2}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.pin_jointed!",
+    "category": "Method",
+    "text": "pin_jointed!\n\nThis subroutine forms the global stiffness matrix of a general pin-joionted structural element (1-, 2- or 3-d).\n\nFunction\n\npin_jointed!(km, ea, coord)\n\nArguments\n\n* km::Matrix{Float64}       : Element stiffness matrix (Updated)\n* ea::Float64               : Element stiffness\n* coord::Matrix{Float64}}   : Element nodal coordinates\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.rigid_jointed!-Tuple{Array{Float64,2},Array{Float64,2},Array{Float64,1},Array{Int64,1},Int64,Array{Float64,2}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.rigid_jointed!",
+    "category": "Method",
+    "text": "rigid_jointed!\n\nThis subroutine forms the global stiffness matrix of a general pin-joionted structural element (1-, 2- or 3-d).\n\nFunction\n\nrigid_jointed!(km, prop, gamma, etype, iel, coord)\n\nArguments\n\n* km::Matrix{Float64}       : Element stiffness matrix (Updated)\n* prop::Matrix{Float64}     : Element properties\n* gamma::Vector{Float64}    : Element orientations (3D)\n* etype::Vector{Int64}      : Element type vector\n* iel::Int64                : Element number\n* coord::Matrix{Float64}}   : Element nodal coordinates\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.rod_km!-Tuple{Array{Float64,2},Float64,Float64}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.rod_km!",
+    "category": "Method",
+    "text": "rod_km!\n\nThis subroutine forms the stiffness matrix of a 1-d \"rod\" fin_el.\n\nFunction\n\nrod_km!(km, ea, length)\n\nArguments\n\n* km::Matrix{Float64}       : Element stiffness matrix (Updated)\n* ea::Float64               : Element stiffness\n* ell::Float64              : Element length\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.rod_mm!-Tuple{Array{Float64,2},Float64}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.rod_mm!",
+    "category": "Method",
+    "text": "rod_mm!\n\nThis subroutine forms the consistent mass matrix of a 1-d \"rod\" fin_el.\n\nFunction\n\nrod_mm!(km, ell)\n\nArguments\n\n* mm::Matrix{Float64}       : Element mass matrix (Updated)\n* ell::Float64              : Element length\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.sample!",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.sample!",
+    "category": "Function",
+    "text": "sample!\n\nThis subroutine returns the local coordinates and weighting coefficients of the integrating points.\n\nFunction\n\nsample!(fin_el, s, wt)\n\nArguments\n\n* fin_el::FiniteElement      : Finite element type\n* s::Matrix{Float64}        : Local coordinates (Updated)\n* wt::Vector{Float64}       : Weighting coefficients (Updated)\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.shape_der!-Tuple{Array{Float64,2},Array{Float64,2},Int64}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.shape_der!",
+    "category": "Method",
+    "text": "shape_der!\n\nThis subroutine produces derivatives of shape functions with respect to local coordinates.\n\nFunction\n\nshape_der!(der, point, i)\n\nArguments\n\n* der::Matrix{Float64}       : Function derivative (Updated)\n* points::Matrix{Float64}    : Local coordinates of integration points\n* i::Int64                   : Integration point\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.shape_fun!-Tuple{Array{Float64,1},Array{Float64,2},Int64}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.shape_fun!",
+    "category": "Method",
+    "text": "shape_fun!\n\nThis subroutine produces derivatives of shape functions with respect to local coordinates.\n\nFunction\n\nshape_fun!(fun, point, i)\n\nArguments\n\n* fun::Vector{Float64}       : Shape function (Updated)\n* points::Matrix{Float64}    : Local coordinates of integration points\n* i::Int64                   : Integration point\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.stability-Tuple{SparseMatrixCSC{Float64,Int64},SparseMatrixCSC{Float64,Int64},Float64,Int64}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.stability",
+    "category": "Method",
+    "text": "stability\n\nFunction spabac! performs Cholesky forward and back-substitution on a symmetric skyline global matrix. The loads vector is updated.\n\n###Arguments\n\nstability(gsm, ggm, tol, limit)\n\nArguments\n\n* gsm::SparseMatrixCSC{Float64,Int64}   : Factored global stiffness matrix\n* ggm::SparseMatrixCSC{Float64,Int64}   : Factored geometric matrix\n* tol::Float64                          : Convergence tolerance\n* limit::Int64                          : Iteration limit\n\n\n\n"
+},
+
+{
     "location": "index.html#PtFEM-Main-1",
     "page": "PtFEM.jl documentation",
     "title": "PtFEM - Main",
     "category": "section",
-    "text": "PtFEM.beam_gm!(gm::Matrix{Float64}, ell::Float64)\nPtFEM.beam_km!(km::Matrix{Float64}, ei::Float64, ell::Float64)\nPtFEM.beam_mm!(mm::Matrix{Float64}, fs::Float64, ell::Float64)\nPtFEM.beemat!(bee::Matrix{Float64},deriv::Matrix{Float64})\nPtFEM.bmat_nonaxi!(bee::Matrix{Float64}, radius::Float64, coord::Matrix{Float64}, deriv::Matrix{Float64}, fun::Vector{Float64}, iflag::Int64, lth::Int64)\nPtFEM.checon!(loads::Vector{Float64}, oldlds::Vector{Float64}, tol::Float64)\nPtFEM.deemat!(dee::Array{Float64, 2}, e::Float64, v::Float64)\nPtFEM.fkdiag!(ndof::Int64, neq::Int64, g::Vector{Int64}, kdiag::Vector{Int64})\nPtFEM.fkdiag!(kdiag::Vector{Int64}, g::Vector{Int64})\nPtFEM.fmplat!(d2x::Vector{Float64}, d2y::Vector{Float64}, d2xy::Vector{Float64}, points::Matrix{Float64}, aa::Float64, bb::Float64, i::Int64)\nPtFEM.formm!(stress::Vector{Float64}, m1::Matrix{Float64}, m2::Matrix{Float64}, m3::Matrix{Float64})\nPtFEM.formnf!(nodof::Int64, nn::Int64, nf::Matrix{Int64})\nPtFEM.fsparm!(gsm, g, km)\nPtFEM.glob_to_loc!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float64, coord::Matrix{Float64})\nPtFEM.glob_to_axial(glob::Vector{Float64}, coord::Matrix{Float64})\nPtFEM.hinge!(coord::Matrix{Float64}, holdr::Matrix{Float64}, action::Vector{Float64}, react::Vector{Float64}, prop::Matrix{Float64}, iel, etype::Vector{Int64}, gamma::Vector{Float64})\nPtFEM.invar!(stress::Vector{Float64}, sigm::Float64, dsbar::Float64, theta::Float64)\nPtFEM.linmul_sky!(kv::Vector{Float64}, disps::Vector{Float64}, loads::Vector{Float64}, kdiag::Vector{Int64})\nPtFEM.loc_to_glob!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float64, coord::Matrix{Float64})\nPtFEM.num_to_g!(num::Vector{Int64}, nf::Matrix{Int64}, g::Vector{Int64})\nPtFEM.pin_jointed!(km::Matrix{Float64}, ea::Float64, coord::Matrix{Float64})\nPtFEM.rigid_jointed!(km::Matrix{Float64}, prop::Matrix{Float64}, gamma::Vector{Float64}, etype::Vector{Int64}, iel::Int64, coord::Matrix{Float64})\nPtFEM.rod_km!(km::Matrix{Float64}, ea::Float64, length::Float64)\nPtFEM.format_nf_line!(l::AbstractString, t::Array{Tuple})\nPtFEM.read_nf_file(f::AbstractString)\nPtFEM.format_loads_line!(l::AbstractString, t::Array{Tuple})\nPtFEM.read_loads_file(f::AbstractString)\nPtFEM.rod_mm!(mm::Matrix{Float64}, length::Float64)\nPtFEM.sample!(fin_el::Hexahedron, s::Matrix{Float64} , wt::Vector{Float64})\nPtFEM.sample!(fin_el::Line, s::Matrix{Float64} , wt::Vector{Float64})\nPtFEM.sample!(fin_el::Quadrilateral, s::Matrix{Float64} , wt::Vector{Float64})\nPtFEM.sample!(fin_el::Tetrahedron, s::Matrix{Float64} , wt::Vector{Float64})\nPtFEM.sample!(fin_el::Triangle, s::Matrix{Float64} , wt::Vector{Float64})\nPtFEM.shape_der!(der::Matrix{Float64}, points::Matrix{Float64}, i::Int64)\nPtFEM.shape_fun!(fun::Vector{Float64}, points::Matrix{Float64}, i::Int64)\nPtFEM.stability(gsm::SparseMatrixCSC{Float64,Int64}, ggm::SparseMatrixCSC{Float64,Int64}, tol::Float64, limit::Int64)"
+    "text": "PtFEM.beam_gm!(gm::Matrix{Float64}, ell::Float64)\nPtFEM.beam_km!(km::Matrix{Float64}, ei::Float64, ell::Float64)\nPtFEM.beam_mm!(mm::Matrix{Float64}, fs::Float64, ell::Float64)\nPtFEM.beemat!(bee::Matrix{Float64},deriv::Matrix{Float64})\nPtFEM.bmat_nonaxi!(bee::Matrix{Float64}, radius::Float64, coord::Matrix{Float64}, deriv::Matrix{Float64}, fun::Vector{Float64}, iflag::Int64, lth::Int64)\nPtFEM.checon!(loads::Vector{Float64}, oldlds::Vector{Float64}, tol::Float64)\nPtFEM.deemat!(dee::Array{Float64, 2}, e::Float64, v::Float64)\nPtFEM.fkdiag!(kdiag::Vector{Int64}, g::Vector{Int64})\nPtFEM.fmplat!(d2x::Vector{Float64}, d2y::Vector{Float64}, d2xy::Vector{Float64}, points::Matrix{Float64}, aa::Float64, bb::Float64, i::Int64)\nPtFEM.formm!(stress::Vector{Float64}, m1::Matrix{Float64}, m2::Matrix{Float64}, m3::Matrix{Float64})\nPtFEM.formnf!(nodof::Int64, nn::Int64, nf::Matrix{Int64})\nPtFEM.fsparm!(gsm, g, km)\nPtFEM.glob_to_loc!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float64, coord::Matrix{Float64})\nPtFEM.glob_to_axial(glob::Vector{Float64}, coord::Matrix{Float64})\nPtFEM.hinge!(coord::Matrix{Float64}, holdr::Matrix{Float64}, action::Vector{Float64}, react::Vector{Float64}, prop::Matrix{Float64}, iel, etype::Vector{Int64}, gamma::Vector{Float64})\nPtFEM.invar!(stress::Vector{Float64}, sigm::Float64, dsbar::Float64, theta::Float64)\nPtFEM.linmul_sky!(kv::Vector{Float64}, disps::Vector{Float64}, loads::Vector{Float64}, kdiag::Vector{Int64})\nPtFEM.loc_to_glob!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float64, coord::Matrix{Float64})\nPtFEM.num_to_g!(num::Vector{Int64}, nf::Matrix{Int64}, g::Vector{Int64})\nPtFEM.pin_jointed!(km::Matrix{Float64}, ea::Float64, coord::Matrix{Float64})\nPtFEM.rigid_jointed!(km::Matrix{Float64}, prop::Matrix{Float64}, gamma::Vector{Float64}, etype::Vector{Int64}, iel::Int64, coord::Matrix{Float64})\nPtFEM.rod_km!(km::Matrix{Float64}, ea::Float64, length::Float64)\nPtFEM.rod_mm!(mm::Matrix{Float64}, length::Float64)\nPtFEM.sample!\nPtFEM.shape_der!(der::Matrix{Float64}, points::Matrix{Float64}, i::Int64)\nPtFEM.shape_fun!(fun::Vector{Float64}, points::Matrix{Float64}, i::Int64)\nPtFEM.stability(gsm::SparseMatrixCSC{Float64,Int64}, ggm::SparseMatrixCSC{Float64,Int64}, tol::Float64, limit::Int64)"
 },
 
 {
@@ -393,6 +609,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "index.html#PtFEM.vtk-Tuple{Dict,Any,Any,Any,Any}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.vtk",
+    "category": "Method",
+    "text": "vtk\n\nPlots displacements and directions\n\nFunction\n\nmesh(data, fm_dt, sigma_dt, dir, fname)\n\nArguments\n\n* data::Dict                 : Input dictionary\n* fm_dt::DataTable           : Forces and moments DataTable\n* sigma_dt::DataTable        : Stresses DataTable\n* dir::AbstractString        : Project directory\n* fname::AbstractString      : Output VTK file name\n\n\n\n"
+},
+
+{
     "location": "index.html#PtFEM-VTK-methods-1",
     "page": "PtFEM.jl documentation",
     "title": "PtFEM - VTK methods",
@@ -441,11 +665,67 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "index.html#PtFEM.fkdiag!",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.fkdiag!",
+    "category": "Function",
+    "text": "fkdiag!\n\nThis subroutine returns the elastic dee matrix for ih=3 (plane strain), ih=4 (axisymmetry or plane strain elastoplasticity) or ih=6 (three dimensions).\n\nMethod\n\nfkdiag!(kdiag, g)\n\nArguments\n\n* kdiag::Vector{Int64}      : Bandwidth vector (Updated)\n* g::Vector{Int64}          : Element steering vector\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.fromSkyline-Tuple{Array{Float64,1},Array{Int64,1}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.fromSkyline",
+    "category": "Method",
+    "text": "fromSkyline\n\nHelper function to convert a Skyline vector to a full matrix.\n\nType\n\nfromSkyline(skyline::Vector{Float64}, kdiag::Vector{Int64})\n\nArguments\n\n* skyline::Vector{Float64}     : 1D Line(nod, nodof)\n* kdiag::Vector{Int64}         : 2D Triangle(nod, nodof)\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.fsparv!-Tuple{Array{Float64,1},Array{Float64,2},Array{Int64,1},Array{Int64,1}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.fsparv!",
+    "category": "Method",
+    "text": "fsparv!\n\nFunction fsparv! assembles fin_el matrices into a symmetric skyline global matrix. The Skyline vector kv is updated.\n\nMethod\n\nfsparv!(kv, km, g, km)\n\nArguments\n\n* kv::Vector{Float64}        : Sparse stiffnes matrix (Updated)\n* km::Matrix{Float64}        : Symmetric element stiffnes matrix\n* g::Vector{Int64}           : Global steering vector.\n* kdiag::Vector{Int64}       : Location of diagoinal terms\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.linmul_sky!",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.linmul_sky!",
+    "category": "Function",
+    "text": "linmul_sky!\n\nThis subroutine forms the product of symmetric matrix stored as a skyline and a vector.\n\nMethod\n\nlinmul_sky!(kv, disps, loads, kdiag)\n\nArguments\n\n* kv::Vector{Float64}       : Sparse stiffnes matrix (Skyline format)\n* disps::Vector{Float64}    : Displacements\n* loads::Vector{Float64}    : Loads vector (Updated)\n* kdiag::Vector{Int64}      : Bandwidth vector\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.skyline2sparse-Tuple{Array{Float64,1},Array{Int64,1}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.skyline2sparse",
+    "category": "Method",
+    "text": "skyline2sparse\n\nConverts a Skyline matrix to a Julia Sparse matrix\n\nFunction\n\nskyline2sparse(skyline, kdiag)\n\nArguments\n\n* skyline::Vector{Float64}         : Skyline matrix\n* kdiag::Vector{Int64}             : Element diagonal index vector\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.spabac!-Tuple{Array{Float64,1},Array{Float64,1},Array{Int64,1}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.spabac!",
+    "category": "Method",
+    "text": "spabac!\n\nFunction spabac! performs Cholesky forward and back-substitution on a symmetric skyline global matrix. The loads vector is updated.\n\n###Arguments\n\nspabac!(kv, loads, kdiag)\n\nArguments\n\n* kv::Vector{Float64}       : Skyline vector of global stiffness matrix\n* loads::Vector{Float64}    : Load vector (Updated)\n* kdiag::Vector{Int64}      : Diagonal elemnt index vector\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.sparin!-Tuple{Array{Float64,1},Array{Int64,1}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.sparin!",
+    "category": "Method",
+    "text": "sparin!\n\nFunction sparin! performs Cholesky factorisation on a symmetric skyline global matrix. The vector kv is updated.\n\n###Arguments\n\nsparin!(kv, kdiag)\n\nArguments\n\n* kv::Vector{Float64}       : Global stiffness matrix (Updated)\n* kdiag::Vector{Int64}      : Diagonal elemnt index vector\n\n\n\n"
+},
+
+{
     "location": "index.html#PtFEM-Deprecated-1",
     "page": "PtFEM.jl documentation",
     "title": "PtFEM - Deprecated",
     "category": "section",
-    "text": "PtFEM.fsparv!(kv::Vector{Float64}, km::Matrix{Float64}, g::Vector{Int64}, kdiag::Vector{Int64})\nPtFEM.sparin!(kv::Vector{Float64}, kdiag::Vector{Int64})\nPtFEM.spabac!(kv::Vector{Float64}, loads::Vector{Float64}, kdiag::Vector{Int64})\nPtFEM.fromSkyline(skyline::Vector{Float64}, kdiag::Vector{Int64})\nPtFEM.skyline2sparse(skyline::Vector{Float64}, kdiag::Vector{Int64})\nPtFEM.stability!(kv::Vector{Float64}, gv::Vector{Float64}, kdiag::Vector{Int64}, tol::Float64, limit::Int64, iters::Int64, evec::Vector{Float64}, ival::Float64)"
+    "text": "PtFEM.fkdiag!\nPtFEM.fromSkyline(skyline::Vector{Float64}, kdiag::Vector{Int64})\nPtFEM.fsparv!(kv::Vector{Float64}, km::Matrix{Float64}, g::Vector{Int64}, kdiag::Vector{Int64})\nPtFEM.linmul_sky!\nPtFEM.skyline2sparse(skyline::Vector{Float64}, kdiag::Vector{Int64})\nPtFEM.spabac!(kv::Vector{Float64}, loads::Vector{Float64}, kdiag::Vector{Int64})\nPtFEM.sparin!(kv::Vector{Float64}, kdiag::Vector{Int64})"
 },
 
 {
