@@ -77,7 +77,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Changes w.r.t. PtFEM",
     "title": "Changes with respect to the PtFEM book",
     "category": "section",
-    "text": "The PtFEM book is the primary source to understand how the Fortran toolkit can be used to build FEM programs. This is also the case for the Julia version of the PtFEM toolkit, PtFEM.jl.But even with this restriction in place, there are many ways to port the PtFEM toolkit to Julia. Julia can in fact call the lower level Fortran \"building blocks\" (subroutines) directly. But that would make it harder to modify those functions. PtFEM.jl is entirely written in Julia end takes a middle of the road approach in replacing Fortran functionality by \"typical\" Julia features. These cases are documented in this file.If additional Julia versions of functions, particularly \"building blocks\", are required for use in the programs, these are added to the respective source files. Often times Julia's \"multiple dispatch\" takes care of selecting the correct version in the templates."
+    "text": "The PtFEM book is the primary source to understand how the Fortran toolkit can be used to build FEM programs. This is also the case for the Julia version of the PtFEM toolkit, PtFEM.jl.But even with this restriction in place, there are many ways to port the PtFEM toolkit to Julia. Julia can in fact call the lower level Fortran \"building blocks\" (subroutines) directly. But that would make it harder to modify those functions. PtFEM.jl is entirely written in Julia end takes a middle of the road approach in replacing Fortran functionality by \"typical\" Julia features. These cases are documented in this file.If additional Julia versions of functions, particularly \"building blocks\", are required for use in the programs, these are added to the respective source files. Often times Julia's \"multiple dispatch\" takes care of selecting the correct version in the templates.Several Fortran routines will (over time) be deprecated, e.g. see below the discussion on the skyline storage format. For now the original Julia translations are kept in the src/deprecated directory.As more chapters will be added I will attempt to harmonize the input data dictionary"
 },
 
 {
@@ -249,11 +249,35 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "index.html#PtFEM.p51-Tuple{Dict{Symbol,Any}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.p51",
+    "category": "Method",
+    "text": "Method p51\n\nPlane or axisymmetric strain analysis of an elastic solid (Plane structural element) using 3-, 6-, 10- or 15-node right-angled triangles (Triangle finite elements) or 4-, 8- or 9-node rectangular quadrilaterals (Quadrilateral finite elements). Mesh numbered in x(r)- or y(z)- direction.\n\nConstructors\n\np51(data)\n\nArguments\n\n* `data::Dict{Symbol, Any}` : Dictionary containing all input data\n\nRequired data dictionary keys\n\n* struc_el::StructuralElement                          : Structural element\n* support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector\n* loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector\n* properties::Vector{Float64}                          : Material properties\n* x_coords::FloatRange{Floalt64}                       : x-coordinate vector\n* y_coords::FloatRange{Floalt64}                       : y-coordinate vector\n* thickness:: Float64                                  : Thickness of plate\n\nOptional additional data dictionary keys\n\n* penalty = 1e20               : Penalty used for fixed degrees of freedoms\n* etype::Vector{Int64}         : Element material vector if np_types > 1\n\nReturn values\n\n* (fm_dt, sigma_dt)            : Tuple of jFem, dis_dt and fm_dt\n                                  where:\n                                    fm_dt         : Forces and moments data table\n                                    sigma_dt      : Stresses data table\n\nRelated help\n\n?StructuralElement             : List of available structural element types\n?Plane                         : Help on a Plane structural element\n?FiniteElement                 : List finite element types\n?Quadrilateral                 : Help on Quadrilateral finite element\n\n\n\n"
+},
+
+{
     "location": "index.html#Elastic-Solids-Programs-1",
     "page": "PtFEM.jl documentation",
     "title": "5 Elastic Solids Programs",
     "category": "section",
-    "text": "p51(data::Dict{Symbol, Any})\np52(data::Dict{Symbol, Any})\np53(data::Dict{Symbol, Any})\np54(data::Dict{Symbol, Any})\np55(data::Dict{Symbol, Any})\np56(data::Dict{Symbol, Any})"
+    "text": "p51(data::Dict{Symbol, Any})"
+},
+
+{
+    "location": "index.html#PtFEM.p61-Tuple{Dict{Symbol,Any}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.p61",
+    "category": "Method",
+    "text": "Method p61\n\nPlane strain bearing capacity analysis of an elastic-plastic (von Mises) material using 8-node rectangular quadrilaterals. Viscoplastic strain method.\n\nConstructors\n\np61(data)\n\nArguments\n\n* `data::Dict{Symbol, Any}` : Dictionary containing all input data\n\nRequired data dictionary keys\n\n* struc_el::StructuralElement                          : Structural element\n* support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector\n* loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector\n* properties::Vector{Float64}                          : Material properties\n* x_coords::FloatRange{Floalt64}                       : x-coordinate vector\n* y_coords::FloatRange{Floalt64}                       : y-coordinate vector\n* thickness:: Float64                                  : Thickness of plate\n* tol::Float64                                         : Convergence tolerance\n* qincs::Vector{Float64}                               : Incremental load steps\n\nOptional additional data dictionary keys\n\n* limit = 250                  : Iteration limit\n* penalty = 1e20               : Penalty used for fixed degrees of freedoms\n* etype::Vector{Int64}         : Element material vector if np_types > 1\n\nReturn values\n\n* (g_coord, g_num, disp)        : where:\n                                    g_coord  : Coordinates\n                                    g_num    : Node numbering\n                                    disp     : Matrix of displacements\n\nRelated help\n\n?StructuralElement             : List of available structural element types\n?Plane                         : Help on a Plane structural element\n?FiniteElement                 : List finite element types\n?Quadrilateral                 : Help on Quadrilateral finite element\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.p62-Tuple{Dict{Symbol,Any}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.p62",
+    "category": "Method",
+    "text": "Method p62\n\nPlane strain bearing capacity analysis of an elastic-plastic (von Mises) material using 8-node rectangular quadrilaterals.\n\nViscoplastic strain method.\n\nNo global stiffness matrix assembly.\n\nDiagonally preconditioned conjugate gradient solver.\n\nConstructors\n\np62(data)\n\nArguments\n\n* `data::Dict{Symbol, Any}` : Dictionary containing all input data\n\nRequired data dictionary keys\n\n* struc_el::StructuralElement                          : Structural element\n* support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector\n* loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector\n* properties::Vector{Float64}                          : Material properties\n* x_coords::FloatRange{Floalt64}                       : x-coordinate vector\n* y_coords::FloatRange{Floalt64}                       : y-coordinate vector\n* thickness:: Float64                                  : Thickness of plate\n* tol::Float64                                         : Convergence tolerance\n* qincs::Vector{Float64}                               : Incremental load steps\n\nOptional additional data dictionary keys\n\n* limit = 250                  : Iteration limit\n* penalty = 1e20               : Penalty used for fixed degrees of freedoms\n* etype::Vector{Int64}         : Element material vector if np_types > 1\n\nReturn values\n\n* (g_coord, g_num, disp)        : where:\n                                    g_coord  : Coordinates\n                                    g_num    : Node numbering\n                                    disp     : Matrix of displacements\n\nRelated help\n\n?StructuralElement             : List of available structural element types\n?Plane                         : Help on a Plane structural element\n?FiniteElement                 : List finite element types\n?Quadrilateral                 : Help on Quadrilateral finite element\n\n\n\n"
 },
 
 {
@@ -262,6 +286,62 @@ var documenterSearchIndex = {"docs": [
     "title": "6 Material Nonlinearity Programs",
     "category": "section",
     "text": "p61(data::Dict{Symbol, Any})\np62(data::Dict{Symbol, Any})"
+},
+
+{
+    "location": "index.html#PtFEM.StructuralElement",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.StructuralElement",
+    "category": "Type",
+    "text": "StructuralElement\n\nAbstract structural element type.\n\nType\n\nabstract StructuralElement\n\nSubtypes\n\n* Rod::StructuralElement          : Rod(nxe, np_types, nip, fin_el)\n* Beam::StructuralElement         : Beam(nod, nodof)\n* Frame::StructuralElement        : Frame(nod, nodof)\n* Plane::StructuralElement        : Plane(nod, nodof)\n* Solid::StructuralElement        : Solid(nod, nodof)\n* GenericSolid::StructuralElement : GenericSolid(nod, nodof)\n\nRelated help\n\n?FiniteElement                   : Show all finite elements\n?Rod                              : Help on Rod structural element\n?Beam                             : Help on Beam structural element\n?Frame                            : Help on Frame structural element\n?Plane                            : Help on Plane structural element\n?Solid                            : Help on Solid structural element\n?GenericSolid                     : Help on GenericSolid structural element\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.Rod",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.Rod",
+    "category": "Type",
+    "text": "Rod\n\nConcrete 1D structural element with only axial stresses.\n\nConstructor\n\nRod(nels, np_types, nip, fin_el)\n\nArguments\n\n* nels::Int64             : Number of fin_els (stored in field nxe)\n* np_types::Int64         : Number of different property types\n* nip::Int64              : Number of integration points\n* fin_el::FiniteElement   : Line(nod, nodof)\n\nRelated help\n\n?StructuralElement  : Help on structural elements\n?FiniteElement      : Help on finite element types\n?Line               : Help on a Line finite element\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.Beam",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.Beam",
+    "category": "Type",
+    "text": "Beam\n\nConcrete structural element with transverse and moment loading.\n\nConstructor\n\nBeam(ndim, nip, fin_el)\n\nArguments\n\n* ndim::Int64             : Number of dimensions\n* nst::Int64              : Number of stress terms\n* nxe::Int64              : Number of different property types\n* nip::Int64              : Number of integration points\n* direction::Symbol       : Number of integration points\n* fin_el::FiniteElement   : Line(nod, nodof)\n* axisymmetric::Bool      : Axisymmetric if true\n\nRelated help\n\n?StructuralElement  : Help on structural elements\n?FiniteElement      : Help on finite element types\n?Line               : Help on a Line finite element\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.Frame",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.Frame",
+    "category": "Type",
+    "text": "Frame\n\nPin- or rigid-jointed structural element.\n\nConstructor\n\nFrame(nels, nn, ndim, finite_element(nod, nodof))\n\nArguments\n\n* nels::Int64             : Number of elements\n* nn:Int64                : Number of nodes\n* ndim::Int64             : Number of dimensions\n* nst::Int64              : Number of stress terms\n* nip::Int64              : Number of integration points\n* fin_el::FiniteElement   : Line(nod, nodof)\n\nRelated help\n\n?StructuralElement  : List structural elements\n?FiniteElement      : List finite element types\n?Line               : Help on a Line finite element\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.Plane",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.Plane",
+    "category": "Type",
+    "text": "Plane\n\nPlate structural element.\n\nConstructor\n\nPlane(ndim, nst, nxe, nye, nip, dir, finite_element(nod, nodof), axisymmetric)\n\nArguments\n\n* ndim::Int64             : Number of dimensions\n* nst::Int64              : Number of stress terms\n* nxe::Int64              : Number of elements in x direction\n* nye::Int64              : Number of elements in y direction\n* nip::Int64              : Number of integration points\n* dir::Symbol             : Direction of node numbering\n* fin_el::FiniteElement   : Line(nod, nodof)\n* axisymmetric::Bool      : Axisymmetric\n\nRelated help\n\n?StructuralElement  : List structural elements\n?FiniteElement      : List finite element types\n?Line               : Help on a Line finite element\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.Solid",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.Solid",
+    "category": "Type",
+    "text": "Solid\n\nSolid structural element.\n\nConstructor\n\nSolid(ndim, nst, nxe, nye, nze, nip, finite_element(nod, nodof))\n\nArguments\n\n* ndim::Int64             : Number of dimensions\n* nst::Int64              : Number of stress terms\n* nxe::Int64              : Number of elements in x direction\n* nye::Int64              : Number of elements in y direction\n* nze::Int64              : Number of elements in z direction\n* nip::Int64              : Number of integration points\n* fin_el::FiniteElement   : Line(nod, nodof)\n\nRelated help\n\n?StructuralElement  : List structural elements\n?FiniteElement      : List finite element types\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.GenericSolid",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.GenericSolid",
+    "category": "Type",
+    "text": "GenericSolid\n\nSolid structural element.\n\nConstructor\n\nGenericSolid(ndim, nst, nels, nn, nip, finite_element(nod, nodof), axisymmetric)\n\nArguments\n\n* ndim::Int64             : Number of dimensions\n* nst::Int64              : Number of stress terms\n* nels::Int64             : Number of finite elements\n* nn::Int64               : Number of nodes\n* nip::Int64              : Number of integration points\n* fin_el::FiniteElement   : Finite element type used\n* axisymmetric::Bool      : Axisymmetric\n\nRelated help\n\n?StructuralElement  : List structural elements\n?FiniteElement      : List finite element types\n\n\n\n"
 },
 
 {
@@ -326,6 +406,22 @@ var documenterSearchIndex = {"docs": [
     "title": "Finite Element Types",
     "category": "section",
     "text": "FiniteElement\nLine\nTriangle\nQuadrilateral\nHexahedron\nTetrahedron"
+},
+
+{
+    "location": "index.html#PtFEM.FEM",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.FEM",
+    "category": "Type",
+    "text": "FEM\n\nComputational structure used in chapter 5 (Skyline format used)\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.jFEM",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.jFEM",
+    "category": "Type",
+    "text": "jFEM\n\nComputational structure used in chapter 4 (Julia Sparse matrices used)\n\n\n\n"
 },
 
 {
