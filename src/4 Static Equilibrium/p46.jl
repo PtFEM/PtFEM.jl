@@ -167,7 +167,7 @@ function p46(data::Dict{Symbol, Any})
   
   for i in 1:nels
     num = [i; i+1]
-    num_to_g!(fin_el.nod, nodof, nn, ndof, num, nf, g)
+    num_to_g!(num, nf, g)
     g_g[:, i] = g
   end
   

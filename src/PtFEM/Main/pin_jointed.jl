@@ -1,3 +1,21 @@
+"""
+## pin_jointed!
+
+This subroutine forms the global stiffness matrix of a
+general pin-joionted structural element (1-, 2- or 3-d).
+
+### Function
+```julia
+pin_jointed!(km, ea, coord)
+```
+
+### Arguments
+```julia
+* km::Matrix{Float64}       : Element stiffness matrix (Updated)
+* ea::Float64               : Element stiffness
+* coord::Matrix{Float64}}   : Element nodal coordinates
+```
+"""
 function pin_jointed!(km::Matrix{Float64}, ea::Float64, coord::Matrix{Float64})
   #
   # This subroutine forms the global stiffness matrix of a

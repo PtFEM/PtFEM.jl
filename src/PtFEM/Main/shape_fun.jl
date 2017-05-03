@@ -1,3 +1,21 @@
+"""
+## shape_fun!
+
+This subroutine produces derivatives of shape functions with respect
+to local coordinates.
+
+### Function
+```julia
+shape_fun!(fun, point, i)
+```
+
+### Arguments
+```julia
+* fun::Vector{Float64}       : Shape function (Updated)
+* points::Matrix{Float64}    : Local coordinates of integration points
+* i::Int64                   : Integration point
+```
+"""
 function shape_fun!(fun::Vector{Float64}, points::Matrix{Float64}, i::Int64)
   #
   #   This subroutine computes the values of the shape functions.

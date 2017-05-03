@@ -1,3 +1,27 @@
+"""
+
+## hinge!
+
+This subroutine forms the end forces and moments to be
+applied to a member if a joint has gone plastic.
+
+### Function
+```julia
+hinge!(coord, holdr, action, react, prop, iel, etype, gamma)
+```
+
+### Arguments
+```julia
+* coord::Matrix{Float64}     : Nodal coordinates
+* holdr::Matrix{Float64}     : Existing reactions
+* action::Vector{Float64}    : Incremental reactions
+* react::Vector{Float64}     : Correction to reactions (Updated)
+* prop::Matrix{Float64}      : Beam properties
+* iel::Int64                 : Element number
+* etype::Vector{Int64}       : Element type
+* gamma::Vector{Float64}     : Element orientation (3D)
+```
+"""
 function hinge!(coord::Matrix{Float64}, holdr::Matrix{Float64}, 
   action::Vector{Float64}, react::Vector{Float64}, prop::Matrix{Float64}, 
   iel, etype::Vector{Int64}, gamma::Vector{Float64})

@@ -1,13 +1,21 @@
-@doc doc"""
+"""
+
+## sparin!
+
 Function sparin! performs Cholesky factorisation on a symmetric
 skyline global matrix. The vector kv is updated.
 
-Arguments to sparin!(kv, kdiag):
+###Arguments
+```julia
+sparin!(kv, kdiag)
+```
 
-kv::Vector{Float64}   : Skyline vector of global stiffness matrix
-
-kdiag::Vector{Int64}  : Diagonal fin_el vector
-""" ->
+### Arguments
+```julia
+* kv::Vector{Float64}       : Global stiffness matrix (Updated)
+* kdiag::Vector{Int64}      : Diagonal elemnt index vector
+```
+"""
 function sparin!(kv::Vector{Float64}, kdiag::Vector{Int64})
   local x::Float64
   n = size(kdiag, 1)

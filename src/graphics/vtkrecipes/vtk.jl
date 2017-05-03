@@ -6,6 +6,25 @@ using DataTables, WriteVTK
 import Compat.UTF8String
 const FloatType = Float32
 
+"""
+## vtk
+
+Plots displacements and directions
+
+### Function
+```julia
+mesh(data, fm_dt, sigma_dt, dir, fname)
+```
+
+### Arguments
+```julia
+* data::Dict                 : Input dictionary
+* fm_dt::DataTable           : Forces and moments DataTable
+* sigma_dt::DataTable        : Stresses DataTable
+* dir::AbstractString        : Project directory
+* fname::AbstractString      : Output VTK file name
+```
+"""
 function vtk(data::Dict, fm_dt, sigma_dt, dir, fname)
   vtk_filename_noext = dir*"/"*fname
   dim = data[:struc_el].ndim

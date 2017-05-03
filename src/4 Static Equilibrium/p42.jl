@@ -171,7 +171,7 @@ function p42(data::Dict)
   
   for i in 1:nels
     num = g_num[:, i]
-    num_to_g!(fin_el.nod, nodof, nn, ndof, num, nf, g)
+    num_to_g!(num, nf, g)
     g_g[:, i] = g
   end
   

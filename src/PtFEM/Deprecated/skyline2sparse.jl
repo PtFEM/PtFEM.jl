@@ -1,3 +1,19 @@
+"""
+## skyline2sparse
+
+Converts a Skyline matrix to a Julia Sparse matrix
+
+### Function
+```julia
+skyline2sparse(skyline, kdiag)
+```
+
+### Arguments
+```julia
+* skyline::Vector{Float64}         : Skyline matrix
+* kdiag::Vector{Int64}             : Element diagonal index vector
+```
+"""
 function skyline2sparse(skyline::Vector{Float64}, kdiag::Vector{Int64})
 	neq = size(kdiag, 1)
 	km = zeros(neq, neq)

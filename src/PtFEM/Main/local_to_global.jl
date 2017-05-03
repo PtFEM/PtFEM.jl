@@ -1,4 +1,24 @@
-function loc_to_glob!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float64, coord::Matrix{Float64})
+"""
+## loc_to_glob!
+
+This subroutine transforms the local end reactions and
+moments into the global system (3-d).
+
+### Function
+```julia
+loc_to_glob!(loc, glob, gamma, coord)
+```
+
+### Arguments
+```julia
+* loc::Vector{Float64}       : Local force and momemts (Updated)
+* glob::Vector{Float64}      : Globale forces and moments
+* gamma::Float64             : Element orientation angle (3D)
+* coord::Matrix{Float64}     : Nodal coordinates
+```
+"""
+function loc_to_glob!(loc::Vector{Float64}, glob::Vector{Float64}, 
+  gamma::Float64, coord::Matrix{Float64})
   #
   # This subroutine transforms the local end reactions and
   # moments into the global system (3-d).
@@ -43,8 +63,6 @@ function loc_to_glob!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float6
    r0[3,2] = sg
    r0[1,3] = sg
   end
-  #@show r0
-  #@show loc
   for i in 1:3
    for j in 1:3 
      x = r0[i,j]
@@ -60,6 +78,5 @@ function loc_to_glob!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float6
    end
    glob[i] = sum
   end
-  #@show glob
   glob
 end
