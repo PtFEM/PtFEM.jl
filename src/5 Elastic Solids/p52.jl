@@ -174,7 +174,7 @@ function p52(data::Dict)
       detm = det(jac)
       jac = inv(jac)
       deriv = jac*der
-      (radius, bee) = beemat_nonaxi!(bee, radius, coord, deriv, fun, iflag, lth)
+      (radius, bee) = bmat_nonaxi!(bee, radius, coord, deriv, fun, iflag, lth)
       km += (((bee')*dee)*bee)*detm*weights[i]*radius
     end
     fsparv!(kv, km, g, kdiag)
@@ -240,7 +240,7 @@ function p52(data::Dict)
       gc = fun'*coord
       jac = inv(der*coord)
       deriv = jac*der
-      (radius, bee) = beemat_nonaxi!(bee,radius,coord,deriv,fun,iflag,lth)
+      (radius, bee) = bmat_nonaxi!(bee,radius,coord,deriv,fun,iflag,lth)
       bee[1:4,:]=bee[1:4,:]*ca 
       bee[5:6,:]=bee[5:6,:]*sa
       sigma = dee*(bee*eld)

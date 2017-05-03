@@ -1,3 +1,22 @@
+"""
+## deemat!
+
+This subroutine returns the elastic dee matrix for ih=3 (plane strain),
+ih=4 (axisymmetry or plane strain elastoplasticity) or ih=6
+(three dimensions).
+
+### Method
+```julia
+deemat!(dee, e, v)
+```
+
+### Arguments
+```julia
+* dee::Matrix{Float64}         : Dee matrix (Updated)
+* e::Float64                   : Young's modulus
+* v::Float64                   : Poisson's ratio
+```
+"""
 function deemat!(dee::Array{Float64, 2}, e::Float64, v::Float64)
 #
 # This subroutine returns the elastic dee matrix for ih=3 (plane strain),

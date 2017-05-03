@@ -1,3 +1,19 @@
+"""
+## beam_gm!
+
+This subroutine forms the beam geometric matrix for stability analysis.
+
+### Method
+```julia
+beam_gm!(gm::Matrix{Float64}, ell::Float64)
+```
+
+### Arguments
+```julia
+* gm::::Matrix{Float64}     : Geometric matrix for beam element (Updated)
+* ell::Float64              : Element length
+```
+"""
 function beam_gm!(gm::Matrix{Float64}, ell::Float64)
   #
   # This subroutine forms the beam geometric matrix for stability analysis.

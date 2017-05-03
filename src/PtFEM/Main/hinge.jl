@@ -1,4 +1,6 @@
-function hinge!(coord::Matrix{Float64}, holdr::Matrix{Float64}, action::Vector{Float64}, react::Vector{Float64}, prop::Matrix{Float64}, iel, etype::Vector{Int64}, gamma::Vector{Float64})
+function hinge!(coord::Matrix{Float64}, holdr::Matrix{Float64}, 
+  action::Vector{Float64}, react::Vector{Float64}, prop::Matrix{Float64}, 
+  iel, etype::Vector{Int64}, gamma::Vector{Float64})
   #
   # This subroutine forms the end forces and moments to be
   # applied to a member if a joint has gone plastic.

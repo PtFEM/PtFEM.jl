@@ -1,3 +1,20 @@
+"""
+## beam_km!
+
+This subroutine forms the stiffness matrix of a beam element (bending only).
+
+### Method
+```julia
+beam_km!(km, ei, ell)
+```
+
+### Arguments
+```julia
+* km::::Matrix{Float64}     : Stiiness matrix for beam element (Updated)
+* ei::Float64               : Element stiffness
+* ell::Float64              : Element length
+```
+"""
 function beam_km!(km::Matrix{Float64}, ei::Float64, ell::Float64)
   #
   # This subroutine forms the stiffness matrix of a

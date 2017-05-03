@@ -1,3 +1,20 @@
+"""
+## beemat!
+
+This subroutine forms the strain-displacement matrix for
+axisymmetric solids subjected to non-axisymmetric loading.
+
+### Method
+```julia
+beemat!(bee, deriv)
+```
+
+### Arguments
+```julia
+* bee::Matrix{Float64}         : Bee matrix (Updated)
+* deriv::Matrix{Float64}       : Derivative
+```
+"""
 function beemat!(bee::Matrix{Float64},deriv::Matrix{Float64})
   #
   # This subroutine forms the bee matrix in 2-d (ih=3 or 4) or 3-d (ih=6).

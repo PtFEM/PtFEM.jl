@@ -1,4 +1,24 @@
-function formm!(stress::Vector{Float64}, m1::Matrix{Float64}, m2::Matrix{Float64}, m3::Matrix{Float64})
+"""
+## formm!
+
+This subroutine forms the derivatives of the invariants with respect to
+stress in 2- or 3-d. See equation 6.25.
+
+### Function
+```julia
+formm!(stress, m1, m2, m3)
+```
+
+### Arguments
+```julia
+* stress::Vector{Float64}    : Stress vector, see eq 6.25
+* m1::Matrix{Float64}        : m1 matrix
+* m2::Matrix{Float64}        : m2 matrix
+* m3::Matrix{Float64}        : m3 matrix
+```
+"""
+function formm!(stress::Vector{Float64}, m1::Matrix{Float64}, 
+  m2::Matrix{Float64}, m3::Matrix{Float64})
   #
   # This subroutine forms the derivatives of the invariants with respect to
   # stress in 2- or 3-d.

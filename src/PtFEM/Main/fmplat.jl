@@ -1,4 +1,27 @@
-function fmplat!(d2x::Vector{Float64}, d2y::Vector{Float64}, d2xy::Vector{Float64}, points::Matrix{Float64}, aa::Float64, bb::Float64, i::Int64)
+"""
+## fmplat!
+
+This subroutine forms the 2nd derivatives for rectangular
+plate bending fin_els.
+
+### Method
+```julia
+fmplat!(d2x, d2y, d2xy, points, aa, bb, i)
+```
+
+### Arguments
+```julia
+* d2x::Vector{Float64}       : x derivative term (Updated)
+* d2y::Vector{Float64}       : y derivative term (Updated)
+* d2xy::Vector{Float64}      : x,y derivative term (Updated)
+* points::Matrix{Float64}    : Location of Gauss points
+* aa::Float64                : Dimension of plate
+* bb::Float64                : Dimension of plate
+* i::Int64                   : Gauss point to use
+```
+"""
+function fmplat!(d2x::Vector{Float64}, d2y::Vector{Float64}, d2xy::Vector{Float64}, 
+  points::Matrix{Float64}, aa::Float64, bb::Float64, i::Int64)
   #
   # This subroutine forms the 2nd derivatives for rectangular
   # plate bending fin_els.

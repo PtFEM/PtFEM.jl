@@ -238,7 +238,7 @@ function p42(data::Dict)
     end
     km = pin_jointed!(km, prop[etype[i], 1], coord)
     actions[:, i] = km * eld
-    axial[i] = global_to_axial(actions[:, i], coord)
+    axial[i] = glob_to_axial(actions[:, i], coord)
   end
 
   if ndim == 2

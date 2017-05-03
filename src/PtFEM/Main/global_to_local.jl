@@ -1,4 +1,24 @@
-function glob_to_loc!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float64, coord::Matrix{Float64})
+"""
+## glob_to_loc!
+
+This subroutine transforms the global end reactions and
+moments into the local system (2- or 3-d). Called from hinge!().
+
+### Function
+```julia
+glob_to_loc!(loc, glob, gamma, coord)
+```
+
+### Arguments
+```julia
+* loc::Vector{Float64}       : Local force and momemts (Updated)
+* glob::Vector{Float64}      : Globale forces and moments
+* gamma::Float64             : Element orientation angle (3D)
+* coord::Matrix{Float64}     : Nodal coordinates
+```
+"""
+function glob_to_loc!(loc::Vector{Float64}, glob::Vector{Float64},
+  gamma::Float64, coord::Matrix{Float64})
   #
   # This subroutine transforms the global end reactions and
   # moments into the local system (2- or 3-d).

@@ -1,3 +1,20 @@
+"""
+## beam_mm!
+
+This subroutine forms the stiffness matrix of a beam element (bending only).
+
+### Method
+```julia
+beam_mm!(mm, ei, ell)
+```
+
+### Arguments
+```julia
+* mm::::Matrix{Float64}     : Mass matrix for beam element (Updated)
+* fs::Float64               : Element density
+* ell::Float64              : Element length
+```
+"""
 function beam_mm!(mm::Matrix{Float64}, fs::Float64, ell::Float64)
   #
   # This subroutine forms the consistent mass matrix of a beam fin_el.
