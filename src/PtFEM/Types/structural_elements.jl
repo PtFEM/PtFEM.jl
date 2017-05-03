@@ -57,7 +57,6 @@ Rod(nels, np_types, nip, fin_el)
 ?FiniteElement      : Help on finite element types
 ?Line               : Help on a Line finite element
 ```
-
 """
 immutable Rod <: StructuralElement  # Axial stresses only structural element
   nxe::Int64                        # Number of fin_els
@@ -93,7 +92,6 @@ Beam(ndim, nip, fin_el)
 ?FiniteElement      : Help on finite element types
 ?Line               : Help on a Line finite element
 ```
-
 """
 type Beam <: StructuralElement    # 1D Beam structural element
   ndim::Int64                     # Number of dimensions (1,2 or 3)
@@ -105,9 +103,35 @@ type Beam <: StructuralElement    # 1D Beam structural element
   axisymmetric::Bool              # Axisymmetric
 end
 
-# Frame(nels, nn, ndim, finite_element(nod, nodof))
+"""
+## Frame
+
+Pin- or rigid-jointed structural element.
+
+### Constructor
+```julia
+Frame(nels, nn, ndim, finite_element(nod, nodof))
+```
+
+### Arguments
+```julia
+* nels::Int64             : Number of elements
+* nn:Int64                : Number of nodes
+* ndim::Int64             : Number of dimensions
+* nst::Int64              : Number of stress terms
+* nip::Int64              : Number of integration points
+* fin_el::FiniteElement   : Line(nod, nodof)
+```
+
+### Related help
+```julia
+?StructuralElement  : List structural elements
+?FiniteElement      : List finite element types
+?Line               : Help on a Line finite element
+```
+"""
 type Frame <: StructuralElement
-  nels::Int64                     # Number of elemnt
+  nels::Int64                     # Number of elements
   nn::Int64                       # Number of nodes
   ndim::Int64                     # Number of dimensions
   nst::Int64                      # Number of stress terms
@@ -115,6 +139,35 @@ type Frame <: StructuralElement
   fin_el::FiniteElement           # Finite fin_el type used
 end
 
+"""
+## Plane
+
+Plate structural element.
+
+### Constructor
+```julia
+Plane(ndim, nst, nxe, nye, nip, dir, finite_element(nod, nodof), axisymmetric)
+```
+
+### Arguments
+```julia
+* ndim::Int64             : Number of dimensions
+* nst::Int64              : Number of stress terms
+* nxe::Int64              : Number of elements in x direction
+* nye::Int64              : Number of elements in y direction
+* nip::Int64              : Number of integration points
+* dir::Symbol             : Direction of node numbering
+* fin_el::FiniteElement   : Line(nod, nodof)
+* axisymmetric::Bool      : Axisymmetric
+```
+
+### Related help
+```julia
+?StructuralElement  : List structural elements
+?FiniteElement      : List finite element types
+?Line               : Help on a Line finite element
+```
+"""
 type Plane <: StructuralElement
   ndim::Int64                     # Number of dimensions (1,2 or 3)
   nst::Int64                      # Number of stress terms
@@ -126,6 +179,33 @@ type Plane <: StructuralElement
   axisymmetric::Bool              # Axisymmetric
 end
 
+"""
+## Solid
+
+Solid structural element.
+
+### Constructor
+```julia
+Solid(ndim, nst, nxe, nye, nze, nip, finite_element(nod, nodof))
+```
+
+### Arguments
+```julia
+* ndim::Int64             : Number of dimensions
+* nst::Int64              : Number of stress terms
+* nxe::Int64              : Number of elements in x direction
+* nye::Int64              : Number of elements in y direction
+* nze::Int64              : Number of elements in z direction
+* nip::Int64              : Number of integration points
+* fin_el::FiniteElement   : Line(nod, nodof)
+```
+
+### Related help
+```julia
+?StructuralElement  : List structural elements
+?FiniteElement      : List finite element types
+```
+"""
 type Solid <: StructuralElement
   ndim::Int64                     # Number of dimensions (1,2 or 3)
   nst::Int64                      # Number of stress terms
@@ -133,16 +213,43 @@ type Solid <: StructuralElement
   nye::Int64                      # Number of fin_els in y direction
   nze::Int64                      # Number of fin_els in y direction
   nip::Int64                      # Number of integration points
-  fin_el::FiniteElement           # Finite fin_el type used
+  fin_el::FiniteElement           # Finite element type used
 end
 
+"""
+## GenericSolid
+
+Solid structural element.
+
+### Constructor
+```julia
+GenericSolid(ndim, nst, nels, nn, nip, finite_element(nod, nodof), axisymmetric)
+```
+
+### Arguments
+```julia
+* ndim::Int64             : Number of dimensions
+* nst::Int64              : Number of stress terms
+* nels::Int64             : Number of finite elements
+* nn::Int64               : Number of nodes
+* nip::Int64              : Number of integration points
+* fin_el::FiniteElement   : Finite element type used
+* axisymmetric::Bool      : Axisymmetric
+```
+
+### Related help
+```julia
+?StructuralElement  : List structural elements
+?FiniteElement      : List finite element types
+```
+"""
 type GenericSolid <: StructuralElement
   ndim::Int64                     # Number of dimensions (1,2 or 3)
   nst::Int64                      # Number of stress terms
   nels::Int64                     # Number of fin_els
   nn::Int64                       # Number of nodes
   nip::Int64                      # Number of integration points
-  fin_el::FiniteElement           # Finite fin_el type used
+  fin_el::FiniteElement           # Finite element type used
   axisymmetric::Bool              # Axisymmetric
 end
 

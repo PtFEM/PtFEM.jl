@@ -11,7 +11,6 @@ using OffsetArrays
 include("PtFEM/Types/finite_elements.jl")
 include("PtFEM/Types/structural_elements.jl")
 include("PtFEM/Types/FEM.jl")
-#include("PtFEM/Types/FEmodel.jl")
 
 include("PtFEM/Main/formnf.jl")
 include("PtFEM/Main/num_to_g.jl")

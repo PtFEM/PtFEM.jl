@@ -16,11 +16,6 @@ p47(data::Dict{Symbol, Any})
 
 ```@docs
 p51(data::Dict{Symbol, Any})
-p52(data::Dict{Symbol, Any})
-p53(data::Dict{Symbol, Any})
-p54(data::Dict{Symbol, Any})
-p55(data::Dict{Symbol, Any})
-p56(data::Dict{Symbol, Any})
 ```
 
 ## 6 Material Nonlinearity Programs

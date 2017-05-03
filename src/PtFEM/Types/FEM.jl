@@ -2,6 +2,12 @@ import Base.show
 
 ### Model type ###
 
+"""
+## FEM
+
+Computational structure used in chapter 5 (Skyline format used)
+
+"""
 immutable FEM                     # Computationale data and results structure
   struc_el::StructuralElement     # Store the structural element object
   fin_el::FiniteElement           # Store finite element object
@@ -77,6 +83,12 @@ show(io::IO, m::FEM) = model_show(io, m, false)
 showcompact(io::IO, m::FEM) = model_show(io, m, true)
 =#
 
+"""
+## jFEM
+
+Computational structure used in chapter 4 (Julia Sparse matrices used)
+
+"""
 immutable jFEM                    # Computationale data and results structure
   struc_el::StructuralElement     # Store the structural element object
   fin_el::FiniteElement           # Store finite element object

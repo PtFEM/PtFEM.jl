@@ -9,7 +9,7 @@ Unix/OSX:  [![Travis Build Status](https://travis-ci.org/PtFEM/PtFEM.jl.svg?bran
 Documentation:
 [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://ptfem.github.io/PtFEM.jl/latest)
 
-## Access to PtFEM models
+## The "Programming the Finite Element Method" toolkit
 
 This Julia package currently contains the programs in chapters 4, 5 and early sections of 6 as described in "Programming the Finite Element Method" by I M Smith, D V Griffiths and L. Margetts ([PtFEM]( http://www.wiley.com/WileyCDA/WileyTitle/productCd-1119973341.html )).
 
@@ -24,7 +24,7 @@ use PtFEM
 ?StructuralElement
 ```
 
-and [here](http://ptfem.github.io/PtFEM.jl/latest/INTRO.html). 
+and full documentation can be found  [here](http://ptfem.github.io/PtFEM.jl/latest/INTRO.html). 
 
 ## Timeline
 

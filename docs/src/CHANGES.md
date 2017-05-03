@@ -8,6 +8,10 @@ PtFEM.jl is entirely written in Julia end takes a middle of the road approach in
 
 If additional Julia versions of functions, particularly "building blocks", are required for use in the programs, these are added to the respective source files. Often times Julia's "multiple dispatch" takes care of selecting the correct version in the templates.
 
+Several Fortran routines will (over time) be deprecated, e.g. see below the discussion on the skyline storage format. For now the original Julia translations are kept in the src/deprecated directory.
+
+As more chapters will be added I will attempt to harmonize the input data dictionary
+
 ## Julia's convention for functions that update arguments
 
 Note the use of the "!" in some function names which is the Julia convention for functions that update one or more of the function arguments. 
