@@ -57,11 +57,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "GETTINGSTARTED.html#An-example-(Ex41.1.jl)-1",
+    "location": "GETTINGSTARTED.html#Selected-examples-1",
     "page": "Getting started",
-    "title": "An example (Ex41.1.jl)",
+    "title": "Selected examples",
     "category": "section",
-    "text": "using PtFEM\n\nProjDir = dirname(@__FILE__)\n\nl = 1.0       # Total length [m]\nN = 5         # Number of nodes\nels = N - 1   # Number of finite elements (in x direction)\nnod = 2       # Number of nodes per finite elements\nnodof = 1     # Degrees of freedom for each node\nnp_types = 1  # Number of property types\nEA = 1.0e5    # Strain stiffness\nnip = 1       # Number of integration points\n\ndata = Dict(\n  # StructuralElement(nxe, np_types, nip, FiniteElement(nod, nodof))\n  :struc_el => Rod(els, np_types, nip, Line(nod, nodof)),\n  :properties => [EA;],\n  # Compute x_coords using length l and number of elements, els\n  :x_coords => 0.0:l/els:l,\n  # Define a support for node N\n  # In this case fix the single dof (x direction displacement)\n  :support => [(N, [0])],\n  # External forces are applied to nodes 1 to 5.\n  :loaded_nodes => [\n      (1, [-0.625]),\n      (2, [-1.25]),\n      (3, [-1.25]),\n      (4, [-1.25]),\n      (5, [-0.625])\n    ]\n);\n\n# Display the data dictionary\ndata |> display\nprintln()\n\n# Solve the FEM model\n@time fem, dis_dt, fm_dt = p41(data)\nprintln()\n\ndisplay(dis_dt)\nprintln()\ndisplay(fm_dt)\nprintln()\n\n# Use Plots to generate a graphical representation of the result\n\nif VERSION.minor < 6\n\n  using Plots\n  gr(size=(400,500))\n\n  x = 0.0:l/els:l\n  u = convert(Array, dis_dt[:x_translation])\n    \n  p = Vector{Plots.Plot{Plots.GRBackend}}(2)\n  titles = [\"PtFEM Ex41.1 u(x)\", \"PtFEM Ex41.1 N(x)\"]\n   \n  p[1]=plot(ylim=(0.0, 1.0), xlim=(0.0, 5.0),\n    yflip=true, xflip=false, xlab=\"Normal force [N]\",\n    ylab=\"x [m]\", title=titles[2]\n  )\n  vals = convert(Array, fm_dt[:normal_force_2])\n  for i in 1:els\n      plot!(p[1], \n        [vals[i], vals[i]],\n        [(i-1)*l/els, i*l/els], color=:blue,\n        color=:blue, fill=true, fillalpha=0.1, leg=false\n      )\n      delta = abs(((i-1)*l/els) - (i*l/els)) / 20.0\n      y1 = collect(((i-1)*l/els):delta:(i*l/els))\n      for j in 1:length(y1)\n        plot!(p[1],\n          [vals[i], 0.0],\n          [y1[j], y1[j]], color=:blue, alpha=0.5\n        )\n      end\n  end\n  \n  p[2] = plot(u, x, xlim=(-0.00003, 0.0), yflip=true,\n    xlab=\"Displacement [m]\", ylab=\"x [m]\",\n    fillto=0.0, fillalpha=0.1, leg=false, title=titles[1])\n\n  plot(p..., layout=(1, 2))\n  savefig(ProjDir*\"/Ex41.1.png\")\n  \nend"
+    "text": "Ex41.1.jl\nEx44.1.jl\nEx45.1.jl\nEx44.1.jl\nEx44.1.jl\nEx51.1.jl\nEx62.1.jl"
 },
 
 {
