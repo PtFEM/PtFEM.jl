@@ -10,7 +10,7 @@ I use PtFEM when referring to the book and PtFEM.jl when referring to the Julia 
 
 ## A Julia based PtFEM eco system
 
-[PtFEM.jl](https://github.com/goedman/PtFEM.jl) is the central package in a mini [PtFEM](https://github.com/PtFEM) eco system and most other packages in that eco system will be using PtFEM.jl as the starting point.
+[PtFEM.jl](https://github.com/PtFEM/PtFEM.jl) is the central package in a mini [PtFEM](https://github.com/PtFEM) eco system and most other packages in that eco system will be using PtFEM.jl as the starting point.
 
 For many years a colleague and I have used the Fortran version of the PtFEM toolkit  to verify aspects of a (larger) software program developed to analyse the behavior of bottom hole assemblies (BHAs). PtFEM has proven extremely valuable for that purpose and in my opinion that alone justifies the creation of PtFEM.jl.
 
