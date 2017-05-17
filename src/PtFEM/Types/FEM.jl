@@ -13,27 +13,27 @@ immutable FEM                     # Computationale data and results structure
   fin_el::FiniteElement           # Store finite element object
   
   # Scalars
-  ndim::Int64                     # Number of dimensions
-  nels::Int64                     # Number of fin_els
-  nst::Int64                      # Number of stress terms
-  ndof::Int64                     # Degrees of freedom per fin_el
-  nn::Int64                       # Number of nodes in the mesh
-  nodof::Int64                    # Number of degrees of freedom per node
+  ndim::Int                     # Number of dimensions
+  nels::Int                     # Number of fin_els
+  nst::Int                      # Number of stress terms
+  ndof::Int                     # Degrees of freedom per fin_el
+  nn::Int                       # Number of nodes in the mesh
+  nodof::Int                    # Number of degrees of freedom per node
 
-  neq::Int64                      # Number of equations
+  neq::Int                      # Number of equations
   penalty::Float64                # Penalty for fixed nodes
 
-  # Int64 arrays
-  etype::Array{Int64, 1}          # Element property vector
-  g::Array{Int64, 1}              # Element steering vector
-  g_g::Array{Int64, 2}            # Global fin_el steering matrix
-  g_num::Array{Int64, 2}          # Global fin_el node numbers matrix
-  kdiag::Array{Int64, 1}          # Diagonal term location vector
-  nf::Array{Int64, 2}             # Nodal freedom matrix
-  no::Array{Int64, 1}             # Fixed freedom number vector
-  node::Array{Int64, 1}           # Fixed nodes vector
-  num::Array{Int64, 1}            # Element node number vector
-  sense::Array{Int64, 1}          # Sense of freedoms to be fixed vector
+  # Int arrays
+  etype::Array{Int, 1}          # Element property vector
+  g::Array{Int, 1}              # Element steering vector
+  g_g::Array{Int, 2}            # Global fin_el steering matrix
+  g_num::Array{Int, 2}          # Global fin_el node numbers matrix
+  kdiag::Array{Int, 1}          # Diagonal term location vector
+  nf::Array{Int, 2}             # Nodal freedom matrix
+  no::Array{Int, 1}             # Fixed freedom number vector
+  node::Array{Int, 1}           # Fixed nodes vector
+  num::Array{Int, 1}            # Element node number vector
+  sense::Array{Int, 1}          # Sense of freedoms to be fixed vector
 
   # Float64 arrays
   actions::Array{Float64, 2}      # Actions
@@ -94,26 +94,26 @@ immutable jFEM                    # Computationale data and results structure
   fin_el::FiniteElement           # Store finite element object
   
   # Scalars
-  ndim::Int64                     # Number of dimensions
-  nels::Int64                     # Number of fin_els
-  nst::Int64                      # Number of stress terms
-  ndof::Int64                     # Degrees of freedom per fin_el
-  nn::Int64                       # Number of nodes in the mesh
-  nodof::Int64                    # Number of degrees of freedom per node
+  ndim::Int                     # Number of dimensions
+  nels::Int                     # Number of fin_els
+  nst::Int                      # Number of stress terms
+  ndof::Int                     # Degrees of freedom per fin_el
+  nn::Int                       # Number of nodes in the mesh
+  nodof::Int                    # Number of degrees of freedom per node
 
-  neq::Int64                      # Number of equations
+  neq::Int                      # Number of equations
   penalty::Float64                # Penalty for fixed nodes
 
-  # Int64 arrays
-  etype::Array{Int64, 1}          # Element property vector
-  g::Array{Int64, 1}              # Element steering vector
-  g_g::Array{Int64, 2}            # Global fin_el steering matrix
-  g_num::Array{Int64, 2}          # Global fin_el node numbers matrix
-  nf::Array{Int64, 2}             # Nodal freedom matrix
-  no::Array{Int64, 1}             # Fixed freedom number vector
-  node::Array{Int64, 1}           # Fixed nodes vector
-  num::Array{Int64, 1}            # Element node number vector
-  sense::Array{Int64, 1}          # Sense of freedoms to be fixed vector
+  # Int arrays
+  etype::Array{Int, 1}          # Element property vector
+  g::Array{Int, 1}              # Element steering vector
+  g_g::Array{Int, 2}            # Global fin_el steering matrix
+  g_num::Array{Int, 2}          # Global fin_el node numbers matrix
+  nf::Array{Int, 2}             # Nodal freedom matrix
+  no::Array{Int, 1}             # Fixed freedom number vector
+  node::Array{Int, 1}           # Fixed nodes vector
+  num::Array{Int, 1}            # Element node number vector
+  sense::Array{Int, 1}          # Sense of freedoms to be fixed vector
 
   # Float64 arrays
   actions::Array{Float64, 2}      # Actions

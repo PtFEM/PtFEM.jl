@@ -1,6 +1,6 @@
 # Setup loaded nodes entry
 function update_equivalent_m_and_f!(data::Dict)
-  ns = Int64[]
+  ns = Int[]
   if :loaded_elements in keys(data)
     for t in data[:loaded_nodes]
       push!(ns, t[1])

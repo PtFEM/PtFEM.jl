@@ -16,18 +16,18 @@ p42(data)
 ### Dictionary keys
 ```julia
 * struc_el::StructuralElement                          : Type of structural element
-* support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
-* loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector
+* support::Array{Tuple{Int,Array{Int,1}},1}        : Fixed-displacements vector
+* loaded_nodes::Array{Tuple{Int,Array{Float64,1}},1} : Node load vector
 * properties::Vector{Float64}                          : Material properties
 * x_coords::Vector{Float64}                            : x coordinate vector
 * y_coords::Vector{Float64}                            : y coordinate vector
-* g_num::Array{Int64,2}                                : Element node connections
+* g_num::Array{Int,2}                                : Element node connections
 ```
 
 ### Optional additional dictionary keys
 ```julia
 * penalty::Float64             : Penalty for fixed freedoms
-* etype::Vector{Int64}         : Element material vector
+* etype::Vector{Int}         : Element material vector
 * z_coords::Vector{Float64}    : z coordinate vector (3D)
 * eq_nodal_forces_and_moments  : Contribution of distributed loads to loaded_nodes
 ```
@@ -93,7 +93,7 @@ function p42(data::Dict)
     println("No :properties key found in FEdict")
   end
   
-  nf = ones(Int64, nodof, nn)
+  nf = ones(Int, nodof, nn)
   if :support in keys(data)
     for i in 1:size(data[:support], 1)
       nf[:, data[:support][i][1]] = data[:support][i][2]
@@ -119,12 +119,12 @@ function p42(data::Dict)
     z_coords = zeros(length(z_coords))
   end
 
-  etype = ones(Int64, nels)
+  etype = ones(Int, nels)
   if :etype in keys(data)
     etype = data[:etype]
   end
   
-  g_num = zeros(Int64, fin_el.nod, nels)
+  g_num = zeros(Int, fin_el.nod, nels)
   if :g_num in keys(data)
     g_num = data[:g_num]
   end
@@ -132,7 +132,7 @@ function p42(data::Dict)
   # All other arrays
   
   points = zeros(struc_el.nip, ndim)
-  g = zeros(Int64, ndof)
+  g = zeros(Int, ndof)
   g_coord = zeros(ndim,nn)
   fun = zeros(fin_el.nod)
   coord = zeros(fin_el.nod, ndim)
@@ -147,8 +147,8 @@ function p42(data::Dict)
   kg = zeros(ndof, ndof)
   eld = zeros(ndof)
   weights = zeros(struc_el.nip)
-  g_g = zeros(Int64, ndof, nels)
-  num = zeros(Int64, fin_el.nod)
+  g_g = zeros(Int, ndof, nels)
+  num = zeros(Int, fin_el.nod)
   actions = zeros(ndof, nels)
   displacements = zeros(size(nf, 1), ndim)
   gc = ones(ndim, ndim)
@@ -198,9 +198,9 @@ function p42(data::Dict)
   if :fixed_freedoms in keys(data)
     fixed_freedoms = size(data[:fixed_freedoms], 1)
   end
-  no = zeros(Int64, fixed_freedoms)
-  node = zeros(Int64, fixed_freedoms)
-  sense = zeros(Int64, fixed_freedoms)
+  no = zeros(Int, fixed_freedoms)
+  node = zeros(Int, fixed_freedoms)
+  sense = zeros(Int, fixed_freedoms)
   value = zeros(Float64, fixed_freedoms)
   if :fixed_freedoms in keys(data) && fixed_freedoms > 0
     for i in 1:fixed_freedoms

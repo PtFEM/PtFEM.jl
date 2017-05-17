@@ -12,14 +12,14 @@ stability(gsm, ggm, tol, limit)
 
 ### Arguments
 ```julia
-* gsm::SparseMatrixCSC{Float64,Int64}   : Factored global stiffness matrix
-* ggm::SparseMatrixCSC{Float64,Int64}   : Factored geometric matrix
+* gsm::SparseMatrixCSC{Float64,Int}   : Factored global stiffness matrix
+* ggm::SparseMatrixCSC{Float64,Int}   : Factored geometric matrix
 * tol::Float64                          : Convergence tolerance
-* limit::Int64                          : Iteration limit
+* limit::Int                          : Iteration limit
 ```
 """
-function stability(gsm::SparseMatrixCSC{Float64,Int64}, 
-  ggm::SparseMatrixCSC{Float64,Int64}, tol::Float64, limit::Int64)
+function stability(gsm::SparseMatrixCSC{Float64,Int}, 
+  ggm::SparseMatrixCSC{Float64,Int}, tol::Float64, limit::Int)
   #
   # This subroutine computes the smallest eigenvalue in a beam
   # stability analysis. This is the Julia version. Notice no !.

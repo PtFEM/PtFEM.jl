@@ -30,7 +30,7 @@ data = Dict(
   :cg_limit => 200
 )
 
-function test_p56(data::Dict, N::Int64)
+function test_p56(data::Dict, N::Int)
   for i in 1:N
     m = p56(data, true)
   end

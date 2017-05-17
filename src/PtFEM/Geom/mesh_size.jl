@@ -15,12 +15,12 @@ of nodes (nn) in a 1, 2 or 3-d geometry-created mesh.
                             1D: Line
                             2D: Trangle or Quadrilateral
                             3D: Hexahedron
-* nxe::Int64              : Number of fin_els in x direction
-* nye::Int64              : Number of fin_els in y direction (for 2D and 3D)
-* nze::Int64              : Number of fin_els in z direction (3D only)
+* nxe::Int              : Number of fin_els in x direction
+* nye::Int              : Number of fin_els in y direction (for 2D and 3D)
+* nze::Int              : Number of fin_els in z direction (3D only)
 ```
 """
-function mesh_size(fe::Line, nxe::Int64)
+function mesh_size(fe::Line, nxe::Int)
   nn=nxe+1; nels=nxe
   if fe.nod != 2
     println("Invalid number of nodes for Line fin_el.")
@@ -45,7 +45,7 @@ of nodes (nn) in a 2-d geometry-created mesh.
 * `nxe` : Number of fin_els in y direction
 ```
 """
-function mesh_size(fe::Triangle, nxe::Int64, nye::Int64)
+function mesh_size(fe::Triangle, nxe::Int, nye::Int)
   nn=0; nels=nxe*nye*2
   if fe.nod==3
     nn=(nxe+1)*(nye+1)
@@ -78,7 +78,7 @@ of nodes (nn) in a 2-d geometry-created mesh.
 * `nye` : Number of fin_els in y direction
 ```
 """
-function mesh_size(fe::Quadrilateral, nxe::Int64, nye::Int64)
+function mesh_size(fe::Quadrilateral, nxe::Int, nye::Int)
   nn=0; nels=nxe*nye
   if fe.nod==4
     nn=(nxe+1)*(nye+1)
@@ -112,7 +112,7 @@ of nodes (nn) in a 3-d geometry-created mesh.
 * `nxe` : Number of fin_els in x direction
 ```
 """
-function mesh_size(fe::Hexahedron, nxe::Int64, nye::Int64, nze::Int64)
+function mesh_size(fe::Hexahedron, nxe::Int, nye::Int, nze::Int)
   nn=0; nels=nxe*nye*nze
   if fe.nod==8
     nn=(nxe+1)*(nye+1)*(nze+1)

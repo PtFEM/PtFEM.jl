@@ -14,10 +14,10 @@ spabac!(kv, loads, kdiag)
 ```julia
 * kv::Vector{Float64}       : Skyline vector of global stiffness matrix
 * loads::Vector{Float64}    : Load vector (Updated)
-* kdiag::Vector{Int64}      : Diagonal elemnt index vector
+* kdiag::Vector{Int}      : Diagonal elemnt index vector
 ```
 """
-function spabac!(kv::Vector{Float64}, loads::Vector{Float64}, kdiag::Vector{Int64})
+function spabac!(kv::Vector{Float64}, loads::Vector{Float64}, kdiag::Vector{Int})
   local x::Float64
   n = size(kdiag, 1)
   loads[1]=loads[1]/kv[1]

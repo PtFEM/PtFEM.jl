@@ -13,10 +13,10 @@ sparin!(kv, kdiag)
 ### Arguments
 ```julia
 * kv::Vector{Float64}       : Global stiffness matrix (Updated)
-* kdiag::Vector{Int64}      : Diagonal elemnt index vector
+* kdiag::Vector{Int}      : Diagonal elemnt index vector
 ```
 """
-function sparin!(kv::Vector{Float64}, kdiag::Vector{Int64})
+function sparin!(kv::Vector{Float64}, kdiag::Vector{Int})
   local x::Float64
   n = size(kdiag, 1)
   kv[1] = sqrt(kv[1])

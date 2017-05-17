@@ -11,18 +11,18 @@ hexahedron_xz!(iel, x_coords, y_coords, z_coords, coord, num)
 
 ### Arguments
 ```julia
-* iel::Int64                       : Element number
+* iel::Int                       : Element number
 * x_coords::FloatRange{Float64}    : x coordinates
 * y_coords::FloatRange{Float64}    : y coordinates
 * z_coords::FloatRange{Float64}    : y coordinates
 * coord::Matrix{Float64}           : Nodal coordinates (Updated)
-* num::Vector{Int64}               : Node numbers (Updated)
+* num::Vector{Int}               : Node numbers (Updated)
 * dir::Symbol                      : Node numbering direction
 ```
 """
-function hexahedron_xz!(iel::Int64, x_coords::Vector{Float64}, 
+function hexahedron_xz!(iel::Int, x_coords::Vector{Float64}, 
   y_coords::Vector{Float64}, z_coords::Vector{Float64}, 
-  coord::Matrix{Float64}, num::Vector{Int64})
+  coord::Matrix{Float64}, num::Vector{Int})
   #
   # This subroutine generates nodal coordinates and numbering for
   # 8, 14 or 20-node "bricks" counting x-z planes in the y-direction.

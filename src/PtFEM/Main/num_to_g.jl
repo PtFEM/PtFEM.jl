@@ -11,12 +11,12 @@ num_to_g!(num, nf, g)
 
 ### Arguments
 ```julia
-* num::Vector{Int64}       : Node numbering vector
-* nf::Matrix{Int64}        : Nodal freedom array
-* g::Vector{Int64}         : Element steering vector (Updated)
+* num::Vector{Int}       : Node numbering vector
+* nf::Matrix{Int}        : Nodal freedom array
+* g::Vector{Int}         : Element steering vector (Updated)
 ```
 """
-function num_to_g!(num::Vector{Int64}, nf::Matrix{Int64}, g::Vector{Int64})
+function num_to_g!(num::Vector{Int}, nf::Matrix{Int}, g::Vector{Int})
   nodof=size(nf,1)
   for i in 1:size(num, 1)
     k = i*nodof

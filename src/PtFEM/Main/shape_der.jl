@@ -13,10 +13,10 @@ shape_der!(der, point, i)
 ```julia
 * der::Matrix{Float64}       : Function derivative (Updated)
 * points::Matrix{Float64}    : Local coordinates of integration points
-* i::Int64                   : Integration point
+* i::Int                   : Integration point
 ```
 """
-function shape_der!(der::Matrix{Float64}, points::Matrix{Float64}, i::Int64)
+function shape_der!(der::Matrix{Float64}, points::Matrix{Float64}, i::Int)
   #
   #   This subroutine produces derivatives of shape functions with respect
   #   to local coordinates.

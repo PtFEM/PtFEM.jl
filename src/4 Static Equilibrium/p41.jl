@@ -16,8 +16,8 @@ p41(data)
 ### Required data dictionary keys
 ```julia
 * struc_el::StructuralElement                          : Type of  structural fin_el
-* support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
-* loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector
+* support::Array{Tuple{Int,Array{Int,1}},1}        : Fixed-displacements vector
+* loaded_nodes::Array{Tuple{Int,Array{Float64,1}},1} : Node load vector
 * properties::Vector{Float64}                          : Material properties
 * x_coords::FloatRange{Float64}                        : x-coordinate vector
 ```
@@ -25,7 +25,7 @@ p41(data)
 ### Optional additional data dictionary keys
 ```julia
 * penalty = 1e20               : Penalty used for fixed degrees of freedoms
-* etype::Vector{Int64}         : Element material vector if np_types > 1
+* etype::Vector{Int}         : Element material vector if np_types > 1
 * eq_nodal_forces_and_moments  : Contribution of distributed loads to loaded_nodes
 ```
 
@@ -83,13 +83,13 @@ function p41(data::Dict{Symbol, Any})
   # All dynamic arrays
   
   points = zeros(struc_el.nip, ndim)   # 
-  g = zeros(Int64, ndof)                   # Element steering vector
+  g = zeros(Int, ndof)                   # Element steering vector
   g_coord = zeros(ndim,nn)                 # 
   fun = zeros(fin_el.nod)                 #
   coord = zeros(fin_el.nod, ndim)         #
   gamma = zeros(nels)                      #
   jac = zeros(ndim, ndim)                  #
-  g_num = zeros(Int64, fin_el.nod, nels)  # 
+  g_num = zeros(Int, fin_el.nod, nels)  # 
   der = zeros(ndim, fin_el.nod)           #
   deriv = zeros(ndim, fin_el.nod)         #
   bee = zeros(nst,ndof)                    #
@@ -99,10 +99,10 @@ function p41(data::Dict{Symbol, Any})
   kg = zeros(ndof, ndof)                   #
   eld = zeros(ndof)                        #
   weights = zeros(struc_el.nip)        #
-  g_g = zeros(Int64, ndof, nels)           #
-  num = zeros(Int64, fin_el.nod)          #
+  g_g = zeros(Int, ndof, nels)           #
+  num = zeros(Int, fin_el.nod)          #
   actions = zeros(nels, ndof)              #
-  nf = ones(Int64, nodof, nn)              #
+  nf = ones(Int, nodof, nn)              #
   displacements = zeros(size(nf, 1), ndim) #
   gc = ones(ndim, ndim)                    #
   dee = zeros(nst,nst)                     #
@@ -111,7 +111,7 @@ function p41(data::Dict{Symbol, Any})
   x_coords = zeros(nn)                     #
   y_coords = zeros(nn)                     # Not used, needed for FEM constructor
   z_coords = zeros(nn)                     #
-  etype = ones(Int64, nels)                #
+  etype = ones(Int, nels)                #
   ell = zeros(nels)
 
   # Start with arrays to be initialized from input dict
@@ -158,7 +158,7 @@ function p41(data::Dict{Symbol, Any})
   
   PtFEM.formnf!(nodof, nn, nf)
   neq = maximum(nf)
-  kdiag = zeros(Int64, neq)
+  kdiag = zeros(Int, neq)
   
   # Set global numbering, coordinates and array sizes
   
@@ -189,9 +189,9 @@ function p41(data::Dict{Symbol, Any})
   if :fixed_freedoms in keys(data)
     fixed_freedoms = size(data[:fixed_freedoms], 1)
   end
-  no = zeros(Int64, fixed_freedoms)
-  node = zeros(Int64, fixed_freedoms)
-  sense = zeros(Int64, fixed_freedoms)
+  no = zeros(Int, fixed_freedoms)
+  node = zeros(Int, fixed_freedoms)
+  sense = zeros(Int, fixed_freedoms)
   value = zeros(Float64, fixed_freedoms)
   if :fixed_freedoms in keys(data) && fixed_freedoms > 0
     for i in 1:fixed_freedoms
@@ -287,8 +287,8 @@ p41(m, data) # Re-use factored global stiffness matrix
 ### Required data dictionary keys
 ```julia
 * struc_el::StructuralElement                          : Type of  structural fin_el
-* support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
-* loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector
+* support::Array{Tuple{Int,Array{Int,1}},1}        : Fixed-displacements vector
+* loaded_nodes::Array{Tuple{Int,Array{Float64,1}},1} : Node load vector
 * properties::Vector{Float64}                          : Material properties
 * x_coords::FloatRange{Float64}                        : x-coordinate vector
 ```
@@ -296,7 +296,7 @@ p41(m, data) # Re-use factored global stiffness matrix
 ### Optional additional data dictionary keys
 ```julia
 * penalty = 1e20               : Penalty used for fixed degrees of freedoms
-* etype::Vector{Int64}         : Element material vector if np_types > 1
+* etype::Vector{Int}         : Element material vector if np_types > 1
 * eq_nodal_forces_and_moments  : Contribution of distributed loads to loaded_nodes
 ```
 
@@ -347,7 +347,7 @@ function p41(m::PtFEM.jFEM, data::Dict)
   end
 
   km = zeros(m.ndof, m.ndof)
-  g = zeros(Int64, m.ndof)
+  g = zeros(Int, m.ndof)
   eld = zeros(m.ndof)
   actions = zeros(m.nels, m.ndof)
   loads[0] = 0.0

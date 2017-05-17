@@ -16,8 +16,8 @@ p45(data)
 ### Required data dictionary keys
 ```julia
 * struc_el::StructuralElement                          : Type of  structural element
-* support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
-* loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector
+* support::Array{Tuple{Int,Array{Int,1}},1}        : Fixed-displacements vector
+* loaded_nodes::Array{Tuple{Int,Array{Float64,1}},1} : Node load vector
 * properties::Vector{Float64}                          : Material properties
 * x_coords::FloatRange{Float64}                        : x-coordinate vector
 * dload::FloatRange{Float64}                           : load steps
@@ -26,7 +26,7 @@ p45(data)
 ### Optional additional data dictionary keys
 ```julia
 * penalty = 1e20                 : Penalty used for fixed degrees of freedoms
-* etype::Vector{Int64}           : Element material vector if np_types > 1
+* etype::Vector{Int}           : Element material vector if np_types > 1
 * y_coords::FloatRange{Float64}  : y-coordinate vector (2D)
 * z_coords::FloatRange{Float64}  : x-coordinate vector (3D)
 * limit = 250                    : Iteration limit
@@ -106,7 +106,7 @@ function p45(data::Dict{Symbol, Any})
     println("No :properties key found in FEdict")
   end
   
-  nf = ones(Int64, nodof, nn)
+  nf = ones(Int, nodof, nn)
   
   if :support in keys(data)
     for i in 1:size(data[:support], 1)
@@ -130,12 +130,12 @@ function p45(data::Dict{Symbol, Any})
     z_coords = data[:z_coords]
   end
 
-  etype = ones(Int64, nels)
+  etype = ones(Int, nels)
   if :etype in keys(data)
     etype = data[:etype]
   end
   
-  g_num = zeros(Int64, fin_el.nod, nels)
+  g_num = zeros(Int, fin_el.nod, nels)
   if :g_num in keys(data)
     g_num = data[:g_num]
   end
@@ -149,7 +149,7 @@ function p45(data::Dict{Symbol, Any})
   # All other arrays
   
   points = zeros(struc_el.nip, ndim)
-  g = zeros(Int64, ndof)
+  g = zeros(Int, ndof)
   g_coord = zeros(ndim,nn)
   fun = zeros(fin_el.nod)
   coord = zeros(fin_el.nod, ndim)
@@ -163,8 +163,8 @@ function p45(data::Dict{Symbol, Any})
   kg = zeros(ndof, ndof)
   eld = zeros(ndof)
   weights = zeros(struc_el.nip)
-  g_g = zeros(Int64, ndof, nels)
-  num = zeros(Int64, fin_el.nod)
+  g_g = zeros(Int, ndof, nels)
+  num = zeros(Int, fin_el.nod)
   actions = zeros(ndof, nels)
   displacements = zeros(size(nf, 1), ndim)
   gc = ones(ndim, ndim)
@@ -239,7 +239,7 @@ function p45(data::Dict{Symbol, Any})
     end
   end
   
-  inode = zeros(Int64, size(data[:loaded_nodes], 1))
+  inode = zeros(Int, size(data[:loaded_nodes], 1))
   ival = zeros(size(data[:loaded_nodes], 1), size(data[:loaded_nodes][1][2], 2))
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
@@ -252,9 +252,9 @@ function p45(data::Dict{Symbol, Any})
   if :fixed_freedoms in keys(data)
     fixed_freedoms = size(data[:fixed_freedoms], 1)
   end
-  no = zeros(Int64, fixed_freedoms)
-  node = zeros(Int64, fixed_freedoms)
-  sense = zeros(Int64, fixed_freedoms)
+  no = zeros(Int, fixed_freedoms)
+  node = zeros(Int, fixed_freedoms)
+  sense = zeros(Int, fixed_freedoms)
   value = zeros(Float64, fixed_freedoms)
   if fixed_freedoms > 0
     for i in 1:fixed_freedoms

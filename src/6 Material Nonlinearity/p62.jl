@@ -22,8 +22,8 @@ p62(data)
 ### Required data dictionary keys
 ```julia
 * struc_el::StructuralElement                          : Structural element
-* support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
-* loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector
+* support::Array{Tuple{Int,Array{Int,1}},1}        : Fixed-displacements vector
+* loaded_nodes::Array{Tuple{Int,Array{Float64,1}},1} : Node load vector
 * properties::Vector{Float64}                          : Material properties
 * x_coords::FloatRange{Floalt64}                       : x-coordinate vector
 * y_coords::FloatRange{Floalt64}                       : y-coordinate vector
@@ -36,7 +36,7 @@ p62(data)
 ```julia
 * limit = 250                  : Iteration limit
 * penalty = 1e20               : Penalty used for fixed degrees of freedoms
-* etype::Vector{Int64}         : Element material vector if np_types > 1
+* etype::Vector{Int}         : Element material vector if np_types > 1
 ```
 
 ### Return values
@@ -135,7 +135,7 @@ function p62(data::Dict)
     println("No :properties key found in FEdict")
   end
     
-  nf = ones(Int64, nodof, nn)
+  nf = ones(Int, nodof, nn)
   if :support in keys(data)
     for i in 1:size(data[:support], 1)
       nf[:, data[:support][i][1]] = data[:support][i][2]
@@ -162,12 +162,12 @@ function p62(data::Dict)
     g_coord = data[:g_coord]'
   end
   
-  g_num = zeros(Int64, fin_el.nod, nels)
+  g_num = zeros(Int, fin_el.nod, nels)
   if :g_num in keys(data)
     g_num = reshape(data[:g_num]', fin_el.nod, nels)
   end
 
-  etype = ones(Int64, nels)
+  etype = ones(Int, nels)
   if :etype in keys(data)
     etype = data[:etype]
   end
@@ -175,7 +175,7 @@ function p62(data::Dict)
   # All other arrays
   
   points = zeros(struc_el.nip, ndim)
-  g = zeros(Int64, ndof)
+  g = zeros(Int, ndof)
   fun = zeros(fin_el.nod)
   coord = zeros(fin_el.nod, ndim)
   gamma = zeros(nels)
@@ -189,8 +189,8 @@ function p62(data::Dict)
   kg = zeros(ndof, ndof)
   eld = zeros(ndof)
   weights = zeros(struc_el.nip)
-  g_g = zeros(Int64, ndof, nels)
-  num = zeros(Int64, fin_el.nod)
+  g_g = zeros(Int, ndof, nels)
+  num = zeros(Int, fin_el.nod)
   actions = zeros(ndof, nels)
   displacements = zeros(size(nf, 1), ndim)
   gc = ones(ndim)
@@ -284,11 +284,11 @@ function p62(data::Dict)
   # Read load weightings
   
   loaded_nodes = 0
-  node = Int64[]
+  node = Int[]
   val = Array{Float64, 2}
   if :loaded_nodes in keys(data)
     loaded_nodes = size(data[:loaded_nodes], 1)
-    node = zeros(Int64, loaded_nodes)
+    node = zeros(Int, loaded_nodes)
     val = zeros(loaded_nodes, size(data[:loaded_nodes][1][2], 2))
   end
   

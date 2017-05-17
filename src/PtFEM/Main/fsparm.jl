@@ -13,7 +13,7 @@ fsparm!(gsm, g, km)
 ### Arguments
 ```julia
 * gsm::SparseArrays{Float64, Float64}   : Sparse stiffnes matrix (Updated)
-* g::Vector{Int64}                      : Global coordinate vector.
+* g::Vector{Int}                      : Global coordinate vector.
 * km::Matrix{Float64}                   : Stiffness matrix.
 ```
 """

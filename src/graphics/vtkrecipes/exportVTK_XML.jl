@@ -141,7 +141,7 @@ function write_VTKXML1{P <: AbstractVTKXML}(filename::String, nodes::Vector{VTKN
 
     # Cell location
     xcellconn = new_child(xcells, "DataArray")
-    set_attribute(xcellconn, "type", "Int64")
+    set_attribute(xcellconn, "type", "Int")
     set_attribute(xcellconn, "Name", "connectivity")
     set_attribute(xcellconn, "format", VTK_FORMAT)
 
@@ -154,7 +154,7 @@ function write_VTKXML1{P <: AbstractVTKXML}(filename::String, nodes::Vector{VTKN
 
 
     xcell_offsets = new_child(xcells, "DataArray")
-    set_attribute(xcell_offsets, "type", "Int64")
+    set_attribute(xcell_offsets, "type", "Int")
     set_attribute(xcell_offsets, "Name", "offsets")
     set_attribute(xcell_offsets, "format", VTK_FORMAT)
     offset = 0

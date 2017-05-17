@@ -11,10 +11,10 @@ skyline2sparse(skyline, kdiag)
 ### Arguments
 ```julia
 * skyline::Vector{Float64}         : Skyline matrix
-* kdiag::Vector{Int64}             : Element diagonal index vector
+* kdiag::Vector{Int}             : Element diagonal index vector
 ```
 """
-function skyline2sparse(skyline::Vector{Float64}, kdiag::Vector{Int64})
+function skyline2sparse(skyline::Vector{Float64}, kdiag::Vector{Int})
 	neq = size(kdiag, 1)
 	km = zeros(neq, neq)
 	km[1, 1] = skyline[kdiag[1]]

@@ -16,13 +16,13 @@ bmat_nonaxi!(bee, radius, coord, deriv, fun, iflag, lth)
 * coord::Matrix{Float64}       : Nodal coordinate matrix
 * deriv::Matrix{Float64}       : Derivative
 * fun::Vector{Float64}         : Shape function
-* iflag::Int64                 : 1 = symmetric, -1 = anti-symmetric
-* lth::Int64                   : Harmonic
+* iflag::Int                 : 1 = symmetric, -1 = anti-symmetric
+* lth::Int                   : Harmonic
 ```
 """
 function bmat_nonaxi!(bee::Matrix{Float64}, radius::Float64, 
   coord::Matrix{Float64}, deriv::Matrix{Float64}, 
-  fun::Vector{Float64}, iflag::Int64, lth::Int64)
+  fun::Vector{Float64}, iflag::Int, lth::Int)
   #
   # This subroutine forms the strain-displacement matrix for
   # axisymmetric solids subjected to non-axisymmetric loading.

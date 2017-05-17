@@ -10,12 +10,12 @@ formnf!(nodof, nn, nf)
 
 ### Arguments
 ```julia
-* nodof::Int64       : Number of degrees of freedom for each node
-* nn::Int64          : Number of nodes in mesh
-* nf::Array{Int64,2} : Nodal freedom matrix (updated)
+* nodof::Int       : Number of degrees of freedom for each node
+* nn::Int          : Number of nodes in mesh
+* nf::Array{Int,2} : Nodal freedom matrix (updated)
 ```
 """
-function formnf!(nodof::Int64, nn::Int64, nf::Matrix{Int64})
+function formnf!(nodof::Int, nn::Int, nf::Matrix{Int})
   local m = 0
   for j in 1:nn
     for i in 1:nodof

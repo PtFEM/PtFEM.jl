@@ -17,14 +17,14 @@ p46(data)
 ### Required data dictionary keys
 ```julia
 * struc_el::StructuralElement                          : Type of  structural fin_el
-* support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
+* support::Array{Tuple{Int,Array{Int,1}},1}        : Fixed-displacements vector
 * properties::Vector{Float64}                          : Material properties
 * x_coords::FloatRange{Float64}                        : x-coordinate vector
 ```
 
 ### Optional additional data dictionary keys
 ```julia
-* etype::Vector{Int64}         : Element material vector if np_types > 1
+* etype::Vector{Int}         : Element material vector if np_types > 1
 * limit = 250                  : Iteration limit
 * tol = 0.0001                 : Tolerance for iteration convergence
 ```
@@ -93,7 +93,7 @@ function p46(data::Dict{Symbol, Any})
     println("No :properties key found in FEdict")
   end
   
-  nf = ones(Int64, nodof, nn)
+  nf = ones(Int, nodof, nn)
   if :support in keys(data)
     for i in 1:size(data[:support], 1)
       nf[:, data[:support][i][1]] = data[:support][i][2]
@@ -115,12 +115,12 @@ function p46(data::Dict{Symbol, Any})
     z_coords = data[:z_coords]
   end
 
-  etype = ones(Int64, nels)
+  etype = ones(Int, nels)
   if :etype in keys(data)
     etype = data[:etype]
   end
   
-  g_num = zeros(Int64, fin_el.nod, nels)
+  g_num = zeros(Int, fin_el.nod, nels)
   if :g_num in keys(data)
     g_num = data[:g_num]
   end
@@ -128,7 +128,7 @@ function p46(data::Dict{Symbol, Any})
   # All other arrays
   
   points = zeros(struc_el.nip, ndim)
-  g = zeros(Int64, ndof)
+  g = zeros(Int, ndof)
   g_coord = zeros(ndim,nn)
   fun = zeros(fin_el.nod)
   coord = zeros(fin_el.nod, ndim)
@@ -143,8 +143,8 @@ function p46(data::Dict{Symbol, Any})
   kg = zeros(ndof, ndof)
   eld = zeros(ndof)
   weights = zeros(struc_el.nip)
-  g_g = zeros(Int64, ndof, nels)
-  num = zeros(Int64, fin_el.nod)
+  g_g = zeros(Int, ndof, nels)
+  num = zeros(Int, fin_el.nod)
   actions = zeros(ndof, nels)
   displacements = zeros(size(nf, 1), ndim)
   gc = ones(ndim, ndim)

@@ -13,10 +13,10 @@ shape_fun!(fun, point, i)
 ```julia
 * fun::Vector{Float64}       : Shape function (Updated)
 * points::Matrix{Float64}    : Local coordinates of integration points
-* i::Int64                   : Integration point
+* i::Int                   : Integration point
 ```
 """
-function shape_fun!(fun::Vector{Float64}, points::Matrix{Float64}, i::Int64)
+function shape_fun!(fun::Vector{Float64}, points::Matrix{Float64}, i::Int)
   #
   #   This subroutine computes the values of the shape functions.
   #   to local coordinates

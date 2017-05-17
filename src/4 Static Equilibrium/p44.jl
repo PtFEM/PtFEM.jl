@@ -17,18 +17,18 @@ p44(data)
 ### Dictionary keys
 ```julia
 * struc_el::StructuralElement                          : Type of  structural fin_el
-* support::Array{Tuple{Int64,Array{Int64,1}},1}        : Fixed-displacements vector
-* loaded_nodes::Array{Tuple{Int64,Array{Float64,1}},1} : Node load vector
+* support::Array{Tuple{Int,Array{Int,1}},1}        : Fixed-displacements vector
+* loaded_nodes::Array{Tuple{Int,Array{Float64,1}},1} : Node load vector
 * properties::Vector{Float64}                          : Material properties
 * x_coords::FloatRange{Float64}                        : x coordinate vector
 * y_coords::FloatRange{Float64}                        : y coordinate vector
-* g_num::Array{Int64,2}                                : Element node connections
-* fixed_freedoms::Array{Tuple{Vector{Int64}}           : Fixed freedoms
+* g_num::Array{Int,2}                                : Element node connections
+* fixed_freedoms::Array{Tuple{Vector{Int}}           : Fixed freedoms
 ```
 
 ### Optional additional dictionary keys
 ```julia
-* etype::Vector{Int64}                                 : Element material vector
+* etype::Vector{Int}                                 : Element material vector
 * penalty::Float64                                     : Penalty for fixed freedoms
 * z_coords::FloatRange{Float64}                        : z coordinate vector
 * eq_nodal_forces_and_moments                          : Equivalent nodal loads
@@ -88,7 +88,7 @@ function p44(data::Dict{Symbol, Any})
     return
   end
   
-  nodof = Int64(ndim == 2 ? 3 : 6)      # Degrees of freedom per node
+  nodof = Int(ndim == 2 ? 3 : 6)      # Degrees of freedom per node
   ndof = fin_el.nod * nodof             # Degrees of freedom per fin_el
   
   # Update penalty if specified in FEdict
@@ -111,7 +111,7 @@ function p44(data::Dict{Symbol, Any})
     println("No :properties key found in FEdict")
   end
   
-  nf = ones(Int64, nodof, nn)
+  nf = ones(Int, nodof, nn)
   
   if :support in keys(data)
     for i in 1:size(data[:support], 1)
@@ -135,12 +135,12 @@ function p44(data::Dict{Symbol, Any})
     z_coords = data[:z_coords]
   end
 
-  etype = ones(Int64, nels)
+  etype = ones(Int, nels)
   if :etype in keys(data)
     etype = data[:etype]
   end
   
-  g_num = zeros(Int64, fin_el.nod, nels)
+  g_num = zeros(Int, fin_el.nod, nels)
   if :g_num in keys(data)
     g_num = data[:g_num]
   end
@@ -154,7 +154,7 @@ function p44(data::Dict{Symbol, Any})
   # All other arrays
   
   points = zeros(struc_el.nip, ndim)
-  g = zeros(Int64, ndof)
+  g = zeros(Int, ndof)
   g_coord = zeros(ndim,nn)
   fun = zeros(fin_el.nod)
   coord = zeros(fin_el.nod, ndim)
@@ -168,8 +168,8 @@ function p44(data::Dict{Symbol, Any})
   kg = zeros(ndof, ndof)
   eld = zeros(ndof)
   weights = zeros(struc_el.nip)
-  g_g = zeros(Int64, ndof, nels)
-  num = zeros(Int64, fin_el.nod)
+  g_g = zeros(Int, ndof, nels)
+  num = zeros(Int, fin_el.nod)
   actions = zeros(ndof, nels)
   displacements = zeros(size(nf, 1), ndim)
   gc = ones(ndim, ndim)
@@ -226,9 +226,9 @@ function p44(data::Dict{Symbol, Any})
   if :fixed_freedoms in keys(data)
     fixed_freedoms = size(data[:fixed_freedoms], 1)
   end
-  no = zeros(Int64, fixed_freedoms)
-  node = zeros(Int64, fixed_freedoms)
-  sense = zeros(Int64, fixed_freedoms)
+  no = zeros(Int, fixed_freedoms)
+  node = zeros(Int, fixed_freedoms)
+  sense = zeros(Int, fixed_freedoms)
   value = zeros(Float64, fixed_freedoms)
   if fixed_freedoms > 0
     for i in 1:fixed_freedoms

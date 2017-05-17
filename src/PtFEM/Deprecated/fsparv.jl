@@ -14,12 +14,12 @@ fsparv!(kv, km, g, km)
 ```julia
 * kv::Vector{Float64}        : Sparse stiffnes matrix (Updated)
 * km::Matrix{Float64}        : Symmetric element stiffnes matrix
-* g::Vector{Int64}           : Global steering vector.
-* kdiag::Vector{Int64}       : Location of diagoinal terms
+* g::Vector{Int}           : Global steering vector.
+* kdiag::Vector{Int}       : Location of diagoinal terms
 ```
 """
 function fsparv!(kv::Vector{Float64}, km::Matrix{Float64},
-  g::Vector{Int64}, kdiag::Vector{Int64})
+  g::Vector{Int}, kdiag::Vector{Int})
   ndof = size(g, 1)
   for i in 1:ndof
     k = g[i]

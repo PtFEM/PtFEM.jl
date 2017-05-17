@@ -56,7 +56,7 @@ function p55(data::Dict)
     println("No :properties key found in FEdict")
   end
     
-  nf = ones(Int64, nodof, nn)
+  nf = ones(Int, nodof, nn)
   if :support in keys(data)
     for i in 1:size(data[:support], 1)
       nf[:, data[:support][i][1]] = data[:support][i][2]
@@ -83,12 +83,12 @@ function p55(data::Dict)
     g_coord = data[:g_coord]'
   end
   
-  g_num = zeros(Int64, fin_el.nod, nels)
+  g_num = zeros(Int, fin_el.nod, nels)
   if :g_num in keys(data)
     g_num = reshape(data[:g_num]', fin_el.nod, nels)
   end
 
-  etype = ones(Int64, nels)
+  etype = ones(Int, nels)
   if :etype in keys(data)
     etype = data[:etype]
   end
@@ -96,7 +96,7 @@ function p55(data::Dict)
   # All other arrays
   
   points = zeros(struc_el.nip, ndim)
-  g = zeros(Int64, ndof)
+  g = zeros(Int, ndof)
   fun = zeros(fin_el.nod)
   coord = zeros(fin_el.nod, ndim)
   gamma = zeros(nels)
@@ -110,8 +110,8 @@ function p55(data::Dict)
   kg = zeros(ndof, ndof)
   eld = zeros(ndof)
   weights = zeros(struc_el.nip)
-  g_g = zeros(Int64, ndof, nels)
-  num = zeros(Int64, fin_el.nod)
+  g_g = zeros(Int, ndof, nels)
+  num = zeros(Int, fin_el.nod)
   actions = zeros(ndof, nels)
   displacements = zeros(size(nf, 1), ndim)
   gc = ones(ndim)
@@ -121,7 +121,7 @@ function p55(data::Dict)
   
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
-  kdiag = zeros(Int64, neq)
+  kdiag = zeros(Int, neq)
   
   loads = zeros(Float64, neq+1)
   gravlo = zeros(Float64, neq+1)
@@ -189,9 +189,9 @@ function p55(data::Dict)
   if :nspr in keys(data)
     nspr = size(data[:nspr], 1)
   end
-  sno = zeros(Int64, nspr)
-  spno = zeros(Int64, nspr)
-  spse = zeros(Int64, nspr)
+  sno = zeros(Int, nspr)
+  spno = zeros(Int, nspr)
+  spse = zeros(Int, nspr)
   spva = zeros(Float64, nspr)
   if :nspr in keys(data) && nspr > 0
     for i in 1:nspr
@@ -214,9 +214,9 @@ function p55(data::Dict)
   if :fixed_freedoms in keys(data)
     fixed_freedoms = size(data[:fixed_freedoms], 1)
   end
-  no = zeros(Int64, fixed_freedoms)
-  node = zeros(Int64, fixed_freedoms)
-  sense = zeros(Int64, fixed_freedoms)
+  no = zeros(Int, fixed_freedoms)
+  node = zeros(Int, fixed_freedoms)
+  sense = zeros(Int, fixed_freedoms)
   value = zeros(Float64, fixed_freedoms)
   if :fixed_freedoms in keys(data) && fixed_freedoms > 0
     for i in 1:fixed_freedoms

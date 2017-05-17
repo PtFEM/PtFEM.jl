@@ -12,11 +12,11 @@ fkdiag!(kdiag, g)
 
 ### Arguments
 ```julia
-* kdiag::Vector{Int64}      : Bandwidth vector (Updated)
-* g::Vector{Int64}          : Element steering vector
+* kdiag::Vector{Int}      : Bandwidth vector (Updated)
+* g::Vector{Int}          : Element steering vector
 ```
 """
-function fkdiag!(kdiag::Vector{Int64}, g::Vector{Int64})
+function fkdiag!(kdiag::Vector{Int}, g::Vector{Int})
   idof = size(g, 1)
   for i in 1:idof
     imp1 = 1

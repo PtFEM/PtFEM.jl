@@ -36,8 +36,8 @@ Line(nodof)
 
 ### Arguments
 ```julia
-* nod::Int64       : Number of nodes for finite element, defaults to 2
-* nodof::Int64     : Number of degrees of freedom per node
+* nod::Int       : Number of nodes for finite element, defaults to 2
+* nodof::Int     : Number of degrees of freedom per node
 ```
 
 ### Related help
@@ -47,10 +47,10 @@ Line(nodof)
 
 """
 immutable Line <: FiniteElement
-  nod::Int64
-  nodof::Int64
+  nod::Int
+  nodof::Int
 end
-Line(nodof::Int64) = Line(2, nodof)
+Line(nodof::Int) = Line(2, nodof)
 
 """
 ## Triangle
@@ -64,8 +64,8 @@ Triangle(nod, nodof)
 
 ### Arguments
 ```julia
-* nod::Int64       : Number of nodes for finite element (3, 6, 10, 15)
-* nodof::Int64     : Number of degrees of freedom per node
+* nod::Int       : Number of nodes for finite element (3, 6, 10, 15)
+* nodof::Int     : Number of degrees of freedom per node
 ```
 
 ### Related help
@@ -75,8 +75,8 @@ Triangle(nod, nodof)
 
 """
 immutable Triangle <: FiniteElement
-  nod::Int64
-  nodof::Int64
+  nod::Int
+  nodof::Int
 end
 
 """
@@ -91,8 +91,8 @@ Quadrilateral(nod, nodof)
 
 ### Arguments
 ```julia
-* nod::Int64       : Number of nodes for finite element (4, 8, 9)
-* nodof::Int64     : Number of degrees of freedom per node
+* nod::Int       : Number of nodes for finite element (4, 8, 9)
+* nodof::Int     : Number of degrees of freedom per node
 ```
 
 ### Related help
@@ -102,8 +102,8 @@ Quadrilateral(nod, nodof)
 
 """
 immutable Quadrilateral <: FiniteElement
-  nod::Int64
-  nodof::Int64
+  nod::Int
+  nodof::Int
 end
 
 """
@@ -119,8 +119,8 @@ Tetrahedron(nodof)
 
 ### Arguments
 ```julia
-* nod::Int64       : Number of nodes for finite element (defaults to 4)
-* nodof::Int64     : Number of degrees of freedom per node
+* nod::Int       : Number of nodes for finite element (defaults to 4)
+* nodof::Int     : Number of degrees of freedom per node
 ```
 
 ### Related help
@@ -130,10 +130,10 @@ Tetrahedron(nodof)
 
 """
 immutable Tetrahedron <: FiniteElement
-  nod::Int64
-  nodof::Int64
+  nod::Int
+  nodof::Int
 end
-Tetrahedron(nodof::Int64) = Tetrahedron(4, nodof)
+Tetrahedron(nodof::Int) = Tetrahedron(4, nodof)
 
 """
 ## hexahedron
@@ -147,8 +147,8 @@ Hexahedron(nod, nodof)
 
 ### Arguments
 ```julia
-* nod::Int64       : Number of nodes for finite element (8, 14, 20)
-* nodof::Int64     : Number of degrees of freedom per node
+* nod::Int       : Number of nodes for finite element (8, 14, 20)
+* nodof::Int     : Number of degrees of freedom per node
 ```
 
 ### Related help
@@ -158,6 +158,6 @@ Hexahedron(nod, nodof)
 
 """
 immutable Hexahedron <: FiniteElement
-  nod::Int64
-  nodof::Int64
+  nod::Int
+  nodof::Int
 end

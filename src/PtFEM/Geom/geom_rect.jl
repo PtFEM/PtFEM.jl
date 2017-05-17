@@ -15,28 +15,28 @@ geom_rect!(fin_el, iel, x_coords, y_coords, coord, num, dir)
 ```julia
 * fin_el::FiniteElement            : Shape of finite element
                                      (Trangle or Quadrilateral)
-* iel::Int64                       : Element number
+* iel::Int                       : Element number
 * x_coords::FloatRange{Float64}    : x coordinates
 * y_coords::FloatRange{Float64}    : y coordinates
 * coord::Matrix{Float64}           : Nodal coordinates (Updated)
-* num::Vector{Int64}               : Node numbers (Updated)
+* num::Vector{Int}               : Node numbers (Updated)
 * dir::Symbol                      : Node numbering direction
 ```
 """
-function geom_rect!(fin_el::Triangle, iel::Int64, x_coords::Array{Float64, 1},
-  y_coords::Array{Float64, 1}, coord::Matrix{Float64}, num::Vector{Int64}, dir::Symbol)
+function geom_rect!(fin_el::Triangle, iel::Int, x_coords::Array{Float64, 1},
+  y_coords::Array{Float64, 1}, coord::Matrix{Float64}, num::Vector{Int}, dir::Symbol)
   
   nxe = size(x_coords, 1) - 1
   nye = (size(y_coords, 1) - 1) * 2
   nod = size(num, 1)
   #println([nxe nye nod])
   if dir == :x || dir == :r
-    jel = round(Int64, 2 * nxe * floor((iel - 1) ÷ (2 * nxe)))
-    ip = round(Int64, floor((iel - jel + 1) ÷ 2))
-    iq = round(Int64, floor(2 * floor(floor((iel - 1) ÷ (2 * nxe)) + 1) - 1 + floor(floor(iel ÷ 2) * 2) / iel))
+    jel = round(Int, 2 * nxe * floor((iel - 1) ÷ (2 * nxe)))
+    ip = round(Int, floor((iel - jel + 1) ÷ 2))
+    iq = round(Int, floor(2 * floor(floor((iel - 1) ÷ (2 * nxe)) + 1) - 1 + floor(floor(iel ÷ 2) * 2) / iel))
   else
     #println("Direction != :x or :r.")
-    jel = round(Int64, floor((iel - 1) ÷ nye))
+    jel = round(Int, floor((iel - 1) ÷ nye))
     ip = jel + 1
     iq = iel - nye * jel
   end
@@ -44,36 +44,36 @@ function geom_rect!(fin_el::Triangle, iel::Int64, x_coords::Array{Float64, 1},
   if nod == 3
     if mod(iq, 2) != 0
       if dir == :x || dir == :r
-        num[1] = (nxe + 1) * round(Int64, (iq - 1) / 2) + ip
+        num[1] = (nxe + 1) * round(Int, (iq - 1) / 2) + ip
         num[2] = num[1] + 1
-        num[3] = (nxe + 1) * round(Int64, (iq + 1) / 2) + ip
+        num[3] = (nxe + 1) * round(Int, (iq + 1) / 2) + ip
       else
-        num[1] = (ip - 1) * round(Int64, (nye + 2) / 2) + (iq + 1) / 2
-        num[2] = num[1] + round(Int64, (nye + 2) / 2)
+        num[1] = (ip - 1) * round(Int, (nye + 2) / 2) + (iq + 1) / 2
+        num[2] = num[1] + round(Int, (nye + 2) / 2)
         num[3] = num[1] + 1
       end
       coord[1, 1] = x_coords[ip]
-      coord[1, 2] = y_coords[round(Int64, (iq + 1) / 2)]
+      coord[1, 2] = y_coords[round(Int, (iq + 1) / 2)]
       coord[2, 1] = x_coords[ip + 1]
-      coord[2, 2] = y_coords[round(Int64, (iq + 1) / 2)]
+      coord[2, 2] = y_coords[round(Int, (iq + 1) / 2)]
       coord[3, 1] = x_coords[ip]
-      coord[3, 2] = y_coords[round(Int64, (iq + 3) / 2)]
+      coord[3, 2] = y_coords[round(Int, (iq + 3) / 2)]
     else
       if dir == :x || dir == :r
-        num[1] = (nxe + 1) * round(Int64, iq / 2) + ip + 1
+        num[1] = (nxe + 1) * round(Int, iq / 2) + ip + 1
         num[2] = num[1] - 1
-        num[3] = (nxe + 1) * round(Int64, (iq - 2) / 2) + ip + 1
+        num[3] = (nxe + 1) * round(Int, (iq - 2) / 2) + ip + 1
       else
-        num[1] = ip * round(Int64, (nye + 2) / 2) + round(Int64, (iq + 2) / 2)
-        num[2] = (ip - 1) * round(Int64, (nye + 2) / 2) + round(Int64, (iq + 1) / 2 + 1)
+        num[1] = ip * round(Int, (nye + 2) / 2) + round(Int, (iq + 2) / 2)
+        num[2] = (ip - 1) * round(Int, (nye + 2) / 2) + round(Int, (iq + 1) / 2 + 1)
         num[3] = num[1] - 1
       end
       coord[1, 1] = x_coords[ip+ 1]
-      coord[1, 2] = y_coords[round(Int64, (iq + 2) / 2)]
+      coord[1, 2] = y_coords[round(Int, (iq + 2) / 2)]
       coord[2, 1] = x_coords[ip]
-      coord[2, 2] = y_coords[round(Int64, (iq + 2) / 2)]
+      coord[2, 2] = y_coords[round(Int, (iq + 2) / 2)]
       coord[3, 1] = x_coords[ip + 1]
-      coord[3, 2] = y_coords[round(Int64, iq / 2)]
+      coord[3, 2] = y_coords[round(Int, iq / 2)]
     end      
   elseif nod == 6
     if mod(iq, 2) !== 0
@@ -240,11 +240,11 @@ function geom_rect!(fin_el::Triangle, iel::Int64, x_coords::Array{Float64, 1},
        num[15] = fac1+2*nye+3  
      end
      coord[1,1] = x_coords[ip]
-     coord[1,2] = y_coords[round(Int64, (iq+1)/2)]
+     coord[1,2] = y_coords[round(Int, (iq+1)/2)]
      coord[5,1] = x_coords[ip+1]   
-     coord[5,2] = y_coords[round(Int64, (iq+1)/2)]
+     coord[5,2] = y_coords[round(Int, (iq+1)/2)]
      coord[9,1] = x_coords[ip]   
-     coord[9,2] = y_coords[round(Int64, (iq+3)/2)]
+     coord[9,2] = y_coords[round(Int, (iq+3)/2)]
    else
      if dir == 'x' || dir == 'r'
        fac1=4*(4*nxe+1)*(iq-2)/2
@@ -282,11 +282,11 @@ function geom_rect!(fin_el::Triangle, iel::Int64, x_coords::Array{Float64, 1},
        num[15] = fac1-2*nye-3 
      end
      coord[1,1] = x_coords[ip+1]
-     coord[1,2] = y_coords[round(Int64, (iq+2)/2)]
+     coord[1,2] = y_coords[round(Int, (iq+2)/2)]
      coord[5,1] = x_coords[ip]   
-     coord[5,2] = y_coords[round(Int64, (iq+2)/2)]
+     coord[5,2] = y_coords[round(Int, (iq+2)/2)]
      coord[9,1] = x_coords[ip+1] 
-     coord[9,2] = y_coords[round(Int64, iq/2)]
+     coord[9,2] = y_coords[round(Int, iq/2)]
    end
    coord[3,:] = 0.5*(coord[1,:]+coord[5,:])
    coord[7,:] = 0.5*(coord[5,:]+coord[9,:])
@@ -306,17 +306,17 @@ function geom_rect!(fin_el::Triangle, iel::Int64, x_coords::Array{Float64, 1},
   end
 end
 
-function geom_rect!(fin_el::Quadrilateral, iel::Int64, x_coords::Array{Float64, 1},
-  y_coords::Array{Float64, 1}, coord::Matrix{Float64}, num::Vector{Int64}, dir::Symbol)
+function geom_rect!(fin_el::Quadrilateral, iel::Int, x_coords::Array{Float64, 1},
+  y_coords::Array{Float64, 1}, coord::Matrix{Float64}, num::Vector{Int}, dir::Symbol)
 
   nxe = size(x_coords,1)-1
   nye = size(y_coords,1)-1
   nod = size(num, 1)
   if dir == :x || dir == :r
-    iq  = round(Int64, floor((iel-1)/nxe))+1
+    iq  = round(Int, floor((iel-1)/nxe))+1
     ip = iel-(iq-1)*nxe
   else
-    ip = round(Int64, floor((iel-1)/nye))+1
+    ip = round(Int, floor((iel-1)/nye))+1
     iq = iel-(ip-1)*nye
   end
   if nod == 4

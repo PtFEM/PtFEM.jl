@@ -5,16 +5,16 @@ Helper function to convert a Skyline vector to a full matrix.
 
 ### Type
 ```julia
-fromSkyline(skyline::Vector{Float64}, kdiag::Vector{Int64})
+fromSkyline(skyline::Vector{Float64}, kdiag::Vector{Int})
 ```
 
 ### Arguments
 ```julia
 * skyline::Vector{Float64}     : 1D Line(nod, nodof)
-* kdiag::Vector{Int64}         : 2D Triangle(nod, nodof)
+* kdiag::Vector{Int}         : 2D Triangle(nod, nodof)
 ```
 """
-function fromSkyline(skyline::Vector{Float64}, kdiag::Vector{Int64})
+function fromSkyline(skyline::Vector{Float64}, kdiag::Vector{Int})
 	neq = size(kdiag, 1)
 	km = zeros(neq, neq)
 	km[1, 1] = skyline[kdiag[1]]
