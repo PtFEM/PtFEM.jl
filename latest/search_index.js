@@ -893,7 +893,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Todo",
     "title": "Planned work",
     "category": "section",
-    "text": "Complete inital framework, including documentation (May 2017)\nRemaining programs in chapter 6 (June 2017)\nReview and complete plot recipes for chapters 4 to 6 (June 2017)\nRework chapters 5 and 6 for Julia sparse matrices (May 2017)\nUpdate notebooks (July 2017)\nAdd generalized WriteVTK.jl recipes\nProfile p5. and p6. programs (summer 2017?)\nComplete chapter 7\nComplete chapter 8 (Sep 2017)\nComplete chapter 9 (fall 2017?)\nComplete chapter 10\nComplete chapter 11\nComplete chapter 12 (late 2017?)\nPort BHATheoreticalPerformance from Fortran/R/Julia to using PtFEM.jl  (early 2018?)\nPort BHALockup from Fortran/R to using PtFEM.jl (mid 2018?)"
+    "text": "Complete inital framework, including documentation (May 2017)\nRemaining programs in chapter 6 (June 2017)\nReview and complete plot recipes for chapters 4 to 6 (June 2017)\nRework chapters 5 and 6 for Julia sparse matrices (May 2017)\nUpdate notebooks (July 2017)\nAdd generalized WriteVTK.jl recipes\nProfile p5. and p6. programs (summer 2017?)\nComplete chapter 7\nComplete chapter 8 (Sep 2017)\nComplete chapter 9 (fall 2017?)\nComplete chapter 10\nComplete chapter 11\nComplete chapter 12 (late 2017?)\nPort BHATheoreticalPerformance from Fortran/R/Julia to using PtFEM.jl  (early 2018?)\nPort BHALockup from Fortran/R to using PtFEM.jl (mid 2018?)\nInvestigate if I could use JuaFEM components"
 },
 
 {
