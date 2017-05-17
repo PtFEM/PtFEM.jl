@@ -17,6 +17,7 @@
 1. Complete chapter 12 (late 2017?)
 1. Port BHATheoreticalPerformance from Fortran/R/Julia to using PtFEM.jl  (early 2018?)
 1. Port BHALockup from Fortran/R to using PtFEM.jl (mid 2018?)
+1. Investigate if I could use JuaFEM components
 
 ## Intended extensions but not yet planned
 
