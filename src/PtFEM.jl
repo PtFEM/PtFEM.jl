@@ -42,6 +42,7 @@ include("PtFEM/Main/fmplat.jl")
 include("PtFEM/Main/read_generated_data.jl")
 include("PtFEM/Main/invar.jl")
 include("PtFEM/Main/formm.jl")
+include("PtFEM/Utilities/useplots.jl")
 
 include("PtFEM/Geom/mesh_size.jl")
 include("PtFEM/Geom/geom_rect.jl")
@@ -129,9 +130,13 @@ export
   
   # From OffsetArrays
   OffsetArray
-  
+
 ### Deprecated ###
   
   include("deprecated.jl")
+
+###
+
+  useplots()
 
 end # module
