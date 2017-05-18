@@ -8,3 +8,4 @@ Interpolations 0.3.6
 DataTables 0.0.2
 WriteVTK 0.5.1
 OffsetArrays 0.3.0
+Compat 0.17

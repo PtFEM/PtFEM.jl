@@ -4,11 +4,11 @@ env:
   DOCUMENTER_DEBUG: true
 os:
   - linux
-#  - osx
+  - osx
 julia:
   - 0.5
-#  - 0.6
-#  - nightly
+  - 0.6
+  - nightly
 notifications:
   email: true
 # uncomment the following lines to override the default test script
