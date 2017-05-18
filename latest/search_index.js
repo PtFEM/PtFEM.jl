@@ -689,14 +689,6 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#PtFEM.mesh-Tuple{Dict,Array{Float64,2},Array{Int64,2},Any,Any,Any}",
-    "page": "PtFEM.jl documentation",
-    "title": "PtFEM.mesh",
-    "category": "Method",
-    "text": "mesh\n\nPlots displacements and directions\n\nFunction\n\nmesh(data, g_coord, g_num, disp, ampl, pdir)\n\nArguments\n\n* data::Dict                 : Input dictionary\n* g_coord::Array{Float64, 2} : Coordinate array\n* g_num::Array{Int, 2}       : Global node numbering array\n* disp::DataTable            : Displacements DataTable\n* ampl::Float64              : Amplification for derivatives\n* pdir::AbstractString       : Nodal freedom matrix (updated)\n\n\n\n"
-},
-
-{
     "location": "index.html#PtFEM-Plot-methods-1",
     "page": "PtFEM.jl documentation",
     "title": "PtFEM - Plot methods",
