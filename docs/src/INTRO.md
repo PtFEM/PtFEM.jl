@@ -6,7 +6,7 @@ This Julia package will contain the programs in "Programming the Finite Element 
 
 PtFEM is a very versatile toolkit to construct FEM programs for practical engineering and scientific problems (to distinguish it somewhat from systems primarily focused on solving symbolic partial differential equations). Each chapter in the book gradually develops a set of related programs intended to be used as a starting point for a particular class of problems.
 
-I use PtFEM when referring to the book and PtFEM.jl when referring to the Julia package. [PtFEM.jl](https://github.com/PtFEM/PtFEM.jl) is the central package in a mini-[PtFEM](https://github.com/PtFEM)-ecosystem and most other packages will be using PtFEM.jl as the starting point.
+I use PtFEM when referring to the book and PtFEM.jl when referring to the Julia package. 
 
 ## A Julia based PtFEM eco system
 
