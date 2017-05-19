@@ -17,7 +17,7 @@ makedocs(
 deploydocs(
     repo = "github.com/PtFEM/PtFEM.jl.git",
     target = "build",
-    julia = "0.5",
+    julia = "0.6",
     osname = "linux",
     deps = nothing,
     make = nothing
