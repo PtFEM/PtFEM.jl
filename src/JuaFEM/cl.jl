@@ -8,16 +8,16 @@ const to = TimerOutput();
 const dim = 3
 
 ProjDir = dirname(@__FILE__)
-cd(ProjDir) do
+cd(ProjDir) #do
   
-  hex = false
+  hex = true
   geoshape = hex ? Hexahedron : Tetrahedron
   refshape = hex ? RefCube    : RefTetrahedron
   order = hex? 2 : 1;
 
   corner1 = Vec{dim}((0.0, 0.0, 0.0))
-  corner2 = Vec{dim}((10.0, 1.0, 1.0))
-  grid = generate_grid(geoshape, (60, 6, 6), corner1, corner2);
+  corner2 = Vec{dim}((2.0, 2.0, 2.0))
+  grid = generate_grid(geoshape, (2, 2, 2), corner1, corner2);
   # Extract the left boundary
   addnodeset!(grid, "clamped", x -> norm(x[1]) ≈ 0.0);
 
@@ -34,7 +34,7 @@ cd(ProjDir) do
 
   @time K = create_symmetric_sparsity_pattern(dh); # assemble only upper half since it is symmetric
   fill!(K.data.nzval, 1.0);
-  spy(K.data)
+  spy(K.data) |> display
 
   # Boundaryconditions
   dbc = DirichletBoundaryConditions(dh)
@@ -65,7 +65,7 @@ cd(ProjDir) do
       fe = zeros(n_basefuncs) # Local force vector
       Ke = Symmetric(zeros(n_basefuncs, n_basefuncs), :U) # Local stiffness mastrix
     
-      t = Vec{3}((0.0, 1e8, 0.0)) # Traction vector
+      t = Vec{3}((0.0, 1e7, 0.0)) # Traction vector
       b = Vec{3}((0.0, 0.0, 0.0)) # Body force
       ɛ = [zero(SymmetricTensor{2, dim}) for i in 1:n_basefuncs]
       @inbounds for (cellcount, cell) in enumerate(CellIterator(dh))
@@ -119,10 +119,23 @@ cd(ProjDir) do
   @time u = cholfact(K) \ f;
 
   # Save file
-  vtkfile = vtk_grid("cantilever", dh, u)
+  vtkfile = vtk_grid("cl", dh, u)
   vtk_save(vtkfile)
 
-  Base.Test.@test maximum(u)  ≈ 1.919600482922295
-  println("Cantilever successful")
+  #Base.Test.@test maximum(u)  ≈ 1.919600482922295
+  
+  grid |> display
+  println()
+  
+  grid.cells |> display
+  println()
+  
+  grid.nodes |> display
+  println()
+  
+  grid.facesets |> display
+  println()
+  
+  println("Cantilever successful: $(reshape(u, Int(length(u)/3), 3)[end,:])")
 
-end
+  #end
