@@ -158,7 +158,7 @@ function p41(data::Dict{Symbol, Any})
   
   PtFEM.formnf!(nodof, nn, nf)
   neq = maximum(nf)
-  kdiag = zeros(Int, neq)
+  #kdiag = zeros(Int, neq)
   
   # Set global numbering, coordinates and array sizes
   

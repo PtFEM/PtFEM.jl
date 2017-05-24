@@ -72,6 +72,7 @@ include("4 Static Equilibrium/p46.jl")
 include("4 Static Equilibrium/p47.jl")
 
 include("5 Elastic Solids/p51.jl")
+include("5 Elastic Solids/p51a.jl")
 include("5 Elastic Solids/p52.jl")
 include("5 Elastic Solids/p53.jl")
 include("5 Elastic Solids/p54.jl")
@@ -119,6 +120,7 @@ export
   
   # From Chap05
   p51,
+  p51a,
   p52,
   p53,
   p54,

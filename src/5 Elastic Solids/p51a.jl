@@ -1,5 +1,5 @@
 """
-# Method p51 
+# Method p51a 
 
 Plane or axisymmetric strain analysis of an elastic solid (Plane
 structural element) using 3-, 6-, 10- or 15-node right-angled triangles
@@ -48,7 +48,7 @@ p51(data)
 ?Quadrilateral                 : Help on Quadrilateral finite element
 ```
 """
-function p51(data::Dict{Symbol, Any})
+function p51a(data::Dict{Symbol, Any})
   
   # Setup basic dimensions of arrays
   
@@ -65,7 +65,7 @@ function p51(data::Dict{Symbol, Any})
   nst = struc_el.nst
   
   # Add radial stress
-  struc_el.axisymmetric && (nst = 4)
+  ndim == 3 && struc_el.axisymmetric && (nst = 4)
   
   fin_el = struc_el.fin_el
   @assert typeof(fin_el) <: FiniteElement
@@ -161,7 +161,7 @@ function p51(data::Dict{Symbol, Any})
   
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
-  kdiag = zeros(Int, neq)
+  #kdiag = zeros(Int, neq)
   
   # Find global array sizes
   
@@ -171,20 +171,23 @@ function p51(data::Dict{Symbol, Any})
     g_num[:, iel] = num
     g_coord[:, num] = coord'
     g_g[:, iel] = g
-    fkdiag!(kdiag, g)
+    #fkdiag!(kdiag, g)
   end
   
+  #=
   for i in 2:neq
     kdiag[i] = kdiag[i] + kdiag[i-1]
   end
   
   kv = zeros(kdiag[neq])
   gv = zeros(kdiag[neq])
-
-  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
+  =#
+  
+  println("There are $(neq) equations.")
   
   sample!(fin_el, points, weights)
   
+  gsm = spzeros(neq, neq)
   for iel in 1:nels
     deemat!(dee, prop[etype[iel], 1], prop[etype[iel], 2])
     num = g_num[:, iel]
@@ -205,13 +208,15 @@ function p51(data::Dict{Symbol, Any})
       end
       km += (bee')*dee*bee*detm*weights[i]*gc[1]
     end
-    fsparv!(kv, km, g, kdiag)
+    PtFEM.fsparm!(gsm, g, km)
   end
   
-  loads = zeros(neq + 1)
+  #lastind = neq
+  loads = OffsetArray(zeros(neq+1), 0:neq)
+  println(indices(loads))
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
-      loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
+      loads[nf[:, data[:loaded_nodes][i][1]]] = data[:loaded_nodes][i][2]
     end
   end
   
@@ -227,46 +232,57 @@ function p51(data::Dict{Symbol, Any})
     for i in 1:fixed_freedoms
       no[i] = nf[data[:fixed_freedoms][i][2], data[:fixed_freedoms][i][1]]
       value[i] = data[:fixed_freedoms][i][3]
+      gsm[no[i],no[i]] += penalty
+      loads[no[i]] = gsm[no[i], no[i]] .* value
     end
-    kv[kdiag[no]] = kv[kdiag[no]] + penalty
-    loads[no+1] = kv[kdiag[no]] .* value
   end
   
-  sparin!(kv, kdiag)
-  loads[2:end] = spabac!(kv, loads[2:end], kdiag)
-  loads[1] = 0.0
-  nf1 = deepcopy(nf) + 1
+  cfgsm = cholfact(gsm)
+  loads[1:neq] = cfgsm \ loads[1:neq]
+
+  displacements = zeros(size(nf))
+  for i in 1:size(displacements, 1)
+    for j in 1:size(displacements, 2)
+      if nf[i, j] > 0
+        displacements[i,j] = loads[nf[i, j]]
+      end
+    end
+  end
+  displacements = displacements'
   
+  local dis_dt
+  local fm_dt
   if struc_el.axisymmetric
-    println("\nNode     r-disp          z-disp")
+    dis_dt = DataTable(
+      x_disp = displacements[:, 1],
+      z_disp = displacements[:, 2]
+    )
   else
-    println("\nNode     x-disp          y-disp")
+    dis_dt = DataTable(
+      x_disp = displacements[:, 1],
+      y_disp = displacements[:, 2]
+    )
   end
   
-  tmp = []
-  for i in 1:nn
-    tmp = vcat(tmp, loads[nf1[:,i]])
-    xstr = @sprintf("%+.4e", loads[nf1[1,i]])
-    ystr = @sprintf("%+.4e", loads[nf1[2,i]])
-    println("  $(i)    $(xstr)     $(ystr)")
-  end
-  
+  loads[0] = 0.0
   struc_el.nip = 1
   points = zeros(struc_el.nip, ndim)
   weights = zeros(struc_el.nip)
   sample!(fin_el, points, weights)
-  println("\nThe integration point (nip = $(struc_el.nip)) stresses are:")
-  if struc_el.axisymmetric
-    println("\nElement  r-coord   z-coord     sig_r        sig_z        tau_rz        sig_t")
-  else
-    println("\nElement  x-coord   y-coord     sig_x        sig_y        tau_xy")
-  end
+  
+  gc1 = Vector{Float64}()
+  gc2 = Vector{Float64}()
+  s1 = Vector{Float64}()
+  s2 = Vector{Float64}()
+  s3 = Vector{Float64}()
+  struc_el.axisymmetric && (s4 = Vector{Float64}())
+  
   for iel in 1:nels
     deemat!(dee, prop[etype[iel], 1], prop[etype[iel], 2])
     num = g_num[:, iel]
     coord = g_coord[:, num]'
     g = g_g[:, iel]
-    eld = loads[g+1]
+    eld = loads[g]
     for i in 1:struc_el.nip
       shape_fun!(fun, points, i)
       shape_der!(der, points, i)
@@ -279,22 +295,40 @@ function p51(data::Dict{Symbol, Any})
         bee[4, 1:2:(ndof-1)] = fun[:]/gc[1]
       end
       sigma = dee*(bee*eld)
-      gc1 = @sprintf("%+.4f", gc[1])
-      gc2 = @sprintf("%+.4f", gc[2])
-      s1 = @sprintf("%+.4e", sigma[1])
-      s2 = @sprintf("%+.4e", sigma[2])
-      s3 = @sprintf("%+.4e", sigma[3])
-      println("   $(iel)     $(gc1)   $(gc2)   $(s1)  $(s2)  $(s3)")
+      append!(gc1, gc[1])
+      append!(gc2, gc[2])
+      append!(s1, sigma[1])
+      append!(s2, sigma[2])
+      append!(s3, sigma[3])
+      struc_el.axisymmetric && append!(s4, sigma[4])
     end
   end
-  println()
+  if struc_el.axisymmetric
+    fm_dt = DataTable(
+      r_coord = gc1,
+      z_coord = gc2,
+      sig_r = s1,
+      sig_z = s2,
+      tau_rz = s3,
+      sig_t = s4
+    )
+  else
+    fm_dt = DataTable(
+      x_coord = gc1,
+      y_coord = gc2,
+      sig_x = s1,
+      sig_y = s2,
+      tau_xy = s3
+    )
+  end
   
-  
-  FEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
-    etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
-    bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
-    g_coord, jac, km, mm, gm, kv, gv, loads, points, prop, sigma, value,
+  fem = PtFEM.jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof,
+    neq, penalty, etype, g, g_g, g_num, nf, no,
+    node, num, sense, actions, bee, coord, gamma, dee,
+    der, deriv, displacements, eld, fun, gc, g_coord, jac,
+    km, mm, kg, cfgsm, loads, points, prop, sigma, value,
     weights, x_coords, y_coords, z_coords, axial)
-  
+    
+  (fem, dis_dt, fm_dt)
 end
 
