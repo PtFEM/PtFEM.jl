@@ -28,11 +28,13 @@ data = Dict(
 data |> display
 println()
 
-@time fm_dt, sigma_dt = p47(data)
+@time dis_dt, sigma_dt = p47(data)
 println()
 
-PtFEM.vtk(data, fm_dt, sigma_dt, ProjDir, "Ex47.1")
-
-fm_dt |> display
+PtFEM.vtk(data, dis_dt, sigma_dt, ProjDir, "Ex47.1")
 println()
+
+dis_dt |> display
+println()
+println("\nThe integration point (nip = $(data[:struc_el].nip)) stresses are:")
 sigma_dt |> display

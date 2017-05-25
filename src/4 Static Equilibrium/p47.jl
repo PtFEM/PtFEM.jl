@@ -162,29 +162,19 @@ function p47(data::Dict{Symbol, Any})
   
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
-  kdiag = zeros(Int, neq)
   
   # Find global array sizes
   
   for iel in 1:nels
     geom_rect!(fin_el, iel, x_coords, y_coords, coord, num, struc_el.direction)
     num_to_g!(num, nf, g)
-    fkdiag!(kdiag, g)
     g_num[:, iel] = num
     g_coord[:, num] = coord'
     g_g[:, iel] = g
   end
   println()
-  g_coord |> display
-  println()
-  for i in 2:neq
-    kdiag[i] = kdiag[i] + kdiag[i-1]
-  end
-  
-  kv = zeros(kdiag[neq])
-  gv = zeros(kdiag[neq])
 
-  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
+  println("There are $(neq) equations.")
   
   sample!(fin_el, points, weights)
   
@@ -196,6 +186,7 @@ function p47(data::Dict{Symbol, Any})
   aa = x_coords[2]-x_coords[1]
   bb = y_coords[2]-y_coords[1]
   
+  gsm = spzeros(neq, neq)
   for iel in 1:nels
     e = prop[etype[iel], 1]
     v = prop[etype[iel], 2]
@@ -212,13 +203,14 @@ function p47(data::Dict{Symbol, Any})
       end
       km = km + dtd
     end
-    fsparv!(kv, km, g, kdiag)
+    fsparm!(gsm, g, km)
   end
   println()
-  loads = zeros(neq + 1)
+  
+  loads = OffsetArray(zeros(neq+1), 0:neq)
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
-      loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
+      loads[nf[:, data[:loaded_nodes][i][1]]] = data[:loaded_nodes][i][2]
     end
   end
   
@@ -234,53 +226,41 @@ function p47(data::Dict{Symbol, Any})
     for i in 1:fixed_freedoms
       no[i] = nf[data[:fixed_freedoms][i][2], data[:fixed_freedoms][i][1]]
       value[i] = data[:fixed_freedoms][i][3]
+      gsm[no[i], no[i]] += penalty
+      loads[no[i]] = gsm[no[i], no[i]] * value
     end
-    kv[kdiag[no]] = kv[kdiag[no]] + penalty
-    loads[no] = kv[kdiag[no]] * value
   end
   
-  sparin!(kv, kdiag)
-  loads[2:end] = spabac!(kv, loads[2:end], kdiag)
-  nf1 = deepcopy(nf) + 1
-  
-  println("\nNode       Disp            Rot-x         Rot-y           Twist-xy")
-  
-  for i in 1:nn
-    #tmp = vcat(tmp, loads[nf1[:,i]])
-    Disp = @sprintf("%+.4e", loads[nf1[1,i]])
-    Rotx = @sprintf("%+.4e", loads[nf1[2,i]])
-    Roty = @sprintf("%+.4e", loads[nf1[3,i]])
-    Twistxy = @sprintf("%+.4e", loads[nf1[4,i]])
-    println("  $(i)    $(Disp)     $(Rotx)    $(Roty)     $(Twistxy)")
-  end
+  cfgsm = cholfact(gsm)
+  loads[1:neq] = cfgsm \ loads[1:neq]
   
   disp = Float64[]
   rotx = Float64[]
   roty = Float64[]
   twistxy = Float64[]
   for i in 1:nn
-    append!(disp, loads[nf1[1,i]])
-    append!(rotx, loads[nf1[2,i]])
-    append!(roty, loads[nf1[3,i]])
-    append!(twistxy, loads[nf1[4,i]])
+    append!(disp, loads[nf[1,i]])
+    append!(rotx, loads[nf[2,i]])
+    append!(roty, loads[nf[3,i]])
+    append!(twistxy, loads[nf[4,i]])
   end
-  fm_dt = DataTable(
+  dis_dt = DataTable(
     disp = disp,
     rotx = rotx,
     roty = roty,
     twistxy = twistxy
   )
+
+  struc_el.nip = 1
+  points = zeros(struc_el.nip, ndim)
+  weights = zeros(struc_el.nip)
+  
+  sample!(fin_el, points, weights)
   
   sigx = Float64[]
   sigy = Float64[]
   tauxy = Float64[]
   
-  struc_el.nip = 1
-  points = zeros(struc_el.nip, ndim)
-  weights = zeros(struc_el.nip)
-  sample!(fin_el, points, weights)
-  println("\nThe integration point (nip = $(struc_el.nip)) stresses are:")
-  println("\nElement     sig_x          sig_y            tau_xy")
   bm = Vector{Float64}
   for iel in 1:nels
     e = prop[etype[iel], 1]
@@ -291,25 +271,22 @@ function p47(data::Dict{Symbol, Any})
       fmplat!(d2x, d2y, d2xy, points, aa, bb, i)
       bm = zeros(3)
       for k in 1:ndof
-        bm[1] += 4.0*d*(d2x[k]/aa/aa + v*d2y[k]/bb/bb)*loads[g[k]+1]
-        bm[2] += 4.0*d*(v*d2x[k]/aa/aa + d2y[k]/bb/bb)*loads[g[k]+1]
-        bm[3] += 4.0*d*(1.0-v)*(d2xy[k]/aa/bb*loads[g[k]+1])
+        bm[1] += 4.0*d*(d2x[k]/aa/aa + v*d2y[k]/bb/bb)*loads[g[k]]
+        bm[2] += 4.0*d*(v*d2x[k]/aa/aa + d2y[k]/bb/bb)*loads[g[k]]
+        bm[3] += 4.0*d*(1.0-v)*(d2xy[k]/aa/bb*loads[g[k]])
       end
-      bm1 = @sprintf("%+.4e", bm[1])
-      bm2 = @sprintf("%+.4e", bm[2])
-      bm3 = @sprintf("%+.4e", bm[3])
-      println("   $(iel)     $(bm1)     $(bm2)      $(bm3)")
       append!(sigx, bm[1])
       append!(sigy, bm[2])
       append!(tauxy, bm[3])
     end
   end
+  
   sigma_dt = DataTable(
     sigx = sigx,
     sigy = sigy,
     tauxy = tauxy
   )
-  println()
-  (fm_dt, sigma_dt)
+  
+  (dis_dt, sigma_dt)
 end
 

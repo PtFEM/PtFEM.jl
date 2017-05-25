@@ -18,8 +18,8 @@ p51(data)
 ### Required data dictionary keys
 ```julia
 * struc_el::StructuralElement                          : Structural element
-* support::Array{Tuple{Int,Array{Int,1}},1}        : Fixed-displacements vector
-* loaded_nodes::Array{Tuple{Int,Array{Float64,1}},1} : Node load vector
+* support::Array{Tuple{Int,Array{Int,1}},1}            : Fixed-displacements vector
+* loaded_nodes::Array{Tuple{Int,Array{Float64,1}},1}   : Node load vector
 * properties::Vector{Float64}                          : Material properties
 * x_coords::FloatRange{Floalt64}                       : x-coordinate vector
 * y_coords::FloatRange{Floalt64}                       : y-coordinate vector
@@ -28,24 +28,24 @@ p51(data)
 
 ### Optional additional data dictionary keys
 ```julia
-* penalty = 1e20               : Penalty used for fixed degrees of freedoms
+* penalty = 1e20             : Penalty used for fixed degrees of freedoms
 * etype::Vector{Int}         : Element material vector if np_types > 1
 ```
 
 ### Return values
 ```julia
-* (fm_dt, sigma_dt)            : Tuple of jFem, dis_dt and fm_dt
-                                  where:
-                                    fm_dt         : Forces and moments data table
-                                    sigma_dt      : Stresses data table
+* (fem, fm_dt, sigma_dt)     : Tuple of jFem, dis_dt and fm_dt
+                               where:
+                                 fm_dt         : Forces and moments data table
+                                 sigma_dt      : Stresses data table
 ```
 
 ### Related help
 ```julia
-?StructuralElement             : List of available structural element types
-?Plane                         : Help on a Plane structural element
-?FiniteElement                 : List finite element types
-?Quadrilateral                 : Help on Quadrilateral finite element
+?StructuralElement           : List of available structural element types
+?Plane                       : Help on a Plane structural element
+?FiniteElement               : List finite element types
+?Quadrilateral               : Help on Quadrilateral finite element
 ```
 """
 function p51a(data::Dict{Symbol, Any})
@@ -161,7 +161,6 @@ function p51a(data::Dict{Symbol, Any})
   
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
-  #kdiag = zeros(Int, neq)
   
   # Find global array sizes
   
@@ -171,17 +170,7 @@ function p51a(data::Dict{Symbol, Any})
     g_num[:, iel] = num
     g_coord[:, num] = coord'
     g_g[:, iel] = g
-    #fkdiag!(kdiag, g)
   end
-  
-  #=
-  for i in 2:neq
-    kdiag[i] = kdiag[i] + kdiag[i-1]
-  end
-  
-  kv = zeros(kdiag[neq])
-  gv = zeros(kdiag[neq])
-  =#
   
   println("There are $(neq) equations.")
   
@@ -211,9 +200,7 @@ function p51a(data::Dict{Symbol, Any})
     PtFEM.fsparm!(gsm, g, km)
   end
   
-  #lastind = neq
   loads = OffsetArray(zeros(neq+1), 0:neq)
-  println(indices(loads))
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
       loads[nf[:, data[:loaded_nodes][i][1]]] = data[:loaded_nodes][i][2]
@@ -233,7 +220,7 @@ function p51a(data::Dict{Symbol, Any})
       no[i] = nf[data[:fixed_freedoms][i][2], data[:fixed_freedoms][i][1]]
       value[i] = data[:fixed_freedoms][i][3]
       gsm[no[i],no[i]] += penalty
-      loads[no[i]] = gsm[no[i], no[i]] .* value
+      loads[no[i]] = gsm[no[i], no[i]] * value
     end
   end
   

@@ -214,8 +214,7 @@ function p44(data::Dict{Symbol, Any})
     fsparm!(gsm, g, km)
   end
     
-  lastind = neq + 1
-  loads = OffsetArray(zeros(lastind+1), 0:lastind)
+  loads = OffsetArray(zeros(neq+1), 0:neq)
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
       loads[nf[:, data[:loaded_nodes][i][1]]] = data[:loaded_nodes][i][2]
