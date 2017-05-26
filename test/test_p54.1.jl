@@ -31,7 +31,7 @@ data = Dict(
   ]
 )
 
-@time m = p54(data)
+@time m, dis_dt, fm_dt = p54(data)
 
 @test m.sigma ≈ [-0.2063109419741752,-0.44483848277216465,
   0.006022685692717362]

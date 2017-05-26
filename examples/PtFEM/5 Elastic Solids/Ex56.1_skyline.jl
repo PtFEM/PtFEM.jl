@@ -25,18 +25,25 @@ data = Dict(
     ( 1, [0.0 0.0  0.0417]), ( 2, [0.0 0.0 -0.1667]), ( 3, [0.0 0.0 0.0417]),
     (14, [0.0 0.0 -0.1667]), (15, [0.0 0.0 -0.1667]), (20, [0.0 0.0 0.0417]),
     (21, [0.0 0.0 -0.1667]), (22, [0.0 0.0  0.0417])
-    ]
+    ],
+  :cg_tol => 1.0e-6,
+  :cg_limit => 200
 )
 
-data |> display
-println()
+function test_p56_skyline(data::Dict, N::Int)
+  for i in 1:N
+    m = p56_skyline(data, true)
+  end
+end
 
-@time m, dis_dt, fm_dt = p53(data)
-println()
+@time m = p56_skyline(data, true)
 
-dis_dt |> display
-println()
+#=
+Profile.clear()  # in case we have any previous profiling data
+@profile test_p56_skyline(data, 20)
+using ProfileView
+ProfileView.view()
+=#
 
-println("\nThe integration point (nip = $(data[:struc_el].nip)) stresses are:")
-fm_dt |> display
+@time m = p56_skyline(data)
 println()

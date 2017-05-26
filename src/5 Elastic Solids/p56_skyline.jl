@@ -1,4 +1,4 @@
-function p56(data::Dict, profiling::Bool=false)
+function p56_skyline(data::Dict, profiling::Bool=false)
   
   # Setup basic dimensions of arrays
   
@@ -122,12 +122,20 @@ function p56(data::Dict, profiling::Bool=false)
   
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
-  println("There are $(neq) equations.\n")
+  kdiag = zeros(Int, neq)
   
   # PCG & program specific variables
   storkm = zeros(ndof, ndof, nels)
   cg_converged = false
   solid = false
+  
+  p = zeros(neq+1)
+  loads = zeros(Float64, neq+1)
+  x = zeros(neq+1)
+  xnew = zeros(neq+1)
+  u = zeros(neq+1)
+  diag_precon = zeros(neq+1)
+  d = zeros(neq+1)
   
   if :cg_tol in keys(data)
     cg_tol = copy(data[:cg_tol])
@@ -141,14 +149,17 @@ function p56(data::Dict, profiling::Bool=false)
     cg_limit = 200
   end
   
+  for i in 2:neq
+    kdiag[i] = kdiag[i] + kdiag[i-1]
+  end
+  
+  kv = zeros(kdiag[neq])
+  gv = zeros(kdiag[neq])
+
+  println("There are $(neq) equations.")
+  
   sample!(fin_el, points, weights)
 
-  loads = OffsetArray(zeros(neq + 1), 0:neq)
-  diag_precon = OffsetArray(zeros(neq + 1), 0:neq)
-  p = OffsetArray(zeros(neq + 1), 0:neq)
-  store = OffsetArray(zeros(neq + 1), 0:neq)
-  d = OffsetArray(zeros(neq + 1), 0:neq)
-  
   for iel in 1:nels
     hexahedron_xz!(iel, x_coords, y_coords, z_coords, coord, num)
     num_to_g!(num, nf, g)
@@ -170,13 +181,13 @@ function p56(data::Dict, profiling::Bool=false)
       storkm[:,:,iel] += (bee')*dee*bee*detm*weights[i]
     end
     for k in 1:ndof
-      diag_precon[g[k]] += storkm[k,k,iel]
+      diag_precon[g[k]+1] += storkm[k,k,iel]
     end
   end
   
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
-      loads[nf[:, data[:loaded_nodes][i][1]]] = deepcopy(data[:loaded_nodes][i][2])
+      loads[nf[:, data[:loaded_nodes][i][1]]+1] = deepcopy(data[:loaded_nodes][i][2])
     end
   end
   
@@ -192,37 +203,34 @@ function p56(data::Dict, profiling::Bool=false)
     for i in 1:fixed_freedoms
       no[i] = nf[deepcopy(data[:fixed_freedoms][i][2]), deepcopy(data[:fixed_freedoms][i][1])]
       value[i] = deepcopy(data[:fixed_freedoms][i][3])
-      diag_precon[no[i]] += penalty
-      loads[no[i]] = diag_precon[no[i]] * value[i]
-      store[no[i]] = diag_precon[no[i]]
     end
+    diag_precon[no+1] += penalty
+    loads[no+1] = diag_precon[no+1] .* value
+    store = diag_precon[no+1]
   end
 
   #mesh_ensi(...)
   
-  diag_precon[1:neq] = 1.0 ./ diag_precon[1:neq]
-  diag_precon[0] = 0.0
-  
+  diag_precon = 1.0 ./ diag_precon
+  diag_precon[1] = 0.0
   d = diag_precon .* loads
   p = deepcopy(d)
-  x = OffsetArray(zeros(neq + 1), 0:neq)
-  xnew = OffsetArray(zeros(neq + 1), 0:neq)
+  x = zeros(neq+1)
+  xnew = zeros(neq+1)
   
   profiling && println("Start of CG loop.")
   cg_iters = 0
   while true
     cg_iters += 1
     !profiling && print(".")
-    u = OffsetArray(zeros(neq + 1), 0:neq)
+    u = zeros(neq+1)
     for iel in 1:nels
       g[:] = g_g[:, iel]
       #km[:,:] = storkm[:, :, iel]
-      u[g] += storkm[:, :, iel]*p[g]
+      u[g+1] += storkm[:, :, iel]*p[g+1]
     end
     if fixed_freedoms !== 0
-      for i in 1:fixed_freedoms
-        u[no[i]] = p[no[i]]*store[no[i]]
-      end
+      u[no+1] = p[no+1]*store
     end
     up = dot(loads, d)
     alpha = up/dot(p, u)
@@ -232,7 +240,7 @@ function p56(data::Dict, profiling::Bool=false)
     beta = dot(loads, d)/up
     @show [cg_iters beta] 
     p = d + p*beta
-    cg_converged = checon!(xnew[0:neq], x[0:neq], cg_tol)
+    cg_converged = checon!(xnew, x, cg_tol)
     if cg_converged || cg_iters >= cg_limit
       break
     end
@@ -240,19 +248,20 @@ function p56(data::Dict, profiling::Bool=false)
   println()
   
   loads = xnew
-  loads[0] = 0.0
+  loads[1] = 0.0
   
   
   println("Number of cg iterations to convergence was $(cg_iters).")
   if !profiling
     println("\nNode     x-disp          y-disp          z-disp")
   
+    nf1 = deepcopy(nf) + 1
   
     tmp = []
     for i in 1:nn
-      xstr = @sprintf("%+.4e", loads[nf[1,i]])
-      ystr = @sprintf("%+.4e", loads[nf[2,i]])
-      zstr = @sprintf("%+.4e", loads[nf[3,i]])
+      xstr = @sprintf("%+.4e", loads[nf1[1,i]])
+      ystr = @sprintf("%+.4e", loads[nf1[2,i]])
+      zstr = @sprintf("%+.4e", loads[nf1[3,i]])
       println("  $(i)    $(xstr)     $(ystr)     $(zstr)")
     end
   
@@ -275,7 +284,7 @@ function p56(data::Dict, profiling::Bool=false)
     num = g_num[:, iel]
     coord = g_coord[:, num]'
     g = g_g[:, iel]
-    eld = loads[g]
+    eld = loads[g+1]
     for i in 1:struc_el.nip
       shape_fun!(fun, points, i)
       shape_der!(der, points, i)
@@ -301,13 +310,10 @@ function p56(data::Dict, profiling::Bool=false)
   end
   println()
   
-  fem = PtFEM.jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof,
-    neq, penalty, etype, g, g_g, g_num, nf, no,
-    node, num, sense, actions, bee, coord, gamma, dee,
-    der, deriv, displacements, eld, fun, gc, g_coord, jac,
-    km, mm, kg, cfgsm, loads, points, prop, sigma, value,
+  FEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
+    etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
+    bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
+    g_coord, jac, km, mm, gm, kv, gv, loads, points, prop, sigma, value,
     weights, x_coords, y_coords, z_coords, axial)
-  
-  fem
-end
+  end
 

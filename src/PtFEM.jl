@@ -78,6 +78,7 @@ include("5 Elastic Solids/p53.jl")
 include("5 Elastic Solids/p54.jl")
 include("5 Elastic Solids/p55.jl")
 include("5 Elastic Solids/p56.jl")
+include("5 Elastic Solids/p56_skyline.jl")
 
 include("6 Material Nonlinearity/p61.jl")
 include("6 Material Nonlinearity/p62.jl")
@@ -126,6 +127,7 @@ export
   p54,
   p55,
   p56,
+  p56_skyline,
   
   # From Chap05
   p61,

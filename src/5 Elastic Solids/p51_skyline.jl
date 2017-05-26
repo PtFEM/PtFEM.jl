@@ -1,6 +1,54 @@
-function p52(data::Dict)
+"""
+# Method p51_skyline
+
+Plane or axisymmetric strain analysis of an elastic solid (Plane
+structural element) using 3-, 6-, 10- or 15-node right-angled triangles
+(Triangle finite elements) or 4-, 8- or 9-node rectangular quadrilaterals
+(Quadrilateral finite elements). Mesh numbered in x(r)- or y(z)- direction.
+
+### Constructors
+```julia
+p51(data)
+```
+### Arguments
+```julia
+* `data::Dict{Symbol, Any}` : Dictionary containing all input data
+```
+
+### Required data dictionary keys
+```julia
+* struc_el::StructuralElement                          : Structural element
+* support::Array{Tuple{Int,Array{Int,1}},1}        : Fixed-displacements vector
+* loaded_nodes::Array{Tuple{Int,Array{Float64,1}},1} : Node load vector
+* properties::Vector{Float64}                          : Material properties
+* x_coords::FloatRange{Floalt64}                       : x-coordinate vector
+* y_coords::FloatRange{Floalt64}                       : y-coordinate vector
+* thickness:: Float64                                  : Thickness of plate
+```
+
+### Optional additional data dictionary keys
+```julia
+* penalty = 1e20               : Penalty used for fixed degrees of freedoms
+* etype::Vector{Int}           : Element material vector if np_types > 1
+```
+
+### Return values
+```julia
+* fem                          : Fem object
+```
+
+### Related help
+```julia
+?StructuralElement             : List of available structural element types
+?Plane                         : Help on a Plane structural element
+?FiniteElement                 : List finite element types
+?Quadrilateral                 : Help on Quadrilateral finite element
+```
+"""
+function p51_skyline(data::Dict{Symbol, Any})
   
   # Setup basic dimensions of arrays
+  
   # Parse & check FEdict data
   
   if :struc_el in keys(data)
@@ -13,16 +61,8 @@ function p52(data::Dict)
   ndim = struc_el.ndim
   nst = struc_el.nst
   
-  # Handle :r direction (implicit axisymmetric)
-  if struc_el.direction == :r
-    nre = struc_el.nxe::Int
-    nze = struc_el.nye::Int
-  end
-  
   # Add radial stress
-  if struc_el.axisymmetric
-    nst = 4
-  end
+  struc_el.axisymmetric && (nst = 4)
   
   fin_el = struc_el.fin_el
   @assert typeof(fin_el) <: FiniteElement
@@ -58,8 +98,7 @@ function p52(data::Dict)
       prop[i, :] = data[:properties][i, :]
     end
   else
-    println("No :properties key found in FEdict.")
-    exit(1)
+    println("No :properties key found in FEdict")
   end
     
   nf = ones(Int, nodof, nn)
@@ -67,9 +106,6 @@ function p52(data::Dict)
     for i in 1:size(data[:support], 1)
       nf[:, data[:support][i][1]] = data[:support][i][2]
     end
-  else
-    println("No :supports key found in FEdict.")
-    exit(1)
   end
   
   x_coords = zeros(nn)
@@ -87,25 +123,10 @@ function p52(data::Dict)
     z_coords = data[:z_coords]
   end
 
-  r_coords = zeros(nn)
-  if :r_coords in keys(data)
-    r_coords = data[:r_coords]
-  end
-
   etype = ones(Int, nels)
   if :etype in keys(data)
     etype = data[:etype]
   end
-  
-  @assert :lth in keys(data)
-  @assert :iflag in keys(data)
-  @assert :chi in keys(data)
-  lth = data[:lth]::Int
-  iflag = data[:iflag]::Int
-  chi = data[:chi]*pi/180.0
-  ca = cos(chi)
-  sa = sin(chi)
-  radius = 0.0
   
   # All other arrays
   
@@ -137,21 +158,30 @@ function p52(data::Dict)
   
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
-  println("There are $(neq) equations.\n")
+  kdiag = zeros(Int, neq)
   
   # Find global array sizes
   
   for iel in 1:nels
-    geom_rect!(fin_el, iel, r_coords, z_coords, coord, num, struc_el.direction)
+    geom_rect!(fin_el, iel, x_coords, y_coords, coord, num, struc_el.direction)
     num_to_g!(num, nf, g)
     g_num[:, iel] = num
     g_coord[:, num] = coord'
     g_g[:, iel] = g
+    fkdiag!(kdiag, g)
   end
   
-  sample!(fin_el, points, weights)
+  for i in 2:neq
+    kdiag[i] = kdiag[i] + kdiag[i-1]
+  end
+  
+  kv = zeros(kdiag[neq])
+  gv = zeros(kdiag[neq])
 
-  gsm = spzeros(neq, neq)
+  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
+  
+  sample!(fin_el, points, weights)
+  
   for iel in 1:nels
     deemat!(dee, prop[etype[iel], 1], prop[etype[iel], 2])
     num = g_num[:, iel]
@@ -165,16 +195,20 @@ function p52(data::Dict)
       detm = det(jac)
       jac = inv(jac)
       deriv = jac*der
-      (radius, bee) = bmat_nonaxi!(bee, radius, coord, deriv, fun, iflag, lth)
-      km += (((bee')*dee)*bee)*detm*weights[i]*radius
+      beemat!(bee, deriv)
+      if struc_el.axisymmetric
+        gc = fun'*coord
+        bee[4, 1:2:(ndof-1)] = fun[:]/gc[1]
+      end
+      km += (bee')*dee*bee*detm*weights[i]*gc[1]
     end
-    fsparm!(gsm, g, km)
+    fsparv!(kv, km, g, kdiag)
   end
   
-  loads = OffsetArray(zeros(neq + 1), 0:neq)
+  loads = zeros(neq + 1)
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
-      loads[nf[:, data[:loaded_nodes][i][1]]] = data[:loaded_nodes][i][2]
+      loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
     end
   end
   
@@ -190,92 +224,73 @@ function p52(data::Dict)
     for i in 1:fixed_freedoms
       no[i] = nf[data[:fixed_freedoms][i][2], data[:fixed_freedoms][i][1]]
       value[i] = data[:fixed_freedoms][i][3]
-      gsm[no[i], no[i]] += penalty
-      loads[no[i]] = gsm[no[i], no[i]] * value[i]
     end
+    kv[kdiag[no]] = kv[kdiag[no]] + penalty
+    loads[no+1] = kv[kdiag[no]] .* value
   end
   
-  cfgsm = cholfact(gsm)
-  loads[1:neq] = cfgsm \ loads[1:neq]
-
-  displacements = zeros(size(nf))
-  for i in 1:size(displacements, 1)
-    for j in 1:size(displacements, 2)
-      if nf[i, j] > 0
-        displacements[i,j] = loads[nf[i, j]]
-      end
-    end
+  sparin!(kv, kdiag)
+  loads[2:end] = spabac!(kv, loads[2:end], kdiag)
+  loads[1] = 0.0
+  nf1 = deepcopy(nf) + 1
+  
+  if struc_el.axisymmetric
+    println("\nNode     r-disp          z-disp")
+  else
+    println("\nNode     x-disp          y-disp")
   end
-  displacements = displacements'
   
-  dis_dt = DataTable(
-    r_disp = displacements[:, 1],
-    z_disp = displacements[:, 2],
-    t_disp = displacements[:, 3]
-  )
-  
-  loads[0] = 0.0
+  tmp = []
+  for i in 1:nn
+    tmp = vcat(tmp, loads[nf1[:,i]])
+    xstr = @sprintf("%+.4e", loads[nf1[1,i]])
+    ystr = @sprintf("%+.4e", loads[nf1[2,i]])
+    println("  $(i)    $(xstr)     $(ystr)")
+  end
   
   struc_el.nip = 1
   points = zeros(struc_el.nip, ndim)
   weights = zeros(struc_el.nip)
-  
   sample!(fin_el, points, weights)
-
-  gc1 = Vector{Float64}()
-  gc2 = Vector{Float64}()
-  s1 = Vector{Float64}()
-  s2 = Vector{Float64}()
-  s3 = Vector{Float64}()
-  t1 = Vector{Float64}()
-  t2 = Vector{Float64}()
-  t3 = Vector{Float64}()
-  
+  println("\nThe integration point (nip = $(struc_el.nip)) stresses are:")
+  if struc_el.axisymmetric
+    println("\nElement  r-coord   z-coord     sig_r        sig_z        tau_rz        sig_t")
+  else
+    println("\nElement  x-coord   y-coord     sig_x        sig_y        tau_xy")
+  end
   for iel in 1:nels
     deemat!(dee, prop[etype[iel], 1], prop[etype[iel], 2])
     num = g_num[:, iel]
     coord = g_coord[:, num]'
     g = g_g[:, iel]
-    eld = loads[g]
+    eld = loads[g+1]
     for i in 1:struc_el.nip
       shape_fun!(fun, points, i)
       shape_der!(der, points, i)
       gc = fun'*coord
       jac = inv(der*coord)
       deriv = jac*der
-      (radius, bee) = bmat_nonaxi!(bee,radius,coord,deriv,fun,iflag,lth)
-      bee[1:4,:]=bee[1:4,:]*ca 
-      bee[5:6,:]=bee[5:6,:]*sa
+      beemat!(bee, deriv)
+      if struc_el.axisymmetric
+        gc = fun'*coord
+        bee[4, 1:2:(ndof-1)] = fun[:]/gc[1]
+      end
       sigma = dee*(bee*eld)
-      gc1 = append!(gc1, gc[1])
-      gc2 = append!(gc2, gc[2])
-      s1 = append!(s1, sigma[1])
-      s2 = append!(s2, sigma[2])
-      s3 = append!(s3, sigma[3])
-      t1 = append!(t1, sigma[4])
-      t2 = append!(t2, sigma[5])
-      t3 = append!(t3, sigma[6])
+      gc1 = @sprintf("%+.4f", gc[1])
+      gc2 = @sprintf("%+.4f", gc[2])
+      s1 = @sprintf("%+.4e", sigma[1])
+      s2 = @sprintf("%+.4e", sigma[2])
+      s3 = @sprintf("%+.4e", sigma[3])
+      println("   $(iel)     $(gc1)   $(gc2)   $(s1)  $(s2)  $(s3)")
     end
   end
+  println()
   
-  sigma_dt = DataTable(
-    r_coord = gc1,
-    z_coord = gc2,
-    sig_r = s1,
-    sig_z = s2,
-    sig_t = s3,
-    tau_rz = t1,
-    tau_zt = t2,
-    tau_tr = t3
-  )
-  
-  fem = PtFEM.jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof,
-    neq, penalty, etype, g, g_g, g_num, nf, no,
-    node, num, sense, actions, bee, coord, gamma, dee,
-    der, deriv, displacements, eld, fun, gc, g_coord, jac,
-    km, mm, kg, cfgsm, loads, points, prop, sigma, value,
+  FEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
+    etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
+    bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
+    g_coord, jac, km, mm, gm, kv, gv, loads, points, prop, sigma, value,
     weights, x_coords, y_coords, z_coords, axial)
   
-    (fem, dis_dt, sigma_dt)
 end
 

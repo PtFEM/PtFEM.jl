@@ -8,7 +8,7 @@ function p54(data::Dict)
     struc_el = data[:struc_el]
     @assert typeof(struc_el) == GenericSolid
   else
-    println("No fin_el type specified.")
+    println("No struc_el type specified.")
     return
   end
   
@@ -95,29 +95,21 @@ function p54(data::Dict)
   
   formnf!(nodof, nn, nf)
   neq = maximum(nf)
-  kdiag = zeros(Int, neq)
-  
-  loads = zeros(Float64, neq+1)
-  gravlo = zeros(Float64, neq+1)
-  
+  println("There are $(neq) equations.\n")
+    
   # Find global array sizes
   for iel in 1:nels
     num = g_num[:, iel]
     num_to_g!(num, nf, g)
     g_g[:, iel] = g
-    fkdiag!(kdiag, g)
   end
-  
-  for i in 2:neq
-    kdiag[i] = kdiag[i] + kdiag[i-1]
-  end
-  
-  kv = zeros(kdiag[neq])
-  gv = zeros(kdiag[neq])
-
-  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
   
   sample!(fin_el, points, weights)
+  
+  loads = OffsetArray(zeros(neq + 1), 0:neq)
+  gravlo = OffsetArray(zeros(neq + 1), 0:neq)
+  
+  gsm = spzeros(neq, neq)
   for iel in 1:nels
     deemat!(dee, prop[etype[iel], 1], prop[etype[iel], 2])
     num = g_num[:, iel]
@@ -135,13 +127,13 @@ function p54(data::Dict)
       km += (bee')*dee*bee*detm*weights[i]
       eld[nodof:nodof:ndof] += fun[:]*detm*weights[i]
     end
-    fsparv!(kv, km, g, kdiag)
-    gravlo[g+1] -= eld*prop[etype[iel], 3]
+    fsparm!(gsm, g, km)
+    gravlo[g] -= eld*prop[etype[iel], 3]
   end
   
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
-      loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
+      loads[nf[:, data[:loaded_nodes][i][1]]] = data[:loaded_nodes][i][2]
     end
   end
   loads += gravlo
@@ -158,47 +150,58 @@ function p54(data::Dict)
     for i in 1:fixed_freedoms
       no[i] = nf[data[:fixed_freedoms][i][2], data[:fixed_freedoms][i][1]]
       value[i] = data[:fixed_freedoms][i][3]
+      gsm[no[i], no[i]] += penalty
+      loads[no[i]] = gsm[no[i], no[i]] * value[i]
     end
-    kv[kdiag[no]] = kv[kdiag[no]] + penalty
-    loads[no+1] = kv[kdiag[no]] .* value
   end
 
-  sparin!(kv, kdiag)
-  loads[2:end] = spabac!(kv, loads[2:end], kdiag)
-  loads[1] = 0.0
-  nf1 = deepcopy(nf) + 1
-  
-  if ndim == 3
-    println("\nNode     x-disp          y-disp          z-disp")
-  else
-    println("\nNode     x-disp          y-disp")
-  end
-  
-  tmp = []
-  for i in 1:nn
-    xstr = @sprintf("%+.4e", loads[nf1[1,i]])
-    ystr = @sprintf("%+.4e", loads[nf1[2,i]])
-    if ndim == 3
-      zstr = @sprintf("%+.4e", loads[nf1[3,i]])
-      println("  $(i)    $(xstr)     $(ystr)     $(zstr)")
-    else
-      println("  $(i)    $(xstr)     $(ystr)")
+  cfgsm = cholfact(gsm)
+  loads[1:neq] = cfgsm \ loads[1:neq]
+
+  displacements = zeros(size(nf))
+  for i in 1:size(displacements, 1)
+    for j in 1:size(displacements, 2)
+      if nf[i, j] > 0
+        displacements[i,j] = loads[nf[i, j]]
+      end
     end
   end
-  
-  println("\nThe integration point (nip = $(struc_el.nip)) stresses are:")
+  displacements = displacements'
+
   if ndim == 3
-    println("\nElement  x-coord   y-coord   y-coord      sig_x        sig_y        sig_z")
-    println("                                          tau_xy       tau_yz       tau_zx")
+    dis_dt = DataTable(
+      x_disp = displacements[:, 1],
+      y_disp = displacements[:, 2],
+      z_disp = displacements[:, 3]
+    )
   else
-    println("\nElement  x-coord   y-coord      sig_x        sig_y        tau_xy")
+    dis_dt = DataTable(
+      x_disp = displacements[:, 1],
+      y_disp = displacements[:, 2]
+    )
   end
+  
+  loads[0] = 0.0
+  
+  gc1 = Vector{Float64}()
+  gc2 = Vector{Float64}()
+  s1 = Vector{Float64}()
+  s2 = Vector{Float64}()
+  s3 = Vector{Float64}()
+  
+  if ndim ==  3
+    gc3 = Vector{Float64}()
+    t1 = Vector{Float64}()
+    t2 = Vector{Float64}()
+    t3 = Vector{Float64}()
+  end    
+  
   for iel in 1:nels
     deemat!(dee, prop[etype[iel], 1], prop[etype[iel], 2])
     num = g_num[:, iel]
     coord = g_coord[:, num]'
     g = g_g[:, iel]
-    eld = loads[g+1]
+    eld = loads[g]
     for i in 1:struc_el.nip
       shape_der!(der, points, i)
       shape_fun!(fun, points, i)
@@ -207,33 +210,50 @@ function p54(data::Dict)
       deriv = jac*der
       beemat!(bee, deriv)
       sigma = dee*(bee*eld)
-      gc1 = @sprintf("%+.4f", gc[1])
-      gc2 = @sprintf("%+.4f", gc[2])
-      s1 = @sprintf("%+.4e", sigma[1])
-      s2 = @sprintf("%+.4e", sigma[2])
-      s3 = @sprintf("%+.4e", sigma[3])
+      gc1 = append!(gc1, gc[1])
+      gc2 = append!(gc2, gc[2])
+      s1 = append!(s1, sigma[1])
+      s2 = append!(s2, sigma[2])
+      s3 = append!(s3, sigma[3])
       if ndim == 3
-        gc3 = @sprintf("%+.4f", gc[3])
-        s4 = @sprintf("%+.4e", sigma[4])
-        s5 = @sprintf("%+.4e", sigma[5])
-        s6 = @sprintf("%+.4e", sigma[6])
-      end
-      if ndim == 3
-        println("   $(iel)     $(gc1)   $(gc2)   $(gc3)   $(s1)  $(s2)  $(s3)")
-        println("                                       $(s4)  $(s5)  $(s6)")
-      else
-        println("   $(iel)     $(gc1)   $(gc2)   $(s1)  $(s2)  $(s3)")
+        gc3 = append!(gc3, gc[3])
+        t1 = append!(t1, sigma[4])
+        t2 = append!(t2, sigma[5])
+        t3 = append!(t3, sigma[6])
       end
     end
   end
-  println()
   
-  
-  FEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof, neq, penalty,
-    etype, g, g_g, g_num, kdiag, nf, no, node, num, sense, actions, 
-    bee, coord, gamma, dee, der, deriv, displacements, eld, fun, gc,
-    g_coord, jac, km, mm, gm, kv, gv, loads, points, prop, sigma, value,
+  if ndim == 3
+    sigma_dt = DataTable(
+      x_coord = gc1,
+      y_coord = gc2,
+      z_coord = gc3,
+      sig_x = s1,
+      sig_y = s2,
+      sig_z = s3,
+      tau_xy = t1,
+      tau_yz = t2,
+      tau_zx = t3
+    )
+  else
+    println("\nElement  x-coord   y-coord      sig_x        sig_y        tau_xy")
+    sigma_dt = DataTable(
+      x_coord = gc1,
+      y_coord = gc2,
+      sig_x = s1,
+      sig_y = s2,
+      tau_xy = s3
+    )
+  end
+
+  fem = PtFEM.jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof,
+    neq, penalty, etype, g, g_g, g_num, nf, no,
+    node, num, sense, actions, bee, coord, gamma, dee,
+    der, deriv, displacements, eld, fun, gc, g_coord, jac,
+    km, mm, kg, cfgsm, loads, points, prop, sigma, value,
     weights, x_coords, y_coords, z_coords, axial)
   
+    (fem, dis_dt, sigma_dt)
 end
 
