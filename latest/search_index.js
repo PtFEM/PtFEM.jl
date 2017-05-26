@@ -477,7 +477,7 @@ var documenterSearchIndex = {"docs": [
     "page": "PtFEM.jl documentation",
     "title": "PtFEM.checon!",
     "category": "Method",
-    "text": "checon!\n\nThis subroutine sets converged to .FALSE. if relative change in loads and oldlds is greater than tol and updates oldlds.\n\nMethod\n\nchecon!(loads, oldlds, tol)\n\nArguments\n\n* loads::Vector{Float64}        : Displacements vector\n* oldlds::Vector{Float64}       : Previous displacement vector\n* tol::Float64                  : Convergence tolerance\n\n\n\n"
+    "text": "checon!\n\nThis subroutine sets converged to .FALSE. if relative change in loads and oldlds is greater than tol and updates oldlds.\n\nMethod\n\nchecon!(loads, oldlds, tol)\n\nArguments\n\n* loads::Vector{Float64}        : Displacements vector/OffsetArray\n* oldlds::Vector{Float64}       : Previous displacement vector/OffsetArray\n* tol::Float64                  : Convergence tolerance\n\n\n\n"
 },
 
 {
