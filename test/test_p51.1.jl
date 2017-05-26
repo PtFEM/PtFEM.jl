@@ -20,7 +20,7 @@ data = Dict(
     ]
 )
 
-@time m, dis_dt, fm_dt = p51a(data)
+@time m, dis_dt, fm_dt = p51(data)
 
 arr = Vector{Float64}(m.loads[0:12])
 @test  arr ≈ [0.0, -9.100000000000005e-7, 1.950000000000001e-7,

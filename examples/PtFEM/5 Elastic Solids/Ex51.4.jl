@@ -35,7 +35,7 @@ data = Dict(
 data |> display
 println()
 
-@time m, dis_dt, fm_dt = p51a(data)
+@time m, dis_dt, fm_dt = p51(data)
 println()
 
 dis_dt |> display

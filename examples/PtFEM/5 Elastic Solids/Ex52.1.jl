@@ -34,5 +34,12 @@ data = Dict(
 data |> display
 println()
 
-@time m = p52(data)
+@time m, dis_dt, fm_dt = p52(data)
+println()
+
+dis_dt |> display
+println()
+
+println("\nThe integration point (nip = $(data[:struc_el].nip)) stresses are:")
+fm_dt |> display
 println()
