@@ -232,7 +232,7 @@ function p56(data::Dict, profiling::Bool=false)
     beta = dot(loads, d)/up
     @show [cg_iters beta] 
     p = d + p*beta
-    cg_converged = checon!(xnew[0:neq], x[0:neq], cg_tol)
+    cg_converged = checon!(xnew, x, cg_tol)
     if cg_converged || cg_iters >= cg_limit
       break
     end
@@ -242,33 +242,39 @@ function p56(data::Dict, profiling::Bool=false)
   loads = xnew
   loads[0] = 0.0
   
-  
   println("Number of cg iterations to convergence was $(cg_iters).")
-  if !profiling
-    println("\nNode     x-disp          y-disp          z-disp")
-  
-  
-    tmp = []
-    for i in 1:nn
-      xstr = @sprintf("%+.4e", loads[nf[1,i]])
-      ystr = @sprintf("%+.4e", loads[nf[2,i]])
-      zstr = @sprintf("%+.4e", loads[nf[3,i]])
-      println("  $(i)    $(xstr)     $(ystr)     $(zstr)")
+  displacements = zeros(size(nf))
+  for i in 1:size(displacements, 1)
+    for j in 1:size(displacements, 2)
+      if nf[i, j] > 0
+        displacements[i,j] = loads[nf[i, j]]
+      end
     end
-  
-    #dismsh_ensi()
   end
+  displacements = displacements'
+  
+  dis_dt = DataTable(
+    x_disp = displacements[:, 1],
+    y_disp = displacements[:, 2],
+    z_disp = displacements[:, 3]
+  )
+  #dismsh_ensi()
   
   struc_el.nip = 1
   points = zeros(struc_el.nip, ndim)
   weights = zeros(struc_el.nip)
+  
   sample!(fin_el, points, weights)
   
-  if !profiling
-    println("\nThe integration point (nip = $(struc_el.nip)) stresses are:")
-    println("\nElement  x-coord   y-coord      z_coord      sig_x        sig_y        sig_z")
-    println("                                             tau_xy       tau_yz       tau_zx")
-  end
+  gc1 = Vector{Float64}()
+  gc2 = Vector{Float64}()
+  gc3 = Vector{Float64}()
+  s1 = Vector{Float64}()
+  s2 = Vector{Float64}()
+  s3 = Vector{Float64}()  
+  s4 = Vector{Float64}()
+  s5 = Vector{Float64}()
+  s6 = Vector{Float64}()  
   
   for iel in 1:nels
     deemat!(dee, prop[etype[iel], 1], prop[etype[iel], 2])
@@ -284,30 +290,30 @@ function p56(data::Dict, profiling::Bool=false)
       deriv = jac*der
       beemat!(bee, deriv)
       sigma = dee*(bee*eld)
-      if !profiling
-        gc1 = @sprintf("%+.4f", gc[1])
-        gc2 = @sprintf("%+.4f", gc[2])
-        gc3 = @sprintf("%+.4f", gc[3])
-        s1 = @sprintf("%+.4e", sigma[1])
-        s2 = @sprintf("%+.4e", sigma[2])
-        s3 = @sprintf("%+.4e", sigma[3])
-        s4 = @sprintf("%+.4e", sigma[4])
-        s5 = @sprintf("%+.4e", sigma[5])
-        s6 = @sprintf("%+.4e", sigma[6])
-        println("   $(iel)     $(gc1)  $(gc2)          $(gc[3])   $(s1)  $(s2)  $(s3)")
-        println("                                          $(s4)  $(s5)  $(s6)")
-      end
+      gc1 = append!(gc1, gc[1])
+      gc2 = append!(gc2, gc[2])
+      gc3 = append!(gc3, gc[3])
+      s1 = append!(s1, sigma[1])
+      s2 = append!(s2, sigma[2])
+      s3 = append!(s3, sigma[3])
+      s4 = append!(s4, sigma[4])
+      s5 = append!(s5, sigma[5])
+      s6 = append!(s6, sigma[6])
     end
   end
-  println()
   
-  fem = PtFEM.jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof,
-    neq, penalty, etype, g, g_g, g_num, nf, no,
-    node, num, sense, actions, bee, coord, gamma, dee,
-    der, deriv, displacements, eld, fun, gc, g_coord, jac,
-    km, mm, kg, cfgsm, loads, points, prop, sigma, value,
-    weights, x_coords, y_coords, z_coords, axial)
+  sigma_dt = DataTable(
+    x_coord = gc1,
+    y_coord = gc2,
+    z_coord = gc3,
+    sig_x = s1,
+    sig_y = s2,
+    sig_z = s3,
+    tau_xy = s4,
+    tau_yz = s5,
+    tau_zx = s6
+  )
   
-  fem
+  (dis_dt, sigma_dt)
 end
 
