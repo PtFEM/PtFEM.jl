@@ -201,8 +201,8 @@ function p56_skyline(data::Dict, profiling::Bool=false)
   value = zeros(Float64, fixed_freedoms)
   if :fixed_freedoms in keys(data) && fixed_freedoms > 0
     for i in 1:fixed_freedoms
-      no[i] = nf[deepcopy(data[:fixed_freedoms][i][2]), deepcopy(data[:fixed_freedoms][i][1])]
-      value[i] = deepcopy(data[:fixed_freedoms][i][3])
+      no[i] = nf[data[:fixed_freedoms][i][2], data[:fixed_freedoms][i][1]]
+      value[i] = data[:fixed_freedoms][i][3]
     end
     diag_precon[no+1] += penalty
     loads[no+1] = diag_precon[no+1] .* value
@@ -225,8 +225,7 @@ function p56_skyline(data::Dict, profiling::Bool=false)
     !profiling && print(".")
     u = zeros(neq+1)
     for iel in 1:nels
-      g[:] = g_g[:, iel]
-      #km[:,:] = storkm[:, :, iel]
+      g = g_g[:, iel]
       u[g+1] += storkm[:, :, iel]*p[g+1]
     end
     if fixed_freedoms !== 0
@@ -235,7 +234,7 @@ function p56_skyline(data::Dict, profiling::Bool=false)
     up = dot(loads, d)
     alpha = up/dot(p, u)
     xnew = x + p*alpha
-    loads[:] -= u*alpha
+    loads -= u*alpha
     d = diag_precon .* loads
     beta = dot(loads, d)/up
     @show [cg_iters beta] 

@@ -11,18 +11,18 @@ checon!(loads, oldlds, tol)
 
 ### Arguments
 ```julia
-* loads::Vector{Float64}        : Displacements vector
-* oldlds::Vector{Float64}       : Previous displacement vector
+* loads::Vector{Float64}        : Displacements vector/OffsetArray
+* oldlds::Vector{Float64}       : Previous displacement vector/OffsetArray
 * tol::Float64                  : Convergence tolerance
 ```
 """
-function checon!(loads::Vector{Float64}, oldlds::Vector{Float64}, tol::Float64)
+function checon!(loads, oldlds, tol)
   #
   # This subroutine sets converged to .FALSE. if relative change in loads
   # and oldlds is greater than tol and updates oldlds.
   #
   # Updates oldlds
- converged = maximum(abs.(loads-oldlds))/maximum(abs.(loads)) <= tol
- oldlds[:] = loads
- converged
+  converged = maximum(abs.(loads-oldlds))/maximum(abs.(loads)) <= tol
+  oldlds[:] = loads
+  converged
 end
