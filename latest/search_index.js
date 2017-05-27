@@ -53,7 +53,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Getting started",
     "title": "Installation",
     "category": "section",
-    "text": "To use the toolkit and run the test programs, start the Julia REPL and type:Pkg.clone(\"https://github.com/PtFEM/PtFEM.jl\")\nPkg.test(\"PtFEM\")"
+    "text": "To use the toolkit and run the test programs, start the Julia REPL and type:Pkg.add(\"PtFEM\")\nPkg.test(\"PtFEM\")"
 },
 
 {
@@ -885,7 +885,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Todo",
     "title": "Planned work",
     "category": "section",
-    "text": "Complete inital framework, including documentation (May 2017)\nRemaining programs in chapter 6 (June 2017)\nReview and complete plot recipes for chapters 4 to 6 (June 2017)\nRework chapters 5 and 6 for Julia sparse matrices (May 2017)\nUpdate notebooks (July 2017)\nAdd generalized WriteVTK.jl recipes\nProfile p5. and p6. programs (summer 2017?)\nComplete chapter 7\nComplete chapter 8 (Sep 2017)\nComplete chapter 9 (fall 2017?)\nComplete chapter 10\nComplete chapter 11\nComplete chapter 12 (late 2017?)\nPort BHATheoreticalPerformance from Fortran/R/Julia to using PtFEM.jl  (early 2018?)\nPort BHALockup from Fortran/R to using PtFEM.jl (mid 2018?)\nInvestigate if I could use JuaFEM components"
+    "text": "Complete inital framework, including documentation (May 2017)\nRemaining programs in chapter 6 (June/July 2017)\nReview and complete plot recipes for chapters 4 to 6 (August 2017)\nRework chapters 5 and 6 for Julia sparse matrices (May 2017, mostly done)\nUpdate notebooks (July 2017)\nAdd generalized WriteVTK.jl recipes (Sep 2017)\nProfile p5. and p6. programs (summer 2017?)\nComplete chapter 7\nComplete chapter 8 (Oct 2017)\nComplete chapter 9 (Nov 2017?)\nComplete chapter 10 (Jan 2018?)\nComplete chapter 11(Jan 2018?)\nComplete chapter 12 (Spring 2018?)\nPort BHATheoreticalPerformance from Fortran/R/Julia to using PtFEM.jl  (early 2018?)\nPort BHALockup from Fortran/R to using PtFEM.jl (mid 2018?)\nInvestigate if I could use JuaFEM components"
 },
 
 {
