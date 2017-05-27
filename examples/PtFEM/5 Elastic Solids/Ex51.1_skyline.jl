@@ -20,6 +20,7 @@ data = Dict(
     ]
 )
 
+println()
 data |> display
 println()
 
