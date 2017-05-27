@@ -202,7 +202,7 @@ function p51_skyline(data::Dict{Symbol, Any})
       end
       km += (bee')*dee*bee*detm*weights[i]*gc[1]
     end
-    fsparv!(kv, km, g, kdiag)
+    fsparv(kv, km, g, kdiag)
   end
   
   loads = zeros(neq + 1)
