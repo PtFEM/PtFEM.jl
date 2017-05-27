@@ -1,4 +1,4 @@
-l# Documentation: http://docs.travis-ci.com/user/languages/julia/
+# Documentation: http://docs.travis-ci.com/user/languages/julia/
 language: julia
 env:
   DOCUMENTER_DEBUG: true
@@ -8,7 +8,7 @@ os:
 julia:
   - 0.5
   - 0.6
-  - nightly
+  #- nightly
 notifications:
   email: true
 # uncomment the following lines to override the default test script
