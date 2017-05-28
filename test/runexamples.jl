@@ -38,6 +38,6 @@ if VERSION.minor == 5
   println("\nRunning Julia 0.5 examples\n")
   for ex in examples
     println("\n\nRunning $(ex).\n\n")
-    include(Pkg.dir("PtFEM")*"/examples/$(ex)")
+    include(joinpath(dirname(@__FILE__), "..", "examples", "$(ex)")
   end
 end

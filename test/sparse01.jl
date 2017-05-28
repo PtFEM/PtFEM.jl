@@ -1,11 +1,11 @@
 using PtFEM
 
 old = pwd()
-ProjDir = joinpath(Pkg.dir("PtFEM"), "examples", "4 Static Equilibrium")
+ProjDir = joinpath(dirname("@__FILE__"), "..", "examples", "4 Static Equilibrium")
 #cd(ProjDir)
 
 include(joinpath(ProjDir, "p4.1.1.jl"))
-#include(joinpath(ProjDir, "FE4_1.jl"))
+
 #=
 data = Dict(
   # Rod(nels, np_types, nip, finite_element(nod, nodof))
