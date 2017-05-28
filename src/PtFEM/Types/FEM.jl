@@ -8,7 +8,7 @@ import Base.show
 Computational structure used in chapter 5 (Skyline format used)
 
 """
-struct FEM                     # Computationale data and results structure
+immutable FEM                     # Computationale data and results structure
   struc_el::StructuralElement     # Store the structural element object
   fin_el::FiniteElement           # Store finite element object
   
@@ -89,7 +89,7 @@ showcompact(io::IO, m::FEM) = model_show(io, m, true)
 Computational structure used in chapter 4 (Julia Sparse matrices used)
 
 """
-struct jFEM                    # Computationale data and results structure
+immutable jFEM                    # Computationale data and results structure
   struc_el::StructuralElement     # Store the structural element object
   fin_el::FiniteElement           # Store finite element object
   
