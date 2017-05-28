@@ -1,7 +1,7 @@
 using PtFEM
 
 old = pwd()
-ProjDir = joinpath(dirname("@__FILE__"), "..", "examples", "4 Static Equilibrium")
+ProjDir = joinpath(dirname(@__FILE__), "..", "examples", "4 Static Equilibrium")
 #cd(ProjDir)
 
 include(joinpath(ProjDir, "p4.1.1.jl"))
