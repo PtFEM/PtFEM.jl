@@ -7,7 +7,7 @@ import ProgressMeter
 
 const ∇ = Tensors.gradient;
 
-immutable NeoHook{T}
+structNeoHook{T}
     μ::T
     λ::T
 end
