@@ -25,5 +25,4 @@ data = Dict(
 
 @time fm_dt, sigma_dt = p47(data)
 
-m = round.(convert(Array,sigma_dt[4,:]), 4)'
-@test m ≈ [-0.1211,-0.1211,-0.0335]
+@test round.(convert(Array,sigma_dt[4,:]), 4)' ≈ [-0.1211,-0.1211,-0.0335]
