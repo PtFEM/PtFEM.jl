@@ -101,7 +101,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Changes w.r.t. PtFEM",
     "title": "Replacing skyline storage by Julia sparse matrices",
     "category": "section",
-    "text": "In the programs for chapter 4, the skyline storage idea has been replaced by Julia sparse matrices and, accordingly, PtFEM's pair sparin() and spabac() by Julia's cholfact() and \"\\\" operator.Thus  PtFEM.sparin!(kv, kdiag)\n  loads[2:end] = PtFEM.spabac!(kv, loads[2:end], kdiag)has been replaced by  # Cholesky decomposed global stiffness matrix\n  cfgsm = cholfact(gsm)\n  loads[2:end] = cfgsm \\ loads[2:end]All 'basic' functions such as sparin!() and spabac!() can be found in the src/PtFEM directory."
+    "text": "In most programs the skyline storage idea has been replaced by Julia sparse matrices and, accordingly, PtFEM's pair sparin() and spabac() by Julia's cholfact() and \"\\\" operator.Thus  PtFEM.sparin!(kv, kdiag)\n  loads[2:end] = PtFEM.spabac!(kv, loads[2:end], kdiag)has been replaced by  # Cholesky decomposed global stiffness matrix\n  cfgsm = cholfact(gsm)\n  loads[2:end] = cfgsm \\ loads[2:end]All 'basic' functions such as sparin!() and spabac!() can be found in the src/PtFEM directory."
 },
 
 {
@@ -145,11 +145,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "CHANGES.html#Possible-future-change-areas-1",
+    "page": "Changes w.r.t. PtFEM",
+    "title": "Possible future change areas",
+    "category": "section",
+    "text": ""
+},
+
+{
     "location": "CHANGES.html#Integration-for-now-using-PtFEM's-approach-1",
     "page": "Changes w.r.t. PtFEM",
     "title": "Integration - for now using PtFEM's approach",
     "category": "section",
-    "text": "Currently I have not replaced numerical integration by e.g. Julia quadgk() for 1D integration of a function."
+    "text": ""
 },
 
 {
@@ -164,6 +172,14 @@ var documenterSearchIndex = {"docs": [
     "location": "CHANGES.html#Derivatives-for-now-using-PtFEM's-approach-1",
     "page": "Changes w.r.t. PtFEM",
     "title": "Derivatives - for now using PtFEM's approach",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "CHANGES.html#The-possibility-of-using-all-or-parts-of-JuAFEM-is-being-investigated-1",
+    "page": "Changes w.r.t. PtFEM",
+    "title": "The possibility of using all or parts of JuAFEM is being investigated",
     "category": "section",
     "text": ""
 },
@@ -857,11 +873,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "VERSIONS.html#v\"0.0.1\"-1",
+    "location": "VERSIONS.html#v\"0.0.4\"-1",
     "page": "Versions",
-    "title": "v\"0.0.1\"",
+    "title": "v\"0.0.4\"",
     "category": "section",
-    "text": "Initial release of PtFEM/PtFEM.jl. This release contains the programs in chapters 4, 5 and the first 2 programs of chapter 6.In most programs skyline storage has been replaced by Julia sparse matrices. Some examples using skyline storage can be found in chapter 5."
+    "text": "Chapter 6 programs update. This release contains the programs in chapters 4, 5 and 6.In most programs skyline storage has been replaced by Julia sparse matrices. Some examples using skyline storage can still be found in chapter 5."
+},
+
+{
+    "location": "VERSIONS.html#v\"0.0.3\"-1",
+    "page": "Versions",
+    "title": "v\"0.0.3\"",
+    "category": "section",
+    "text": "Initial release of PtFEM/PtFEM.jl. This release contains the programs in chapters 4, 5 and the first 2 programs of chapter 6.In most programs skyline storage has been replaced by Julia sparse matrices. Some examples using skyline storage can still be found in chapter 5."
 },
 
 {
@@ -885,7 +909,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Todo",
     "title": "Planned work",
     "category": "section",
-    "text": "Complete inital framework, including documentation (May 2017)\nRemaining programs in chapter 6 (June/July 2017)\nReview and complete plot recipes for chapters 4 to 6 (August 2017)\nRework chapters 5 and 6 for Julia sparse matrices (May 2017, mostly done)\nUpdate notebooks (July 2017)\nAdd generalized WriteVTK.jl recipes (Sep 2017)\nProfile p5. and p6. programs (summer 2017?)\nComplete chapter 7\nComplete chapter 8 (Oct 2017)\nComplete chapter 9 (Nov 2017?)\nComplete chapter 10 (Jan 2018?)\nComplete chapter 11(Jan 2018?)\nComplete chapter 12 (Spring 2018?)\nPort BHATheoreticalPerformance from Fortran/R/Julia to using PtFEM.jl  (early 2018?)\nPort BHALockup from Fortran/R to using PtFEM.jl (mid 2018?)\nInvestigate if I could use JuaFEM components"
+    "text": "Remaining programs in chapter 6 (June/July 2017)\nReview and complete plot recipes for chapters 4 to 6 (August 2017)\nRework chapters 5 and 6 for Julia sparse matrices (May 2017, mostly done)\nUpdate notebooks (July 2017)\nAdd generalized WriteVTK.jl recipes (Sep 2017)\nProfile p5. and p6. programs (summer 2017?)\nComplete chapter 7\nComplete chapter 8 (Oct 2017)\nComplete chapter 9 (Nov 2017?)\nComplete chapter 10 (Jan 2018?)\nComplete chapter 11(Jan 2018?)\nComplete chapter 12 (Spring 2018?)\nPort BHATheoreticalPerformance from Fortran/R/Julia to using PtFEM.jl  (early 2018?)\nPort BHALockup from Fortran/R to using PtFEM.jl (mid 2018?)\nInvestigate if I could use JuaFEM components"
 },
 
 {
