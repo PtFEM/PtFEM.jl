@@ -30,7 +30,7 @@ I'm planning to use the same approach in all other chapters.
 
 ## Replacing skyline storage by Julia sparse matrices
 
-In the programs for chapter 4, the skyline storage idea has been replaced by Julia sparse matrices and, accordingly, PtFEM's pair sparin() and spabac() by Julia's cholfact() and "\\" operator.
+In most programs the skyline storage idea has been replaced by Julia sparse matrices and, accordingly, PtFEM's pair sparin() and spabac() by Julia's cholfact() and "\\" operator.
 
 Thus
 
@@ -81,10 +81,12 @@ In Chapter 6, example Exp62.1a.jl calls p62a.jl which uses Julia pmap() for this
 
 **Note:**  have not done a profiling pass through p62.jl, it allocates way too much memory, so I expect significant performance improvements are possible.
 
-## Integration - for now using PtFEM's approach
+## Possible future change areas
 
-Currently I have not replaced numerical integration by e.g. Julia quadgk() for 1D integration of a function.
+### Integration - for now using PtFEM's approach
 
-## Gradient descent - for now using PtFEM's approach
+### Gradient descent - for now using PtFEM's approach
 
-## Derivatives - for now using PtFEM's approach
+### Derivatives - for now using PtFEM's approach
+
+### The possibility of using all or parts of JuAFEM is being investigated
