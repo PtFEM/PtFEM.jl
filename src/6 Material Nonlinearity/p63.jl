@@ -317,7 +317,7 @@ function p63(data::Dict)
     no[i] = nf[2, node[i]]
   end
   
-  
+  #=
   
   sparin!(kv, kdiag)
   println("   step     load        disp          iters")
