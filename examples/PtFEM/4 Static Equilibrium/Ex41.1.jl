@@ -43,7 +43,7 @@ println()
 display(fm_dt)
 println()
   
-if VERSION.minor < 6      # Prevent plotting in Julia v"0.6" for now
+if VERSION.minor < 7      # Prevent plotting in Julia v"0.6" for now
 
   using Plots
   gr(size=(400,500))

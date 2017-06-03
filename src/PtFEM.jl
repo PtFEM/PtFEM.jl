@@ -42,12 +42,15 @@ include("PtFEM/Main/fmplat.jl")
 include("PtFEM/Main/read_generated_data.jl")
 include("PtFEM/Main/invar.jl")
 include("PtFEM/Main/formm.jl")
+include("PtFEM/Main/mocouf.jl")
+include("PtFEM/Main/mocouq.jl")
 
 include("PtFEM/Utilities/useplots.jl")
 if useplots()
   include("graphics/plotrecipes/mesh.jl")
 end
 
+include("PtFEM/Geom/bc_rect.jl")
 include("PtFEM/Geom/mesh_size.jl")
 include("PtFEM/Geom/geom_rect.jl")
 include("PtFEM/Geom/hexahedron_xz.jl")
@@ -83,6 +86,7 @@ include("5 Elastic Solids/p56_skyline.jl")
 include("6 Material Nonlinearity/p61.jl")
 include("6 Material Nonlinearity/p62.jl")
 include("6 Material Nonlinearity/p62a.jl")
+include("6 Material Nonlinearity/p63.jl")
 
 ### Exports ###
 
@@ -134,6 +138,7 @@ export
   p62,
   pp62,
   p62a,
+  p63,
   
   # From OffsetArrays
   OffsetArray

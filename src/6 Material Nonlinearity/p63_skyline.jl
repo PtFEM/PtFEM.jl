@@ -183,7 +183,7 @@ function p63(data::Dict)
   
   PtFEM.bc_rect!(struc_el.nxe, struc_el.nye, nf, struc_el.direction)
   neq = maximum(nf)
-  #kdiag = zeros(Int, neq)
+  kdiag = zeros(Int, neq)
   
   #
   # Program 6.3 specific variables
@@ -219,9 +219,17 @@ function p63(data::Dict)
     g_num[:, iel] = num
     g_coord[:, num] = coord'
     g_g[:, iel] = g
+    PtFEM.fkdiag!(kdiag, g)
   end
   
-  println("There are $(neq) equations.")
+  for i in 2:neq
+    kdiag[i] = kdiag[i] + kdiag[i-1]
+  end
+  
+  kv = zeros(kdiag[neq])
+  gv = zeros(kdiag[neq])
+
+  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
   
   start_dt = 1.0e15
   dt = copy(start_dt)
@@ -231,14 +239,12 @@ function p63(data::Dict)
   ddt = 4.0 * (1.0 + ν) * ( 1.0 - 2.0ν) / (E * (1.0 - 2.0ν + snph^2))
   ddt < dt && (dt = ddt)
   
-  gravlo = OffsetArray(zeros(neq+1), 0:neq)
+  gravlo = zeros(Float64, neq+1)
     
   PtFEM.sample!(fin_el, points, weights)
-  println(weights)
   
-  gsm = spzeros(neq, neq)
   for iel in 1:nels
-    PtFEM.deemat!(dee, prop[etype[iel], 5], prop[etype[iel], 6])
+    PtFEM.deemat!(dee, prop[etype[iel], 2], prop[etype[iel], 3])
     num = g_num[:, iel]
     coord = g_coord[:, num]'              # Transpose
     g = g_g[:, iel]
@@ -255,41 +261,38 @@ function p63(data::Dict)
       km += (bee')*dee*bee*detm*weights[i]
       eld[2:2:ndof] += fun .* detm * weights[i]
     end
-    PtFEM.fsparm!(gsm, g, km)
-    gravlo[g] -= eld .* prop[etype[iel], 4] 
+    PtFEM.fsparv!(kv, km, g, kdiag)
+    gravlo[g+1] -= eld .* prop[etype[iel], 4] 
   end
   
-  println(g)
-  println()
-  println(km')
-  println()
-  println(eld)
-  println()
-  println(gravlo[g])
-  println()
-  
-  #kvc = deepcopy(kv)
+  kvc = deepcopy(kv)
   
   # Surcharge loads
   
-  local i3, i4, i5, qq
+  nf1 = deepcopy(nf) + 1
   for i in 1:struc_el.nxe
     i3 = g_num[3, (i-1)*struc_el.nye+1]
     i4 = g_num[4, (i-1)*struc_el.nye+1]
     i5 = g_num[5, (i-1)*struc_el.nye+1]
     qq = (x_coords[i+1] - x_coords[i]) * qs
-    gravlo[nf[2, i3]] -= qq/6.0
-    gravlo[nf[2, i4]] -= 2.0*qq/3.0
-    gravlo[nf[2, i5]] -= qq/6.0
+    gravlo[nf[2, i3]+1] -= qq/6.0
+    gravlo[nf[2, i4]+1] -= 2.0qq/3.0
+    gravlo[nf[2, i5]+1] -= qq/6.0
   end
   
-  cfgsm = cholfact(gsm)
-  gravlo[1:neq] = cfgsm \ gravlo[1:end]
-  gravlo[0] = 0.0
+  #gravlo[1] = 0.0
+  println()
+  println(g+1)
+  println()
+  println(gravlo[g+1])
+  println()
   
-  println(gravlo[g])
+  PtFEM.sparin!(kv, kdiag)
+  PtFEM.spabac!(kv, gravlo[2:end], kdiag)
+  gravlo[1] = 0.0
   
-  #=
+  println(gravlo[g+1])
+  
   loaded_nodes = 0
   node = Int[]
   val = Array{Float64, 2}
@@ -410,6 +413,5 @@ function p63(data::Dict)
   end
   
   (g_coord, g_num, displacements')
-  =#
 end
 
