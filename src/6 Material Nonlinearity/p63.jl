@@ -259,15 +259,6 @@ function p63(data::Dict)
     gravlo[g] -= eld .* prop[etype[iel], 4] 
   end
   
-  println(g)
-  println()
-  println(km')
-  println()
-  println(eld)
-  println()
-  println(gravlo[g])
-  println()
-  
   #kvc = deepcopy(kv)
   
   # Surcharge loads
@@ -289,23 +280,45 @@ function p63(data::Dict)
   
   println(gravlo[g])
   
-  #=
-  loaded_nodes = 0
-  node = Int[]
-  val = Array{Float64, 2}
-  if :loaded_nodes in keys(data)
-    loaded_nodes = size(data[:loaded_nodes], 1)
-    node = zeros(Int, loaded_nodes)
-    val = zeros(loaded_nodes, size(data[:loaded_nodes][1][2], 2))
-  end
-  
-  if :loaded_nodes in keys(data)
-    for i in 1:loaded_nodes
-      node[i] = data[:loaded_nodes][i][1]
-      val[i,:] = data[:loaded_nodes][i][2]
+  for iel in 1:nels
+    PtFEM.deemat!(dee, prop[etype[iel], 5], prop[etype[iel], 6])
+    g = g_g[:, iel]
+    eld = gravlo[g]
+    num = g_num[:, iel]
+    coord = g_coord[:, num]'              # Transpose
+    for i in 1:struc_el.nip
+      PtFEM.shape_der!(der, points, i)
+      jac = der*coord
+      jac = inv(jac)
+      deriv = jac*der
+      PtFEM.beemat!(bee, deriv)
+      sigma = dee*(bee*eld)
+      for j in 1:4
+        tensor[j, i, iel] = sigma[j]
+      end
     end
   end
-
+  
+  fixed_freedoms = 2nbo2 + 1
+  node = zeros(Int, fixed_freedoms)
+  no = zeros(Int, fixed_freedoms)
+  storkv = zeros(Float64, fixed_freedoms)
+  node[1] = 1
+  k = 1
+  
+  for i in 1:nbo2
+    k += 2*struc_el.nye + 1
+    node[2*i] = k
+    k += struc_el.nye + 1
+    node[2*i + 1] = k
+  end
+  
+  for i in 1:fixed_freedoms
+    no[i] = nf[2, node[i]]
+  end
+  
+  
+  
   sparin!(kv, kdiag)
   println("   step     load        disp          iters")
 
