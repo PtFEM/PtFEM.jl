@@ -259,7 +259,7 @@ function p63(data::Dict)
     gravlo[g] -= eld .* prop[etype[iel], 4] 
   end
   
-  #kvc = deepcopy(kv)
+  gsmc = deepcopy(gsm)
   
   # Surcharge loads
   
@@ -273,12 +273,13 @@ function p63(data::Dict)
     gravlo[nf[2, i4]] -= 2.0*qq/3.0
     gravlo[nf[2, i5]] -= qq/6.0
   end
-  
+
   cfgsm = cholfact(gsm)
   gravlo[1:neq] = cfgsm \ gravlo[1:end]
   gravlo[0] = 0.0
   
   println(gravlo[g])
+  tensor = zeros(nst, struc_el.nip, nels)
   
   for iel in 1:nels
     PtFEM.deemat!(dee, prop[etype[iel], 5], prop[etype[iel], 6])
@@ -313,44 +314,52 @@ function p63(data::Dict)
     node[2*i + 1] = k
   end
   
+  gsm = deepcopy(gsmc)
   for i in 1:fixed_freedoms
     no[i] = nf[2, node[i]]
+    gsm[no[i], no[i]] += penalty
+    storkv = gsm[no[i], no[i]]
   end
   
-  #=
+  cfgsm = cholfact(gsm)
   
-  sparin!(kv, kdiag)
-  println("   step     load        disp          iters")
+  # Load increment loop
+  
+  println("   step     disp      load1        load2          iters")
 
-  converged = false
-  ptot = 0.0
-  loads = zeros(Float64, neq+1)
-  oldis = zeros(Float64, neq+1)
-  totd = zeros(Float64, neq+1)
-  tensor = zeros(nst, struc_el.nip, nels)
-  bdylds = zeros(Float64, neq+1)
-  iy = 0
-  iters = 0
-  for iy in 1:size(qincs, 1)
-    ptot = ptot + qincs[iy]
+  local iters, loads, byylds, converged
+  oldis = OffsetArray(zeros(neq+1), 0:neq)
+  totd = OffsetArray(zeros(neq+1), 0:neq)
+  
+  #=
+  for iy in 1:size(incs, 1)
     iters = 0
-    bdylds = zeros(Float64, neq+1)
+    bdylds = OffsetArray(zeros(neq+1), 0:neq)
+    
     evpt = zeros(nst, struc_el.nip, nels)
+    react = OffsetArray(zeros(neq+1), 0:neq)
+    
+    # Plastic iteration loop
     
     while true
       iters += 1
-      loads = zeros(Float64, neq+1)
-      for i in 1:loaded_nodes
-        loads[nf1[:,node[i]]] = val[i,:] * qincs[iy]
-      end
+      
+      println("  disp = $(iy+presc), iteration = $(iters)")
+      
+      loads = OffsetArray(zeros(neq+1), 0:neq)
       loads += bdylds
-      loads[2:end] = spabac!(kv, loads[2:end], kdiag)
-      converged = checon!(loads, oldis, tol)
-      if iters == 1
-        converged = false
+      
+      for i in 1:loaded_nodes
+        loads[nf[:,no[i]]] = storkv[i] * presc
       end
+
+      loads[1:end] = cfgsm \ loads[1:end]
+      
+      converged = checon!(loads, oldis, tol)
+      iters == 1 && (converged = false)
+      
       if converged || iters == limit
-        bdylds = zeros(Float64, neq+1)
+        bdylds = OffsetArray(zeros(neq+1), 0:neq)
       end
   
       for iel in 1:nels
