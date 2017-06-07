@@ -171,8 +171,8 @@ function p63(data::Dict)
   
   eps = zeros(nst)
   stress = zeros(nst)
-  bload =zeros(ndof)
-  eload =zeros(ndof)
+  bload = zeros(ndof)
+  eload = zeros(ndof)
   erate = zeros(nst)
   evp = zeros(nst)
   devp = zeros(nst)
@@ -221,20 +221,22 @@ function p63(data::Dict)
     g_g[:, iel] = g
   end
   
-  println("There are $(neq) equations.")
+  println("There are $(neq) equations.\n")
   
   start_dt = 1.0e15
   dt = copy(start_dt)
   
-  ϕ, c, ψ, γ, E, ν  = prop[1, :]
-  snph = sind(ϕ)
-  ddt = 4.0 * (1.0 + ν) * ( 1.0 - 2.0ν) / (E * (1.0 - 2.0ν + snph^2))
-  ddt < dt && (dt = ddt)
+  for i in 1:size(data[:properties], 1)
+    ϕ, c, ψ, γ, E, ν  = prop[i, :]
+    snph = sind(ϕ)
+    ddt = 4.0 * (1.0 + ν) * ( 1.0 - 2.0ν) / (E * (1.0 - 2.0ν + snph^2))
+    ddt < dt && (dt = ddt)
+    #println([i ddt dt])
+  end
   
   gravlo = OffsetArray(zeros(neq+1), 0:neq)
     
   PtFEM.sample!(fin_el, points, weights)
-  println(weights)
   
   gsm = spzeros(neq, neq)
   for iel in 1:nels
@@ -278,7 +280,6 @@ function p63(data::Dict)
   gravlo[1:neq] = cfgsm \ gravlo[1:end]
   gravlo[0] = 0.0
   
-  println(gravlo[g])
   tensor = zeros(nst, struc_el.nip, nels)
   
   for iel in 1:nels
@@ -318,39 +319,37 @@ function p63(data::Dict)
   for i in 1:fixed_freedoms
     no[i] = nf[2, node[i]]
     gsm[no[i], no[i]] += penalty
-    storkv = gsm[no[i], no[i]]
+    storkv[i] = gsm[no[i], no[i]]
   end
   
   cfgsm = cholfact(gsm)
   
   # Load increment loop
   
-  println("   step     disp      load1        load2          iters")
-
   local iters, loads, byylds, converged
   oldis = OffsetArray(zeros(neq+1), 0:neq)
   totd = OffsetArray(zeros(neq+1), 0:neq)
   
-  #=
-  for iy in 1:size(incs, 1)
+  println("\nstep   disp    load1    load2     iters\n")
+
+  for iy in 1:incs
     iters = 0
     bdylds = OffsetArray(zeros(neq+1), 0:neq)
-    
-    evpt = zeros(nst, struc_el.nip, nels)
     react = OffsetArray(zeros(neq+1), 0:neq)
+    evpt = zeros(nst, struc_el.nip, nels)
     
     # Plastic iteration loop
     
     while true
       iters += 1
       
-      println("  disp = $(iy+presc), iteration = $(iters)")
+      #println("disp = $(iy+presc), iteration = $(iters)")
       
       loads = OffsetArray(zeros(neq+1), 0:neq)
       loads += bdylds
       
-      for i in 1:loaded_nodes
-        loads[nf[:,no[i]]] = storkv[i] * presc
+      for i in 1:fixed_freedoms
+        loads[no[i]] = storkv[i] * presc
       end
 
       loads[1:end] = cfgsm \ loads[1:end]
@@ -362,13 +361,22 @@ function p63(data::Dict)
         bdylds = OffsetArray(zeros(neq+1), 0:neq)
       end
   
+      sigm = 0.0
+      dsbar = 0.0
+      lode_theta = 0.0
+      f = 0.0
+      dq1 = 0.0
+      dq2 = 0.0
+      dq3 = 0.0
       for iel in 1:nels
-        deemat!(dee, prop[etype[iel], 2], prop[etype[iel], 3])
+        ϕ, c, ψ, γ, E, ν  = prop[etype[iel], :]
+        deemat!(dee, E, ν)
+        bload = zeros(ndof)
+        rload = zeros(ndof)
         num = g_num[:, iel]
         coord = g_coord[:, num]'
         g = g_g[:, iel]
-        eld = loads[g+1]
-        bload = zeros(ndof)
+        eld = loads[g]
         for i in 1:struc_el.nip
           shape_der!(der, points, i)
           jac = der*coord
@@ -381,15 +389,16 @@ function p63(data::Dict)
           sigma = dee*eps
           stress = sigma + tensor[:, i, iel]
           (sigm, dsbar, lode_theta) = invar!(stress, sigm, dsbar, lode_theta)
-          f = dsbar - sqrt(3.0)*prop[etype[iel], 1]
+          f = mocouf(ϕ, c, sigm, dsbar, lode_theta)
+          #iters < 2 && iel < 5 && println([ϕ c sigm dsbar lode_theta f])
           if converged || iters == limit
             devp = deepcopy(stress)
           else
             if f >= 0.0
-              dq1 = 0.0
-              dq2 = 3.0/2.0/dsbar
-              dq3 = 0.0
+              dq1, dq2, dq3 = mocouq(ϕ, dsbar, lode_theta)
+              #iters < 2 && iel < 5 && println([ϕ dsbar lode_theta dq1 dq2 dq3])
               (m1, m2, m3) = formm!(stress, m1, m2, m3)
+              #iters < 2 && iel < 5 && println([m1 m2 m3])
               flow = f*(m1*dq1 + m2*dq2 + m3*dq3)
               erate = flow*stress
               evp = erate*dt
@@ -403,35 +412,37 @@ function p63(data::Dict)
           end
           if converged || iters == limit
             tensor[:,i,iel] = stress
+            rload += (stress' * bee)' .* detm .* weights[i]
           end
         end
-        bdylds[g+1] += bload
-        bdylds[1] = 0.0
+        bdylds[g] += bload
+        react[g] += rload
+        bdylds[0] = 0.0
       end
-      if converged || iters == limit
-        break
-      end
+      (converged || iters == limit) && break
     end
     totd += loads
-    totdstr = @sprintf("%+.4e", totd[nf1[2, node[1]]])
-    if iy < 10
-      println("    $(iy)       $(ptot)    $(totdstr)       $(iters)")
-    else
-      println("   $(iy)       $(ptot)    $(totdstr)       $(iters)")
+    pr = 0.0
+    for i in 1:fixed_freedoms
+      pr += react[no[i]]
     end
+    pr /= x_coords[nbo2+1]
+    pav = 0.0
+    for i in 1:nbo2
+      pav += tensor[2, 1, (i-1)*struc_el.nye+1] + tensor[2, 2, (i-1)*struc_el.nye+1]
+    end
+    println("$(iy)     $(-round(totd[1], 5))   $(-round(pr, 5)) $(-round(pav, 5))    $(iters)")
+    iters == limit && break
   end
   
   println()
   displacements = zeros(size(nf))
   for i in 1:size(displacements, 1)
     for j in 1:size(displacements, 2)
-      if nf[i, j] > 0
-        displacements[i,j] = totd[nf[i, j]+1]
-      end
+      displacements[i,j] = totd[nf[i, j]]
     end
   end
   
   (g_coord, g_num, displacements')
-  =#
 end
 

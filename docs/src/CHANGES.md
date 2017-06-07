@@ -18,14 +18,13 @@ Note the use of the "!" in some function names which is the Julia convention for
 
 ## Custom array indices
 
-Julia by default uses 1 as the first index into an array, but has the ability to use arbitrary indexing as well. The PtFEM Fortran programs use 0-based indexing for the loads vector. In programs p41 through to p44 in chapter 4 I have used OffsetArrays.jl for this purpose, i.e:
+Julia by default uses 1 as the first index into an array, but has the ability to use arbitrary indexing as well. The PtFEM Fortran programs use 0-based indexing for the loads vector. In most programs I'm using OffsetArrays.jl for this purpose, i.e:
 
 ```
 using OffsetArrays
-N = 10
-loads = OffsetArray(zeros(N+1), 0:N)
+neq = 10 # neq usually indicates the number of equations
+loads = OffsetArray(zeros(neq+1), 0:neq)
 ```
-
 I'm planning to use the same approach in all other chapters.
 
 ## Replacing skyline storage by Julia sparse matrices
@@ -47,7 +46,7 @@ has been replaced by
   loads[2:end] = cfgsm \ loads[2:end]
 ```
 
-All 'basic' functions such as sparin!() and spabac!() can be found in the src/PtFEM directory.
+All 'basic' replaced functions such as sparin!() and spabac!() can be found in the src/PtFEM/deprecated directory.
 
 ## Separate equivalent loads  in data dictionary
 

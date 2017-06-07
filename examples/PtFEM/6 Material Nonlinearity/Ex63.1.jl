@@ -12,7 +12,7 @@ data = Dict(
   :x_coords => 0.0:0.25:10.0,
   :y_coords => 5.0:-0.25:0.0,
   :tol => 0.001,
-  :limit => 250,
+  :limit => 200,
   :incs => 25,
   :nbo2 => 8,               # No of elements to be rigidly displaced in bearing capacity 
   :qs => 20,                # Surface surcharge
@@ -22,8 +22,7 @@ data = Dict(
 data |> display
 println()
 
-#@time g_coord, g_num, disp = p63(data)
-@time p63(data)
+@time g_coord, g_num, disp = p63(data)
 println()
 
 #=

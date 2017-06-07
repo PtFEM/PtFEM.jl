@@ -23,10 +23,11 @@ mocouf!(phi, c, sigm, dsbar, theta, f)
 * f::Float64                : Value of yield function
 ```
 """
-function mocouf!(phi, c, sigm, dsbar, theta, f)
- snph = sind(phi) 
- csph = cosd(phi) 
- csth = cos(theta)
- snth = sin(theta)
- f = snph*sigm+dsbar*(csth/sqrt(3.0)-snth*snph/3.0)-c*csph
+function mocouf(phi, c, sigm, dsbar, theta)
+  snph = sind(phi) 
+  csph = cosd(phi) 
+  csth = cos(theta)
+  snth = sin(theta)
+  # f=snph*sigm+dsbar*(csth/SQRT(d3)-snth*snph/d3)-c*csph
+  snph*sigm + dsbar*(csth/sqrt(3) - snth*snph/3) - c*csph
 end
