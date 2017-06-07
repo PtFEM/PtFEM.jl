@@ -93,7 +93,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Changes w.r.t. PtFEM",
     "title": "Custom array indices",
     "category": "section",
-    "text": "Julia by default uses 1 as the first index into an array, but has the ability to use arbitrary indexing as well. The PtFEM Fortran programs use 0-based indexing for the loads vector. In programs p41 through to p44 in chapter 4 I have used OffsetArrays.jl for this purpose, i.e:using OffsetArrays\nN = 10\nloads = OffsetArray(zeros(N+1), 0:N)I'm planning to use the same approach in all other chapters."
+    "text": "Julia by default uses 1 as the first index into an array, but has the ability to use arbitrary indexing as well. The PtFEM Fortran programs use 0-based indexing for the loads vector. In most programs I'm using OffsetArrays.jl for this purpose, i.e:using OffsetArrays\nneq = 10 # neq usually indicates the number of equations\nloads = OffsetArray(zeros(neq+1), 0:neq)I'm planning to use the same approach in all other chapters."
 },
 
 {
@@ -101,7 +101,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Changes w.r.t. PtFEM",
     "title": "Replacing skyline storage by Julia sparse matrices",
     "category": "section",
-    "text": "In most programs the skyline storage idea has been replaced by Julia sparse matrices and, accordingly, PtFEM's pair sparin() and spabac() by Julia's cholfact() and \"\\\" operator.Thus  PtFEM.sparin!(kv, kdiag)\n  loads[2:end] = PtFEM.spabac!(kv, loads[2:end], kdiag)has been replaced by  # Cholesky decomposed global stiffness matrix\n  cfgsm = cholfact(gsm)\n  loads[2:end] = cfgsm \\ loads[2:end]All 'basic' functions such as sparin!() and spabac!() can be found in the src/PtFEM directory."
+    "text": "In most programs the skyline storage idea has been replaced by Julia sparse matrices and, accordingly, PtFEM's pair sparin() and spabac() by Julia's cholfact() and \"\\\" operator.Thus  PtFEM.sparin!(kv, kdiag)\n  loads[2:end] = PtFEM.spabac!(kv, loads[2:end], kdiag)has been replaced by  # Cholesky decomposed global stiffness matrix\n  cfgsm = cholfact(gsm)\n  loads[2:end] = cfgsm \\ loads[2:end]All 'basic' replaced functions such as sparin!() and spabac!() can be found in the src/PtFEM/deprecated directory."
 },
 
 {
