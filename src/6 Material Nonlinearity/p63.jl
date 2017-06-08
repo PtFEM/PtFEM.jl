@@ -401,7 +401,7 @@ function p63(data::Dict)
               #iters < 2 && iel < 5 && println([m1 m2 m3])
               flow = f*(m1*dq1 + m2*dq2 + m3*dq3)
               erate = flow*stress
-              evp = erate*dt,
+              evp = erate*dt
               evpt[:,i,iel] += evp
               devp = dee*evp
             end
