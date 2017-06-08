@@ -401,18 +401,18 @@ function p63(data::Dict)
               #iters < 2 && iel < 5 && println([m1 m2 m3])
               flow = f*(m1*dq1 + m2*dq2 + m3*dq3)
               erate = flow*stress
-              evp = erate*dt
+              evp = erate*dt,
               evpt[:,i,iel] += evp
               devp = dee*evp
             end
           end
           if f >= 0.0 || converged || iters == limit
             eload = devp' * bee
-            bload += eload' .* detm .* weights[i]
+            bload += eload' * detm * weights[i]
           end
           if converged || iters == limit
             tensor[:,i,iel] = stress
-            rload += (stress' * bee)' .* detm .* weights[i]
+            rload += (stress' * bee)' * detm * weights[i]
           end
         end
         bdylds[g] += bload
