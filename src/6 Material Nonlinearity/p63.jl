@@ -352,7 +352,7 @@ function p63(data::Dict)
         loads[no[i]] = storkv[i] * presc
       end
 
-      loads[1:end] = cfgsm \ loads[1:end]
+      @inbounds loads[1:end] = cfgsm \ loads[1:end]
       
       converged = checon!(loads, oldis, tol)
       iters == 1 && (converged = false)
@@ -385,9 +385,9 @@ function p63(data::Dict)
           deriv = jac*der
           beemat!(bee, deriv)
           eps = bee*eld
-          eps -= evpt[:, i, iel]
+          @inbounds eps -= evpt[:, i, iel]
           sigma = dee*eps
-          stress = sigma + tensor[:, i, iel]
+          @inbounds stress = sigma + tensor[:, i, iel]
           (sigm, dsbar, lode_theta) = invar!(stress, sigm, dsbar, lode_theta)
           f = mocouf(ϕ, c, sigm, dsbar, lode_theta)
           #iters < 2 && iel < 5 && println([ϕ c sigm dsbar lode_theta f])
@@ -402,7 +402,7 @@ function p63(data::Dict)
               flow = f*(m1*dq1 + m2*dq2 + m3*dq3)
               erate = flow*stress
               evp = erate*dt
-              evpt[:,i,iel] += evp
+              @inbounds evpt[:,i,iel] = evpt[:,i,iel] + evp
               devp = dee*evp
             end
           end
@@ -433,7 +433,7 @@ function p63(data::Dict)
     end
     pav /= 2nbo2
     println("$(iy)     $(-round(totd[1], 5))   $(-round(pr, 5)) $(-round(pav, 5))    $(iters)")
-    iters == limit && break
+    iters == limit && continue
   end
   
   println()

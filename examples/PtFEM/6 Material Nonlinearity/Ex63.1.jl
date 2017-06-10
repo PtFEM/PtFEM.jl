@@ -13,19 +13,25 @@ data = Dict(
   :y_coords => 5.0:-0.25:0.0,
   :tol => 0.001,
   :limit => 200,
-  :incs => 5,
+  :incs => 25,
   :nbo2 => 8,               # No of elements to be rigidly displaced in bearing capacity 
   :qs => 20,                # Surface surcharge
-  :presc => -0.005          # Magnitude of incremental vertical displacements rigid footing
+  :presc => -0.001          # Magnitude of incremental vertical displacements rigid footing
 )
 
 data |> display
 println()
 
+
+g_coord, g_num, disp = p63(data)
+println()
+
+#=
 Profile.clear()
 @profile g_coord, g_num, disp = p63(data)
 Profile.print()
 println()
+=#
 
 @time g_coord, g_num, disp = p63(data)
 println()

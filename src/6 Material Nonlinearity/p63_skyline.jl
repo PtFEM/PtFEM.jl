@@ -1,5 +1,5 @@
 """
-# Method p63
+# Method p63_skyline
 
 Plane strain bearing capacity analysis of an elastic-plastic (Mohr-Coulomb) material
 using 8-node rectangular quadrilaterals. Rigid smooth footing. Displacement control.
@@ -7,7 +7,7 @@ Viscoplastic strain method.
 
 ### Constructors
 ```julia
-p63(data)
+p63_skyline(data)
 ```
 ### Arguments
 ```julia
@@ -48,7 +48,7 @@ p63(data)
 ?Quadrilateral                 : Help on Quadrilateral finite element
 ```
 """
-function p63(data::Dict)
+function p63_skyline(data::Dict)
   
   # Setup basic dimensions of arrays
   
@@ -234,17 +234,20 @@ function p63(data::Dict)
   start_dt = 1.0e15
   dt = copy(start_dt)
   
-  ϕ, c, ψ, γ, E, ν  = prop[1, :]
-  snph = sind(ϕ)
-  ddt = 4.0 * (1.0 + ν) * ( 1.0 - 2.0ν) / (E * (1.0 - 2.0ν + snph^2))
-  ddt < dt && (dt = ddt)
+  for i in 1:size(data[:properties], 1)
+    ϕ, c, ψ, γ, E, ν  = prop[i, :]
+    snph = sind(ϕ)
+    ddt = 4.0 * (1.0 + ν) * ( 1.0 - 2.0ν) / (E * (1.0 - 2.0ν + snph^2))
+    ddt < dt && (dt = ddt)
+    #println([i ddt dt])
+  end
   
   gravlo = zeros(Float64, neq+1)
     
   PtFEM.sample!(fin_el, points, weights)
   
   for iel in 1:nels
-    PtFEM.deemat!(dee, prop[etype[iel], 2], prop[etype[iel], 3])
+    PtFEM.deemat!(dee, prop[etype[iel], 5], prop[etype[iel], 6])
     num = g_num[:, iel]
     coord = g_coord[:, num]'              # Transpose
     g = g_g[:, iel]
@@ -280,71 +283,99 @@ function p63(data::Dict)
     gravlo[nf[2, i5]+1] -= qq/6.0
   end
   
-  #gravlo[1] = 0.0
-  println()
-  println(g+1)
-  println()
-  println(gravlo[g+1])
-  println()
-  
   PtFEM.sparin!(kv, kdiag)
   PtFEM.spabac!(kv, gravlo[2:end], kdiag)
   gravlo[1] = 0.0
   
-  println(gravlo[g+1])
+
+  tensor = zeros(nst, struc_el.nip, nels)
   
-  loaded_nodes = 0
-  node = Int[]
-  val = Array{Float64, 2}
-  if :loaded_nodes in keys(data)
-    loaded_nodes = size(data[:loaded_nodes], 1)
-    node = zeros(Int, loaded_nodes)
-    val = zeros(loaded_nodes, size(data[:loaded_nodes][1][2], 2))
-  end
-  
-  if :loaded_nodes in keys(data)
-    for i in 1:loaded_nodes
-      node[i] = data[:loaded_nodes][i][1]
-      val[i,:] = data[:loaded_nodes][i][2]
+  for iel in 1:nels
+    PtFEM.deemat!(dee, prop[etype[iel], 5], prop[etype[iel], 6])
+    g = g_g[:, iel]
+    eld = gravlo[g+1]
+    num = g_num[:, iel]
+    coord = g_coord[:, num]'              # Transpose
+    for i in 1:struc_el.nip
+      PtFEM.shape_der!(der, points, i)
+      jac = der*coord
+      jac = inv(jac)
+      deriv = jac*der
+      PtFEM.beemat!(bee, deriv)
+      sigma = dee*(bee*eld)
+      for j in 1:4
+        tensor[j, i, iel] = sigma[j]
+      end
     end
   end
-
+  
+  fixed_freedoms = 2nbo2 + 1
+  node = zeros(Int, fixed_freedoms)
+  no = zeros(Int, fixed_freedoms)
+  storkv = zeros(Float64, fixed_freedoms)
+  node[1] = 1
+  k = 1
+  
+  for i in 1:nbo2
+    k += 2*struc_el.nye + 1
+    node[2*i] = k
+    k += struc_el.nye + 1
+    node[2*i + 1] = k
+  end
+  
+  kv = deepcopy(kvc)
+  for i in 1:fixed_freedoms
+    no[i] = nf1[2, node[i]]
+    kv[kdiag[nf1[2, node[i]]]] += penalty
+    storkv[i] = kv[kdiag[nf1[2, node[i]]]]
+  end
+ 
   sparin!(kv, kdiag)
   println("   step     load        disp          iters")
 
-  converged = false
-  ptot = 0.0
-  loads = zeros(Float64, neq+1)
+  local iters, loads, byylds, converged
   oldis = zeros(Float64, neq+1)
   totd = zeros(Float64, neq+1)
-  tensor = zeros(nst, struc_el.nip, nels)
-  bdylds = zeros(Float64, neq+1)
-  iy = 0
-  iters = 0
-  for iy in 1:size(qincs, 1)
-    ptot = ptot + qincs[iy]
+  
+  println("\nstep   disp    load1    load2     iters\n")
+
+  for iy in 1:size(incs, 1)
     iters = 0
     bdylds = zeros(Float64, neq+1)
+    react = zeros(Float64, neq+1)
     evpt = zeros(nst, struc_el.nip, nels)
     
     while true
       iters += 1
+      
       loads = zeros(Float64, neq+1)
-      for i in 1:loaded_nodes
-        loads[nf1[:,node[i]]] = val[i,:] * qincs[iy]
-      end
       loads += bdylds
-      loads[2:end] = spabac!(kv, loads[2:end], kdiag)
-      converged = checon!(loads, oldis, tol)
-      if iters == 1
-        converged = false
+      
+      for i in 1:fixed_freedoms
+        loads[no[i]] = storkv[i] * presc
       end
+
+      loads[2:end] = spabac!(kv, loads[2:end], kdiag)
+      
+      converged = checon!(loads, oldis, tol)
+      iters == 1 && (converged = false)
+      
       if converged || iters == limit
         bdylds = zeros(Float64, neq+1)
       end
   
+      sigm = 0.0
+      dsbar = 0.0
+      lode_theta = 0.0
+      f = 0.0
+      dq1 = 0.0
+      dq2 = 0.0
+      dq3 = 0.0
       for iel in 1:nels
-        deemat!(dee, prop[etype[iel], 2], prop[etype[iel], 3])
+        ϕ, c, ψ, γ, E, ν  = prop[etype[iel], :]
+        deemat!(dee, E, ν)
+        bload = zeros(ndof)
+        rload = zeros(ndof)
         num = g_num[:, iel]
         coord = g_coord[:, num]'
         g = g_g[:, iel]
@@ -362,14 +393,12 @@ function p63(data::Dict)
           sigma = dee*eps
           stress = sigma + tensor[:, i, iel]
           (sigm, dsbar, lode_theta) = invar!(stress, sigm, dsbar, lode_theta)
-          f = dsbar - sqrt(3.0)*prop[etype[iel], 1]
+          f = mocouf(ϕ, c, sigm, dsbar, lode_theta)
           if converged || iters == limit
             devp = deepcopy(stress)
           else
             if f >= 0.0
-              dq1 = 0.0
-              dq2 = 3.0/2.0/dsbar
-              dq3 = 0.0
+              dq1, dq2, dq3 = mocouq(ϕ, dsbar, lode_theta)
               (m1, m2, m3) = formm!(stress, m1, m2, m3)
               flow = f*(m1*dq1 + m2*dq2 + m3*dq3)
               erate = flow*stress
@@ -380,26 +409,31 @@ function p63(data::Dict)
           end
           if f >= 0.0 || converged || iters == limit
             eload = devp' * bee
-            bload += eload' .* detm .* weights[i]
+            bload += eload' * detm * weights[i]
           end
           if converged || iters == limit
             tensor[:,i,iel] = stress
+            rload += (stress' * bee)' * detm * weights[i]
           end
         end
         bdylds[g+1] += bload
         bdylds[1] = 0.0
       end
-      if converged || iters == limit
-        break
-      end
+      (converged || iters == limit) && break
     end
     totd += loads
-    totdstr = @sprintf("%+.4e", totd[nf1[2, node[1]]])
-    if iy < 10
-      println("    $(iy)       $(ptot)    $(totdstr)       $(iters)")
-    else
-      println("   $(iy)       $(ptot)    $(totdstr)       $(iters)")
+    pr = 0.0
+    for i in 1:fixed_freedoms
+      pr += react[no[i]]
     end
+    pr /= x_coords[nbo2+1]
+    pav = 0.0
+    for i in 1:nbo2
+      pav += tensor[2, 1, (i-1)*struc_el.nye+1] + tensor[2, 2, (i-1)*struc_el.nye+1]
+    end
+    pav /= 2nbo2
+    println("$(iy)     $(-round(totd[2], 5))   $(-round(pr, 5)) $(-round(pav, 5))    $(iters)")
+    iters == limit && continue
   end
   
   println()

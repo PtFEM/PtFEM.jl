@@ -87,6 +87,7 @@ include("6 Material Nonlinearity/p61.jl")
 include("6 Material Nonlinearity/p62.jl")
 include("6 Material Nonlinearity/p62a.jl")
 include("6 Material Nonlinearity/p63.jl")
+include("6 Material Nonlinearity/p63_skyline.jl")
 
 ### Exports ###
 
@@ -139,6 +140,7 @@ export
   pp62,
   p62a,
   p63,
+  p63_skyline,
   
   # From OffsetArrays
   OffsetArray
