@@ -309,7 +309,7 @@ var documenterSearchIndex = {"docs": [
     "page": "PtFEM.jl documentation",
     "title": "PtFEM.StructuralElement",
     "category": "Type",
-    "text": "StructuralElement\n\nAbstract structural element type.\n\nType\n\nabstract StructuralElement\n\nSubtypes\n\n* Rod::StructuralElement          : Rod(nxe, np_types, nip, fin_el)\n* Beam::StructuralElement         : Beam(nod, nodof)\n* Frame::StructuralElement        : Frame(nod, nodof)\n* Plane::StructuralElement        : Plane(nod, nodof)\n* Solid::StructuralElement        : Solid(nod, nodof)\n* GenericSolid::StructuralElement : GenericSolid(nod, nodof)\n\nRelated help\n\n?FiniteElement                   : Show all finite elements\n?Rod                              : Help on Rod structural element\n?Beam                             : Help on Beam structural element\n?Frame                            : Help on Frame structural element\n?Plane                            : Help on Plane structural element\n?Solid                            : Help on Solid structural element\n?GenericSolid                     : Help on GenericSolid structural element\n\n\n\n"
+    "text": "StructuralElement\n\nAbstract structural element type.\n\nType\n\nabstract StructuralElement\n\nSubtypes\n\n* Rod::StructuralElement          : Rod(nxe, np_types, nip, fin_el)\n* Beam::StructuralElement         : Beam(nod, nodof)\n* Frame::StructuralElement        : Frame(nod, nodof)\n* Plane::StructuralElement        : Plane(nod, nodof)\n* Solid::StructuralElement        : Solid(nod, nodof)\n* GenericSolid::StructuralElement : GenericSolid(nod, nodof)\n\nRelated help\n\n?FiniteElement                    : Show all finite elements\n?Rod                              : Help on Rod structural element\n?Beam                             : Help on Beam structural element\n?Frame                            : Help on Frame structural element\n?Plane                            : Help on Plane structural element\n?Solid                            : Help on Solid structural element\n?GenericSolid                     : Help on GenericSolid structural element\n\n\n\n"
 },
 
 {
@@ -317,7 +317,7 @@ var documenterSearchIndex = {"docs": [
     "page": "PtFEM.jl documentation",
     "title": "PtFEM.Rod",
     "category": "Type",
-    "text": "Rod\n\nConcrete 1D structural element with only axial stresses.\n\nConstructor\n\nRod(nels, np_types, nip, fin_el)\n\nArguments\n\n* nels::Int             : Number of fin_els (stored in field nxe)\n* np_types::Int         : Number of different property types\n* nip::Int              : Number of integration points\n* fin_el::FiniteElement   : Line(nod, nodof)\n\nRelated help\n\n?StructuralElement  : Help on structural elements\n?FiniteElement      : Help on finite element types\n?Line               : Help on a Line finite element\n\n\n\n"
+    "text": "Rod\n\nConcrete 1D structural element with only axial stresses.\n\nConstructor\n\nRod(nels, np_types, nip, fin_el)\n\nArguments\n\n* nels::Int             : Number of fin_els (stored in field nxe)\n* np_types::Int         : Number of different property types\n* nip::Int              : Number of integration points\n* fin_el::FiniteElement : Line(nod, nodof)\n\nRelated help\n\n?StructuralElement  : Help on structural elements\n?FiniteElement      : Help on finite element types\n?Line               : Help on a Line finite element\n\n\n\n"
 },
 
 {
@@ -325,7 +325,7 @@ var documenterSearchIndex = {"docs": [
     "page": "PtFEM.jl documentation",
     "title": "PtFEM.Beam",
     "category": "Type",
-    "text": "Beam\n\nConcrete structural element with transverse and moment loading.\n\nConstructor\n\nBeam(ndim, nip, fin_el)\n\nArguments\n\n* ndim::Int             : Number of dimensions\n* nst::Int              : Number of stress terms\n* nxe::Int              : Number of different property types\n* nip::Int              : Number of integration points\n* direction::Symbol       : Number of integration points\n* fin_el::FiniteElement   : Line(nod, nodof)\n* axisymmetric::Bool      : Axisymmetric if true\n\nRelated help\n\n?StructuralElement  : Help on structural elements\n?FiniteElement      : Help on finite element types\n?Line               : Help on a Line finite element\n\n\n\n"
+    "text": "Beam\n\nConcrete structural element with transverse and moment loading.\n\nConstructor\n\nBeam(ndim, nip, fin_el)\n\nArguments\n\n* ndim::Int             : Number of dimensions\n* nst::Int              : Number of stress terms\n* nxe::Int              : Number of different property types\n* nip::Int              : Number of integration points\n* direction::Symbol     : Number of integration points\n* fin_el::FiniteElement : Line(nod, nodof)\n* axisymmetric::Bool    : Axisymmetric if true\n\nRelated help\n\n?StructuralElement  : Help on structural elements\n?FiniteElement      : Help on finite element types\n?Line               : Help on a Line finite element\n\n\n\n"
 },
 
 {
@@ -333,7 +333,7 @@ var documenterSearchIndex = {"docs": [
     "page": "PtFEM.jl documentation",
     "title": "PtFEM.Frame",
     "category": "Type",
-    "text": "Frame\n\nPin- or rigid-jointed structural element.\n\nConstructor\n\nFrame(nels, nn, ndim, finite_element(nod, nodof))\n\nArguments\n\n* nels::Int             : Number of elements\n* nn:Int                : Number of nodes\n* ndim::Int             : Number of dimensions\n* nst::Int              : Number of stress terms\n* nip::Int              : Number of integration points\n* fin_el::FiniteElement   : Line(nod, nodof)\n\nRelated help\n\n?StructuralElement  : List structural elements\n?FiniteElement      : List finite element types\n?Line               : Help on a Line finite element\n\n\n\n"
+    "text": "Frame\n\nPin- or rigid-jointed structural element.\n\nConstructor\n\nFrame(nels, nn, ndim, finite_element(nod, nodof))\n\nArguments\n\n* nels::Int             : Number of elements\n* nn:Int                : Number of nodes\n* ndim::Int             : Number of dimensions\n* nst::Int              : Number of stress terms\n* nip::Int              : Number of integration points\n* fin_el::FiniteElement : Line(nod, nodof)\n\nRelated help\n\n?StructuralElement  : List structural elements\n?FiniteElement      : List finite element types\n?Line               : Help on a Line finite element\n\n\n\n"
 },
 
 {
@@ -341,7 +341,7 @@ var documenterSearchIndex = {"docs": [
     "page": "PtFEM.jl documentation",
     "title": "PtFEM.Plane",
     "category": "Type",
-    "text": "Plane\n\nPlate structural element.\n\nConstructor\n\nPlane(ndim, nst, nxe, nye, nip, dir, finite_element(nod, nodof), axisymmetric)\n\nArguments\n\n* ndim::Int             : Number of dimensions\n* nst::Int              : Number of stress terms\n* nxe::Int              : Number of elements in x direction\n* nye::Int              : Number of elements in y direction\n* nip::Int              : Number of integration points\n* dir::Symbol             : Direction of node numbering\n* fin_el::FiniteElement   : Line(nod, nodof)\n* axisymmetric::Bool      : Axisymmetric\n\nRelated help\n\n?StructuralElement  : List structural elements\n?FiniteElement      : List finite element types\n?Line               : Help on a Line finite element\n\n\n\n"
+    "text": "Plane\n\nPlate structural element.\n\nConstructor\n\nPlane(ndim, nst, nxe, nye, nip, dir, finite_element(nod, nodof), axisymmetric)\n\nArguments\n\n* ndim::Int               : Number of dimensions\n* nst::Int                : Number of stress terms\n* nxe::Int                : Number of elements in x direction\n* nye::Int                : Number of elements in y direction\n* nip::Int                : Number of integration points\n* dir::Symbol             : Direction of node numbering\n* fin_el::FiniteElement   : Line(nod, nodof)\n* axisymmetric::Bool      : Axisymmetric\n\nRelated help\n\n?StructuralElement  : List structural elements\n?FiniteElement      : List finite element types\n?Line               : Help on a Line finite element\n\n\n\n"
 },
 
 {
@@ -349,7 +349,7 @@ var documenterSearchIndex = {"docs": [
     "page": "PtFEM.jl documentation",
     "title": "PtFEM.Solid",
     "category": "Type",
-    "text": "Solid\n\nSolid structural element.\n\nConstructor\n\nSolid(ndim, nst, nxe, nye, nze, nip, finite_element(nod, nodof))\n\nArguments\n\n* ndim::Int             : Number of dimensions\n* nst::Int              : Number of stress terms\n* nxe::Int              : Number of elements in x direction\n* nye::Int              : Number of elements in y direction\n* nze::Int              : Number of elements in z direction\n* nip::Int              : Number of integration points\n* fin_el::FiniteElement   : Line(nod, nodof)\n\nRelated help\n\n?StructuralElement  : List structural elements\n?FiniteElement      : List finite element types\n\n\n\n"
+    "text": "Solid\n\nSolid structural element.\n\nConstructor\n\nSolid(ndim, nst, nxe, nye, nze, nip, finite_element(nod, nodof))\n\nArguments\n\n* ndim::Int             : Number of dimensions\n* nst::Int              : Number of stress terms\n* nxe::Int              : Number of elements in x direction\n* nye::Int              : Number of elements in y direction\n* nze::Int              : Number of elements in z direction\n* nip::Int              : Number of integration points\n* fin_el::FiniteElement : Line(nod, nodof)\n\nRelated help\n\n?StructuralElement  : List structural elements\n?FiniteElement      : List finite element types\n\n\n\n"
 },
 
 {
@@ -357,7 +357,7 @@ var documenterSearchIndex = {"docs": [
     "page": "PtFEM.jl documentation",
     "title": "PtFEM.GenericSolid",
     "category": "Type",
-    "text": "GenericSolid\n\nSolid structural element.\n\nConstructor\n\nGenericSolid(ndim, nst, nels, nn, nip, finite_element(nod, nodof), axisymmetric)\n\nArguments\n\n* ndim::Int             : Number of dimensions\n* nst::Int              : Number of stress terms\n* nels::Int             : Number of finite elements\n* nn::Int               : Number of nodes\n* nip::Int              : Number of integration points\n* fin_el::FiniteElement   : Finite element type used\n* axisymmetric::Bool      : Axisymmetric\n\nRelated help\n\n?StructuralElement  : List structural elements\n?FiniteElement      : List finite element types\n\n\n\n"
+    "text": "GenericSolid\n\nSolid structural element.\n\nConstructor\n\nGenericSolid(ndim, nst, nels, nn, nip, finite_element(nod, nodof), axisymmetric)\n\nArguments\n\n* ndim::Int               : Number of dimensions\n* nst::Int                : Number of stress terms\n* nels::Int               : Number of finite elements\n* nn::Int                 : Number of nodes\n* nip::Int                : Number of integration points\n* fin_el::FiniteElement   : Finite element type used\n* axisymmetric::Bool      : Axisymmetric\n\nRelated help\n\n?StructuralElement  : List structural elements\n?FiniteElement      : List finite element types\n\n\n\n"
 },
 
 {
