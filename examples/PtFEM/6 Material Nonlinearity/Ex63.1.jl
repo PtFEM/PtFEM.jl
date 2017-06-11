@@ -26,12 +26,12 @@ println()
 println()
 res_dt
 
-#=
+Profile.init(1500000, 0.001)
 Profile.clear()
 @profile res_dt, g_coord, g_num, disp = p63(data)
 Profile.print()
 println()
-=#
+
 
 #=
 ampl = 10.0       # Displacement amplification

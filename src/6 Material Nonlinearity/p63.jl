@@ -194,7 +194,7 @@ function p63(data::Dict)
     tol = copy(data[:tol])
   end
   
-  limit = 100
+  limit = 250
   if :limit in keys(data)
     limit = copy(data[:limit])
   end
@@ -395,15 +395,12 @@ function p63(data::Dict)
           @inbounds stress = sigma + tensor[:, i, iel]
           (sigm, dsbar, lode_theta) = invar!(stress, sigm, dsbar, lode_theta)
           f = mocouf(ϕ, c, sigm, dsbar, lode_theta)
-          #iters < 2 && iel < 5 && println([ϕ c sigm dsbar lode_theta f])
           if converged || iters == limit
             devp = deepcopy(stress)
           else
             if f >= 0.0
               dq1, dq2, dq3 = mocouq(ϕ, dsbar, lode_theta)
-              #iters < 2 && iel < 5 && println([ϕ dsbar lode_theta dq1 dq2 dq3])
               (m1, m2, m3) = formm!(stress, m1, m2, m3)
-              #iters < 2 && iel < 5 && println([m1 m2 m3])
               flow = f*(m1*dq1 + m2*dq2 + m3*dq3)
               erate = flow*stress
               evp = erate*dt
