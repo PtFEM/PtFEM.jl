@@ -58,7 +58,7 @@ Rod(nels, np_types, nip, fin_el)
 ?Line               : Help on a Line finite element
 ```
 """
-mutable immutable Rod <: StructuralElement  # Axial stresses only structural element
+mutable struct Rod <: StructuralElement  # Axial stresses only structural element
   nxe::Int                        # Number of fin_els
   np_types::Int                   # Number of property types
   nip::Int                        # Number of integration points per fin_el
