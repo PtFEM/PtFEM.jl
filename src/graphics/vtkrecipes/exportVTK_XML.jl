@@ -37,7 +37,7 @@ function write_data!(vtkxml::VTKXMLBinaryCompressed, xmlele::XMLElement)
     add_text(xmlele, data_binary)
 end
 
-type VTKXMLBinaryUncompressed <: AbstractVTKXMLBinary
+struct VTKXMLBinaryUncompressed <: AbstractVTKXMLBinary
     buffer::IOBuffer
 end
 VTKXMLBinaryUncompressed() = VTKXMLBinaryUncompressed(IOBuffer())
