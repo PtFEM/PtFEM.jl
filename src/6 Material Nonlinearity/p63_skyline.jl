@@ -278,16 +278,15 @@ function p63_skyline(data::Dict)
     i4 = g_num[4, (i-1)*struc_el.nye+1]
     i5 = g_num[5, (i-1)*struc_el.nye+1]
     qq = (x_coords[i+1] - x_coords[i]) * qs
-    gravlo[nf[2, i3]+1] -= qq/6.0
-    gravlo[nf[2, i4]+1] -= 2.0qq/3.0
-    gravlo[nf[2, i5]+1] -= qq/6.0
+    gravlo[nf1[2, i3]] -= qq/6.0
+    gravlo[nf1[2, i4]] -= 2.0qq/3.0
+    gravlo[nf1[2, i5]] -= qq/6.0
   end
   
   PtFEM.sparin!(kv, kdiag)
-  PtFEM.spabac!(kv, gravlo[2:end], kdiag)
+  gravlo[2:end] = PtFEM.spabac!(kv, gravlo[2:end], kdiag)
   gravlo[1] = 0.0
   
-
   tensor = zeros(nst, struc_el.nip, nels)
   
   for iel in 1:nels
@@ -325,21 +324,21 @@ function p63_skyline(data::Dict)
   
   kv = deepcopy(kvc)
   for i in 1:fixed_freedoms
-    no[i] = nf1[2, node[i]]
-    kv[kdiag[nf1[2, node[i]]]] += penalty
-    storkv[i] = kv[kdiag[nf1[2, node[i]]]]
+    no[i] = nf[2, node[i]]
   end
- 
+  kv = kvc
+  kv[kdiag[no]] += penalty
+  storkv = kv[kdiag[no]]
+  
   sparin!(kv, kdiag)
-  println("   step     load        disp          iters")
 
-  local iters, loads, byylds, converged
+  local iters, loads, bdylds, converged
   oldis = zeros(Float64, neq+1)
   totd = zeros(Float64, neq+1)
   
   println("\nstep   disp    load1    load2     iters\n")
 
-  for iy in 1:size(incs, 1)
+  for iy in 1:incs
     iters = 0
     bdylds = zeros(Float64, neq+1)
     react = zeros(Float64, neq+1)
@@ -352,7 +351,7 @@ function p63_skyline(data::Dict)
       loads += bdylds
       
       for i in 1:fixed_freedoms
-        loads[no[i]] = storkv[i] * presc
+        loads[no[i]+1] = storkv[i] * presc
       end
 
       loads[2:end] = spabac!(kv, loads[2:end], kdiag)
@@ -380,7 +379,6 @@ function p63_skyline(data::Dict)
         coord = g_coord[:, num]'
         g = g_g[:, iel]
         eld = loads[g+1]
-        bload = zeros(ndof)
         for i in 1:struc_el.nip
           shape_der!(der, points, i)
           jac = der*coord
@@ -417,6 +415,7 @@ function p63_skyline(data::Dict)
           end
         end
         bdylds[g+1] += bload
+        react[g+1] += rload
         bdylds[1] = 0.0
       end
       (converged || iters == limit) && break
@@ -424,7 +423,7 @@ function p63_skyline(data::Dict)
     totd += loads
     pr = 0.0
     for i in 1:fixed_freedoms
-      pr += react[no[i]]
+      pr += react[no[i]+1]
     end
     pr /= x_coords[nbo2+1]
     pav = 0.0

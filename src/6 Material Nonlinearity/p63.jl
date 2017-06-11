@@ -277,7 +277,7 @@ function p63(data::Dict)
   end
 
   cfgsm = cholfact(gsm)
-  gravlo[1:neq] = cfgsm \ gravlo[1:end]
+  gravlo[1:neq] = cfgsm \ gravlo[1:neq]
   gravlo[0] = 0.0
   
   tensor = zeros(nst, struc_el.nip, nels)
@@ -326,7 +326,7 @@ function p63(data::Dict)
   
   # Load increment loop
   
-  local iters, loads, byylds, converged
+  local iters, loads, bdylds, converged
   oldis = OffsetArray(zeros(neq+1), 0:neq)
   totd = OffsetArray(zeros(neq+1), 0:neq)
   
