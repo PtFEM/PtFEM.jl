@@ -19,21 +19,10 @@ data = Dict(
   :presc => -0.001  # Magnitude of incremental vertical displacements rigid footing
 )
 
-if VERSION.minor > 5 
-  @time res_dt, g_coord, g_num, disp = p63(data)
-else
-  data[:incs] = 5
-  @time res_dt, g_coord, g_num, disp = p63_skyline(data)
-end
+@time res_dt, g_coord, g_num, disp = p63(data)
 println()
 res_dt
 
-if VERSION.minor > 5 
-  @test Float64(res_dt[end,:load1].value) ≈ 379.91559664874114
-  @test Float64(res_dt[end,:load2].value) ≈ 374.0927319888041
-  @test Int(res_dt[end,:iters].value) == 200
-else
-  @test Float64(res_dt[5,:load1].value) ≈ 161.274
-  @test Float64(res_dt[5,:load2].value) ≈ 158.059
-  @test Int(res_dt[5,:iters].value) == 30
-end  
+@test Float64(res_dt[end,:load1].value) ≈ 379.91559664874114
+@test Float64(res_dt[end,:load2].value) ≈ 374.0927319888041
+@test Int(res_dt[end,:iters].value) == 200
