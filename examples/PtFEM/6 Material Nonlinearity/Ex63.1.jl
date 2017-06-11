@@ -14,9 +14,9 @@ data = Dict(
   :tol => 0.001,
   :limit => 200,
   :incs => 25,
-  :nbo2 => 8,               # No of elements to be rigidly displaced in bearing capacity 
-  :qs => 20,                # Surface surcharge
-  :presc => -0.001          # Magnitude of incremental vertical displacements rigid footing
+  :nbo2 => 8,       # No of elements to be rigidly displaced in bearing capacity 
+  :qs => 20,        # Surface surcharge
+  :presc => -0.001  # Magnitude of incremental vertical displacements rigid footing
 )
 
 data |> display
