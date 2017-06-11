@@ -19,7 +19,11 @@ data = Dict(
   :presc => -0.001  # Magnitude of incremental vertical displacements rigid footing
 )
 
-@time res_dt, g_coord, g_num, disp = p63(data)
+if VERSION.minor > 5 
+  @time res_dt, g_coord, g_num, disp = p63(data)
+else
+  @time res_dt, g_coord, g_num, disp = p63_skyline(data)
+end
 println()
 res_dt
 
