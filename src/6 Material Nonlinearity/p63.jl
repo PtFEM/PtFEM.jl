@@ -330,6 +330,11 @@ function p63(data::Dict)
   oldis = OffsetArray(zeros(neq+1), 0:neq)
   totd = OffsetArray(zeros(neq+1), 0:neq)
   
+  disps = Array{Float64, 1}()
+  loads1 = Array{Float64, 1}()
+  loads2 = Array{Float64, 1}()
+  iterations = Array{Int, 1}()
+  
   println("\nstep   disp    load1    load2     iters\n")
 
   for iy in 1:incs
@@ -433,6 +438,10 @@ function p63(data::Dict)
     end
     pav /= 2nbo2
     println("$(iy)     $(-round(totd[1], 5))   $(-round(pr, 5)) $(-round(pav, 5))    $(iters)")
+    append!(disps, -totd[1])
+    append!(loads1, -pr)
+    append!(loads2, -pav)
+    append!(iterations, iters)
     iters == limit && continue
   end
   
@@ -444,6 +453,13 @@ function p63(data::Dict)
     end
   end
   
-  (g_coord, g_num, displacements')
+  res_dt = DataTable(
+    displacement = disps,
+    load1 = loads1,
+    load2 = loads2,
+    iters = iterations
+  )
+  
+  (res_dt, g_coord, g_num, displacements')
 end
 

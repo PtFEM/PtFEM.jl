@@ -22,21 +22,7 @@ data = Dict(
 data |> display
 println()
 
-
-g_coord, g_num, disp = p63_skyline(data)
+res_dt, g_coord, g_num, disp = p63_skyline(data)
 println()
 
-#=
-Profile.clear()
-@profile g_coord, g_num, disp = p63(data)
-Profile.print()
-println()
-=#
-
-@time g_coord, g_num, disp = p63_skyline(data)
-println()
-
-#=
-ampl = 10.0       # Displacement amplification
-mesh(data, g_coord, g_num, disp, ampl, ProjDir)
-=#
+res_dt

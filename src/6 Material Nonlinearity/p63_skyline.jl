@@ -338,6 +338,11 @@ function p63_skyline(data::Dict)
   
   println("\nstep   disp    load1    load2     iters\n")
 
+  disps = Array{Float64, 1}()
+  loads1 = Array{Float64, 1}()
+  loads2 = Array{Float64, 1}()
+  iterations = Array{Int, 1}()
+  
   for iy in 1:incs
     iters = 0
     bdylds = zeros(Float64, neq+1)
@@ -431,6 +436,10 @@ function p63_skyline(data::Dict)
       pav += tensor[2, 1, (i-1)*struc_el.nye+1] + tensor[2, 2, (i-1)*struc_el.nye+1]
     end
     pav /= 2nbo2
+    append!(disps, -totd[2])
+    append!(loads1, -pr)
+    append!(loads2, -pav)
+    append!(iterations, iters)
     println("$(iy)     $(-round(totd[2], 5))   $(-round(pr, 5)) $(-round(pav, 5))    $(iters)")
     iters == limit && continue
   end
@@ -445,6 +454,13 @@ function p63_skyline(data::Dict)
     end
   end
   
-  (g_coord, g_num, displacements')
+  res_dt = DataTable(
+    displacement = disps,
+    load1 = loads1,
+    load2 = loads2,
+    iters = iterations
+  )
+  
+  (res_dt, g_coord, g_num, displacements')
 end
 

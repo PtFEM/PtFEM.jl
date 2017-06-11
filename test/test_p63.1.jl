@@ -1,4 +1,4 @@
-using PtFEM
+using Base.Test, PtFEM, Compat
 
 ProjDir = dirname(@__FILE__)
 
@@ -19,21 +19,11 @@ data = Dict(
   :presc => -0.001  # Magnitude of incremental vertical displacements rigid footing
 )
 
-data |> display
-println()
-
 @time res_dt, g_coord, g_num, disp = p63(data)
 println()
 res_dt
 
-#=
-Profile.clear()
-@profile res_dt, g_coord, g_num, disp = p63(data)
-Profile.print()
-println()
-=#
+@test Float64(res_dt[end,:load1].value) ≈ 379.91559664874114
+@test Float64(res_dt[end,:load2].value) ≈ 374.0927319888041
+@test Int(res_dt[end,:iters].value) == 200
 
-#=
-ampl = 10.0       # Displacement amplification
-mesh(data, g_coord, g_num, disp, ampl, ProjDir)
-=#
