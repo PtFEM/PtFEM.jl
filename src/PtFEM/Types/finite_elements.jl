@@ -46,7 +46,7 @@ Line(nodof)
 ```
 
 """
-immutable Line <: FiniteElement
+struct Line <: FiniteElement
   nod::Int
   nodof::Int
 end
@@ -74,7 +74,7 @@ Triangle(nod, nodof)
 ```
 
 """
-immutable Triangle <: FiniteElement
+struct Triangle <: FiniteElement
   nod::Int
   nodof::Int
 end
@@ -101,7 +101,7 @@ Quadrilateral(nod, nodof)
 ```
 
 """
-immutable Quadrilateral <: FiniteElement
+struct Quadrilateral <: FiniteElement
   nod::Int
   nodof::Int
 end
@@ -129,7 +129,7 @@ Tetrahedron(nodof)
 ```
 
 """
-immutable Tetrahedron <: FiniteElement
+struct Tetrahedron <: FiniteElement
   nod::Int
   nodof::Int
 end
@@ -157,7 +157,7 @@ Hexahedron(nod, nodof)
 ```
 
 """
-immutable Hexahedron <: FiniteElement
+struct Hexahedron <: FiniteElement
   nod::Int
   nodof::Int
 end
