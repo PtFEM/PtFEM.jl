@@ -449,27 +449,27 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#PtFEM.beam_gm!-Tuple{Array{Float64,2},Float64}",
+    "location": "index.html#PtFEM.beam_gm-Tuple{Float64}",
     "page": "PtFEM.jl documentation",
-    "title": "PtFEM.beam_gm!",
+    "title": "PtFEM.beam_gm",
     "category": "Method",
-    "text": "beam_gm!\n\nThis subroutine forms the beam geometric matrix for stability analysis.\n\nMethod\n\nbeam_gm!(gm::Matrix{Float64}, ell::Float64)\n\nArguments\n\n* gm::::Matrix{Float64}     : Geometric matrix for beam element (Updated)\n* ell::Float64              : Element length\n\n\n\n"
+    "text": "beam_gm\n\nThis subroutine forms the beam geometric matrix for stability analysis.\n\nMethod\n\nbeam_gm(ell::Float64)\n\nArguments\n\n* ell::Float64                   : Element length\n\nReturn value\n\n* gm::::Matrix{Float64}(4,4)     : Geometric matrix for beam element\n\n\n\n"
 },
 
 {
-    "location": "index.html#PtFEM.beam_km!-Tuple{Array{Float64,2},Float64,Float64}",
+    "location": "index.html#PtFEM.beam_km-Tuple{Float64,Float64}",
     "page": "PtFEM.jl documentation",
-    "title": "PtFEM.beam_km!",
+    "title": "PtFEM.beam_km",
     "category": "Method",
-    "text": "beam_km!\n\nThis subroutine forms the stiffness matrix of a beam element (bending only).\n\nMethod\n\nbeam_km!(km, ei, ell)\n\nArguments\n\n* km::::Matrix{Float64}     : Stiiness matrix for beam element (Updated)\n* ei::Float64               : Element stiffness\n* ell::Float64              : Element length\n\n\n\n"
+    "text": "beam_km\n\nThis subroutine forms the stiffness matrix of a beam element (bending only).\n\nMethod\n\nbeam_km(ei, ell)\n\nArguments\n\n* ei::Float64               : Element stiffness\n* ell::Float64              : Element length\n\nReturn value\n\n* km::::Matrix{Float64}     : Stiiness matrix for beam element (Updated)\n\n\n\n"
 },
 
 {
-    "location": "index.html#PtFEM.beam_mm!-Tuple{Array{Float64,2},Float64,Float64}",
+    "location": "index.html#PtFEM.beam_mm-Tuple{Float64,Float64}",
     "page": "PtFEM.jl documentation",
-    "title": "PtFEM.beam_mm!",
+    "title": "PtFEM.beam_mm",
     "category": "Method",
-    "text": "beam_mm!\n\nThis subroutine forms the stiffness matrix of a beam element (bending only).\n\nMethod\n\nbeam_mm!(mm, ei, ell)\n\nArguments\n\n* mm::::Matrix{Float64}     : Mass matrix for beam element (Updated)\n* fs::Float64               : Element density\n* ell::Float64              : Element length\n\n\n\n"
+    "text": "beam_mm\n\nThis subroutine forms the stiffness matrix of a beam element (bending only).\n\nMethod\n\nbeam_mm(ei, ell)\n\nArguments\n\n* fs::Float64               : Element density\n* ell::Float64              : Element length\n\nReturn value\n\n* mm::::Matrix{Float64}     : Mass matrix for beam elembeam_mmated)\n\n\n\n"
 },
 
 {
@@ -489,11 +489,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#PtFEM.checon!-Tuple{Array{Float64,1},Array{Float64,1},Float64}",
+    "location": "index.html#PtFEM.checon-Tuple{Array{Float64,1},Array{Float64,1},Float64}",
     "page": "PtFEM.jl documentation",
-    "title": "PtFEM.checon!",
+    "title": "PtFEM.checon",
     "category": "Method",
-    "text": "checon!\n\nThis subroutine sets converged to .FALSE. if relative change in loads and oldlds is greater than tol and updates oldlds.\n\nMethod\n\nchecon!(loads, oldlds, tol)\n\nArguments\n\n* loads::Vector{Float64}        : Displacements vector/OffsetArray\n* oldlds::Vector{Float64}       : Previous displacement vector/OffsetArray\n* tol::Float64                  : Convergence tolerance\n\n\n\n"
+    "text": "checon\n\nThis subroutine sets converged to .FALSE. if relative change in loads and oldlds is greater than tol and updates oldlds.\n\nMethod\n\nchecon(loads, oldlds, tol)\n\nArguments\n\n* loads::Vector{Float64}        : Displacements vector/OffsetArray\n* oldlds::Vector{Float64}       : Previous displacement vector/OffsetArray\n* tol::Float64                  : Convergence tolerance\n\nReturn value\n\n* ::Bool                        : Convergence achieved\n\n\n\n"
 },
 
 {
@@ -569,11 +569,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#PtFEM.invar!-Tuple{Array{Float64,1},Float64,Float64,Float64}",
+    "location": "index.html#PtFEM.invar-Tuple{Array{Float64,1},Float64,Float64,Float64}",
     "page": "PtFEM.jl documentation",
-    "title": "PtFEM.invar!",
+    "title": "PtFEM.invar",
     "category": "Method",
-    "text": "invar!\n\nThis subroutine forms the stress invariants in 2- or 3-d. See equations 6.3 and 6.4\n\nFunction\n\ninvar!(stress, sigm, dsbar, theta)\n\nArguments\n\n* stress::Vector{Float64}    : Stress vector\n* sigm::Float64              : Invariant, eq 6.4 (Updated)\n* dsbar::Float64             : Invariant, eq 6.4 (Updated)\n* theta::Float64             : Invariant, eq 6.3 (Updated)\n\n\n\n"
+    "text": "invar\n\nThis subroutine forms the stress invariants in 2- or 3-d. See equations 6.3 and 6.4\n\nFunction\n\ninvar(stress, sigm, dsbar, theta)\n\nArguments\n\n* stress::Vector{Float64}    : Stress vector\n* sigm::Float64              : Invariant, eq 6.4 (Updated)\n* dsbar::Float64             : Invariant, eq 6.4 (Updated)\n* theta::Float64             : Invariant, eq 6.3 (Updated)\n\nREturn values\n\n* stress::Vector{Float64}    : Stress vector\n* sigm::Float64              : Invariant, eq 6.4 (Updated)\n* dsbar::Float64             : Invariant, eq 6.4 (Updated)\n\n\n\n"
 },
 
 {
@@ -590,6 +590,22 @@ var documenterSearchIndex = {"docs": [
     "title": "PtFEM.loc_to_glob!",
     "category": "Method",
     "text": "loc_to_glob!\n\nThis subroutine transforms the local end reactions and moments into the global system (3-d).\n\nFunction\n\nloc_to_glob!(loc, glob, gamma, coord)\n\nArguments\n\n* loc::Vector{Float64}       : Local force and momemts (Updated)\n* glob::Vector{Float64}      : Globale forces and moments\n* gamma::Float64             : Element orientation angle (3D)\n* coord::Matrix{Float64}     : Nodal coordinates\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.mocouf-NTuple{5,Any}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.mocouf",
+    "category": "Method",
+    "text": "mocouf\n\nThis subroutine calculates the value of the yield function for a Mohr-Coulomb material (phi in degrees).\n\nFunction\n\nmocouf!(phi, c, sigm, dsbar, theta, f)\n\nArguments\n\n* psi::Float64              : Local force and momemts (Updated)\n* c::Float64                : Globale forces and moments\n* sigm::Float64             : Element orientation angle (3D)\n* dsbar::Float64            : Globale forces and moments\n* theta::Float64            : Element orientation angle (3D)\n\nReturn value\n\n* ::Float64                 : Value of yield function\n\n\n\n"
+},
+
+{
+    "location": "index.html#PtFEM.mocouq-Tuple{Any,Any,Any}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.mocouq",
+    "category": "Method",
+    "text": "mocouq\n\nThis subroutine forms the derivatives of a Mohr-Coulomb potential function with respect to the three invariants (psi in degrees).\n\nFunction\n\n(dq1,dq2,dq3) = mocouq(psi,dsbar,theta)\n\nArguments\n\n* psi::Float64               : Local force and momemts (Updated)\n* dsbar::Float64             : Globale forces and moments\n* theta::Float64             : Element orientation angle (3D)\n\nReturn values\n\n* dq1::Float64               : Local force and momemts (Updated)\n* dq2::Float64               : Globale forces and moments\n* dq3::Float64               : Element orientation angle (3D)\n\n\n\n"
 },
 
 {
@@ -669,7 +685,7 @@ var documenterSearchIndex = {"docs": [
     "page": "PtFEM.jl documentation",
     "title": "PtFEM - Main",
     "category": "section",
-    "text": "PtFEM.beam_gm!(gm::Matrix{Float64}, ell::Float64)\nPtFEM.beam_km!(km::Matrix{Float64}, ei::Float64, ell::Float64)\nPtFEM.beam_mm!(mm::Matrix{Float64}, fs::Float64, ell::Float64)\nPtFEM.beemat!(bee::Matrix{Float64},deriv::Matrix{Float64})\nPtFEM.bmat_nonaxi!(bee::Matrix{Float64}, radius::Float64, coord::Matrix{Float64}, deriv::Matrix{Float64}, fun::Vector{Float64}, iflag::Int, lth::Int)\nPtFEM.checon!(loads::Vector{Float64}, oldlds::Vector{Float64}, tol::Float64)\nPtFEM.deemat!(dee::Array{Float64, 2}, e::Float64, v::Float64)\nPtFEM.fkdiag!(kdiag::Vector{Int}, g::Vector{Int})\nPtFEM.fmplat!(d2x::Vector{Float64}, d2y::Vector{Float64}, d2xy::Vector{Float64}, points::Matrix{Float64}, aa::Float64, bb::Float64, i::Int)\nPtFEM.formm!(stress::Vector{Float64}, m1::Matrix{Float64}, m2::Matrix{Float64}, m3::Matrix{Float64})\nPtFEM.formnf!(nodof::Int, nn::Int, nf::Matrix{Int})\nPtFEM.fsparm!(gsm, g, km)\nPtFEM.glob_to_loc!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float64, coord::Matrix{Float64})\nPtFEM.glob_to_axial(glob::Vector{Float64}, coord::Matrix{Float64})\nPtFEM.hinge!(coord::Matrix{Float64}, holdr::Matrix{Float64}, action::Vector{Float64}, react::Vector{Float64}, prop::Matrix{Float64}, iel, etype::Vector{Int}, gamma::Vector{Float64})\nPtFEM.invar!(stress::Vector{Float64}, sigm::Float64, dsbar::Float64, theta::Float64)\nPtFEM.linmul_sky!(kv::Vector{Float64}, disps::Vector{Float64}, loads::Vector{Float64}, kdiag::Vector{Int})\nPtFEM.loc_to_glob!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float64, coord::Matrix{Float64})\nPtFEM.num_to_g!(num::Vector{Int}, nf::Matrix{Int}, g::Vector{Int})\nPtFEM.pin_jointed!(km::Matrix{Float64}, ea::Float64, coord::Matrix{Float64})\nPtFEM.rigid_jointed!(km::Matrix{Float64}, prop::Matrix{Float64}, gamma::Vector{Float64}, etype::Vector{Int}, iel::Int, coord::Matrix{Float64})\nPtFEM.rod_km!(km::Matrix{Float64}, ea::Float64, length::Float64)\nPtFEM.rod_mm!(mm::Matrix{Float64}, length::Float64)\nPtFEM.sample!\nPtFEM.shape_der!(der::Matrix{Float64}, points::Matrix{Float64}, i::Int)\nPtFEM.shape_fun!(fun::Vector{Float64}, points::Matrix{Float64}, i::Int)\nPtFEM.stability(gsm::SparseMatrixCSC{Float64,Int}, ggm::SparseMatrixCSC{Float64,Int}, tol::Float64, limit::Int)"
+    "text": "PtFEM.beam_gm(ell::Float64)\nPtFEM.beam_km(ei::Float64, ell::Float64)\nPtFEM.beam_mm(fs::Float64, ell::Float64)\nPtFEM.beemat!(bee::Matrix{Float64},deriv::Matrix{Float64})\nPtFEM.bmat_nonaxi!(bee::Matrix{Float64}, radius::Float64, coord::Matrix{Float64}, deriv::Matrix{Float64}, fun::Vector{Float64}, iflag::Int, lth::Int)\nPtFEM.checon(loads::Vector{Float64}, oldlds::Vector{Float64}, tol::Float64)\nPtFEM.deemat!(dee::Array{Float64, 2}, e::Float64, v::Float64)\nPtFEM.fkdiag!(kdiag::Vector{Int}, g::Vector{Int})\nPtFEM.fmplat!(d2x::Vector{Float64}, d2y::Vector{Float64}, d2xy::Vector{Float64}, points::Matrix{Float64}, aa::Float64, bb::Float64, i::Int)\nPtFEM.formm!(stress::Vector{Float64}, m1::Matrix{Float64}, m2::Matrix{Float64}, m3::Matrix{Float64})\nPtFEM.formnf!(nodof::Int, nn::Int, nf::Matrix{Int})\nPtFEM.fsparm!(gsm, g, km)\nPtFEM.glob_to_loc!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float64, coord::Matrix{Float64})\nPtFEM.glob_to_axial(glob::Vector{Float64}, coord::Matrix{Float64})\nPtFEM.hinge!(coord::Matrix{Float64}, holdr::Matrix{Float64}, action::Vector{Float64}, react::Vector{Float64}, prop::Matrix{Float64}, iel, etype::Vector{Int}, gamma::Vector{Float64})\nPtFEM.invar(stress::Vector{Float64}, sigm::Float64, dsbar::Float64, theta::Float64)\nPtFEM.linmul_sky!(kv::Vector{Float64}, disps::Vector{Float64}, loads::Vector{Float64}, kdiag::Vector{Int})\nPtFEM.loc_to_glob!(loc::Vector{Float64}, glob::Vector{Float64}, gamma::Float64, coord::Matrix{Float64})\nPtFEM.mocouf(phi, c, sigm, dsbar, theta)\nPtFEM.mocouq(psi, dsbar, theta)\nPtFEM.num_to_g!(num::Vector{Int}, nf::Matrix{Int}, g::Vector{Int})\nPtFEM.pin_jointed!(km::Matrix{Float64}, ea::Float64, coord::Matrix{Float64})\nPtFEM.rigid_jointed!(km::Matrix{Float64}, prop::Matrix{Float64}, gamma::Vector{Float64}, etype::Vector{Int}, iel::Int, coord::Matrix{Float64})\nPtFEM.rod_km!(km::Matrix{Float64}, ea::Float64, length::Float64)\nPtFEM.rod_mm!(mm::Matrix{Float64}, length::Float64)\nPtFEM.sample!\nPtFEM.shape_der!(der::Matrix{Float64}, points::Matrix{Float64}, i::Int)\nPtFEM.shape_fun!(fun::Vector{Float64}, points::Matrix{Float64}, i::Int)\nPtFEM.stability(gsm::SparseMatrixCSC{Float64,Int}, ggm::SparseMatrixCSC{Float64,Int}, tol::Float64, limit::Int)"
 },
 
 {
