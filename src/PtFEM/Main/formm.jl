@@ -16,6 +16,13 @@ formm!(stress, m1, m2, m3)
 * m2::Matrix{Float64}        : m2 matrix
 * m3::Matrix{Float64}        : m3 matrix
 ```
+
+### Return values
+```julia
+* m1::Matrix{Float64}        : m1 matrix
+* m2::Matrix{Float64}        : m2 matrix
+* m3::Matrix{Float64}        : m3 matrix
+```
 """
 function formm!(stress::Vector{Float64}, m1::Matrix{Float64}, 
   m2::Matrix{Float64}, m3::Matrix{Float64})

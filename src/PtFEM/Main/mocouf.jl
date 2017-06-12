@@ -6,7 +6,7 @@ for a Mohr-Coulomb material (phi in degrees).
 
 ### Function
 ```julia
-mocouf!(phi, c, sigm, dsbar, theta, f)
+mocouf(phi, c, sigm, dsbar, theta)
 ```
 
 ### Arguments
