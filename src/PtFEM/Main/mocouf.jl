@@ -1,5 +1,5 @@
 """
-## mocouf!!
+## mocouf
 
 This subroutine calculates the value of the yield function
 for a Mohr-Coulomb material (phi in degrees).
@@ -18,9 +18,9 @@ mocouf!(phi, c, sigm, dsbar, theta, f)
 * theta::Float64            : Element orientation angle (3D)
 ```
 
-### Updated arguments
+### Return value
 ```julia
-* f::Float64                : Value of yield function
+* ::Float64                 : Value of yield function
 ```
 """
 function mocouf(phi, c, sigm, dsbar, theta)
@@ -28,6 +28,5 @@ function mocouf(phi, c, sigm, dsbar, theta)
   csph = cosd(phi) 
   csth = cos(theta)
   snth = sin(theta)
-  # f=snph*sigm+dsbar*(csth/SQRT(d3)-snth*snph/d3)-c*csph
   snph*sigm + dsbar*(csth/sqrt(3) - snth*snph/3) - c*csph
 end

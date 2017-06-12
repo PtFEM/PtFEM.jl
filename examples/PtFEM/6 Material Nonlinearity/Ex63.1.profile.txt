@@ -112,8 +112,8 @@ step   disp    load1    load2     iters
  6306 ./sparse/cholmod.jl:1605; \(::Base.SparseArrays.CHOLMOD.Factor{Float64...
   6255 ./sparse/cholmod.jl:792; solve(::Int32, ::Base.SparseArrays.CHOLMOD....
 471  ... Material Nonlinearity/p63.jl:362; p63(::Dict{Symbol,Any})
- 431 ...PtFEM/src/PtFEM/Main/checon.jl:25; checon!
- 40  ...PtFEM/src/PtFEM/Main/checon.jl:26; checon!
+ 431 ...PtFEM/src/PtFEM/Main/checon.jl:25; checon
+ 40  ...PtFEM/src/PtFEM/Main/checon.jl:26; checon
 5    ... Material Nonlinearity/p63.jl:376; p63(::Dict{Symbol,Any})
 1530 ... Material Nonlinearity/p63.jl:377; p63(::Dict{Symbol,Any})
 110  ... Material Nonlinearity/p63.jl:378; p63(::Dict{Symbol,Any})

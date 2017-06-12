@@ -361,7 +361,7 @@ function p63_skyline(data::Dict)
 
       loads[2:end] = spabac!(kv, loads[2:end], kdiag)
       
-      converged = checon!(loads, oldis, tol)
+      converged = checon(loads, oldis, tol)
       iters == 1 && (converged = false)
       
       if converged || iters == limit
@@ -395,7 +395,7 @@ function p63_skyline(data::Dict)
           eps -= evpt[:, i, iel]
           sigma = dee*eps
           stress = sigma + tensor[:, i, iel]
-          (sigm, dsbar, lode_theta) = invar!(stress, sigm, dsbar, lode_theta)
+          (sigm, dsbar, lode_theta) = invar(stress, sigm, dsbar, lode_theta)
           f = mocouf(ϕ, c, sigm, dsbar, lode_theta)
           if converged || iters == limit
             devp = deepcopy(stress)

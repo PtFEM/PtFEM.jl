@@ -176,11 +176,11 @@ function p46(data::Dict{Symbol, Any})
   gsm = spzeros(neq, neq)
   ggm = spzeros(neq, neq)
   for i in 1:nels
-    km = beam_km!(km, prop[etype[i], 1], ell[i])
+    km = beam_km(prop[etype[i], 1], ell[i])
     if size(prop, 2) > 1
-      mm = beam_mm!(mm, prop[etype[i], 2], ell[i])
+      mm = beam_mm(prop[etype[i], 2], ell[i])
     end
-    kg = beam_gm!(kg, ell[i])
+    kg = beam_gm(ell[i])
     g = g_g[:, i]
     fsparm!(gsm, g, km+mm)
     fsparm!(ggm, g, kg)

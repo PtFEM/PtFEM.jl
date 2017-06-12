@@ -185,10 +185,10 @@ function p43(data::Dict)
   
   gsm = spzeros(neq, neq)
   for i in 1:nels
-    km = beam_km!(km, prop[etype[i], 1], ell[i])
+    km = beam_km(prop[etype[i], 1], ell[i])
     g = g_g[:, i]
     if size(prop, 2) > 1
-      mm = beam_mm!(mm, prop[etype[i], 2], ell[i])
+      mm = beam_mm(prop[etype[i], 2], ell[i])
     end
     fsparm!(gsm, g, km+mm)
   end
@@ -233,10 +233,10 @@ function p43(data::Dict)
   end
 
   for i in 1:nels
-    beam_km!(km, prop[etype[i], 1], ell[i])
+    beam_km(prop[etype[i], 1], ell[i])
     g = g_g[:, i]
     if size(prop, 2) > 1
-      beam_mm!(mm, prop[etype[i], 2], ell[i])
+      beam_mm(prop[etype[i], 2], ell[i])
     end
     eld = zeros(length(g))
     for j in 1:length(g)

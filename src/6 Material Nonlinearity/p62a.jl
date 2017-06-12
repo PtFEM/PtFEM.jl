@@ -289,7 +289,7 @@ function pp62(data::Dict)
         beta = dot(loads, d) ./ up
         p = d + p * beta
         #tmpconvcrit =  maximum(abs.(xnew-x))/maximum(abs.(xnew))
-        cg_converged = checon!(xnew, x, cg_tol)
+        cg_converged = checon(xnew, x, cg_tol)
         #iy < 2 && println([iters cg_iters cg_tot+cg_iters tmpconvcrit])
         if cg_converged || (cg_iters == cg_limit)
           break
@@ -301,7 +301,7 @@ function pp62(data::Dict)
       
       # Check plastic convergence
 
-      converged = checon!(loads, oldis, tol)
+      converged = checon(loads, oldis, tol)
       if iters == 1
         converged = false
       end
@@ -329,7 +329,7 @@ function pp62(data::Dict)
           eps -= evpt[:, i, iel]
           sigma = dee*eps
           stress = sigma + tensor[:, i, iel]
-          (sigm, dsbar, lode_theta) = invar!(stress, sigm, dsbar, lode_theta)
+          (sigm, dsbar, lode_theta) = invar(stress, sigm, dsbar, lode_theta)
           
           # Check whether yield is violated
           

@@ -297,7 +297,7 @@ function p61(data::Dict)
       end
       loads += bdylds
       loads[2:end] = spabac!(kv, loads[2:end], kdiag)
-      converged = checon!(loads, oldis, tol)
+      converged = checon(loads, oldis, tol)
       if iters == 1
         converged = false
       end
@@ -323,7 +323,7 @@ function p61(data::Dict)
           eps -= evpt[:, i, iel]
           sigma = dee*eps
           stress = sigma + tensor[:, i, iel]
-          (sigm, dsbar, lode_theta) = invar!(stress, sigm, dsbar, lode_theta)
+          (sigm, dsbar, lode_theta) = invar(stress, sigm, dsbar, lode_theta)
           f = dsbar - sqrt(3.0)*prop[etype[iel], 1]
           if converged || iters == limit
             devp = deepcopy(stress)
