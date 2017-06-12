@@ -273,11 +273,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "index.html#PtFEM.p52-Tuple{Dict{Symbol,Any}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.p52",
+    "category": "Method",
+    "text": "Method p52\n\nNon-axisymmetric analysis of an axisymmetric elastic solid using 8-node rectangular quadrilaterals. Mesh numbered in r- or z- direction.\n\nConstructors\n\np52(data)\n\nArguments\n\n* `data::Dict{Symbol, Any}` : Dictionary containing all input data\n\nRequired data dictionary keys\n\n* struc_el::StructuralElement                          : Structural element\n* support::Array{Tuple{Int,Array{Int,1}},1}            : Fixed-displacements vector\n* loaded_nodes::Array{Tuple{Int,Array{Float64,1}},1}   : Node load vector\n* properties::Vector{Float64}                          : Material properties\n\nOptional additional data dictionary keys\n\n* penalty = 1e20             : Penalty used for fixed degrees of freedoms\n* etype::Vector{Int}         : Element material vector if np_types > 1\n* lth::Int                   :\n* iflag::Int                 :\n* chi::Float64               :\n\nReturn values\n\n* (fem, fm_dt, sigma_dt)     : Tuple of jFem, dis_dt and fm_dt\n                               where:\n                                 fm_dt         : Forces and moments data table\n                                 sigma_dt      : Stresses data table\n\nRelated help\n\n?StructuralElement           : List of available structural element types\n?Plane                       : Help on a Plane structural element\n?FiniteElement               : List finite element types\n?Quadrilateral               : Help on Quadrilateral finite element\n\n\n\n"
+},
+
+{
     "location": "index.html#Elastic-Solids-Programs-1",
     "page": "PtFEM.jl documentation",
     "title": "5 Elastic Solids Programs",
     "category": "section",
-    "text": "p51(data::Dict{Symbol, Any})"
+    "text": "p51(data::Dict{Symbol, Any})\np52(data::Dict{Symbol, Any})"
 },
 
 {
@@ -297,11 +305,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "index.html#PtFEM.p63-Tuple{Dict{Symbol,Any}}",
+    "page": "PtFEM.jl documentation",
+    "title": "PtFEM.p63",
+    "category": "Method",
+    "text": "Method p63\n\nPlane strain bearing capacity analysis of an elastic-plastic (Mohr-Coulomb) material using 8-node rectangular quadrilaterals. Rigid smooth footing. Displacement control. Viscoplastic strain method.\n\nConstructors\n\np63(data)\n\nArguments\n\n* `data::Dict{Symbol, Any}` : Dictionary containing all input data\n\nRequired data dictionary keys\n\n* struc_el::StructuralElement                          : Structural element\n* properties::Vector{Float64}                          : Material properties\n* x_coords::FloatRange{Floalt64}                       : x-coordinate vector\n* y_coords::FloatRange{Floalt64}                       : y-coordinate vector\n\nOptional additional data dictionary keys\n\n* tol::Float64                 : Convergence tolerance\n* limit = 250                  : Iteration limit\n* incs::Int                    : Incremental load steps\n* presc::Float64               : Wall displacement increment\n* penalty = 1e20               : Penalty used for fixed degrees of freedoms\n* etype::Vector{Int}           : Element material vector if np_types > 1\n\nReturn values\n\n* (g_coord, g_num, disp)        : where:\n                                    g_coord  : Coordinates\n                                    g_num    : Node numbering\n                                    disp     : Matrix of displacements\n\nRelated help\n\n?StructuralElement             : List of available structural element types\n?Plane                         : Help on a Plane structural element\n?FiniteElement                 : List finite element types\n?Quadrilateral                 : Help on Quadrilateral finite element\n\n\n\n"
+},
+
+{
     "location": "index.html#Material-Nonlinearity-Programs-1",
     "page": "PtFEM.jl documentation",
     "title": "6 Material Nonlinearity Programs",
     "category": "section",
-    "text": "p61(data::Dict{Symbol, Any})\np62(data::Dict{Symbol, Any})"
+    "text": "p61(data::Dict{Symbol, Any})\np62(data::Dict{Symbol, Any})\np63(data::Dict{Symbol, Any})"
 },
 
 {
@@ -525,7 +541,7 @@ var documenterSearchIndex = {"docs": [
     "page": "PtFEM.jl documentation",
     "title": "PtFEM.formm!",
     "category": "Method",
-    "text": "formm!\n\nThis subroutine forms the derivatives of the invariants with respect to stress in 2- or 3-d. See equation 6.25.\n\nFunction\n\nformm!(stress, m1, m2, m3)\n\nArguments\n\n* stress::Vector{Float64}    : Stress vector, see eq 6.25\n* m1::Matrix{Float64}        : m1 matrix\n* m2::Matrix{Float64}        : m2 matrix\n* m3::Matrix{Float64}        : m3 matrix\n\n\n\n"
+    "text": "formm!\n\nThis subroutine forms the derivatives of the invariants with respect to stress in 2- or 3-d. See equation 6.25.\n\nFunction\n\nformm!(stress, m1, m2, m3)\n\nArguments\n\n* stress::Vector{Float64}    : Stress vector, see eq 6.25\n* m1::Matrix{Float64}        : m1 matrix\n* m2::Matrix{Float64}        : m2 matrix\n* m3::Matrix{Float64}        : m3 matrix\n\nReturn values\n\n* m1::Matrix{Float64}        : m1 matrix\n* m2::Matrix{Float64}        : m2 matrix\n* m3::Matrix{Float64}        : m3 matrix\n\n\n\n"
 },
 
 {
@@ -557,7 +573,7 @@ var documenterSearchIndex = {"docs": [
     "page": "PtFEM.jl documentation",
     "title": "PtFEM.glob_to_axial",
     "category": "Method",
-    "text": "glob_to_axial!\n\nThis subroutine transforms the global end reactions into an axial force for rod fin_els (2- or 3-d).\n\nFunction\n\nglob_to_axial!(glob, coord)\n\nArguments\n\n* glob::Vector{Float64}      : Globale forces and moments\n* coord::Matrix{Float64}     : Nodal coordinates\n\n\n\n"
+    "text": "glob_to_axial\n\nThis subroutine transforms the global end reactions into an axial force for rod fin_els (2- or 3-d).\n\nFunction\n\nglob_to_axial(glob, coord)\n\nArguments\n\n* glob::Vector{Float64}      : Globale forces and moments\n* coord::Matrix{Float64}     : Nodal coordinates\n\nREturn value\n\n* ::Float64                  : Axial force\n\n\n\n"
 },
 
 {
@@ -597,7 +613,7 @@ var documenterSearchIndex = {"docs": [
     "page": "PtFEM.jl documentation",
     "title": "PtFEM.mocouf",
     "category": "Method",
-    "text": "mocouf\n\nThis subroutine calculates the value of the yield function for a Mohr-Coulomb material (phi in degrees).\n\nFunction\n\nmocouf!(phi, c, sigm, dsbar, theta, f)\n\nArguments\n\n* psi::Float64              : Local force and momemts (Updated)\n* c::Float64                : Globale forces and moments\n* sigm::Float64             : Element orientation angle (3D)\n* dsbar::Float64            : Globale forces and moments\n* theta::Float64            : Element orientation angle (3D)\n\nReturn value\n\n* ::Float64                 : Value of yield function\n\n\n\n"
+    "text": "mocouf\n\nThis subroutine calculates the value of the yield function for a Mohr-Coulomb material (phi in degrees).\n\nFunction\n\nmocouf(phi, c, sigm, dsbar, theta)\n\nArguments\n\n* psi::Float64              : Local force and momemts (Updated)\n* c::Float64                : Globale forces and moments\n* sigm::Float64             : Element orientation angle (3D)\n* dsbar::Float64            : Globale forces and moments\n* theta::Float64            : Element orientation angle (3D)\n\nReturn value\n\n* ::Float64                 : Value of yield function\n\n\n\n"
 },
 
 {
