@@ -16,6 +16,7 @@ p47(data::Dict{Symbol, Any})
 
 ```@docs
 p51(data::Dict{Symbol, Any})
+p52(data::Dict{Symbol, Any})
 ```
 
 ## 6 Material Nonlinearity Programs
@@ -23,6 +24,7 @@ p51(data::Dict{Symbol, Any})
 ```@docs
 p61(data::Dict{Symbol, Any})
 p62(data::Dict{Symbol, Any})
+p63(data::Dict{Symbol, Any})
 ```
 
 ## Structural Element Types

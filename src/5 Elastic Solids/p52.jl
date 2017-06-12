@@ -1,3 +1,52 @@
+"""
+# Method p52 
+
+Non-axisymmetric analysis of an axisymmetric elastic solid
+using 8-node rectangular quadrilaterals. Mesh numbered in
+r- or z- direction.
+
+### Constructors
+```julia
+p52(data)
+```
+### Arguments
+```julia
+* `data::Dict{Symbol, Any}` : Dictionary containing all input data
+```
+
+### Required data dictionary keys
+```julia
+* struc_el::StructuralElement                          : Structural element
+* support::Array{Tuple{Int,Array{Int,1}},1}            : Fixed-displacements vector
+* loaded_nodes::Array{Tuple{Int,Array{Float64,1}},1}   : Node load vector
+* properties::Vector{Float64}                          : Material properties
+```
+
+### Optional additional data dictionary keys
+```julia
+* penalty = 1e20             : Penalty used for fixed degrees of freedoms
+* etype::Vector{Int}         : Element material vector if np_types > 1
+* lth::Int                   :
+* iflag::Int                 :
+* chi::Float64               :
+```
+
+### Return values
+```julia
+* (fem, fm_dt, sigma_dt)     : Tuple of jFem, dis_dt and fm_dt
+                               where:
+                                 fm_dt         : Forces and moments data table
+                                 sigma_dt      : Stresses data table
+```
+
+### Related help
+```julia
+?StructuralElement           : List of available structural element types
+?Plane                       : Help on a Plane structural element
+?FiniteElement               : List finite element types
+?Quadrilateral               : Help on Quadrilateral finite element
+```
+"""
 function p52(data::Dict)
   
   # Setup basic dimensions of arrays
