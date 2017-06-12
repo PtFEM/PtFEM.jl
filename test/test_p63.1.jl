@@ -13,7 +13,7 @@ data = Dict(
   :y_coords => 5.0:-0.25:0.0,
   :tol => 0.001,
   :limit => 200,
-  :incs => 25,
+  :incs => 10,
   :nbo2 => 8,       # No of elements to be rigidly displaced in bearing capacity 
   :qs => 20,        # Surface surcharge
   :presc => -0.001  # Magnitude of incremental vertical displacements rigid footing
@@ -23,6 +23,6 @@ data = Dict(
 println()
 res_dt
 
-@test Float64(res_dt[end,:load1].value) ≈ 379.91559664874114
-@test Float64(res_dt[end,:load2].value) ≈ 374.0927319888041
-@test Int(res_dt[end,:iters].value) == 200
+@test Float64(res_dt[end,:load1].value) ≈ 274.3514626820244
+@test Float64(res_dt[end,:load2].value) ≈ 270.01838672066737
+@test Int(res_dt[end,:iters].value) == 81
