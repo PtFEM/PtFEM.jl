@@ -18,19 +18,18 @@ Note the use of the "!" in some function names which is the Julia convention for
 
 ## Custom array indices
 
-Julia by default uses 1 as the first index into an array, but has the ability to use arbitrary indexing as well. The PtFEM Fortran programs use 0-based indexing for the loads vector. In programs p41 through to p44 in chapter 4 I have used OffsetArrays.jl for this purpose, i.e:
+Julia by default uses 1 as the first index into an array, but has the ability to use arbitrary indexing as well. The PtFEM Fortran programs use 0-based indexing for the loads vector. In most programs I'm using OffsetArrays.jl for this purpose, i.e:
 
 ```
 using OffsetArrays
-N = 10
-loads = OffsetArray(zeros(N+1), 0:N)
+neq = 10 # neq usually indicates the number of equations
+loads = OffsetArray(zeros(neq+1), 0:neq)
 ```
-
 I'm planning to use the same approach in all other chapters.
 
 ## Replacing skyline storage by Julia sparse matrices
 
-In the programs for chapter 4, the skyline storage idea has been replaced by Julia sparse matrices and, accordingly, PtFEM's pair sparin() and spabac() by Julia's cholfact() and "\\" operator.
+In most programs the skyline storage idea has been replaced by Julia sparse matrices and, accordingly, PtFEM's pair sparin() and spabac() by Julia's cholfact() and "\\" operator.
 
 Thus
 
@@ -47,7 +46,7 @@ has been replaced by
   loads[2:end] = cfgsm \ loads[2:end]
 ```
 
-All 'basic' functions such as sparin!() and spabac!() can be found in the src/PtFEM directory.
+All 'basic' replaced functions such as sparin!() and spabac!() can be found in the src/PtFEM/deprecated directory.
 
 ## Separate equivalent loads  in data dictionary
 
@@ -81,10 +80,12 @@ In Chapter 6, example Exp62.1a.jl calls p62a.jl which uses Julia pmap() for this
 
 **Note:**  have not done a profiling pass through p62.jl, it allocates way too much memory, so I expect significant performance improvements are possible.
 
-## Integration - for now using PtFEM's approach
+## Possible future change areas
 
-Currently I have not replaced numerical integration by e.g. Julia quadgk() for 1D integration of a function.
+### Integration - for now using PtFEM's approach
 
-## Gradient descent - for now using PtFEM's approach
+### Gradient descent - for now using PtFEM's approach
 
-## Derivatives - for now using PtFEM's approach
+### Derivatives - for now using PtFEM's approach
+
+### The possibility of using all or parts of JuAFEM is being investigated

@@ -14,11 +14,19 @@ Updates for new releases of Julia bump the major level.
 
 ## Version history
 
-### v"0.0.1"
+### v"0.0.4"
+
+Chapter 6 programs update. 
+
+This release contains the programs in chapters 4, 5 and 6.
+
+In most programs skyline storage has been replaced by Julia sparse matrices. Some examples using skyline storage can still be found in chapter 5.
+
+### v"0.0.3"
 
 Initial release of PtFEM/PtFEM.jl. 
 
 This release contains the programs in chapters 4, 5 and the first 2 programs of chapter 6.
 
-In most programs skyline storage has been replaced by Julia sparse matrices. Some examples using skyline storage can be found in chapter 5.
+In most programs skyline storage has been replaced by Julia sparse matrices. Some examples using skyline storage can still be found in chapter 5.
 

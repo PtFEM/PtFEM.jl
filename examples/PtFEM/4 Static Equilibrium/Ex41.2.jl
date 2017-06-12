@@ -38,7 +38,7 @@ display(dis_dt)
 println()
 display(fm_dt)
   
-if VERSION.minor < 6
+if VERSION.minor < 7
   using Plots
   gr(size=(400,500))
 

@@ -294,7 +294,7 @@ function p45(data::Dict{Symbol, Any})
       loads += bdylds
       bdylds = zeros(neq+1)
       loads[2:end] = cfgsm \ loads[2:end]
-      converged = checon!(loads, oldlds, tol)
+      converged = checon(loads, oldlds, tol)
       for iel in 1:nels
         num = g_num[:, iel]
         coord = g_coord[:, num]'

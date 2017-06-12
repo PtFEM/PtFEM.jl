@@ -34,7 +34,7 @@ examples = [
 
 println("\nRunning examples:\n")
 
-if VERSION.minor == 5
+if VERSION.minor < 7
   println("\nRunning Julia 0.5 examples\n")
   for ex in examples
     println("\n\nRunning $(ex).\n\n")

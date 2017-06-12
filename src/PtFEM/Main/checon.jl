@@ -1,12 +1,12 @@
 """
-## checon!
+## checon
 
 This subroutine sets converged to .FALSE. if relative change in loads
 and oldlds is greater than tol and updates oldlds.
 
 ### Method
 ```julia
-checon!(loads, oldlds, tol)
+checon(loads, oldlds, tol)
 ```
 
 ### Arguments
@@ -15,8 +15,14 @@ checon!(loads, oldlds, tol)
 * oldlds::Vector{Float64}       : Previous displacement vector/OffsetArray
 * tol::Float64                  : Convergence tolerance
 ```
+
+### Return value
+```julia
+* ::Bool                        : Convergence achieved
+```
+
 """
-function checon!(loads, oldlds, tol)
+function checon(loads, oldlds, tol)
   #
   # This subroutine sets converged to .FALSE. if relative change in loads
   # and oldlds is greater than tol and updates oldlds.

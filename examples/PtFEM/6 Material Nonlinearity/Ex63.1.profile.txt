@@ -1,0 +1,167 @@
+
+julia> include("/Users/rob/.julia/v0.6/PtFEM/examples/PtFEM/6 Material Nonlinearity/Ex63.1.jl")
+Dict{Symbol,Any} with 10 entries:
+  :y_coords   => 5.0:-0.25:0.0
+  :qs         => 20
+  :tol        => 0.001
+  :limit      => 250
+  :incs       => 25
+  :properties => [20.0 10.0 … 100000.0 0.3]
+  :struc_el   => PtFEM.Plane(2, 4, 40, 20, 4, :y, PtFEM.Quadrilateral(8, 2), false)
+  :x_coords   => 0.0:0.25:10.0
+  :nbo2       => 8
+  :presc      => -0.001
+
+There are 4800 equations.
+
+
+step   disp    load1    load2     iters
+
+1     0.001   57.33294 54.9679    11
+2     0.002   85.0191 82.48724    22
+3     0.003   111.23223 108.43396    25
+4     0.004   136.62429 133.63711    27
+5     0.005   161.27425 158.0585    30
+6     0.006   185.25765 181.76863    33
+7     0.007   208.59404 204.79971    36
+8     0.008   231.31382 227.17024    40
+9     0.009   253.25585 248.98587    57
+10     0.01   274.35146 270.01839    81
+11     0.011   294.39836 290.01346    120
+12     0.012   312.91654 308.37922    139
+13     0.013   329.55717 324.90427    149
+14     0.014   344.00498 339.20704    157
+15     0.015   356.16303 351.1816    162
+16     0.016   366.27815 361.13987    166
+17     0.017   374.20064 368.92013    172
+18     0.018   378.82005 373.38782    184
+19     0.019   379.4839 373.94464    197
+20     0.02   379.63891 374.03136    199
+21     0.021   379.73507 374.06878    199
+22     0.022   379.77956 374.06626    200
+23     0.023   379.83197 374.07685    200
+24     0.024   379.87651 374.08531    200
+25     0.025   379.9156 374.09273    200
+
+ 72.453796 seconds (520.95 M allocations: 39.412 GiB, 7.62% gc time)
+
+There are 4800 equations.
+
+
+step   disp    load1    load2     iters
+
+1     0.001   57.33294 54.9679    11
+2     0.002   85.0191 82.48724    22
+3     0.003   111.23223 108.43396    25
+4     0.004   136.62429 133.63711    27
+5     0.005   161.27425 158.0585    30
+6     0.006   185.25765 181.76863    33
+7     0.007   208.59404 204.79971    36
+8     0.008   231.31382 227.17024    40
+9     0.009   253.25585 248.98587    57
+10     0.01   274.35146 270.01839    81
+11     0.011   294.39836 290.01346    120
+12     0.012   312.91654 308.37922    139
+13     0.013   329.55717 324.90427    149
+14     0.014   344.00498 339.20704    157
+15     0.015   356.16303 351.1816    162
+16     0.016   366.27815 361.13987    166
+17     0.017   374.20064 368.92013    172
+18     0.018   378.82005 373.38782    184
+19     0.019   379.4839 373.94464    197
+20     0.02   379.63891 374.03136    199
+21     0.021   379.73507 374.06878    199
+22     0.022   379.77956 374.06626    200
+23     0.023   379.83197 374.07685    200
+24     0.024   379.87651 374.08531    200
+25     0.025   379.9156 374.09273    200
+
+2    ... Material Nonlinearity/p63.jl:65; p63(::Dict{Symbol,Any})
+2    ... Material Nonlinearity/p63.jl:87; p63(::Dict{Symbol,Any})
+1    ... Material Nonlinearity/p63.jl:109; p63(::Dict{Symbol,Any})
+1    ... Material Nonlinearity/p63.jl:219; p63(::Dict{Symbol,Any})
+4    ... Material Nonlinearity/p63.jl:221; p63(::Dict{Symbol,Any})
+1    ... Material Nonlinearity/p63.jl:245; p63(::Dict{Symbol,Any})
+2    ... Material Nonlinearity/p63.jl:246; p63(::Dict{Symbol,Any})
+1    ... Material Nonlinearity/p63.jl:252; p63(::Dict{Symbol,Any})
+2    ... Material Nonlinearity/p63.jl:253; p63(::Dict{Symbol,Any})
+2    ... Material Nonlinearity/p63.jl:254; p63(::Dict{Symbol,Any})
+6    ... Material Nonlinearity/p63.jl:257; p63(::Dict{Symbol,Any})
+27   ... Material Nonlinearity/p63.jl:258; p63(::Dict{Symbol,Any})
+68   ... Material Nonlinearity/p63.jl:260; p63(::Dict{Symbol,Any})
+ 1  ...PtFEM/src/PtFEM/Main/fsparm.jl:35; fsparm!(::SparseMatrixCSC{Float64,Int64}, ::Ar...
+ 35 ...PtFEM/src/PtFEM/Main/fsparm.jl:37; fsparm!(::SparseMatrixCSC{Float64,Int64}, ::Ar...
+ 32 ...PtFEM/src/PtFEM/Main/fsparm.jl:38; fsparm!(::SparseMatrixCSC{Float64,Int64}, ::Ar...
+12   ... Material Nonlinearity/p63.jl:261; p63(::Dict{Symbol,Any})
+17   ... Material Nonlinearity/p63.jl:279; p63(::Dict{Symbol,Any})
+2    ... Material Nonlinearity/p63.jl:280; p63(::Dict{Symbol,Any})
+1    ... Material Nonlinearity/p63.jl:289; p63(::Dict{Symbol,Any})
+1    ... Material Nonlinearity/p63.jl:291; p63(::Dict{Symbol,Any})
+1    ... Material Nonlinearity/p63.jl:293; p63(::Dict{Symbol,Any})
+1    ... Material Nonlinearity/p63.jl:294; p63(::Dict{Symbol,Any})
+2    ... Material Nonlinearity/p63.jl:297; p63(::Dict{Symbol,Any})
+6    ... Material Nonlinearity/p63.jl:299; p63(::Dict{Symbol,Any})
+15   ... Material Nonlinearity/p63.jl:325; p63(::Dict{Symbol,Any})
+2    ... Material Nonlinearity/p63.jl:342; p63(::Dict{Symbol,Any})
+2    ... Material Nonlinearity/p63.jl:343; p63(::Dict{Symbol,Any})
+35   ... Material Nonlinearity/p63.jl:353; p63(::Dict{Symbol,Any})
+45   ... Material Nonlinearity/p63.jl:354; p63(::Dict{Symbol,Any})
+7    ... Material Nonlinearity/p63.jl:356; p63(::Dict{Symbol,Any})
+9    ... Material Nonlinearity/p63.jl:357; p63(::Dict{Symbol,Any})
+6353 ... Material Nonlinearity/p63.jl:360; p63(::Dict{Symbol,Any})
+ 6306 ./sparse/cholmod.jl:1605; \(::Base.SparseArrays.CHOLMOD.Factor{Float64...
+  6255 ./sparse/cholmod.jl:792; solve(::Int32, ::Base.SparseArrays.CHOLMOD....
+471  ... Material Nonlinearity/p63.jl:362; p63(::Dict{Symbol,Any})
+ 431 ...PtFEM/src/PtFEM/Main/checon.jl:25; checon
+ 40  ...PtFEM/src/PtFEM/Main/checon.jl:26; checon
+5    ... Material Nonlinearity/p63.jl:376; p63(::Dict{Symbol,Any})
+1530 ... Material Nonlinearity/p63.jl:377; p63(::Dict{Symbol,Any})
+110  ... Material Nonlinearity/p63.jl:378; p63(::Dict{Symbol,Any})
+229  ... Material Nonlinearity/p63.jl:379; p63(::Dict{Symbol,Any})
+160  ... Material Nonlinearity/p63.jl:380; p63(::Dict{Symbol,Any})
+339  ... Material Nonlinearity/p63.jl:381; p63(::Dict{Symbol,Any})
+602  ... Material Nonlinearity/p63.jl:382; p63(::Dict{Symbol,Any})
+922  ... Material Nonlinearity/p63.jl:383; p63(::Dict{Symbol,Any})
+279  ... Material Nonlinearity/p63.jl:384; p63(::Dict{Symbol,Any})
+1452 ... Material Nonlinearity/p63.jl:385; p63(::Dict{Symbol,Any})
+566  ... Material Nonlinearity/p63.jl:386; p63(::Dict{Symbol,Any})
+1966 ... Material Nonlinearity/p63.jl:387; p63(::Dict{Symbol,Any})
+2712 ... Material Nonlinearity/p63.jl:388; p63(::Dict{Symbol,Any})
+5375 ... Material Nonlinearity/p63.jl:389; p63(::Dict{Symbol,Any})
+1616 ... Material Nonlinearity/p63.jl:390; p63(::Dict{Symbol,Any})
+375  ... Material Nonlinearity/p63.jl:391; p63(::Dict{Symbol,Any})
+1441 ... Material Nonlinearity/p63.jl:392; p63(::Dict{Symbol,Any})
+1704 ... Material Nonlinearity/p63.jl:393; p63(::Dict{Symbol,Any})
+1129 ... Material Nonlinearity/p63.jl:394; p63(::Dict{Symbol,Any})
+1525 ... Material Nonlinearity/p63.jl:395; p63(::Dict{Symbol,Any})
+911  ... Material Nonlinearity/p63.jl:396; p63(::Dict{Symbol,Any})
+1113 ... Material Nonlinearity/p63.jl:397; p63(::Dict{Symbol,Any})
+832  ... Material Nonlinearity/p63.jl:405; p63(::Dict{Symbol,Any})
+ 23  ...PtFEM/src/PtFEM/Main/formm.jl:39; formm!(::Array{Float64,1}, ::Array{Float64,2}...
+ 481 ...PtFEM/src/PtFEM/Main/formm.jl:43; formm!(::Array{Float64,1}, ::Array{Float64,2}...
+ 5   ...PtFEM/src/PtFEM/Main/formm.jl:57; formm!(::Array{Float64,1}, ::Array{Float64,2}...
+ 4   ...PtFEM/src/PtFEM/Main/formm.jl:58; formm!(::Array{Float64,1}, ::Array{Float64,2}...
+ 3   ...PtFEM/src/PtFEM/Main/formm.jl:59; formm!(::Array{Float64,1}, ::Array{Float64,2}...
+ 1   ...PtFEM/src/PtFEM/Main/formm.jl:61; formm!(::Array{Float64,1}, ::Array{Float64,2}...
+ 2   ...PtFEM/src/PtFEM/Main/formm.jl:62; formm!(::Array{Float64,1}, ::Array{Float64,2}...
+ 1   ...PtFEM/src/PtFEM/Main/formm.jl:67; formm!(::Array{Float64,1}, ::Array{Float64,2}...
+ 2   ...PtFEM/src/PtFEM/Main/formm.jl:119; formm!(::Array{Float64,1}, ::Array{Float64,2}...
+ 16  ...PtFEM/src/PtFEM/Main/formm.jl:121; formm!(::Array{Float64,1}, ::Array{Float64,2}...
+1036 ... Material Nonlinearity/p63.jl:407; p63(::Dict{Symbol,Any})
+276  ... Material Nonlinearity/p63.jl:408; p63(::Dict{Symbol,Any})
+111  ... Material Nonlinearity/p63.jl:409; p63(::Dict{Symbol,Any})
+8975 ... Material Nonlinearity/p63.jl:410; p63(::Dict{Symbol,Any})
+347  ... Material Nonlinearity/p63.jl:411; p63(::Dict{Symbol,Any})
+311  ... Material Nonlinearity/p63.jl:414; p63(::Dict{Symbol,Any})
+2415 ... Material Nonlinearity/p63.jl:415; p63(::Dict{Symbol,Any})
+ 2355 ./linalg/rowvector.jl:227; Ac_mul_B(::Array{Float64,1}, ::Array{Float64,2})
+656  ... Material Nonlinearity/p63.jl:416; p63(::Dict{Symbol,Any})
+317  ... Material Nonlinearity/p63.jl:418; p63(::Dict{Symbol,Any})
+426  ... Material Nonlinearity/p63.jl:419; p63(::Dict{Symbol,Any})
+123  ... Material Nonlinearity/p63.jl:420; p63(::Dict{Symbol,Any})
+843  ... Material Nonlinearity/p63.jl:423; p63(::Dict{Symbol,Any})
+758  ... Material Nonlinearity/p63.jl:424; p63(::Dict{Symbol,Any})
+166  ... Material Nonlinearity/p63.jl:425; p63(::Dict{Symbol,Any})
+1    ... Material Nonlinearity/p63.jl:440; p63(::Dict{Symbol,Any})
+1    ... Material Nonlinearity/p63.jl:441; p63(::Dict{Symbol,Any})
+1    ... Material Nonlinearity/p63.jl:451; p63(::Dict{Symbol,Any})

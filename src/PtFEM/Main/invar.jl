@@ -1,13 +1,13 @@
 """
 
-## invar!
+## invar
 
 This subroutine forms the stress invariants in 2- or 3-d. See equations
 6.3 and 6.4
 
 ### Function
 ```julia
-invar!(stress, sigm, dsbar, theta)
+invar(stress, sigm, dsbar, theta)
 ```
 
 ### Arguments
@@ -17,8 +17,15 @@ invar!(stress, sigm, dsbar, theta)
 * dsbar::Float64             : Invariant, eq 6.4 (Updated)
 * theta::Float64             : Invariant, eq 6.3 (Updated)
 ```
+
+### REturn values
+```julia
+* stress::Vector{Float64}    : Stress vector
+* sigm::Float64              : Invariant, eq 6.4 (Updated)
+* dsbar::Float64             : Invariant, eq 6.4 (Updated)
+```
 """
-function invar!(stress::Vector{Float64}, sigm::Float64, dsbar::Float64,
+function invar(stress::Vector{Float64}, sigm::Float64, dsbar::Float64,
   theta::Float64)
   #
   # This subroutine forms the stress invariants in 2- or 3-d.

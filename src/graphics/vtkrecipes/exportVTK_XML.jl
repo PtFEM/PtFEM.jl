@@ -2,11 +2,11 @@ using LightXML
 using Codecs
 using Compat
 
-type VTKNode
+struct VTKNode
   coords::Vector{Float64}
 end
 
-type VTKElement
+struct VTKElement
   vertices::Vector{Int}
   vtknum::Int
 end
@@ -21,7 +21,7 @@ function add_data!{T <: AbstractVTKXMLBinary}(vtkxml::T, data)
     write(vtkxml.buffer, data)
 end
 
-type VTKXMLBinaryCompressed <: AbstractVTKXMLBinary
+struct VTKXMLBinaryCompressed <: AbstractVTKXMLBinary
     buffer::IOBuffer
 end
 VTKXMLBinaryCompressed() = VTKXMLBinaryCompressed(IOBuffer())
@@ -37,7 +37,7 @@ function write_data!(vtkxml::VTKXMLBinaryCompressed, xmlele::XMLElement)
     add_text(xmlele, data_binary)
 end
 
-type VTKXMLBinaryUncompressed <: AbstractVTKXMLBinary
+struct VTKXMLBinaryUncompressed <: AbstractVTKXMLBinary
     buffer::IOBuffer
 end
 VTKXMLBinaryUncompressed() = VTKXMLBinaryUncompressed(IOBuffer())
@@ -53,7 +53,7 @@ function write_data!(vtkxml::VTKXMLBinaryUncompressed, xmlele::XMLElement)
 end
 
 
-type VTKXMLASCII <: AbstractVTKXML
+struct VTKXMLASCII <: AbstractVTKXML
     buffer::IOBuffer
 end
 VTKXMLASCII() = VTKXMLASCII(IOBuffer())

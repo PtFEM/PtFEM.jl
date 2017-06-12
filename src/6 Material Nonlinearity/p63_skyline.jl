@@ -1,13 +1,13 @@
 """
-# Method p61 
+# Method p63_skyline
 
-Plane strain bearing capacity analysis of an elastic-plastic
-(von Mises) material using 8-node rectangular quadrilaterals.
+Plane strain bearing capacity analysis of an elastic-plastic (Mohr-Coulomb) material
+using 8-node rectangular quadrilaterals. Rigid smooth footing. Displacement control.
 Viscoplastic strain method.
 
 ### Constructors
 ```julia
-p61(data)
+p63_skyline(data)
 ```
 ### Arguments
 ```julia
@@ -17,21 +17,19 @@ p61(data)
 ### Required data dictionary keys
 ```julia
 * struc_el::StructuralElement                          : Structural element
-* support::Array{Tuple{Int,Array{Int,1}},1}        : Fixed-displacements vector
-* loaded_nodes::Array{Tuple{Int,Array{Float64,1}},1} : Node load vector
 * properties::Vector{Float64}                          : Material properties
 * x_coords::FloatRange{Floalt64}                       : x-coordinate vector
 * y_coords::FloatRange{Floalt64}                       : y-coordinate vector
-* thickness:: Float64                                  : Thickness of plate
-* tol::Float64                                         : Convergence tolerance
-* qincs::Vector{Float64}                               : Incremental load steps
 ```
 
 ### Optional additional data dictionary keys
 ```julia
+* tol::Float64                 : Convergence tolerance
 * limit = 250                  : Iteration limit
+* incs::Int                    : Incremental load steps
+* presc::Float64               : Wall displacement increment
 * penalty = 1e20               : Penalty used for fixed degrees of freedoms
-* etype::Vector{Int}         : Element material vector if np_types > 1
+* etype::Vector{Int}           : Element material vector if np_types > 1
 ```
 
 ### Return values
@@ -50,7 +48,7 @@ p61(data)
 ?Quadrilateral                 : Help on Quadrilateral finite element
 ```
 """
-function p61(data::Dict)
+function p63_skyline(data::Dict)
   
   # Setup basic dimensions of arrays
   
@@ -75,11 +73,11 @@ function p61(data::Dict)
   @assert typeof(fin_el) <: FiniteElement
   
   if typeof(fin_el) == Line
-    (nels, nn) = mesh_size(fin_el, struc_el.nxe)
+    (nels, nn) = PtFEM.mesh_size(fin_el, struc_el.nxe)
   elseif typeof(fin_el) == Triangle || typeof(fin_el) == Quadrilateral
-    (nels, nn) = mesh_size(fin_el, struc_el.nxe, struc_el.nye)
+    (nels, nn) = PtFEM.mesh_size(fin_el, struc_el.nxe, struc_el.nye)
   elseif typeof(fin_el) == Hexahedron
-    (nels, nn) = mesh_size(fin_el, struc_el.nxe, struc_el.nye, struc_el.nze)
+    (nels, nn) = PtFEM.mesh_size(fin_el, struc_el.nxe, struc_el.nye, struc_el.nze)
   else
     println("$(typeof(fin_el)) is not a known finite element.")
     return
@@ -183,43 +181,13 @@ function p61(data::Dict)
   m3 = zeros(nst, nst)
   flow = zeros(nst, nst)
   
-  formnf!(nodof, nn, nf)
+  PtFEM.bc_rect!(struc_el.nxe, struc_el.nye, nf, struc_el.direction)
   neq = maximum(nf)
   kdiag = zeros(Int, neq)
   
-  @assert :qincs in keys(data)
-  qincs = deepcopy(data[:qincs])
-  
-  # Find global array sizes
-  for iel in 1:nels
-    geom_rect!(fin_el, iel, x_coords, y_coords, coord, num, struc_el.direction)
-    num_to_g!(num, nf, g)
-    g_num[:, iel] = num
-    g_coord[:, num] = coord'
-    g_g[:, iel] = g
-    fkdiag!(kdiag, g)
-  end
-  
-  for i in 2:neq
-    kdiag[i] = kdiag[i] + kdiag[i-1]
-  end
-  
-  kv = zeros(kdiag[neq])
-  gv = zeros(kdiag[neq])
-
-  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
-  
-  teps = zeros(nst)
-  tload = zeros(neq+1)
-  dtemp = zeros(nn)
-  dtel = zeros(fin_el.nod)
-  epsi = zeros(nst)
-  dt = 1.0e15
-  ptot = 0.0
-  sigm = 0.0
-  dsbar = 0.0
-  ddt = 0.0
-  lode_theta = 0.0
+  #
+  # Program 6.3 specific variables
+  #
   
   tol = 1.0e-10
   if :tol in keys(data)
@@ -231,87 +199,191 @@ function p61(data::Dict)
     limit = copy(data[:limit])
   end
   
-  sample!(fin_el, points, weights)
+  @assert :incs in keys(data)
+  incs = copy(data[:incs])
+  
+  @assert :nbo2 in keys(data)
+  nbo2 = copy(data[:nbo2])
+  
+  @assert :qs in keys(data)
+  qs = copy(data[:qs])
+  
+  @assert :presc in keys(data)
+  presc = copy(data[:presc])
+  
+  # Find global array sizes
   for iel in 1:nels
-    ddt = 4.0*(1.0+prop[etype[iel], 3])/(3.0*prop[etype[iel], 2])
-    if ddt < dt
-      dt = ddt
-    end
-    deemat!(dee, prop[etype[iel], 2], prop[etype[iel], 3])
+    PtFEM.geom_rect!(fin_el, iel, collect(x_coords), collect(y_coords), coord, num,
+      struc_el.direction)
+    PtFEM.num_to_g!(num, nf, g)
+    g_num[:, iel] = num
+    g_coord[:, num] = coord'
+    g_g[:, iel] = g
+    PtFEM.fkdiag!(kdiag, g)
+  end
+  
+  for i in 2:neq
+    kdiag[i] = kdiag[i] + kdiag[i-1]
+  end
+  
+  kv = zeros(kdiag[neq])
+  gv = zeros(kdiag[neq])
+
+  println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
+  
+  start_dt = 1.0e15
+  dt = copy(start_dt)
+  
+  for i in 1:size(data[:properties], 1)
+    ϕ, c, ψ, γ, E, ν  = prop[i, :]
+    snph = sind(ϕ)
+    ddt = 4.0 * (1.0 + ν) * ( 1.0 - 2.0ν) / (E * (1.0 - 2.0ν + snph^2))
+    ddt < dt && (dt = ddt)
+    #println([i ddt dt])
+  end
+  
+  gravlo = zeros(Float64, neq+1)
+    
+  PtFEM.sample!(fin_el, points, weights)
+  
+  for iel in 1:nels
+    PtFEM.deemat!(dee, prop[etype[iel], 5], prop[etype[iel], 6])
     num = g_num[:, iel]
     coord = g_coord[:, num]'              # Transpose
     g = g_g[:, iel]
     km = zeros(ndof, ndof)
+    eld = zeros(ndof)
     for i in 1:struc_el.nip
-      shape_der!(der, points, i)
+      PtFEM.shape_fun!(fun, points, i)
+      PtFEM.shape_der!(der, points, i)
       jac = der*coord
       detm = det(jac)
       jac = inv(jac)
       deriv = jac*der
-      beemat!(bee, deriv)
+      PtFEM.beemat!(bee, deriv)
       km += (bee')*dee*bee*detm*weights[i]
+      eld[2:2:ndof] += fun .* detm * weights[i]
     end
-    fsparv!(kv, km, g, kdiag)
+    PtFEM.fsparv!(kv, km, g, kdiag)
+    gravlo[g+1] -= eld .* prop[etype[iel], 4] 
   end
   
-  loaded_nodes = 0
-  node = Int[]
-  val = Array{Float64, 2}
-  if :loaded_nodes in keys(data)
-    loaded_nodes = size(data[:loaded_nodes], 1)
-    node = zeros(Int, loaded_nodes)
-    val = zeros(loaded_nodes, size(data[:loaded_nodes][1][2], 2))
-  end
+  kvc = deepcopy(kv)
   
-  if :loaded_nodes in keys(data)
-    for i in 1:loaded_nodes
-      node[i] = data[:loaded_nodes][i][1]
-      val[i,:] = data[:loaded_nodes][i][2]
-    end
-  end
-
-  sparin!(kv, kdiag)
+  # Surcharge loads
+  
   nf1 = deepcopy(nf) + 1
-  println("   step     load        disp          iters")
+  for i in 1:struc_el.nxe
+    i3 = g_num[3, (i-1)*struc_el.nye+1]
+    i4 = g_num[4, (i-1)*struc_el.nye+1]
+    i5 = g_num[5, (i-1)*struc_el.nye+1]
+    qq = (x_coords[i+1] - x_coords[i]) * qs
+    gravlo[nf1[2, i3]] -= qq/6.0
+    gravlo[nf1[2, i4]] -= 2.0qq/3.0
+    gravlo[nf1[2, i5]] -= qq/6.0
+  end
+  
+  PtFEM.sparin!(kv, kdiag)
+  gravlo[2:end] = PtFEM.spabac!(kv, gravlo[2:end], kdiag)
+  gravlo[1] = 0.0
+  
+  tensor = zeros(nst, struc_el.nip, nels)
+  
+  for iel in 1:nels
+    PtFEM.deemat!(dee, prop[etype[iel], 5], prop[etype[iel], 6])
+    g = g_g[:, iel]
+    eld = gravlo[g+1]
+    num = g_num[:, iel]
+    coord = g_coord[:, num]'              # Transpose
+    for i in 1:struc_el.nip
+      PtFEM.shape_der!(der, points, i)
+      jac = der*coord
+      jac = inv(jac)
+      deriv = jac*der
+      PtFEM.beemat!(bee, deriv)
+      sigma = dee*(bee*eld)
+      for j in 1:4
+        tensor[j, i, iel] = sigma[j]
+      end
+    end
+  end
+  
+  fixed_freedoms = 2nbo2 + 1
+  node = zeros(Int, fixed_freedoms)
+  no = zeros(Int, fixed_freedoms)
+  storkv = zeros(Float64, fixed_freedoms)
+  node[1] = 1
+  k = 1
+  
+  for i in 1:nbo2
+    k += 2*struc_el.nye + 1
+    node[2*i] = k
+    k += struc_el.nye + 1
+    node[2*i + 1] = k
+  end
+  
+  kv = deepcopy(kvc)
+  for i in 1:fixed_freedoms
+    no[i] = nf[2, node[i]]
+  end
+  kv = kvc
+  kv[kdiag[no]] += penalty
+  storkv = kv[kdiag[no]]
+  
+  sparin!(kv, kdiag)
 
-  converged = false
-  ptot = 0.0
-  loads = zeros(Float64, neq+1)
+  local iters, loads, bdylds, converged
   oldis = zeros(Float64, neq+1)
   totd = zeros(Float64, neq+1)
-  tensor = zeros(nst, struc_el.nip, nels)
-  bdylds = zeros(Float64, neq+1)
-  iy = 0
-  iters = 0
-  for iy in 1:size(qincs, 1)
-    ptot = ptot + qincs[iy]
+  
+  println("\nstep   disp    load1    load2     iters\n")
+
+  disps = Array{Float64, 1}()
+  loads1 = Array{Float64, 1}()
+  loads2 = Array{Float64, 1}()
+  iterations = Array{Int, 1}()
+  
+  for iy in 1:incs
     iters = 0
     bdylds = zeros(Float64, neq+1)
+    react = zeros(Float64, neq+1)
     evpt = zeros(nst, struc_el.nip, nels)
     
     while true
       iters += 1
+      
       loads = zeros(Float64, neq+1)
-      for i in 1:loaded_nodes
-        loads[nf1[:,node[i]]] = val[i,:] * qincs[iy]
-      end
       loads += bdylds
-      loads[2:end] = spabac!(kv, loads[2:end], kdiag)
-      converged = checon(loads, oldis, tol)
-      if iters == 1
-        converged = false
+      
+      for i in 1:fixed_freedoms
+        loads[no[i]+1] = storkv[i] * presc
       end
+
+      loads[2:end] = spabac!(kv, loads[2:end], kdiag)
+      
+      converged = checon(loads, oldis, tol)
+      iters == 1 && (converged = false)
+      
       if converged || iters == limit
         bdylds = zeros(Float64, neq+1)
       end
   
+      sigm = 0.0
+      dsbar = 0.0
+      lode_theta = 0.0
+      f = 0.0
+      dq1 = 0.0
+      dq2 = 0.0
+      dq3 = 0.0
       for iel in 1:nels
-        deemat!(dee, prop[etype[iel], 2], prop[etype[iel], 3])
+        ϕ, c, ψ, γ, E, ν  = prop[etype[iel], :]
+        deemat!(dee, E, ν)
+        bload = zeros(ndof)
+        rload = zeros(ndof)
         num = g_num[:, iel]
         coord = g_coord[:, num]'
         g = g_g[:, iel]
         eld = loads[g+1]
-        bload = zeros(ndof)
         for i in 1:struc_el.nip
           shape_der!(der, points, i)
           jac = der*coord
@@ -324,14 +396,12 @@ function p61(data::Dict)
           sigma = dee*eps
           stress = sigma + tensor[:, i, iel]
           (sigm, dsbar, lode_theta) = invar(stress, sigm, dsbar, lode_theta)
-          f = dsbar - sqrt(3.0)*prop[etype[iel], 1]
+          f = mocouf(ϕ, c, sigm, dsbar, lode_theta)
           if converged || iters == limit
             devp = deepcopy(stress)
           else
             if f >= 0.0
-              dq1 = 0.0
-              dq2 = 3.0/2.0/dsbar
-              dq3 = 0.0
+              dq1, dq2, dq3 = mocouq(ϕ, dsbar, lode_theta)
               (m1, m2, m3) = formm!(stress, m1, m2, m3)
               flow = f*(m1*dq1 + m2*dq2 + m3*dq3)
               erate = flow*stress
@@ -342,26 +412,36 @@ function p61(data::Dict)
           end
           if f >= 0.0 || converged || iters == limit
             eload = devp' * bee
-            bload += eload' .* detm .* weights[i]
+            bload += eload' * detm * weights[i]
           end
           if converged || iters == limit
             tensor[:,i,iel] = stress
+            rload += (stress' * bee)' * detm * weights[i]
           end
         end
         bdylds[g+1] += bload
+        react[g+1] += rload
         bdylds[1] = 0.0
       end
-      if converged || iters == limit
-        break
-      end
+      (converged || iters == limit) && break
     end
     totd += loads
-    totdstr = @sprintf("%+.4e", totd[nf1[2, node[1]]])
-    if iy < 10
-      println("    $(iy)       $(ptot)    $(totdstr)       $(iters)")
-    else
-      println("   $(iy)       $(ptot)    $(totdstr)       $(iters)")
+    pr = 0.0
+    for i in 1:fixed_freedoms
+      pr += react[no[i]+1]
     end
+    pr /= x_coords[nbo2+1]
+    pav = 0.0
+    for i in 1:nbo2
+      pav += tensor[2, 1, (i-1)*struc_el.nye+1] + tensor[2, 2, (i-1)*struc_el.nye+1]
+    end
+    pav /= 2nbo2
+    append!(disps, -totd[2])
+    append!(loads1, -pr)
+    append!(loads2, -pav)
+    append!(iterations, iters)
+    println("$(iy)     $(-round(totd[2], 5))   $(-round(pr, 5)) $(-round(pav, 5))    $(iters)")
+    iters == limit && continue
   end
   
   println()
@@ -374,6 +454,13 @@ function p61(data::Dict)
     end
   end
   
-  (g_coord, g_num, displacements')
+  res_dt = DataTable(
+    displacement = disps,
+    load1 = loads1,
+    load2 = loads2,
+    iters = iterations
+  )
+  
+  (res_dt, g_coord, g_num, displacements')
 end
 
