@@ -7,7 +7,7 @@
 [![codecov](https://codecov.io/gh/PtFEM/PtFEM.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/PtFEM/PtFEM.jl?branch=master)
 
 Unix/OSX:  [![Travis Build Status](https://travis-ci.org/PtFEM/PtFEM.jl.svg?branch=master)](https://travis-ci.org/PtFEM/PtFEM.jl)
-, Windows(64bit):  [![Build status](https://ci.appveyor.com/api/projects/status/github/PtFEM/PtFEM.jl?branch=master)](https://ci.appveyor.com/project/goedman/ptfem-jl)
+, Windows:  [![Build status](https://ci.appveyor.com/api/projects/status/github/PtFEM/PtFEM.jl?branch=master)](https://ci.appveyor.com/project/goedman/ptfem-jl)
 
 [![PtFEM](http://pkg.julialang.org/badges/PtFEM_0.5.svg)](http://pkg.julialang.org/detail/PtFEM)
 [![PtFEM](http://pkg.julialang.org/badges/PtFEM_0.6.svg)](http://pkg.julialang.org/detail/PtFEM)
