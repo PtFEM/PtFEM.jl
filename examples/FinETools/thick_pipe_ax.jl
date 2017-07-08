@@ -1,4 +1,3 @@
-
 using FinEtools
 
 ProjDir = dirname(@__FILE__)
@@ -170,14 +169,15 @@ cd(ProjDir) #do
    inspector, idat, :Cauchy)
 
   using Plots
-  gr(size=(700,500))
+  gr(size=(750,500))
 
   p = Vector{Plots.Plot{Plots.GRBackend}}(1)
   titles = ["FinEtools: Thick pipe with axial pressure", ""]
 
-  p[1] = Plots.plot(ylim=(-1e6, 0.0), xlim=(0.0, 0.01),
-   yflip=false, xflip=false, ylab="Radial stress",
-   xlab="r [m]", title=titles[1]
+  p[1] = Plots.plot(
+    #ylim=(-1e6, 0.0), xlim=(0.0, 0.01),
+    #yflip=false, xflip=false, 
+    ylab="Radial stress", xlab="r [m]", title=titles[1]
   )
    
   # Plot the analytical solution.
@@ -186,7 +186,7 @@ cd(ProjDir) #do
 
   # Plot the computed  integration-point data
   Plots.plot!(p[1], idat.r, idat.s, m=:circle, color=:red)
-  gui()
+  savefig("Thick_pipe_axial_pressure.png")
 
 
   # ##
