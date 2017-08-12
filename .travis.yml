@@ -18,7 +18,7 @@ script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
   - julia -e 'Pkg.add("Documenter")'
   - julia -e 'Pkg.clone(pwd());Pkg.build("PtFEM")'
-  - julia -e 'Pkg.checkout("DataTables"))'
+  - julia -e 'Pkg.checkout("DataTables")'
   - julia -e 'Pkg.test("PtFEM"; coverage=true)'
 after_success:
   #
