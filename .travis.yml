@@ -16,8 +16,9 @@ notifications:
 # uncomment the following lines to override the default test script
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia -e 'Pkg.add("Documenter"); Pkg.checkout("DataTables")'
-  - julia -e 'Pkg.clone(pwd()); Pkg.build("PtFEM"); Pkg.test("PtFEM"; coverage=true)'
+  - julia -e 'Pkg.add("Documenter")'
+  - julia -e 'Pkg.clone(pwd());Pkg.build("PtFEM");Pkg.add("DataTables";Pkg.checkout("DataTables"))'
+  - julia -e 'Pkg.test("PtFEM"; coverage=true)'
 after_success:
   #
   # Documentation
