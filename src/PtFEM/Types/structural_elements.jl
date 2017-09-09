@@ -7,7 +7,7 @@ Abstract structural element type.
 
 ### Type
 ```julia
-abstract StructuralElement
+abstract type StructuralElement end
 ```
 
 ### Subtypes
@@ -31,7 +31,7 @@ abstract StructuralElement
 ?GenericSolid                     : Help on GenericSolid structural element
 ```
 """
-@compat abstract type StructuralElement end
+abstract type StructuralElement end
 
 """
 ## Rod

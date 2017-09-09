@@ -9,7 +9,7 @@ Abstract finite element type.
 
 ### Type
 ```julia
-abstract FiniteElement
+abstract type FiniteElement end
 ```
 
 ### Subtypes
@@ -21,7 +21,7 @@ abstract FiniteElement
 * Tetrahedron::FiniteElement   : 3D Tetrahedron(nod, nodof)
 ```
 """
-@compat abstract type FiniteElement end
+abstract type FiniteElement end
 
 """
 ## Line (Interval)
