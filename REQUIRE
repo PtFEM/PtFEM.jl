@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 julia 0.7-
-=======
-julia 0.6
->>>>>>> master
 Compat 0.17
 Documenter
 LightXML
