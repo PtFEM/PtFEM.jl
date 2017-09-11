@@ -1,6 +1,5 @@
 # PtFEM
 
-
 [![Project Status: WIP - Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
 
 [![Coverage Status](https://coveralls.io/repos/PtFEM/PtFEM.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/PtFEM/PtFEM.jl?branch=master)
@@ -14,7 +13,6 @@ Unix/OSX:  [![Travis Build Status](https://travis-ci.org/PtFEM/PtFEM.jl.svg?bran
 
 Documentation:
 [![](https://img.shields.io/badge/docs-latest-blue.svg)](https://ptfem.github.io/PtFEM.jl/latest)
-
 
 ## The "Programming the Finite Element Method" toolkit
 
