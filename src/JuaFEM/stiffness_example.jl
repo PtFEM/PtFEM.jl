@@ -2,7 +2,7 @@ using JuAFEM
 using Tensors
 
 # Stiffness using normal matrices
-function ke_element_mat!{T, dim}(Ke, X::Vector{Vec{dim, T}}, fe_values::CellScalarValues{dim}, Ee, B, DB, BDB)
+function ke_element_mat!(Ke, X::Vector{Vec{dim, T}}, fe_values::CellScalarValues{dim}, Ee, B, DB, BDB) where {T, dim}
     n_basefuncs = getnbasefunctions(fe_values)
     @assert length(X) == n_basefuncs
     
@@ -38,7 +38,7 @@ function ke_element_mat!{T, dim}(Ke, X::Vector{Vec{dim, T}}, fe_values::CellScal
 end;
 
 # Stiffness using scalar values
-function ke_element!{T,dim}(Ke, X::Vector{Vec{dim, T}}, fe_values::CellScalarValues{dim}, C)
+function ke_element!(Ke, X::Vector{Vec{dim, T}}, fe_values::CellScalarValues{dim}, C) where {T,dim}
     n_basefuncs = getnbasefunctions(fe_values)
     @assert length(X) == n_basefuncs
     reinit!(fe_values, X)
@@ -58,7 +58,7 @@ function ke_element!{T,dim}(Ke, X::Vector{Vec{dim, T}}, fe_values::CellScalarVal
 end;
 
 # Stiffness using vector values
-function ke_element2!{T,dim}(Ke, X::Vector{Vec{dim, T}}, fe_values::CellVectorValues{dim}, C)
+function ke_element2!(Ke, X::Vector{Vec{dim, T}}, fe_values::CellVectorValues{dim}, C) where {T,dim}
     n_basefuncs = getnbasefunctions(fe_values)
     @assert length(X) * dim == n_basefuncs
     reinit!(fe_values, X)

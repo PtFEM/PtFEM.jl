@@ -11,13 +11,13 @@ struct VTKElement
   vtknum::Int
 end
 
-@compat abstract type AbstractVTKXML end
+abstract type AbstractVTKXML end
 #abstract type AbstractVTKXML end
 
-@compat abstract type AbstractVTKXMLBinary <: AbstractVTKXML end
+abstract type AbstractVTKXMLBinary <: AbstractVTKXML end
 #abstract type AbstractVTKXMLBinary <: AbstractVTKXML end
 
-function add_data!{T <: AbstractVTKXMLBinary}(vtkxml::T, data)
+function add_data!(vtkxml::T, data) where T <: AbstractVTKXMLBinary
     write(vtkxml.buffer, data)
 end
 
@@ -63,7 +63,7 @@ function add_data!(vtkxml::VTKXMLASCII, data)
     print(vtkxml.buffer, data, " ")
 end
 
-function add_data!{T <: AbstractArray}(vtkxml::VTKXMLASCII, data::T)
+function add_data!(vtkxml::VTKXMLASCII, data::T) where T <: AbstractArray
     for comp in data
         print(vtkxml.buffer, comp, " ")
     end
@@ -91,9 +91,9 @@ function write_VTKXML(filename::String, nodes::Vector{VTKNode},
     end
 end
 
-function write_VTKXML1{P <: AbstractVTKXML}(filename::String, nodes::Vector{VTKNode},
-                                            fin_els::Vector{VTKElement}, binary::Bool,
-                                            compress::Bool, vtkxml::P)
+function write_VTKXML1(filename::String, nodes::Vector{VTKNode},
+                       fin_els::Vector{VTKElement}, binary::Bool,
+                       compress::Bool, vtkxml::P) where P <: AbstractVTKXML
 
     if binary
         const VTK_FORMAT = "binary"
