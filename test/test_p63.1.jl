@@ -23,6 +23,6 @@ data = Dict(
 println()
 res_dt
 
-@test Float64(res_dt[end,:load1].value) ≈ 274.3514626820244
-@test Float64(res_dt[end,:load2].value) ≈ 270.01838672066737
-@test Int(res_dt[end,:iters].value) == 81
+@test res_dt[end,:load1] ≈ 274.3514626820244
+@test res_dt[end,:load2] ≈ 270.01838672066737
+@test res_dt[end,:iters] == 81

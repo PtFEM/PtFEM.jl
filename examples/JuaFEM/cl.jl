@@ -12,7 +12,7 @@ cd(ProjDir) #do
   hex = true
   geoshape = hex ? Hexahedron : Tetrahedron
   refshape = hex ? RefCube    : RefTetrahedron
-  order = hex? 2 : 1;
+  order = hex ? 2 : 1;
 
   corner1 = Vec{dim}((0.0, 0.0, 0.0))
   corner2 = Vec{dim}((2.0, 2.0, 2.0))
@@ -52,8 +52,8 @@ cd(ProjDir) #do
   g(i,j,k,l) = λ*δ(i,j)*δ(k,l) + μ*(δ(i,k)*δ(j,l) + δ(i,l)*δ(j,k))
   C = SymmetricTensor{4, dim}(g);
 
-  function doassemble{dim}(cellvalues::CellVectorValues{dim}, facevalues::FaceVectorValues{dim}, 
-                           K::Symmetric, grid::Grid, dh::DofHandler, C::SymmetricTensor{4, dim})
+  function doassemble(cellvalues::CellVectorValues{dim}, facevalues::FaceVectorValues{dim}, 
+                      K::Symmetric, grid::Grid, dh::DofHandler, C::SymmetricTensor{4, dim}) where dim
 
     
       f = zeros(ndofs(dh))

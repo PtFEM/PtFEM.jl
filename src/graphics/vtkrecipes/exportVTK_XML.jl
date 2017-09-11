@@ -11,13 +11,13 @@ struct VTKElement
   vtknum::Int
 end
 
-@compat abstract type AbstractVTKXML end
+abstract type AbstractVTKXML end
 #abstract type AbstractVTKXML end
 
-@compat abstract type AbstractVTKXMLBinary <: AbstractVTKXML end
+abstract type AbstractVTKXMLBinary <: AbstractVTKXML end
 #abstract type AbstractVTKXMLBinary <: AbstractVTKXML end
 
-function add_data!{T <: AbstractVTKXMLBinary}(vtkxml::T, data)
+function add_data!(vtkxml::T, data) where T <: AbstractVTKXMLBinary
     write(vtkxml.buffer, data)
 end
 
@@ -30,7 +30,7 @@ function write_data!(vtkxml::VTKXMLBinaryCompressed, xmlele::XMLElement)
     uncompressed_size = vtkxml.buffer.size
     compressed_data = encode(Zlib, takebuf_array(vtkxml.buffer))
     compressed_size = length(compressed_data)
-    header = @compat UInt32[1, uncompressed_size, uncompressed_size, compressed_size]
+    header = UInt32[1, uncompressed_size, uncompressed_size, compressed_size]
     header_binary = bytestring(encode(Base64, reinterpret(UInt8, header)))
     data_binary = bytestring(encode(Base64, compressed_data))
     add_text(xmlele, header_binary)
@@ -45,7 +45,7 @@ VTKXMLBinaryUncompressed() = VTKXMLBinaryUncompressed(IOBuffer())
 function write_data!(vtkxml::VTKXMLBinaryUncompressed, xmlele::XMLElement)
     uncompressed_size = vtkxml.buffer.size
     uncompressed_data = takebuf_array(vtkxml.buffer)
-    header = @compat UInt32[uncompressed_size]
+    header = UInt32[uncompressed_size]
     header_binary = bytestring(encode(Base64, reinterpret(UInt8, header)))
     data_binary = bytestring(encode(Base64, uncompressed_data))
     add_text(xmlele, header_binary)
@@ -63,7 +63,7 @@ function add_data!(vtkxml::VTKXMLASCII, data)
     print(vtkxml.buffer, data, " ")
 end
 
-function add_data!{T <: AbstractArray}(vtkxml::VTKXMLASCII, data::T)
+function add_data!(vtkxml::VTKXMLASCII, data::T) where T <: AbstractArray
     for comp in data
         print(vtkxml.buffer, comp, " ")
     end
@@ -91,9 +91,9 @@ function write_VTKXML(filename::String, nodes::Vector{VTKNode},
     end
 end
 
-function write_VTKXML1{P <: AbstractVTKXML}(filename::String, nodes::Vector{VTKNode},
-                                            fin_els::Vector{VTKElement}, binary::Bool,
-                                            compress::Bool, vtkxml::P)
+function write_VTKXML1(filename::String, nodes::Vector{VTKNode},
+                       fin_els::Vector{VTKElement}, binary::Bool,
+                       compress::Bool, vtkxml::P) where P <: AbstractVTKXML
 
     if binary
         const VTK_FORMAT = "binary"
@@ -171,7 +171,7 @@ function write_VTKXML1{P <: AbstractVTKXML}(filename::String, nodes::Vector{VTKN
     set_attribute(xcell_types, "Name", "types")
     set_attribute(xcell_types, "format", VTK_FORMAT)
     for fin_el in fin_els
-        add_data!(vtkxml, @compat UInt8(fin_el.vtknum))
+        add_data!(vtkxml, UInt8(fin_el.vtknum))
     end
     write_data!(vtkxml, xcell_types)
 

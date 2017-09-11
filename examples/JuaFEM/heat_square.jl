@@ -26,7 +26,7 @@ cd(ProjDir) do
   fill!(K.nzval, 1.0);
   spy(K)
 
-  function doassemble{dim}(cellvalues::CellScalarValues{dim}, K::SparseMatrixCSC, dh::DofHandler)
+  function doassemble(cellvalues::CellScalarValues{dim}, K::SparseMatrixCSC, dh::DofHandler) where dim
       b = 1.0
       f = zeros(ndofs(dh))
       assembler = start_assemble(K, f)
