@@ -4,7 +4,7 @@ env:
   DOCUMENTER_DEBUG: true
 os:
   - linux
-#  - osx
+  - osx
 julia:
   - 0.6
 matrix:
