@@ -67,7 +67,7 @@ println()
 println("y moment actions:")
 m.actions[12,:] |> display
 println()
-if VERSION.minor == 5
+if VERSION.minor == 6
   using Plots
   gr(size=(400,600))
 
