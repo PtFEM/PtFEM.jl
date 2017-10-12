@@ -1,7 +1,7 @@
 using PtFEM
 using Base.Test
 
-ProjDir = dirname(@__FILE__)
+ProjDir = @__DIR__
 
 #=
 Compare formulas at:
