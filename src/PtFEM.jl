@@ -1,6 +1,6 @@
 module PtFEM
 
-using DataTables, Compat
+using DataFrames, Compat
 
 using OffsetArrays
        
