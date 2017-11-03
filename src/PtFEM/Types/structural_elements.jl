@@ -53,16 +53,16 @@ Rod(nels, np_types, nip, fin_el)
 
 ### Related help
 ```julia
-?StructuralElement  : Help on structural elements
-?FiniteElement      : Help on finite element types
-?Line               : Help on a Line finite element
+?StructuralElement      : Help on structural elements
+?FiniteElement          : Help on finite element types
+?Line                   : Help on a Line finite element
 ```
 """
 mutable struct Rod <: StructuralElement  # Axial stresses only structural element
   nxe::Int                        # Number of fin_els
   np_types::Int                   # Number of property types
   nip::Int                        # Number of integration points per fin_el
-  fin_el::FiniteElement             # Finite fin_el type used (must be Line(...))
+  fin_el::FiniteElement           # Finite fin_el type used (must be Line(...))
 end
 
 """
@@ -72,7 +72,7 @@ Concrete structural element with transverse and moment loading.
 
 ### Constructor
 ```julia
-Beam(ndim, nip, fin_el)
+Beam(ndim, nst, nxe, nip, direction, fin_el, axisymmetric)
 ```
 
 ### Arguments
@@ -88,9 +88,9 @@ Beam(ndim, nip, fin_el)
 
 ### Related help
 ```julia
-?StructuralElement  : Help on structural elements
-?FiniteElement      : Help on finite element types
-?Line               : Help on a Line finite element
+?StructuralElement      : Help on structural elements
+?FiniteElement          : Help on finite element types
+?Line                   : Help on a Line finite element
 ```
 """
 mutable struct Beam <: StructuralElement    # 1D Beam structural element
