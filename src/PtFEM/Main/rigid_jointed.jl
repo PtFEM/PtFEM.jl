@@ -14,8 +14,8 @@ rigid_jointed!(km, prop, gamma, etype, iel, coord)
 * km::Matrix{Float64}       : Element stiffness matrix (Updated)
 * prop::Matrix{Float64}     : Element properties
 * gamma::Vector{Float64}    : Element orientations (3D)
-* etype::Vector{Int}      : Element type vector
-* iel::Int                : Element number
+* etype::Vector{Int}        : Element type vector
+* iel::Int                  : Element number
 * coord::Matrix{Float64}}   : Element nodal coordinates
 ```
 """

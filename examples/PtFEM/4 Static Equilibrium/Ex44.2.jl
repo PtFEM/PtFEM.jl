@@ -8,7 +8,7 @@ data = Dict(
   :x_coords => [0.0, 5.0, 5.0, 5.0],
   :y_coords => [5.0, 5.0, 5.0, 0.0],
   :z_coords => [5.0, 5.0, 0.0, 0.0],
-  :gamma => [0.0, 0.0, 90.0],
+  :gamma => [0.0, 0.0, 90.0],             # Third element 90 degrees from x-y plane
   :g_num => [
     1 3 4;
     2 2 3],
