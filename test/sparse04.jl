@@ -1,3 +1,12 @@
+using Compat
+
+if VERSION.minor == 7
+  @eval using LinearAlgebra, SparseMatrices
+end
+
+ProjDir = dirname(@__FILE__)
+cd(ProjDir) do
+
 A = Float64[
   1/2 1/3 1/4 1/5 1/6;
   1/3 1/4 1/5 1/6 1/7;
@@ -30,16 +39,27 @@ println()
 @show x = F[:U] \ ys
 println()
 
-@show F[:L]*F[:U] == (F[:Rs] .* A)[F[:p], F[:q]]
+if VERSION.minor == 7
+  @show F.L * F.U == F.Rs .* A[F.p, :]
+  println()
+  
+  @show F.L*F.U
+  println()
+
+  @show sparse(F.Rs].* A[F.p, F.q])
+  println()
+else
+  @show F[:L]*F[:U] == (F[:Rs] .* A)[F[:p], F[:q]]
+  println()
+
+  @show F[:L]*F[:U]
+  println()
+
+  @show sparse((F[:Rs] .* A)[F[:p], F[:q]])
+  println()
+end
+
+@show lufact(A)
 println()
 
-@show F[:L]*F[:U]
-println()
-
-@show sparse((F[:Rs] .* A)[F[:p], F[:q]])
-println()
-
-@show PtFEM.lufac(A)
-println()
-
-cd(old)
+end

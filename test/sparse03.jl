@@ -1,3 +1,12 @@
+using Compat
+
+if VERSION.minor == 7
+  @eval using LinearAlgebra, SparseMatrices
+end
+
+ProjDir = dirname(@__FILE__)
+cd(ProjDir) do
+
 A = Float64[
   16 4 8;
   4 5 -4;
@@ -5,7 +14,7 @@ A = Float64[
 ]
 a = [16; 18; -22]
 
-F = chol(A, Val{:L})
+F = chol(A)
 
 @show y = F \ a
 println()
@@ -25,7 +34,7 @@ b = copy(a)
 B[2,2] += 1.0e10
 b[2] = (5 + 1.0e10) * 5.0
 
-F = chol(B, Val{:L})
+F = chol(B)
 
 @show y = F \ b
 println()
@@ -38,3 +47,5 @@ println()
 
 @show Bs\b
 println()
+
+end
