@@ -6,7 +6,7 @@ Plots
 GR
 Codecs
 Interpolations
-DataTables
+DataFrames
 WriteVTK
 OffsetArrays
 QuadGK

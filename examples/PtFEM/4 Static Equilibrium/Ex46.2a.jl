@@ -32,8 +32,7 @@ if VERSION.minor > 5
   println()
 else
   println("\nThe buckling load = $(m[1]) ($(m[2]) iterations):\n")
-  using DataTables
-  buckling_dt = DataTable(
+  buckling_dt = DataFrame(
     translation = m[4][m[5][1,:]+1],
     rotation = m[4][m[5][2,:]+1]
   )

@@ -22,8 +22,7 @@ println()
 println()
 
 println("\nThe buckling load = $(m[1])\n")
-using DataTables
-buckling_dt = DataTable(
+buckling_dt = DataFrame(
   translation = m[4][m[5][1,:]+1],
   rotation = m[4][m[5][2,:]+1]
 )

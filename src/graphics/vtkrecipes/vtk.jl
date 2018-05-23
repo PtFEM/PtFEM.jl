@@ -2,7 +2,7 @@
 
 # Create rectilinear grid VTK file.
 
-using DataTables, WriteVTK
+using DataFrames, WriteVTK
 import Compat.UTF8String
 const FloatType = Float32
 
