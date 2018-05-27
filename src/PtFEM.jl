@@ -1,6 +1,6 @@
 module PtFEM
 
-using DataFrames, Compat, SparseArrays
+using DataFrames, Compat, SuiteSparse, SparseArrays, LinearAlgebra
 
 using OffsetArrays
        
@@ -46,9 +46,9 @@ include("PtFEM/Main/mocouf.jl")
 include("PtFEM/Main/mocouq.jl")
 
 include("PtFEM/Utilities/useplots.jl")
-if useplots()
+#if useplots()
   include("graphics/plotrecipes/mesh.jl")
-end
+  #end
 
 include("PtFEM/Geom/bc_rect.jl")
 include("PtFEM/Geom/mesh_size.jl")
