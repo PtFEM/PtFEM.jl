@@ -1,6 +1,6 @@
 module PtFEM
 
-using DataFrames, Compat
+using DataFrames, Compat, SparseArrays
 
 using OffsetArrays
        
