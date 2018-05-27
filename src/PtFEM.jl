@@ -47,8 +47,8 @@ include("PtFEM/Main/mocouq.jl")
 
 include("PtFEM/Utilities/useplots.jl")
 #if useplots()
-  include("graphics/plotrecipes/mesh.jl")
-  #end
+#  include("graphics/plotrecipes/mesh.jl")
+#end
 
 include("PtFEM/Geom/bc_rect.jl")
 include("PtFEM/Geom/mesh_size.jl")
