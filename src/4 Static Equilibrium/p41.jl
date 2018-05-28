@@ -252,7 +252,7 @@ function p41(data::Dict{Symbol, Any})
     for t in eqfm
       vals = convert(Array, fm_df[t[1], :])
       for i in 1:k
-        fm_df[t[1], i] = round(vals[i] - t[2][i], 2)
+        fm_df[t[1], i] = round.(vals[i] - t[2][i], digits=2)
       end
     end
   end
@@ -384,7 +384,7 @@ function p41(m::PtFEM.jFEM, data::Dict)
     for t in eqfm
       vals = convert(Array, fm_df[t[1], :])
       for i in 1:k
-        fm_df[t[1], i] = round(vals[i] - t[2][i], 2)
+        fm_df[t[1], i] = round.(vals[i] - t[2][i], digits=2)
       end
     end
   end
