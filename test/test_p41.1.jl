@@ -20,4 +20,5 @@ data = Dict(
 
 @time m = p41(data)
 
+println("Testing: round.(m.displacements, 8) == [-2.5e-5 -2.344e-5 -1.875e-5 -1.094e-5 0.0]'")
 @test round.(m.displacements, 8) == [-2.5e-5 -2.344e-5 -1.875e-5 -1.094e-5 0.0]'
