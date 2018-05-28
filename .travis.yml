@@ -1,24 +1,29 @@
 # Documentation: http://docs.travis-ci.com/user/languages/julia/
 language: julia
+
 env:
   DOCUMENTER_DEBUG: true
+  
 os:
   - linux
   - osx
+  
 julia:
-  - 0.6
+  - nightly
+  
 matrix:
   allow_failures:
-    - julia: nightly
+    - os: osx
+    
 notifications:
   email: true
+  
 # uncomment the following lines to override the default test script
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
   - julia -e 'Pkg.add("Documenter")'
-  - julia -e 'Pkg.clone(pwd());Pkg.build("PtFEM")'
-  - julia -e 'Pkg.checkout("DataTables")'
-  - julia -e 'Pkg.test("PtFEM"; coverage=true)'
+  - julia -e 'using Pkg; Pkg.test("PtFEM"; coverage=true)'
+  
 after_success:
   #
   # Documentation
