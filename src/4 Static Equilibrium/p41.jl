@@ -203,7 +203,9 @@ function p41(data::Dict{Symbol, Any})
     end
   end
   
-  cfgsm = cholesky(gsm)
+  cfgsm = cholfact(gsm)
+  # cfgsm = cholesky(gsm)
+  
   loads[1:neq] = cfgsm \ loads[1:neq]
   println()
 
