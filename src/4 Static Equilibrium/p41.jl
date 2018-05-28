@@ -225,19 +225,19 @@ function p41(data::Dict{Symbol, Any})
     actions[i, :] = km * eld
   end
 
-  dis_df = DataTable(
+  dis_df = DataFrame(
     x_translation = displacements[:, 1],
   )
 
   if :eq_nodal_forces_and_moments in keys(data)
-    fm_df = DataTable(
+    fm_df = DataFrame(
       normal_force_1 = actions[:, 1],
       normal_force_2 = actions[:, 2],
       nf_1_uncorrected = actions[:, 1],
       nf_2_uncorrected = actions[:, 2]
     )
   else
-    fm_df = DataTable(
+    fm_df = DataFrame(
       normal_force_1 = actions[:, 1],
       normal_force_2 = actions[:, 2]
     )
