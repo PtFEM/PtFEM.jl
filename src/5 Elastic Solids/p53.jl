@@ -178,7 +178,7 @@ function p53(data::Dict)
   end
   displacements = displacements'
   
-  dis_dt = DataTable(
+  dis_df = DataFrame(
     r_disp = displacements[:, 1],
     y_disp = displacements[:, 2],
     z_disp = displacements[:, 3]
@@ -224,7 +224,7 @@ function p53(data::Dict)
     end
   end
   
-  sigma_dt = DataTable(
+  sigma_df = DataFrame(
     r_coord = gc1,
     y_coord = gc2,
     sig_x = s1,
@@ -242,6 +242,6 @@ function p53(data::Dict)
     km, mm, kg, cfgsm, loads, points, prop, sigma, value,
     weights, x_coords, y_coords, z_coords, axial)
   
-    (fem, dis_dt, sigma_dt)
+    (fem, dis_df, sigma_df)
   end
 

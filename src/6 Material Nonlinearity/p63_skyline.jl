@@ -231,8 +231,8 @@ function p63_skyline(data::Dict)
 
   println("There are $(neq) equations and the skyline storage is $(kdiag[neq]).")
   
-  start_dt = 1.0e15
-  dt = copy(start_dt)
+  start_df = 1.0e15
+  dt = copy(start_df)
   
   for i in 1:size(data[:properties], 1)
     ϕ, c, ψ, γ, E, ν  = prop[i, :]
@@ -454,13 +454,13 @@ function p63_skyline(data::Dict)
     end
   end
   
-  res_dt = DataTable(
+  res_df = DataFrame(
     displacement = disps,
     load1 = loads1,
     load2 = loads2,
     iters = iterations
   )
   
-  (res_dt, g_coord, g_num, displacements')
+  (res_df, g_coord, g_num, displacements')
 end
 

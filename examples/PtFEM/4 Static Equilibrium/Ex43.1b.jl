@@ -44,12 +44,12 @@ data[:loaded_nodes]
 data |> display
 println()
 
-@time fem, dis_dt, fm_dt = p43(data)
+@time fem, dis_df, fm_df = p43(data)
 println()
 
-display(dis_dt)
+display(dis_df)
 println()
-display(fm_dt)
+display(fm_df)
   
 if VERSION.minor < 6
   using Plots
@@ -58,12 +58,12 @@ if VERSION.minor < 6
   p = Vector{Plots.Plot{Plots.GRBackend}}(3)
   titles = ["p43.1 y deflection", "p43.1 y shear force", "p43.1 z moment"]
   fors = vcat(
-    convert(Array, fm_dt[:, :xl_Force]), 
-    convert(Array, fm_dt[:, :xr_Force])[end]
+    convert(Array, fm_df[:, :xl_Force]), 
+    convert(Array, fm_df[:, :xr_Force])[end]
   )
   moms = vcat(
-    convert(Array, fm_dt[:, :xl_Moment]),
-    convert(Array, fm_dt[:, :xr_Moment])[end]
+    convert(Array, fm_df[:, :xl_Moment]),
+    convert(Array, fm_df[:, :xr_Moment])[end]
   )
   
   p[1] = plot(fem.displacements[2,:], ylim=(-0.005, 0.005),

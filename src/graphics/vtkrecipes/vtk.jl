@@ -13,19 +13,19 @@ Plots displacements and directions
 
 ### Function
 ```julia
-mesh(data, fm_dt, sigma_dt, dir, fname)
+mesh(data, fm_df, sigma_df, dir, fname)
 ```
 
 ### Arguments
 ```julia
 * data::Dict                 : Input dictionary
-* fm_dt::DataTable           : Forces and moments DataTable
-* sigma_dt::DataTable        : Stresses DataTable
+* fm_df::DataFrame           : Forces and moments DataFrame
+* sigma_df::DataFrame        : Stresses DataFrame
 * dir::AbstractString        : Project directory
 * fname::AbstractString      : Output VTK file name
 ```
 """
-function vtk(data::Dict, fm_dt, sigma_dt, dir, fname)
+function vtk(data::Dict, fm_df, sigma_df, dir, fname)
   vtk_filename_noext = dir*"/"*fname
   dim = data[:struc_el].ndim
   
@@ -47,10 +47,10 @@ function vtk(data::Dict, fm_dt, sigma_dt, dir, fname)
   
   # Extract node data
   
-  disp = Vector{FloatType}(convert(Array, fm_dt[:disp]))
-  rotx = Vector{FloatType}(convert(Array, fm_dt[:rotx]))
-  roty = Vector{FloatType}(convert(Array, fm_dt[:roty]))
-  twistxy = Vector{FloatType}(convert(Array, fm_dt[:twistxy]))
+  disp = Vector{FloatType}(convert(Array, fm_df[:disp]))
+  rotx = Vector{FloatType}(convert(Array, fm_df[:rotx]))
+  roty = Vector{FloatType}(convert(Array, fm_df[:roty]))
+  twistxy = Vector{FloatType}(convert(Array, fm_df[:twistxy]))
 
   # Extract cell data
   # Note that in structured grids, the cells are the hexahedra (3D) or quads (2D)
@@ -58,9 +58,9 @@ function vtk(data::Dict, fm_dt, sigma_dt, dir, fname)
   
   local cdata, sigx, sigy, tauxy
   if dim == 2
-      sigx = reshape(convert(Array{FloatType}, sigma_dt[:sigx]), 2, 2)
-      sigy = reshape(convert(Array{FloatType}, sigma_dt[:sigy]), 2, 2)
-      tauxy = reshape(convert(Array{FloatType}, sigma_dt[:tauxy]), 2, 2)
+      sigx = reshape(convert(Array{FloatType}, sigma_df[:sigx]), 2, 2)
+      sigy = reshape(convert(Array{FloatType}, sigma_df[:sigy]), 2, 2)
+      tauxy = reshape(convert(Array{FloatType}, sigma_df[:tauxy]), 2, 2)
   elseif dim == 3
       cdata = zeros(FloatType, Ni-1, Nj-1, Nk-1)
       for k = 1:Nk-1, j = 1:Nj-1, i = 1:Ni-1

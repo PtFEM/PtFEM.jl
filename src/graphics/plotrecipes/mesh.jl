@@ -16,7 +16,7 @@ mesh(data, g_coord, g_num, disp, ampl, pdir)
 * data::Dict                 : Input dictionary
 * g_coord::Array{Float64, 2} : Coordinate array
 * g_num::Array{Int, 2}       : Global node numbering array
-* disp::DataTable            : Displacements DataTable
+* disp::DataFrame            : Displacements DataFrame
 * ampl::Float64              : Amplification for derivatives
 * pdir::AbstractString       : Nodal freedom matrix (updated)
 ```

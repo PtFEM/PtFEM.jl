@@ -32,11 +32,11 @@ if VERSION.minor > 5
   println()
 else
   println("\nThe buckling load = $(m[1]) ($(m[2]) iterations):\n")
-  buckling_dt = DataFrame(
+  buckling_df = DataFrame(
     translation = m[4][m[5][1,:]+1],
     rotation = m[4][m[5][2,:]+1]
   )
-  display(buckling_dt)
+  display(buckling_df)
   println()
   
   using Plots
@@ -44,12 +44,12 @@ else
 
   p = Vector{Plots.Plot{Plots.GRBackend}}(2)
   titles = ["p46.2a translation", "p46.2a rotation"]
-  p[1] = plot(convert(Array, buckling_dt[:translation]),
+  p[1] = plot(convert(Array, buckling_df[:translation]),
     ylim=(-0.1, 0.1), xlabel="node",
     ylabel="y translation [m]", color=:blue,
     marker=(:circle,1,0.1,stroke(1,:black)),
     title=titles[1], leg=false)
-  p[2] = plot(convert(Array, buckling_dt[:rotation]),
+  p[2] = plot(convert(Array, buckling_df[:rotation]),
     ylim=(-1.0, 1.0), xlabel="node",
     ylabel="rotation [radians]", color=:red,
     marker=(:circle,1,0.1,stroke(1,:black)),

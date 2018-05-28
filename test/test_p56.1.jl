@@ -30,7 +30,7 @@ data = Dict(
   :cg_limit => 200
 )
 
-@time dis_dt, sigma_dt = p56(data)
+@time dis_df, sigma_df = p56(data)
 
-@test  round.(convert(Array, sigma_dt[end, 4:end]), 4) ≈ 
+@test  round.(convert(Array, sigma_df[end, 4:end]), 4) ≈ 
   round.([0.00740581  -0.0438989  -0.0283135  -0.000564003  0.060832  5.09367e-5], 4)

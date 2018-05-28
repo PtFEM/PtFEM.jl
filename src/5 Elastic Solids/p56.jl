@@ -253,7 +253,7 @@ function p56(data::Dict, profiling::Bool=false)
   end
   displacements = displacements'
   
-  dis_dt = DataTable(
+  dis_df = DataFrame(
     x_disp = displacements[:, 1],
     y_disp = displacements[:, 2],
     z_disp = displacements[:, 3]
@@ -302,7 +302,7 @@ function p56(data::Dict, profiling::Bool=false)
     end
   end
   
-  sigma_dt = DataTable(
+  sigma_df = DataFrame(
     x_coord = gc1,
     y_coord = gc2,
     z_coord = gc3,
@@ -314,6 +314,6 @@ function p56(data::Dict, profiling::Bool=false)
     tau_zx = s6
   )
   
-  (dis_dt, sigma_dt)
+  (dis_df, sigma_df)
 end
 

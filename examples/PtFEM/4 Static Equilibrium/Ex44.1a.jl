@@ -76,12 +76,12 @@ data = Dict(
 data |> display
 println()
 
-@time fem, dis_dt, fm_dt = p44(data)
+@time fem, dis_df, fm_df = p44(data)
 println()
 
-display(dis_dt)
+display(dis_df)
 println()
-display(fm_dt)
+display(fm_df)
   
 if VERSION.minor < 6
   using Plots
@@ -92,12 +92,12 @@ if VERSION.minor < 6
     "p4.4.1 y shear force", "p4.4.1 z moment"]
   indxs = [1,2,3,4,5,6,7,9,10,11,12,13,14,16,17]
   moms = vcat(
-    convert(Array, fm_dt[:, :z1_Moment]), 
-    convert(Array, fm_dt[:, :z2_Moment])[end]
+    convert(Array, fm_df[:, :z1_Moment]), 
+    convert(Array, fm_df[:, :z2_Moment])[end]
   )
   fors = vcat(
-    convert(Array, fm_dt[:, :y1_Force]), 
-    convert(Array, fm_dt[:, :y2_Force])[end]
+    convert(Array, fm_df[:, :y1_Force]), 
+    convert(Array, fm_df[:, :y2_Force])[end]
   )
   x_coords = data[:x_coords]
   

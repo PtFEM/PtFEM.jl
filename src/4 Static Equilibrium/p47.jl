@@ -33,10 +33,10 @@ p47(data)
 
 ### Return values
 ```julia
-* (fm_dt, sigma_dt)            : Tuple of jFem, dis_dt and fm_dt
+* (fm_df, sigma_df)            : Tuple of jFem, dis_df and fm_df
                                   where:
-                                    fm_dt         : Forces and moments data table
-                                    sigma_dt      : Stresses data table
+                                    fm_df         : Forces and moments data table
+                                    sigma_df      : Stresses data table
 ```
 
 ### Related help
@@ -244,7 +244,7 @@ function p47(data::Dict{Symbol, Any})
     append!(roty, loads[nf[3,i]])
     append!(twistxy, loads[nf[4,i]])
   end
-  dis_dt = DataTable(
+  dis_df = DataFrame(
     disp = disp,
     rotx = rotx,
     roty = roty,
@@ -281,12 +281,12 @@ function p47(data::Dict{Symbol, Any})
     end
   end
   
-  sigma_dt = DataTable(
+  sigma_df = DataFrame(
     sigx = sigx,
     sigy = sigy,
     tauxy = tauxy
   )
   
-  (dis_dt, sigma_dt)
+  (dis_df, sigma_df)
 end
 

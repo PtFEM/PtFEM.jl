@@ -22,13 +22,13 @@ data = Dict(
 data |> display
 println()
 
-@time res_dt, g_coord, g_num, disp = p63(data)
+@time res_df, g_coord, g_num, disp = p63(data)
 println()
-res_dt
+res_df
 
 Profile.init(1500000, 0.001)
 Profile.clear()
-@profile res_dt, g_coord, g_num, disp = p63(data)
+@profile res_df, g_coord, g_num, disp = p63(data)
 Profile.print()
 println()
 

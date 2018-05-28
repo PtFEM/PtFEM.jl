@@ -33,11 +33,11 @@ p43(data)
 
 ### Return values
 ```julia
-* (jfem, dis_dt, fm_dt)        : Tuple of jFem, dis_dt and fm_dt
+* (jfem, dis_df, fm_df)        : Tuple of jFem, dis_df and fm_df
                                  where:
                                     jfem::jFem    : Computational result type
-                                    dis_dt        : Displacement data table
-                                    fm_dt         : Forces and moments data table
+                                    dis_df        : Displacement data table
+                                    fm_df         : Forces and moments data table
 ```
 
 
@@ -247,12 +247,12 @@ function p43(data::Dict)
     actions[:, i] = (km+mm) * eld
   end
 
-  dis_dt = DataTable(
+  dis_df = DataFrame(
     translations = displacements[1, :],
     rotations = displacements[2, :]
   )
 
-  fm_dt = DataTable(
+  fm_df = DataFrame(
     xl_Force = actions[1, :],
     xl_Moment = actions[2, :],
     xr_Force = actions[3, :],
@@ -265,9 +265,9 @@ function p43(data::Dict)
     eqfm = data[:eq_nodal_forces_and_moments]
     k = data[:struc_el].fin_el.nod * data[:struc_el].fin_el.nodof
     for t in eqfm
-      vals = convert(Array, fm_dt[t[1], :])
+      vals = convert(Array, fm_df[t[1], :])
       for i in 1:k
-        fm_dt[t[1], i] = round(vals[i] - t[2][i], 2)
+        fm_df[t[1], i] = round(vals[i] - t[2][i], 2)
       end
     end
   end
@@ -279,5 +279,5 @@ function p43(data::Dict)
     km, mm, kg, cfgsm, loads, points, prop, sigma, value,
     weights, x_coords, y_coords, z_coords, axial)
 
-  (fem, dis_dt, fm_dt)
+  (fem, dis_df, fm_df)
 end

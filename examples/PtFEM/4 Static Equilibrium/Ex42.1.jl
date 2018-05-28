@@ -22,9 +22,9 @@ data = Dict(
 data |> display
 println()
 
-@time fem, dis_dt, fm_dt = p42(data)
+@time fem, dis_df, fm_df = p42(data)
 println()
 
-display(dis_dt)
+display(dis_df)
 println()
-display(fm_dt)
+display(fm_df)

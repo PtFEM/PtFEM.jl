@@ -19,7 +19,7 @@ data = Dict(
 data |> display
 println()
 
-@time m, dis_dt, fm_dt = p43(data)
+@time m, dis_df, fm_df = p43(data)
 println()
 
 if VERSION.minor > 5

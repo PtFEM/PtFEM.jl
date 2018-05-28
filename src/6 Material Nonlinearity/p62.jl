@@ -312,7 +312,7 @@ function p62(data::Dict)
   diag_precon[1] = 0.0
   iy = 0
   
-  # DataTable arrays
+  # DataFrame arrays
   
   loaddt = Float64[]
   dispdt = Float64[]
@@ -461,7 +461,7 @@ function p62(data::Dict)
   end
   println()
   
-  dt = DataTable()
+  dt = DataFrame()
   dt[:loads] = loaddt
   dt[:disp] = dispdt
   dt[:iters] = itersdt

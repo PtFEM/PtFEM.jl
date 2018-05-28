@@ -106,7 +106,7 @@ PtFEM.mesh(data::Dict, g_coord::Array{Float64,2}, g_num::Array{Int, 2}, disp, am
 ## PtFEM - VTK methods
 
 ```@docs
-PtFEM.vtk(data::Dict, fm_dt, sigma_dt, dir, fname)
+PtFEM.vtk(data::Dict, fm_df, sigma_df, dir, fname)
 ```
 
 ## PtFEM - Julia functions & operators

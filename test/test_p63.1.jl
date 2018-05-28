@@ -19,10 +19,10 @@ data = Dict(
   :presc => -0.001  # Magnitude of incremental vertical displacements rigid footing
 )
 
-@time res_dt, g_coord, g_num, disp = p63(data)
+@time res_df, g_coord, g_num, disp = p63(data)
 println()
-res_dt
+res_df
 
-@test res_dt[end,:load1] ≈ 274.3514626820244
-@test res_dt[end,:load2] ≈ 270.01838672066737
-@test res_dt[end,:iters] == 81
+@test res_df[end,:load1] ≈ 274.3514626820244
+@test res_df[end,:load2] ≈ 270.01838672066737
+@test res_df[end,:iters] == 81

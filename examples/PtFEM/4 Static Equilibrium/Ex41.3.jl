@@ -37,7 +37,7 @@ data = Dict(
 data |> display
 println()
 
-@time fem, dis_dt, fm_dt = p41(data)
+@time fem, dis_df, fm_df = p41(data)
 println()
 
 # Update (double) the loaded_nodes values
@@ -51,9 +51,9 @@ end
 
 # Pass in m so m.cfgsm can be re-used with this new load vector.
 
-@time fem2, dis_dt2, fm_dt2 = p41(fem, data)
+@time fem2, dis_df2, fm_df2 = p41(fem, data)
 println()
 
-display(dis_dt2)
+display(dis_df2)
 println()
-display(fm_dt2)
+display(fm_df2)

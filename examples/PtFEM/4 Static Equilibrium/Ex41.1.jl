@@ -35,12 +35,12 @@ data |> display
 println()
 
 # Solve the FEM model
-@time fem, dis_dt, fm_dt = p41(data)
+@time fem, dis_df, fm_df = p41(data)
 println()
 
-display(dis_dt)
+display(dis_df)
 println()
-display(fm_dt)
+display(fm_df)
 println()
   
 if VERSION.minor < 7      # Prevent plotting in Julia v"0.6" for now
@@ -49,7 +49,7 @@ if VERSION.minor < 7      # Prevent plotting in Julia v"0.6" for now
   gr(size=(400,500))
 
   x = 0.0:l/els:l
-  u = convert(Array, dis_dt[:x_translation])
+  u = convert(Array, dis_df[:x_translation])
     
   p = Vector{Plots.Plot{Plots.GRBackend}}(2)
   titles = ["PtFEM Ex41.1 u(x)", "PtFEM Ex41.1 N(x)"]
@@ -58,7 +58,7 @@ if VERSION.minor < 7      # Prevent plotting in Julia v"0.6" for now
     yflip=true, xflip=false, xlab="Normal force [N]",
     ylab="x [m]", title=titles[2]
   )
-  vals = convert(Array, fm_dt[:normal_force_2])
+  vals = convert(Array, fm_df[:normal_force_2])
   for i in 1:els
       plot!(p[1], 
         [vals[i], vals[i]],

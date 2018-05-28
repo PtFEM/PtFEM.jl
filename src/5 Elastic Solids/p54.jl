@@ -169,13 +169,13 @@ function p54(data::Dict)
   displacements = displacements'
 
   if ndim == 3
-    dis_dt = DataTable(
+    dis_df = DataFrame(
       x_disp = displacements[:, 1],
       y_disp = displacements[:, 2],
       z_disp = displacements[:, 3]
     )
   else
-    dis_dt = DataTable(
+    dis_df = DataFrame(
       x_disp = displacements[:, 1],
       y_disp = displacements[:, 2]
     )
@@ -225,7 +225,7 @@ function p54(data::Dict)
   end
   
   if ndim == 3
-    sigma_dt = DataTable(
+    sigma_df = DataFrame(
       x_coord = gc1,
       y_coord = gc2,
       z_coord = gc3,
@@ -238,7 +238,7 @@ function p54(data::Dict)
     )
   else
     println("\nElement  x-coord   y-coord      sig_x        sig_y        tau_xy")
-    sigma_dt = DataTable(
+    sigma_df = DataFrame(
       x_coord = gc1,
       y_coord = gc2,
       sig_x = s1,
@@ -254,6 +254,6 @@ function p54(data::Dict)
     km, mm, kg, cfgsm, loads, points, prop, sigma, value,
     weights, x_coords, y_coords, z_coords, axial)
   
-    (fem, dis_dt, sigma_dt)
+    (fem, dis_df, sigma_df)
 end
 

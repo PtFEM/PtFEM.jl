@@ -29,7 +29,7 @@ data = Dict(
 data |> display
 println()
 
-m, dis_dt, fm_dt = p44(data)
+m, dis_df, fm_df = p44(data)
 
 println("Displacements:")
 m.displacements |> display

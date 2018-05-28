@@ -34,10 +34,10 @@ p51(data)
 
 ### Return values
 ```julia
-* (fem, fm_dt, sigma_dt)     : Tuple of jFem, dis_dt and fm_dt
+* (fem, fm_df, sigma_df)     : Tuple of jFem, dis_df and fm_df
                                where:
-                                 fm_dt         : Forces and moments data table
-                                 sigma_dt      : Stresses data table
+                                 fm_df         : Forces and moments data table
+                                 sigma_df      : Stresses data table
 ```
 
 ### Related help
@@ -237,15 +237,15 @@ function p51(data::Dict{Symbol, Any})
   end
   displacements = displacements'
   
-  local dis_dt
-  local fm_dt
+  local dis_df
+  local fm_df
   if struc_el.axisymmetric
-    dis_dt = DataTable(
+    dis_df = DataFrame(
       x_disp = displacements[:, 1],
       z_disp = displacements[:, 2]
     )
   else
-    dis_dt = DataTable(
+    dis_df = DataFrame(
       x_disp = displacements[:, 1],
       y_disp = displacements[:, 2]
     )
@@ -291,7 +291,7 @@ function p51(data::Dict{Symbol, Any})
     end
   end
   if struc_el.axisymmetric
-    fm_dt = DataTable(
+    fm_df = DataFrame(
       r_coord = gc1,
       z_coord = gc2,
       sig_r = s1,
@@ -300,7 +300,7 @@ function p51(data::Dict{Symbol, Any})
       sig_t = s4
     )
   else
-    fm_dt = DataTable(
+    fm_df = DataFrame(
       x_coord = gc1,
       y_coord = gc2,
       sig_x = s1,
@@ -316,6 +316,6 @@ function p51(data::Dict{Symbol, Any})
     km, mm, kg, cfgsm, loads, points, prop, sigma, value,
     weights, x_coords, y_coords, z_coords, axial)
     
-  (fem, dis_dt, fm_dt)
+  (fem, dis_df, fm_df)
 end
 

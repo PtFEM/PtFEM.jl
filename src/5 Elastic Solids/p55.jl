@@ -233,12 +233,12 @@ function p55(data::Dict)
   displacements = displacements'
 
   if struc_el.axisymmetric
-    dis_dt = DataTable(
+    dis_df = DataFrame(
       r_disp = displacements[:, 1],
       z_disp = displacements[:, 2]
     )
   else
-    dis_dt = DataTable(
+    dis_df = DataFrame(
       x_disp = displacements[:, 1],
       y_disp = displacements[:, 2]
     )
@@ -295,7 +295,7 @@ function p55(data::Dict)
   end
 
   if struc_el.axisymmetric
-     sigma_dt = DataTable(
+     sigma_df = DataFrame(
       r_coord = gc1,
       z_coord = gc2,
       sig_r = s1,
@@ -304,7 +304,7 @@ function p55(data::Dict)
       sig_t = s4
     )
   else
-    sigma_dt = DataTable(
+    sigma_df = DataFrame(
       x_coord = gc1,
       y_coord = gc2,
       sig_x = s1,
@@ -320,6 +320,6 @@ function p55(data::Dict)
     km, mm, kg, cfgsm, loads, points, prop, sigma, value,
     weights, x_coords, y_coords, z_coords, axial)
   
-    (fem, dis_dt, sigma_dt)
+    (fem, dis_df, sigma_df)
   end
 

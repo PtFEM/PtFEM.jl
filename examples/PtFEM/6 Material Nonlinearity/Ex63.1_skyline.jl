@@ -22,7 +22,7 @@ data = Dict(
 data |> display
 println()
 
-res_dt, g_coord, g_num, disp = p63_skyline(data)
+res_df, g_coord, g_num, disp = p63_skyline(data)
 println()
 
-res_dt
+res_df

@@ -34,11 +34,11 @@ p42(data)
 
 ### Return values
 ```julia
-* (jfem, dis_dt, fm_dt)        : Tuple of jFem, dis_dt and fm_dt
+* (jfem, dis_df, fm_df)        : Tuple of jFem, dis_df and fm_df
                                  where:
                                     jfem::jFem    : Computational result type
-                                    dis_dt        : Displacement data table
-                                    fm_dt         : Forces and moments data table
+                                    dis_df        : Displacement data table
+                                    fm_df         : Forces and moments data table
 ```
 
 
@@ -241,11 +241,11 @@ function p42(data::Dict)
   end
 
   if ndim == 2
-    dis_dt = DataTable(
+    dis_df = DataFrame(
       x_translation = displacements[1, :],
       y_translation = displacements[2, :],
     )
-    fm_dt = DataTable(
+    fm_df = DataFrame(
       x_force_1 = actions[1, :],
       y_force_1 = actions[2, :],
       x_force_2 = actions[3, :],
@@ -253,12 +253,12 @@ function p42(data::Dict)
       axial_force = axial
     )
   elseif ndim == 3
-    dis_dt = DataTable(
+    dis_df = DataFrame(
       x_translation = displacements[1, :],
       y_translation = displacements[2, :],
       z_translation = displacements[3, :],
     )
-    fm_dt = DataTable(
+    fm_df = DataFrame(
       x_force_1 = actions[1, :],
       y_force_1 = actions[2, :],
       z_force_1 = actions[3, :],
@@ -275,9 +275,9 @@ function p42(data::Dict)
     eqfm = data[:eq_nodal_forces_and_moments]
     k = data[:struc_el].fin_el.nod * data[:struc_el].fin_el.nodof
     for t in eqfm
-      vals = convert(Array, fm_dt[t[1], :])
+      vals = convert(Array, fm_df[t[1], :])
       for i in 1:k
-        fm_dt[t[1], i] = round(vals[i] - t[2][i], 2)
+        fm_df[t[1], i] = round(vals[i] - t[2][i], 2)
       end
     end
   end
@@ -289,5 +289,5 @@ function p42(data::Dict)
     km, mm, kg, cfgsm, loads, points, prop, sigma, value,
     weights, x_coords, y_coords, z_coords, axial)
 
-  (fem, dis_dt, fm_dt)
+  (fem, dis_df, fm_df)
 end

@@ -45,14 +45,14 @@ using ProfileView
 ProfileView.view()
 =#
 
-@time dis_dt, sigma_dt = p56(data)
+@time dis_df, sigma_df = p56(data)
 println()
 
-dis_dt |> display
+dis_df |> display
 println()
 
 println("\nThe integration point (nip = $(data[:struc_el].nip)) stresses are:\n")
 
-sigma_dt |> display
+sigma_df |> display
 println()
 
