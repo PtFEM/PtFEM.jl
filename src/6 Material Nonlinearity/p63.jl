@@ -434,7 +434,7 @@ function p63(data::Dict)
       pav += tensor[2, 1, (i-1)*struc_el.nye+1] + tensor[2, 2, (i-1)*struc_el.nye+1]
     end
     pav /= 2nbo2
-    println("$(iy)     $(-round(totd[1], 5))   $(-round(pr, 5)) $(-round(pav, 5))    $(iters)")
+    println("$(iy)     $(-round.(totd[1], 5))   $(-round.(pr, 5)) $(-round.(pav, 5))    $(iters)")
     append!(disps, -totd[1])
     append!(loads1, -pr)
     append!(loads2, -pav)

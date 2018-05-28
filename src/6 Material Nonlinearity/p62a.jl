@@ -374,13 +374,13 @@ function pp62(data::Dict)
     totdstr = @sprintf("%+.4e", totd[nf1[2, node[1]]])
     
     if iy < 10
-      println(" $(iy)       $(ptot)    $(totdstr)    $(iters)       $(round(cg_tot/iters, 2))")
+      println(" $(iy)       $(ptot)    $(totdstr)    $(iters)       $(round.(cg_tot/iters, 2))")
     else
-      println("$(iy)       $(ptot)    $(totdstr)    $(iters)       $(round(cg_tot/iters, 2))")
+      println("$(iy)       $(ptot)    $(totdstr)    $(iters)       $(round.(cg_tot/iters, 2))")
     end
     
   end
-  (ptot, totd[nf1[2, node[1]]], iters, round(cg_tot/iters, 2))
+  (ptot, totd[nf1[2, node[1]]], iters, round.(cg_tot/iters, 2))
 end
 
 function p62a(data)
@@ -391,10 +391,10 @@ function p62a(data)
   np = nprocs()  # determine the number of processes available
   n = length(lst)
   results = Vector{Any}(n)
-  i = 2
+  local ix = 2
   # function to produce the next work item from the queue.
   # in this case it's just an index.
-  nextidx() = (idx=i; i+=1; idx)
+  nextidx() = (idx=ix; ix+=1; idx)
   @sync begin
       for p=1:np
           if p != myid() || np == 1

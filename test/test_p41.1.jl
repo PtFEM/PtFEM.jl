@@ -5,7 +5,7 @@ data = Dict(
   # Rod(nels, np_types, nip, fin_el(nod, nodof))
   :struc_el => Rod(4, 1, 1, Line(2, 1)),
   :properties => [1.0e5;],
-  :x_coords => linspace(0, 1, 5),
+  :x_coords => range(0, stop=1, length=5),
   :support => [
     (5, [0])
     ],
@@ -20,5 +20,6 @@ data = Dict(
 
 @time m = p41(data)
 
-println("Testing: round.(m.displacements, 8) == [-2.5e-5 -2.344e-5 -1.875e-5 -1.094e-5 0.0]'")
-@test round.(m.displacements, 8) == [-2.5e-5 -2.344e-5 -1.875e-5 -1.094e-5 0.0]'
+println("\nTesting: round.(m.displacements, digits=8) == [-2.5e-5 -2.344e-5 -1.875e-5 -1.094e-5 0.0]'\n")
+
+@test round.(m.displacements, digits=8) == [-2.5e-5 -2.344e-5 -1.875e-5 -1.094e-5 0.0]'

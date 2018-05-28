@@ -440,7 +440,7 @@ function p63_skyline(data::Dict)
     append!(loads1, -pr)
     append!(loads2, -pav)
     append!(iterations, iters)
-    println("$(iy)     $(-round(totd[2], 5))   $(-round(pr, 5)) $(-round(pav, 5))    $(iters)")
+    println("$(iy)     $(-round.(totd[2], 5))   $(-round.(pr, 5)) $(-round.(pav, 5))    $(iters)")
     iters == limit && continue
   end
   

@@ -4,12 +4,12 @@ function sample!(fin_el::Tetrahedron, s::Matrix{Float64} , wt::Vector{Float64})
   # of the integrating points.
   #
   
-  const root3 = 1.0 / sqrt(3.0)
-  const r15 = 0.2 * sqrt(15.0)
+  root3 = 1.0 / sqrt(3.0)
+  r15 = 0.2 * sqrt(15.0)
   nip = size(s,1)
 
-  const w = [5.0/9.0, 8.0/9.0, 5.0/9.0]
-  const v = [5.0/9.0*w; 8.0/9.0*w; 5.0/9.0*w]
+  w = [5.0/9.0, 8.0/9.0, 5.0/9.0]
+  v = [5.0/9.0*w; 8.0/9.0*w; 5.0/9.0*w]
  
   if nip == 1
     s[1,1] = 0.25

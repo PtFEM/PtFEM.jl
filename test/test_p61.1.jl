@@ -25,4 +25,4 @@ data = Dict(
 
 @time g_coord, g_num, disp = p61(data)
 
-@test round(disp[1, 2], 5)≈ round(-7.1349e-02, 5)
+@test round.(disp[1, 2], 5)≈ round.(-7.1349e-02, 5)

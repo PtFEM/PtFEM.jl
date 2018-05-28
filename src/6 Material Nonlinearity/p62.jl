@@ -450,12 +450,12 @@ function p62(data::Dict)
     append!(loaddt, [ptot])
     append!(dispdt, [totd[nf1[2, node[1]]]])
     append!(itersdt, [iters])
-    append!(ratiodt, [round(cg_tot/iters, 2)])
+    append!(ratiodt, [round.(cg_tot/iters, 2)])
     
     if iy < 10
-      println(" $(iy)       $(ptot)    $(totdstr)    $(iters)       $(round(cg_tot/iters, 2))")
+      println(" $(iy)       $(ptot)    $(totdstr)    $(iters)       $(round.(cg_tot/iters, 2))")
     else
-      println("$(iy)       $(ptot)    $(totdstr)    $(iters)       $(round(cg_tot/iters, 2))")
+      println("$(iy)       $(ptot)    $(totdstr)    $(iters)       $(round.(cg_tot/iters, 2))")
     end
     
   end
