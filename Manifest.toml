@@ -7,28 +7,10 @@ version = "0.2.0"
 [[Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 
-[[BinDeps]]
-deps = ["Compat", "Libdl", "SHA", "URIParser"]
-git-tree-sha1 = "160d5d926e83e0970dd549ad9fe0ac3e8107e83c"
-uuid = "9e28174c-4ba2-5203-b857-d8d62c4213ee"
-version = "0.8.8"
-
-[[BufferedStreams]]
-deps = ["Compat", "Pkg", "Test"]
-git-tree-sha1 = "260922227fa4affdce57c59063fabf33a324d50e"
-uuid = "e1450e63-4bb3-523b-b2a4-4ffa8c0fd77d"
-version = "0.4.0"
-
 [[Calculus]]
 deps = ["Compat"]
 git-tree-sha1 = "2573aaad07cbbe21526e055bea3e995abc9e7c99"
 uuid = "49dc2e85-a5d0-5ad3-a950-438e2897f1b9"
-version = "0.4.0"
-
-[[Codecs]]
-deps = ["Compat"]
-git-tree-sha1 = "511ccd52570f94e45022ef9698146722d4f1f94d"
-uuid = "19ecbf4d-ef7c-5e4b-b54a-0a0ff23c5aed"
 version = "0.4.0"
 
 [[Compat]]
@@ -70,18 +52,6 @@ git-tree-sha1 = "2e0ed59cc68abac54a786b4810be0c272db90c28"
 uuid = "fa6b7ba4-c1ee-5f82-b5fc-ecf0adba8f74"
 version = "0.3.0"
 
-[[GR]]
-deps = ["DelimitedFiles", "Random", "Serialization", "Sockets", "Test"]
-git-tree-sha1 = "b0a1d37d216fe143020b5d7d49c4fdc18642f150"
-uuid = "28b8d3ca-fb5f-59d9-8090-bfdbd6d07a71"
-version = "0.31.0"
-
-[[HTTPClient]]
-deps = ["Compat", "LibCURL"]
-git-tree-sha1 = "161d5776ae8e585ac0b8c20fb81f17ab755b3671"
-uuid = "0862f596-cf2d-50af-8ef4-f2be67dfa83f"
-version = "0.2.1"
-
 [[InteractiveUtils]]
 uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
 
@@ -94,35 +64,11 @@ version = "0.7.3"
 [[IterativeEigensolvers]]
 uuid = "de555fa4-b82f-55e7-8b71-53f60bbc027d"
 
-[[LibCURL]]
-deps = ["BinDeps", "Compat", "Libdl", "WinRPM"]
-git-tree-sha1 = "9b431bc66757ad5124f4d206c319996a2dfa2662"
-uuid = "b27032c2-a3e7-50c8-80cd-2d36dbcbfd21"
-version = "0.2.2"
-
-[[LibExpat]]
-deps = ["Compat"]
-git-tree-sha1 = "8ba2ca1635ec1755bcf1432c9a2aa6c91a3fb4fd"
-uuid = "522f3ed2-3f36-55e3-b6df-e94fee9b0c07"
-version = "0.4.2"
-
 [[LibGit2]]
 uuid = "76f85450-5226-5b5a-8eaa-529ad045b433"
 
 [[Libdl]]
 uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
-
-[[Libz]]
-deps = ["BufferedStreams", "Compat"]
-git-tree-sha1 = "501a8a5b0c500c3a04adb65a3468e3de5ad4e0d9"
-uuid = "2ec943e9-cfe8-584d-b93d-64dcb6d567b7"
-version = "0.2.4"
-
-[[LightXML]]
-deps = ["Compat", "WinRPM"]
-git-tree-sha1 = "06ff5861b4e8f2f510c29687fa753a8bbef8a2cd"
-uuid = "9c8b4983-aa76-5018-a973-4c85ecc9e179"
-version = "0.6.0"
 
 [[LinearAlgebra]]
 uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
@@ -170,9 +116,6 @@ git-tree-sha1 = "68d922178459eeb99a54fef8aad69fc76cc6682f"
 uuid = "c84ed2f1-dad5-54f0-aa8e-dbefe2724439"
 version = "0.2.0"
 
-[[SHA]]
-uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
-
 [[Serialization]]
 uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
 
@@ -196,29 +139,11 @@ uuid = "4607b0f0-06f3-5cda-b6b1-a6196a1729e9"
 [[Test]]
 uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
-[[TranscodingStreams]]
-deps = ["Compat", "Random", "Test"]
-git-tree-sha1 = "497524e8b703e67caf20cc086d20235852041fe4"
-uuid = "3bb67fe8-82b1-5028-8e26-92a6c54297fa"
-version = "0.5.2"
-
-[[URIParser]]
-deps = ["Compat", "Unicode"]
-git-tree-sha1 = "0f9c5e2d14e03fbd00696f9394e288bdd5adacbc"
-uuid = "30578b45-9adc-5946-b283-645ec420af67"
-version = "0.3.1"
-
 [[UUIDs]]
 uuid = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"
 
 [[Unicode]]
 uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
-
-[[WinRPM]]
-deps = ["BinDeps", "Compat", "HTTPClient", "LibExpat", "Libdl", "Libz", "SHA", "URIParser"]
-git-tree-sha1 = "43730fcfe2f4921e7cfe1c21a6fdfeabb7ee4d74"
-uuid = "c17dfb99-b4f7-5aad-8812-456da1ad7187"
-version = "0.3.2"
 
 [[WoodburyMatrices]]
 deps = ["Compat"]
