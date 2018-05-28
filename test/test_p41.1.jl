@@ -1,4 +1,5 @@
-using PtFEM, Base.Test.@test
+using PtFEM
+using Test.@test
 
 data = Dict(
   # Rod(nels, np_types, nip, fin_el(nod, nodof))

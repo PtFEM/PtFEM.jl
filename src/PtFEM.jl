@@ -1,6 +1,6 @@
 module PtFEM
 
-using DataFrames, Compat, SuiteSparse, SparseArrays, LinearAlgebra
+using DataFrames, Compat, SuiteSparse, SparseArrays, LinearAlgebra, TranscodingStreams
 
 using OffsetArrays
        
@@ -55,8 +55,8 @@ include("PtFEM/Geom/mesh_size.jl")
 include("PtFEM/Geom/geom_rect.jl")
 include("PtFEM/Geom/hexahedron_xz.jl")
 
-include("graphics/vtkrecipes/vtk.jl")
-include("graphics/vtkrecipes/exportVTK_XML.jl")
+#include("graphics/vtkrecipes/vtk.jl")
+#include("graphics/vtkrecipes/exportVTK_XML.jl")
 
 include("PtFEM/Deprecated/fkdiag.jl")
 include("PtFEM/Deprecated/fsparv.jl")

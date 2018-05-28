@@ -5,6 +5,7 @@ using Base.Test
 
 code_tests = [
   "p41.1.jl",
+  #=
   "p41.2.jl",
   "p42.2.jl",
   "p43.1b.jl",
@@ -28,6 +29,7 @@ code_tests = [
   "p61.1.jl",
   "p62.1.jl",
   "p63.1.jl"
+  =#
 ]
 
 println("\n\nRunning PtFEM/PtFEM.jl tests:\n\n")
