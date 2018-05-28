@@ -1,7 +1,6 @@
 module PtFEM
 
-using DataFrames, Compat, SuiteSparse, SparseArrays, LinearAlgebra, TranscodingStreams
-
+using Compat, SuiteSparse, SparseArrays, LinearAlgebra
 using OffsetArrays
        
 # package code goes here

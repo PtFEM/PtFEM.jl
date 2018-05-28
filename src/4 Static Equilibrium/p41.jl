@@ -225,6 +225,7 @@ function p41(data::Dict{Symbol, Any})
     actions[i, :] = km * eld
   end
 
+  #=
   dis_df = DataFrame(
     x_translation = displacements[:, 1],
   )
@@ -255,7 +256,8 @@ function p41(data::Dict{Symbol, Any})
       end
     end
   end
-
+  =#
+  
   fem = PtFEM.jFEM(struc_el, fin_el, ndim, nels, nst, ndof, nn, nodof,
     neq, penalty, etype, g, g_g, g_num, nf, no,
     node, num, sense, actions, bee, coord, gamma, dee,
@@ -263,7 +265,7 @@ function p41(data::Dict{Symbol, Any})
     km, mm, kg, cfgsm, loads, points, prop, sigma, value,
     weights, x_coords, y_coords, z_coords, axial)
 
-  (fem, dis_df, fm_df)
+  fem
 end
 
 

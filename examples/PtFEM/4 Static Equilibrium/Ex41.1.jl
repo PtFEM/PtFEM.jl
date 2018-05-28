@@ -35,12 +35,12 @@ data |> display
 println()
 
 # Solve the FEM model
-@time fem, dis_df, fm_df = p41(data)
+@time fem = p41(data)
 println()
 
-display(dis_df)
+display(fem.actions)
 println()
-display(fm_df)
+display(fem.displacements)
 println()
   
 if VERSION.minor < 7      # Prevent plotting in Julia v"0.6" for now
