@@ -1,4 +1,4 @@
-julia 0.6
+julia 0.7-
 Compat 0.17
 Documenter
 LightXML
@@ -12,3 +12,6 @@ OffsetArrays
 QuadGK
 Dates
 TranscodingStreams
+SuiteSparse
+SparseArrays
+LinearAlgebra
