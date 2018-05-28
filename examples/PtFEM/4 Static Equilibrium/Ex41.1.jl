@@ -63,7 +63,7 @@ if VERSION.minor < 7      # Prevent plotting in Julia v"0.6" for now
       plot!(p[1], 
         [vals[i], vals[i]],
         [(i-1)*l/els, i*l/els], color=:blue,
-        color=:blue, fill=true, fillalpha=0.1, leg=false
+        fill=true, fillalpha=0.1, leg=false
       )
       delta = abs(((i-1)*l/els) - (i*l/els)) / 20.0
       y1 = collect(((i-1)*l/els):delta:(i*l/els))
