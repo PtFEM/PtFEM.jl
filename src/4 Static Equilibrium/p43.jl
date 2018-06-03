@@ -219,7 +219,7 @@ function p43(data::Dict)
     end
   end
   
-  cfgsm = cholfact(gsm)
+  cfgsm = cholesky(gsm)
   loads[1:neq] = cfgsm \ loads[1:neq]
   println()
 

@@ -116,7 +116,7 @@ cd(ProjDir) #do
   # Modify K and f such that K \ f gives correct boundary conditions
   @time apply!(K, f, dbc)
 
-  @time u = cholfact(K) \ f;
+  @time u = cholesky(K) \ f;
 
   # Save file
   vtkfile = vtk_grid("cl", dh, u)

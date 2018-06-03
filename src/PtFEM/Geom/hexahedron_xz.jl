@@ -124,28 +124,28 @@ function hexahedron_xz!(iel::Int, x_coords::Vector{Float64},
    num[19] = num[13] + 2
    num[20] = num[13] + 1 
 
-   coord[1:3,1] = x_coords[ip]
-   coord[9:10,1] = x_coords[ip]
-   coord[13:15,1] = x_coords[ip]
-   coord[5:7,1] = x_coords[ip+1]
-   coord[11:12,1] = x_coords[ip+1]
-   coord[17:19,1] = x_coords[ip+1]
-   coord[4:4:8,1] = 0.5*(x_coords[ip] + x_coords[ip+1])
-   coord[16:4:20,1] = 0.5*(x_coords[ip] + x_coords[ip+1])
+   coord[1:3,1] .= x_coords[ip]
+   coord[9:10,1] .= x_coords[ip]
+   coord[13:15,1] .= x_coords[ip]
+   coord[5:7,1] .= x_coords[ip+1]
+   coord[11:12,1] .= x_coords[ip+1]
+   coord[17:19,1] .= x_coords[ip+1]
+   coord[4:4:8,1] .= 0.5*(x_coords[ip] + x_coords[ip+1])
+   coord[16:4:20,1] .= 0.5*(x_coords[ip] + x_coords[ip+1])
 
-   coord[1:8,2] = y_coords[iq]
-   coord[13:20,2] = y_coords[iq+1]
-   coord[9:12,2] = 0.5*(y_coords[iq] + y_coords[iq+1])
+   coord[1:8,2] .= y_coords[iq]
+   coord[13:20,2] .= y_coords[iq+1]
+   coord[9:12,2] .= 0.5*(y_coords[iq] + y_coords[iq+1])
 
    coord[1,3] = z_coords[is+1]
-   coord[7:9,3] = z_coords[is+1]
-   coord[12:13,3] = z_coords[is+1]
-   coord[19:20,3] = z_coords[is+1]
-   coord[3:5,3] = z_coords[is]
-   coord[10:11,3] = z_coords[is]
-   coord[15:17,3] = z_coords[is]
-   coord[2:4:6,3] = 0.5*(z_coords[is] + z_coords[is+1])
-   coord[14:4:18,3] = 0.5*(z_coords[is] + z_coords[is+1])
+   coord[7:9,3] .= z_coords[is+1]
+   coord[12:13,3] .= z_coords[is+1]
+   coord[19:20,3] .= z_coords[is+1]
+   coord[3:5,3] .= z_coords[is]
+   coord[10:11,3] .= z_coords[is]
+   coord[15:17,3] .= z_coords[is]
+   coord[2:4:6,3] .= 0.5*(z_coords[is] + z_coords[is+1])
+   coord[14:4:18,3] .= 0.5*(z_coords[is] + z_coords[is+1])
 
   else
     println("Wrong number of nodes for hexahedral fin_el.")

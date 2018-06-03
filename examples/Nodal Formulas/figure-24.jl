@@ -12,7 +12,7 @@ data = Dict(
   # Frame(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
   :struc_el => Frame(200, 201, 3, 1, 1, Line(2, 3)),
   :properties => [1.0e6 1.0e6 1.0e6 3.0e5;],
-  :x_coords => collect(linspace(0, 4, 201)),
+  :x_coords => range(0, stop=4, length=201),
   :y_coords => zeros(201),
   :z_coords => zeros(201),
   :g_num => [

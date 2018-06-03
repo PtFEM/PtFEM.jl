@@ -1,4 +1,4 @@
-using Base.Test, PtFEM, Compat
+using PtFEM, Test, Compat
 
 data = Dict(
   # Plane(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)
@@ -25,4 +25,4 @@ data = Dict(
 
 @time g_coord, g_num, disp = p61(data)
 
-@test round.(disp[1, 2], 5)≈ round.(-7.1349e-02, 5)
+@test round.(disp[1, 2], digits=5)≈ round.(-7.1349e-02, digits=5)

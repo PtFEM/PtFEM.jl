@@ -1,4 +1,4 @@
-using Base.Test, PtFEM
+using PtFEM, Test
 
 data = Dict(
   # Solid(ndim, nst, nxe, nye, nze, nip, direction=:r, finite_element(nod, nodof))
@@ -32,5 +32,5 @@ data = Dict(
 
 @time dis_df, sigma_df = p56(data)
 
-@test  round.(convert(Array, sigma_df[end, 4:end]), 4) ≈ 
-  round.([0.00740581  -0.0438989  -0.0283135  -0.000564003  0.060832  5.09367e-5], 4)
+@test  round.(convert(Array, sigma_df[end, 4:end]), digits=4) ≈ 
+  round.([0.00740581  -0.0438989  -0.0283135  -0.000564003  0.060832  5.09367e-5], digits=4)

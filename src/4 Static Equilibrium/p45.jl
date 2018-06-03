@@ -235,7 +235,7 @@ function p45(data::Dict{Symbol, Any})
   loads = zeros(neq+1)
   if :loaded_nodes in keys(data)
     for i in 1:size(data[:loaded_nodes], 1)
-      loads[nf[:, data[:loaded_nodes][i][1]]+1] = data[:loaded_nodes][i][2]
+      loads[nf[:, data[:loaded_nodes][i][1]] .+ 1] = data[:loaded_nodes][i][2]
     end
   end
   
@@ -267,7 +267,7 @@ function p45(data::Dict{Symbol, Any})
     end
   end
   
-  cfgsm = cholfact(gsm)
+  cfgsm = cholesky(gsm)
   
   # Special arrays
   eldtot = zeros(neq+1)
@@ -289,7 +289,7 @@ function p45(data::Dict{Symbol, Any})
       print(".")
       loads = zeros(neq+1)
       for i in 1:size(inode, 1)
-        loads[nf[:, data[:loaded_nodes][i][1]]+1] = dload[iy] * ival[i, :]
+        loads[nf[:, data[:loaded_nodes][i][1]] .+ 1] = dload[iy] * ival[i, :]
       end
       loads += bdylds
       bdylds = zeros(neq+1)
@@ -299,14 +299,14 @@ function p45(data::Dict{Symbol, Any})
         num = g_num[:, iel]
         coord = g_coord[:, num]'
         g = g_g[:, iel]
-        eld = loads[g+1]
+        eld = loads[g .+ 1]
         km = rigid_jointed!(km, prop, gamma, etype, iel, coord)
         action = km * eld
         react = zeros(ndof)
         if limit !== 1
           hinge!(coord, holdr, action, react, prop, iel, etype, gamma)
           #@show react
-          bdylds[g+1] -= react
+          bdylds[g .+ 1] -= react
           bdylds[1] = 0.0
         end
         if iters == limit || converged
@@ -320,7 +320,7 @@ function p45(data::Dict{Symbol, Any})
     eldtot += loads
     println("\n   Node     Displacement(s) and Rotation(s)  (Iterations: $(iters))")
     for i in 1:size(inode, 1)
-      println("    $(inode[i])  $(eldtot[nf[:, inode[i]]+1])")
+      println("    $(inode[i])  $(eldtot[nf[:, inode[i]] .+ 1])")
     end
     if iters == limit && limit !== 1
       break

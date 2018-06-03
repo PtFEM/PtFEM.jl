@@ -229,7 +229,7 @@ function shape_der!(der::Matrix{Float64}, points::Matrix{Float64}, i::Int)
    xip=xi+1.0 
    zetap=zeta+1.0
    if nod == 4
-     der[1:3,1:4] = 0.0
+     der[1:3,1:4] .= 0.0
      der[1,1] = 1.0
      der[2,2] = 1.0  
      der[3,3] = 1.0

@@ -22,7 +22,7 @@ hinge!(coord, holdr, action, react, prop, iel, etype, gamma)
 * gamma::Vector{Float64}     : Element orientation (3D)
 ```
 """
-function hinge!(coord::Matrix{Float64}, holdr::Matrix{Float64}, 
+function hinge!(coord::LinearAlgebra.Adjoint{Float64,Array{Float64,2}}, holdr::Matrix{Float64}, 
   action::Vector{Float64}, react::Vector{Float64}, prop::Matrix{Float64}, 
   iel, etype::Vector{Int}, gamma::Vector{Float64})
   #

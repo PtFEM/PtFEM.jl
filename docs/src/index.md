@@ -112,7 +112,7 @@ PtFEM.vtk(data::Dict, fm_df, sigma_df, dir, fname)
 ## PtFEM - Julia functions & operators
 
 ```@docs
-cholfact
+cholesky
 \
 ```
 

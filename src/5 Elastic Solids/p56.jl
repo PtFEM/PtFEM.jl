@@ -150,7 +150,7 @@ function p56(data::Dict, profiling::Bool=false)
   d = OffsetArray(zeros(neq + 1), 0:neq)
   
   for iel in 1:nels
-    hexahedron_xz!(iel, x_coords, y_coords, z_coords, coord, num)
+    hexahedron_xz!(iel, x_coords, y_coords, z_coords, convert(Array{Float64,2}, coord), num)
     num_to_g!(num, nf, g)
     g_num[:, iel] = num
     g_coord[:, num] = coord'
@@ -227,7 +227,7 @@ function p56(data::Dict, profiling::Bool=false)
     up = dot(loads, d)
     alpha = up/dot(p, u)
     xnew = x + p*alpha
-    loads[:] -= u*alpha
+    loads[:] .-= u*alpha
     d = diag_precon .* loads
     beta = dot(loads, d)/up
     @show [cg_iters beta] 

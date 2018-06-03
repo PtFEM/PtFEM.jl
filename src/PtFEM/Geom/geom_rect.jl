@@ -331,10 +331,10 @@ function geom_rect!(fin_el::Quadrilateral, iel::Int, x_coords::Array{Float64, 1}
      num[3] = ip*(nye+1)+iq
      num[4] = num[3]+1
     end
-    coord[1:2,1] = x_coords[ip]
-    coord[3:4,1] = x_coords[ip+1]
+    coord[1:2,1] .= x_coords[ip]
+    coord[3:4,1] .= x_coords[ip+1]
     coord[1,2] = y_coords[iq+1]
-    coord[2:3,2] = y_coords[iq]
+    coord[2:3,2] .= y_coords[iq]
     coord[4,2] = coord[1,2]
   elseif nod == 5
     if dir == :x || dir == :r
@@ -376,13 +376,13 @@ function geom_rect!(fin_el::Quadrilateral, iel::Int, x_coords::Array{Float64, 1}
      num[7] = num[5]+2
      num[8] = num[4]+1
     end
-    coord[1:3,1] = x_coords[ip]
-    coord[5:7,1] = x_coords[ip+1]
+    coord[1:3,1] .= x_coords[ip]
+    coord[5:7,1] .= x_coords[ip+1]
     coord[4,1] = 0.5*(coord[3,1]+coord[5,1])
     coord[8,1] = 0.5*(coord[7,1]+coord[1,1])
     coord[1,2] = y_coords[iq+1]
-    coord[7:8,2] = y_coords[iq+1]
-    coord[3:5,2] = y_coords[iq]
+    coord[7:8,2] .= y_coords[iq+1]
+    coord[3:5,2] .= y_coords[iq]
     coord[2,2] = 0.5*(coord[1,2]+coord[3,2])
     coord[6,2] = 0.5*(coord[5,2]+coord[7,2])
   elseif nod == 9

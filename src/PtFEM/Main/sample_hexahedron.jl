@@ -12,7 +12,7 @@ function sample!(fin_el::Hexahedron, s::Matrix{Float64} , wt::Vector{Float64})
   v = [5.0/9.0*w; 8.0/9.0*w; 5.0/9.0*w]
  
   if nip == 1
-    s[1,1:3] = 0.0
+    s[1,1:3] .= 0.0
     wt[1] = 8.0
   elseif nip == 8
     s[1,1] =  root3
@@ -39,7 +39,7 @@ function sample!(fin_el::Hexahedron, s::Matrix{Float64} , wt::Vector{Float64})
     s[8,1] = -root3
     s[8,2] = -root3
     s[8,3] = -root3
-    wt[:] = ones(wt)
+    fill!(wt, 1)
   elseif nip == 14
     b = 0.795822426
     c = 0.758786911

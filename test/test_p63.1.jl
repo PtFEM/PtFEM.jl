@@ -1,4 +1,4 @@
-using Base.Test, PtFEM, Compat
+using PtFEM, Test, Compat
 
 ProjDir = dirname(@__FILE__)
 

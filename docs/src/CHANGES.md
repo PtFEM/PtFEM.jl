@@ -29,7 +29,7 @@ I'm planning to use the same approach in all other chapters.
 
 ## Replacing skyline storage by Julia sparse matrices
 
-In most programs the skyline storage idea has been replaced by Julia sparse matrices and, accordingly, PtFEM's pair sparin() and spabac() by Julia's cholfact() and "\\" operator.
+In most programs the skyline storage idea has been replaced by Julia sparse matrices and, accordingly, PtFEM's pair sparin() and spabac() by Julia's cholesky() and "\\" operator.
 
 Thus
 
@@ -42,7 +42,7 @@ has been replaced by
 
 ```
   # Cholesky decomposed global stiffness matrix
-  cfgsm = cholfact(gsm)
+  cfgsm = cholesky(gsm)
   loads[2:end] = cfgsm \ loads[2:end]
 ```
 

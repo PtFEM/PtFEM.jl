@@ -1,4 +1,4 @@
-using PtFEM, Base.Test
+using PtFEM, Test
 
 data = Dict(
   # Frame(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
@@ -22,7 +22,7 @@ data = Dict(
 
 @time m, dis_df, fm_df = p44(data)
 
-@test round.(m.actions[:, 3], 3) == [
+@test round.(m.actions[:, 3], digits=3) == [
   -2.431, 36.287, 27.539, 24.027, 9.49, 80.616,
   2.431, -36.287, -27.539, 113.666, -9.49, -68.461
 ]

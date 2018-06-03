@@ -16,7 +16,7 @@ pin_jointed!(km, ea, coord)
 * coord::Matrix{Float64}}   : Element nodal coordinates
 ```
 """
-function pin_jointed!(km::Matrix{Float64}, ea::Float64, coord::Matrix{Float64})
+function pin_jointed!(km::Matrix{Float64}, ea::Float64, coord::LinearAlgebra.Adjoint{Float64,Array{Float64,2}})
   #
   # This subroutine forms the global stiffness matrix of a
   # general pin-joionted structural element (1-, 2- or 3-d).

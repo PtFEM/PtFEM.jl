@@ -20,7 +20,7 @@ rigid_jointed!(km, prop, gamma, etype, iel, coord)
 ```
 """
 function rigid_jointed!(km::Matrix{Float64}, prop::Matrix{Float64}, 
-  gamma::Vector{Float64}, etype::Vector{Int}, iel::Int, coord::Matrix{Float64}) 
+  gamma::Vector{Float64}, etype::Vector{Int}, iel::Int, coord::LinearAlgebra.Adjoint{Float64,Array{Float64,2}}) 
 #
 # This function forms the stiffness matrix of a
 # general beam/column fin_el (1-, 2- or 3-d).

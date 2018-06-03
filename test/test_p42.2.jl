@@ -1,4 +1,4 @@
-using PtFEM, Base.Test
+using PtFEM, Test
 
 data = Dict(
   # Beam(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
@@ -19,6 +19,6 @@ data = Dict(
   :penalty => 1e19
 )
 
-@time fem = p43(data)
+@time fem, dis_df, fm_df = p43(data)
 
 @test round.(fem.displacements[:, 5], digits=7) == [0.0047132, 0.0023433]

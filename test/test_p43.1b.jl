@@ -1,4 +1,4 @@
-using PtFEM, Base.Test
+using PtFEM, Test
 
 data = Dict(
   # Frame(nels, nn, ndim, nst, nip, finite_element(nod, nodof))
@@ -24,4 +24,4 @@ data = Dict(
 
 @time m, dis_df, fm_df = p42(data)
 
-@test round.(m.displacements[:, 5], 7) == [0.0002569, -0.0005, 7.61e-5]
+@test round.(m.displacements[:, 5], digits=7) == [0.0002569, -0.0005, 7.61e-5]

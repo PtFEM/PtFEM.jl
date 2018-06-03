@@ -245,7 +245,7 @@ function p44(data::Dict{Symbol, Any})
   # can be computed directly using gsm:
   #   loads[1:neq] = gsm \ loads[1:neq]
 
-  cfgsm = cholfact(gsm)
+  cfgsm = cholesky(gsm)
   loads[1:neq] = cfgsm \ loads[1:neq]
   println()
 

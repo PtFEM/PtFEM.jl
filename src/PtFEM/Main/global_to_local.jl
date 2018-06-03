@@ -18,7 +18,7 @@ glob_to_loc!(loc, glob, gamma, coord)
 ```
 """
 function glob_to_loc!(loc::Vector{Float64}, glob::Vector{Float64},
-  gamma::Float64, coord::Matrix{Float64})
+  gamma::Float64, coord::LinearAlgebra.Adjoint{Float64,Array{Float64,2}})
   #
   # This subroutine transforms the global end reactions and
   # moments into the local system (2- or 3-d).

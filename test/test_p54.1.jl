@@ -1,4 +1,4 @@
-using Base.Test, PtFEM
+using PtFEM, Test
 
 data = Dict(
   # GenericSolid(ndim, nst, nels, nn, nip, finite_element(nod, nodof), axisymmentrix)

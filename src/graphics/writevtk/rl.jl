@@ -13,8 +13,8 @@ vtk_filename_noext = "rl"
 outfiles = UTF8String[]
 
 dim = 2
-x = collect(linspace(0.0, 1.0, 30))
-y = collect(linspace(0.0, 1.0, 30))
+x = range(0.0, stop=1.0, length=30)
+y = range(0.0, stop=1.0, length=30)
 
 Ni, Nj, Nk = length(x), length(y), 1
 z = ones(FloatType, Nk)

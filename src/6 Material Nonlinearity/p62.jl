@@ -299,7 +299,7 @@ function p62(data::Dict)
     end
   end
 
-  nf1 = deepcopy(nf) + 1
+  nf1 = deepcopy(nf) .+ 1
   
   # Load increment loop
   
@@ -352,7 +352,7 @@ function p62(data::Dict)
         for iel in 1:nels
           g = g_g[:, iel]
           km = storkm[:, :, iel]
-          u[g+1] += km * p[g+1]
+          u[g+1] += km * p[g .+ 1]
         end
         up = dot(loads, d)
         alpha = up ./ dot(p, u)
@@ -390,7 +390,7 @@ function p62(data::Dict)
         num = g_num[:, iel]
         coord = g_coord[:, num]'
         g = g_g[:, iel]
-        eld = loads[g+1]
+        eld = loads[g .+ 1]
         bload = zeros(ndof)
         for i in 1:struc_el.nip
           shape_der!(der, points, i)
@@ -437,7 +437,7 @@ function p62(data::Dict)
         
         # Compute the total bodyloads vector
         
-        bdylds[g+1] += bload
+        bdylds[g .+ 1] += bload
         bdylds[1] = 0.0
       end
       if converged || iters == limit
@@ -453,9 +453,9 @@ function p62(data::Dict)
     append!(ratiodt, [round.(cg_tot/iters, 2)])
     
     if iy < 10
-      println(" $(iy)       $(ptot)    $(totdstr)    $(iters)       $(round.(cg_tot/iters, 2))")
+      println(" $(iy)       $(ptot)    $(totdstr)    $(iters)       $(round.(cg_tot/iters, digits=2))")
     else
-      println("$(iy)       $(ptot)    $(totdstr)    $(iters)       $(round.(cg_tot/iters, 2))")
+      println("$(iy)       $(ptot)    $(totdstr)    $(iters)       $(round.(cg_tot/iters, digits=2))")
     end
     
   end

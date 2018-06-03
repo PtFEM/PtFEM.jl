@@ -224,7 +224,7 @@ function p51(data::Dict{Symbol, Any})
     end
   end
   
-  cfgsm = cholfact(gsm)
+  cfgsm = cholesky(gsm)
   loads[1:neq] = cfgsm \ loads[1:neq]
 
   displacements = zeros(size(nf))

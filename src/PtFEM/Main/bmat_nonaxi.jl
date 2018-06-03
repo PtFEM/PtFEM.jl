@@ -21,7 +21,7 @@ bmat_nonaxi!(bee, radius, coord, deriv, fun, iflag, lth)
 ```
 """
 function bmat_nonaxi!(bee::Matrix{Float64}, radius::Float64, 
-  coord::Matrix{Float64}, deriv::Matrix{Float64}, 
+  coord::LinearAlgebra.Adjoint{Float64,Array{Float64,2}}, deriv::Matrix{Float64}, 
   fun::Vector{Float64}, iflag::Int, lth::Int)
   #
   # This subroutine forms the strain-displacement matrix for

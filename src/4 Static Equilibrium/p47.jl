@@ -192,7 +192,7 @@ function p47(data::Dict{Symbol, Any})
     v = prop[etype[iel], 2]
     d = e * data[:thickness]^3 / (12.0 * (1.0 - v * v))
     g = g_g[:, iel]
-    km = zeros(km)
+    fill!(km, 0)
     for i in 1:struc_el.nip
       fmplat!(d2x, d2y, d2xy, points, aa, bb, i)
       for k in 1:ndof
@@ -231,7 +231,7 @@ function p47(data::Dict{Symbol, Any})
     end
   end
   
-  cfgsm = cholfact(gsm)
+  cfgsm = cholesky(gsm)
   loads[1:neq] = cfgsm \ loads[1:neq]
   
   disp = Float64[]

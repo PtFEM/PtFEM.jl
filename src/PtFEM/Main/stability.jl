@@ -32,7 +32,7 @@ function stability(gsm::SparseMatrixCSC{Float64,Int},
   x1 = zeros(neq+1)
   big = 0.0
   
-  cfgsm = cholfact(gsm)
+  cfgsm = cholesky(gsm)
   
   iters = 0
   x0[2] = 1.0

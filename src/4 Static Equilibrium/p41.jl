@@ -204,7 +204,7 @@ function p41(data::Dict{Symbol, Any})
   end
   
   if VERSION < v"0.7.0-DEV.5238"
-    cfgsm = cholfact(gsm)
+    cfgsm = cholesky(gsm)
   else
     cfgsm = cholesky(gsm)
   end

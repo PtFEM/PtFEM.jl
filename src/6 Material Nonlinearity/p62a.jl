@@ -374,9 +374,9 @@ function pp62(data::Dict)
     totdstr = @sprintf("%+.4e", totd[nf1[2, node[1]]])
     
     if iy < 10
-      println(" $(iy)       $(ptot)    $(totdstr)    $(iters)       $(round.(cg_tot/iters, 2))")
+      println(" $(iy)       $(ptot)    $(totdstr)    $(iters)       $(round.(cg_tot/iters, digits=2))")
     else
-      println("$(iy)       $(ptot)    $(totdstr)    $(iters)       $(round.(cg_tot/iters, 2))")
+      println("$(iy)       $(ptot)    $(totdstr)    $(iters)       $(round.(cg_tot/iters, digits=2))")
     end
     
   end

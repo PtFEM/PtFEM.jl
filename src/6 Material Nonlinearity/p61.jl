@@ -271,7 +271,7 @@ function p61(data::Dict)
   end
 
   sparin!(kv, kdiag)
-  nf1 = deepcopy(nf) + 1
+  nf1 = deepcopy(nf) .+ 1
   println("   step     load        disp          iters")
 
   converged = false
@@ -310,7 +310,7 @@ function p61(data::Dict)
         num = g_num[:, iel]
         coord = g_coord[:, num]'
         g = g_g[:, iel]
-        eld = loads[g+1]
+        eld = loads[g .+ 1]
         bload = zeros(ndof)
         for i in 1:struc_el.nip
           shape_der!(der, points, i)
@@ -348,7 +348,7 @@ function p61(data::Dict)
             tensor[:,i,iel] = stress
           end
         end
-        bdylds[g+1] += bload
+        bdylds[g .+ 1] += bload
         bdylds[1] = 0.0
       end
       if converged || iters == limit
