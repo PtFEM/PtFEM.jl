@@ -5,8 +5,8 @@ using Test
 
 code_tests = [
   "p41.1.jl",
-  #=
   "p41.2.jl",
+  #=
   "p42.2.jl",
   "p43.1b.jl",
   "p44.2.jl",

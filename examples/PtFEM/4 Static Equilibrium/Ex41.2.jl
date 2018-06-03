@@ -19,7 +19,7 @@ data = Dict(
   :struc_el => Rod(4, 1, 1, Line(2, 1)),
   :properties => [2.0e3; 1.0e3],
   :etype => [2, 2, 1, 1],
-  :x_coords => linspace(0, 1, 5),
+  :x_coords => range(0, stop=1, length=5),
   :support => [
     (1, [0])
     ],
@@ -31,12 +31,16 @@ data = Dict(
 data |> display
 println()
 
-@time fem, dis_df, fm_df = p41(data)
+@time fem, dis_fm, fm_df = p41(data)
 println()
 
-display(dis_df)
+display(fem.actions)
 println()
+display(fem.displacements)
+  
 display(fm_df)
+println()
+display(dis_df)
   
 if VERSION.minor < 7
   using Plots
@@ -57,7 +61,7 @@ if VERSION.minor < 7
       plot!(p[1], 
         [vals[i], vals[i]],
         [(i-1)*l/els, i*l/els], color=:blue,
-        color=:blue, fill=true, fillalpha=0.1, leg=false
+        fill=true, fillalpha=0.1, leg=false
       )
       delta = abs(((i-1)*l/els) - (i*l/els)) / 20.0
       y1 = collect(((i-1)*l/els):delta:(i*l/els))

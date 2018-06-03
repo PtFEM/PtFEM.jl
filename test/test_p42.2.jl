@@ -19,6 +19,6 @@ data = Dict(
   :penalty => 1e19
 )
 
-@time m, dis_df, fm_df = p43(data)
+@time fem = p43(data)
 
-@test round.(m.displacements[:, 5], 7) == [0.0047132, 0.0023433]
+@test round.(fem.displacements[:, 5], digits=7) == [0.0047132, 0.0023433]
