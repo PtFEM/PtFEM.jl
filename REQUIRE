@@ -7,3 +7,7 @@ QuadGK
 SuiteSparse
 SparseArrays
 LinearAlgebra
+DataFrames
+Printf
+Plots
+GR
