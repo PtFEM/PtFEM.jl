@@ -183,11 +183,9 @@ version = "0.0.5"
 
 [[OffsetArrays]]
 deps = ["Compat"]
-git-tree-sha1 = "660b3c97eed146f3b031c3ccacc2f9ba96ea8924"
-repo-rev = ""
-repo-url = "/Users/rob/.julia/dev/OffsetArrays"
+git-tree-sha1 = "36c31ad831fc3d35cd39350be56c79fa589281a8"
 uuid = "6fe1bfb0-de20-5000-8ca7-80f57d26f881"
-version = "0.5.0+"
+version = "0.5.0"
 
 [[Pkg]]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
