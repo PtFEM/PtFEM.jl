@@ -23,7 +23,7 @@ code_tests = [
   "p54.1.jl",
   "p54.2.jl",
   "p55.1.jl",
- # "p56.1.jl",
+  "p56.1.jl",
   
   "p61.1.jl",
   "p62.1.jl",
@@ -32,7 +32,9 @@ code_tests = [
 
 println("\n\nRunning PtFEM/PtFEM.jl tests:\n\n")
 
-for test in code_tests
-    println("\n\n  * $(test) *\n")
-    include("test_"*test)
+@testset "PtFEM.jl" begin
+  for test in code_tests
+      println("\n\n  * $(test) *\n")
+      include("test_"*test)
+  end
 end

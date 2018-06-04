@@ -55,6 +55,11 @@ git-tree-sha1 = "7362b76e9939964a94fd39430bc901092c371d21"
 uuid = "d38c429a-6771-53c6-b99e-75d170b6e991"
 version = "0.4.0"
 
+[[CustomUnitRanges]]
+git-tree-sha1 = "745a202720c1e848936c7808177841c36446948c"
+uuid = "dc8bdbbb-1ca9-579f-8c36-e416f6a65cce"
+version = "0.1.0"
+
 [[DataFrames]]
 deps = ["CategoricalArrays", "CodecZlib", "Compat", "DataStreams", "Missings", "Reexport", "SortingAlgorithms", "StatsBase", "TranscodingStreams", "WeakRefStrings"]
 git-tree-sha1 = "be4d979564837fbb6be9eb4872ab7352bbc32e71"
@@ -178,9 +183,11 @@ version = "0.0.5"
 
 [[OffsetArrays]]
 deps = ["Compat"]
-git-tree-sha1 = "36c31ad831fc3d35cd39350be56c79fa589281a8"
+git-tree-sha1 = "660b3c97eed146f3b031c3ccacc2f9ba96ea8924"
+repo-rev = ""
+repo-url = "/Users/rob/.julia/dev/OffsetArrays"
 uuid = "6fe1bfb0-de20-5000-8ca7-80f57d26f881"
-version = "0.5.0"
+version = "0.5.0+"
 
 [[Pkg]]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"

@@ -6,6 +6,9 @@ using OffsetArrays, QuadGK
 # package code goes here
 ### Imports ###
 
+using CustomUnitRanges: filename_for_zerorange
+include(filename_for_zerorange)
+
 ### Includes ###
 include("PtFEM/Types/finite_elements.jl")
 include("PtFEM/Types/structural_elements.jl")
