@@ -227,6 +227,9 @@ function p56(data::Dict, profiling::Bool=false)
     up = dot(loads, d)
     alpha = up/dot(p, u)
     xnew = x + p*alpha
+    println("\n===> $(u*alpha)")
+    println("\n$(typeof(loads))")
+    println("\n$(loads)\n")
     loads[:] .-= u*alpha
     d = diag_precon .* loads
     beta = dot(loads, d)/up

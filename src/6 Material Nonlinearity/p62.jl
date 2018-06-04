@@ -352,7 +352,7 @@ function p62(data::Dict)
         for iel in 1:nels
           g = g_g[:, iel]
           km = storkm[:, :, iel]
-          u[g+1] += km * p[g .+ 1]
+          u[g .+ 1] += km * p[g .+ 1]
         end
         up = dot(loads, d)
         alpha = up ./ dot(p, u)
@@ -450,7 +450,7 @@ function p62(data::Dict)
     append!(loaddt, [ptot])
     append!(dispdt, [totd[nf1[2, node[1]]]])
     append!(itersdt, [iters])
-    append!(ratiodt, [round.(cg_tot/iters, 2)])
+    append!(ratiodt, [round.(cg_tot/iters, digits=2)])
     
     if iy < 10
       println(" $(iy)       $(ptot)    $(totdstr)    $(iters)       $(round.(cg_tot/iters, digits=2))")
