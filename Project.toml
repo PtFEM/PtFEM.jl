@@ -1,6 +1,6 @@
-authors = ["Rob J Goedman <goedman@mac.com>"]
 name = "PtFEM"
 uuid = "9b64898b-da2a-5774-a656-fd6fb605642c"
+authors = ["Rob J Goedman <goedman@mac.com>"]
 version = "1.0.0"
 
 [deps]
