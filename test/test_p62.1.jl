@@ -1,5 +1,4 @@
-using PtFEM, Test
-#using Compat
+using PtFEM, Test, Compat
 
 data = Dict(
   # Plane(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)

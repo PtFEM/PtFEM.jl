@@ -1,4 +1,4 @@
-#using Compat
+using Compat
 
 if VERSION.minor == 7
   @eval using LinearAlgebra, SparseMatrices
