@@ -27,4 +27,4 @@ build_script:
   - IF EXIST .git\shallow (git fetch --unshallow)
 
 test_script:
-  - C:\projects\julia\bin\julia --check-bounds=yes -e "using Pkg; Pkg.add(\"Compat\"); Pkg.test(\"PtFEM\")"
+  - C:\projects\julia\bin\julia --check-bounds=yes -e "using Pkg; Pkg.test(\"PtFEM\")"

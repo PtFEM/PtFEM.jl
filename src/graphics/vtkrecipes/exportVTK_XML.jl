@@ -1,6 +1,6 @@
 using LightXML
 using Codecs
-using Compat
+#using Compat
 
 struct VTKNode
   coords::Vector{Float64}
