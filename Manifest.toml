@@ -106,10 +106,10 @@ uuid = "fa6b7ba4-c1ee-5f82-b5fc-ecf0adba8f74"
 version = "0.4.0"
 
 [[FixedPointNumbers]]
-deps = ["Compat"]
-git-tree-sha1 = "471d1141a2e247164c0b2feb6f4ad5dbb8f62031"
+deps = ["Pkg", "Test"]
+git-tree-sha1 = "dc8e575f7c94e979c6666d516e94c4c1c56f62f6"
 uuid = "53c48c17-4a7d-5ca2-90c5-79b7896eea93"
-version = "0.4.6"
+version = "0.5.0"
 
 [[Future]]
 uuid = "9fa8497b-333b-5362-9e8d-4d0656e87820"
