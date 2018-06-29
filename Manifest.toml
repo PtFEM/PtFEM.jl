@@ -73,10 +73,10 @@ uuid = "9a8bc11e-79be-5b39-94d7-1ccc349a1a85"
 version = "0.3.6"
 
 [[DataStructures]]
-deps = ["Compat", "REPL"]
-git-tree-sha1 = "abc05631fbe6e6a62c60f37bf644df87d5470fe4"
+deps = ["InteractiveUtils", "REPL", "Random", "Serialization", "Test"]
+git-tree-sha1 = "ef6f313c82fd80ab75ab3f784353b6c65ebcaacf"
 uuid = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
-version = "0.8.3"
+version = "0.9.0"
 
 [[Dates]]
 uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
@@ -183,9 +183,9 @@ version = "0.0.5"
 
 [[OffsetArrays]]
 deps = ["Compat"]
-path = "/Users/rob/.julia/dev/OffsetArrays"
+git-tree-sha1 = "36c31ad831fc3d35cd39350be56c79fa589281a8"
 uuid = "6fe1bfb0-de20-5000-8ca7-80f57d26f881"
-version = "0.5.0+"
+version = "0.5.0"
 
 [[Pkg]]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
@@ -197,10 +197,10 @@ uuid = "ccf2f8ad-2431-5c83-bf29-c5338b663b6a"
 version = "0.2.0"
 
 [[PlotUtils]]
-deps = ["Colors", "Reexport"]
-git-tree-sha1 = "d42063f288d897ff5563fd694de0c389573ca9e5"
+deps = ["Colors", "Dates", "Printf", "Reexport", "Test"]
+git-tree-sha1 = "99c6f7f9111d49209cd5859f8fc407bc030defad"
 uuid = "995b91a9-d308-5afd-9ec6-746e21dbc043"
-version = "0.4.4"
+version = "0.5.0"
 
 [[Plots]]
 deps = ["Contour", "FixedPointNumbers", "GR", "JSON", "Measures", "NaNMath", "PlotThemes", "PlotUtils", "RecipesBase", "Reexport", "Requires", "Showoff", "StaticArrays", "StatsBase"]
