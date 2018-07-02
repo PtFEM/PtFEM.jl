@@ -1,5 +1,5 @@
 using PtFEM
-using Base.Test
+using Test
 
 ProjDir = @__DIR__
 
@@ -72,7 +72,7 @@ if VERSION.minor == 6
   using Plots
   gr(size=(400,600))
 
-  p = Vector{Plots.Plot{Plots.GRBackend}}(3)
+  p = Vector{Plots.Plot{Plots.GRBackend}}(undef, 3)
   p[1] = plot(m.x_coords, m.displacements[2,:], ylim=(-0.004, 0.001), lab="Displacement", 
    xlabel="x [m]", ylabel="deflection [m]", color=:red)
   p[2] = plot(m.actions[2,:], lab="Shear force", ylim=(-10, 10), xlabel="element",
