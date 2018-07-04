@@ -96,9 +96,9 @@ function write_VTKXML1(filename::String, nodes::Vector{VTKNode},
                        compress::Bool, vtkxml::P) where P <: AbstractVTKXML
 
     if binary
-        const VTK_FORMAT = "binary"
+        VTK_FORMAT = "binary"
     else
-        const VTK_FORMAT = "ascii"
+        VTK_FORMAT = "ascii"
     end
 
     xdoc = XMLDocument()
