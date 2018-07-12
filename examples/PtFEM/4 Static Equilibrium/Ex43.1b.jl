@@ -55,7 +55,7 @@ if VERSION.minor < 6
   using Plots
   gr(size=(400,600))
 
-  p = Vector{Plots.Plot{Plots.GRBackend}}(3)
+  p = Vector{Plots.Plot{Plots.GRBackend}}(undef, 3)
   titles = ["p43.1 y deflection", "p43.1 y shear force", "p43.1 z moment"]
   fors = vcat(
     convert(Array, fm_df[:, :xl_Force]), 

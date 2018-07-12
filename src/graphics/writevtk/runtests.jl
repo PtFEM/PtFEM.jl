@@ -1,7 +1,7 @@
 #!/usr/bin/env julia
 
 using WriteVTK
-using Base.Test
+using Test
 import Compat: UTF8String, readstring
 using SHA: sha1
 
@@ -16,7 +16,7 @@ const tests = ["multiblock.jl",
 # Only toggle to generate new checksums, if new tests are added.
 const OVERWRITE_CHECKSUMS = true
 const checksums_file = joinpath(dirname(@__FILE__), "checksums.sha1")
-const checksum_list = readstring(checksums_file)
+const checksum_list = read(checksums_file, String)
 
 if OVERWRITE_CHECKSUMS
     csio = open(checksums_file, "w")

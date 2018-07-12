@@ -7,7 +7,7 @@ const vtk_filename_noext = "collection"
 
 function main()
     # Define grid.
-    const Ni, Nj, Nk, Nt = 20, 30, 40, 4
+    Ni, Nj, Nk, Nt = 20, 30, 40, 4
 
     x = zeros(FloatType, Ni)
     y = zeros(FloatType, Nj)

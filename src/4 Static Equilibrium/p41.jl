@@ -203,11 +203,7 @@ function p41(data::Dict{Symbol, Any})
     end
   end
   
-  if VERSION < v"0.7.0-DEV.5238"
-    cfgsm = cholesky(gsm)
-  else
-    cfgsm = cholesky(gsm)
-  end
+  cfgsm = cholesky(gsm)
   
   loads[1:neq] = cfgsm \ loads[1:neq]
   println()
