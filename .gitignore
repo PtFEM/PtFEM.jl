@@ -1,4 +1,4 @@
-Manifest.jl
+#Manifest.jl
 *.o *.so *.dylib
 *.svg
 *.vtu
