@@ -1,7 +1,7 @@
 name = "PtFEM"
 uuid = "9b64898b-da2a-5774-a656-fd6fb605642c"
 authors = ["Rob J Goedman <goedman@mac.com>"]
-version = "0.1.4"
+version = "0.1.5"
 
 [deps]
 Compat = "34da2185-b29b-5c13-b0c7-acf172513d20"
