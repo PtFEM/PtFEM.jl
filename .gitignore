@@ -1,4 +1,4 @@
-#Manifest.jl
+#Manifest.toml
 *.o *.so *.dylib
 *.svg
 *.vtu
@@ -6,4 +6,3 @@ output/
 output/*
 docs/build/
 docs/site/
-Manifest.toml
