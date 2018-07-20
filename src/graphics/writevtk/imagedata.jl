@@ -10,7 +10,7 @@ const vtk_filename_noext = "imagedata"
 
 function main()
     # Define grid.
-    const Ni, Nj, Nk = 20, 30, 40
+    Ni, Nj, Nk = 20, 30, 40
 
     # Create some scalar and vectorial data.
     p = zeros(FloatType, Ni, Nj, Nk)
