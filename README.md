@@ -48,4 +48,4 @@ References will be kept [here](https://github.com/PtFEM/PtFEM.jl/blob/master/doc
 As always, feedback is welcome, please send me an email, file an issue on Github or generate a pull request (PR).
 
 Rob J Goedman
-June 2018
+July 2018
