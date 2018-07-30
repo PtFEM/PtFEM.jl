@@ -11,9 +11,9 @@ const vtk_filename_noext = "unstructured"
 function mesh_data(::Val{3})
     # This is basically a structured grid, but defined as an unstructured one.
     # Based on the structured.jl example.
-    const Ni, Nj, Nk = 40, 50, 20
-    const dims = (Ni, Nj, Nk)
-    const Npts = prod(dims)
+    Ni, Nj, Nk = 40, 50, 20
+    dims = (Ni, Nj, Nk)
+    Npts = prod(dims)
 
     # Create points and point data.
     pts_ijk = Array{FloatType}(3, Ni, Nj, Nk)
@@ -29,21 +29,21 @@ function mesh_data(::Val{3})
     end
 
     # Create cells (all hexahedrons in this case) and cell data.
-    const celltype = VTKCellTypes.VTK_HEXAHEDRON
+    celltype = VTKCellTypes.VTK_HEXAHEDRON
     cells = MeshCell[]
     cdata = FloatType[]
 
     for k = 2:Nk, j = 2:Nj, i = 2:Ni
         # Define connectivity of cell.
-        inds = Array{Int32}(8)
-        inds[1] = sub2ind(dims, i-1, j-1, k-1)
-        inds[2] = sub2ind(dims, i  , j-1, k-1)
-        inds[3] = sub2ind(dims, i  , j  , k-1)
-        inds[4] = sub2ind(dims, i-1, j  , k-1)
-        inds[5] = sub2ind(dims, i-1, j-1, k  )
-        inds[6] = sub2ind(dims, i  , j-1, k  )
-        inds[7] = sub2ind(dims, i  , j  , k  )
-        inds[8] = sub2ind(dims, i-1, j  , k  )
+        inds = Array{Int32}(undef, 8)
+        inds[1] = CartesianIndices(dims, i-1, j-1, k-1)
+        inds[2] = CartesianIndices(dims, i  , j-1, k-1)
+        inds[3] = CartesianIndices(dims, i  , j  , k-1)
+        inds[4] = CartesianIndices(dims, i-1, j  , k-1)
+        inds[5] = CartesianIndices(dims, i-1, j-1, k  )
+        inds[6] = CartesianIndices(dims, i  , j-1, k  )
+        inds[7] = CartesianIndices(dims, i  , j  , k  )
+        inds[8] = CartesianIndices(dims, i-1, j  , k  )
 
         # Define cell.
         c = MeshCell(celltype, inds)
@@ -60,9 +60,9 @@ end
 
 # 2D mesh
 function mesh_data(::Val{2})
-    const Ni, Nj = 40, 50
-    const dims = (Ni, Nj)
-    const Npts = prod(dims)
+    Ni, Nj = 40, 50
+    dims = (Ni, Nj)
+    Npts = prod(dims)
 
     # Create points and point data.
     pts_ijk = Array{FloatType}(2, Ni, Nj)
@@ -77,17 +77,17 @@ function mesh_data(::Val{2})
     end
 
     # Create cells (all quads in this case) and cell data.
-    const celltype = VTKCellTypes.VTK_QUAD
+    celltype = VTKCellTypes.VTK_QUAD
     cells = MeshCell[]
     cdata = FloatType[]
 
     for j = 2:Nj, i = 2:Ni
         # Define connectivity of cell.
-        inds = Array{Int32}(4)
-        inds[1] = sub2ind(dims, i-1, j-1)
-        inds[2] = sub2ind(dims, i  , j-1)
-        inds[3] = sub2ind(dims, i  , j  )
-        inds[4] = sub2ind(dims, i-1, j  )
+        inds = Array{Int32}(undef, 4)
+        inds[1] = CartesianIndices(dims, i-1, j-1)
+        inds[2] = CartesianIndices(dims, i  , j-1)
+        inds[3] = CartesianIndices(dims, i  , j  )
+        inds[4] = CartesianIndices(dims, i-1, j  )
 
         # Define cell.
         c = MeshCell(celltype, inds)
@@ -104,8 +104,8 @@ end
 
 # 1D mesh
 function mesh_data(::Val{1})
-    const Ni = 40
-    const Npts = Ni
+    Ni = 40
+    Npts = Ni
 
     # Create points and point data.
     pts_ijk = Array{FloatType}(1, Ni)
@@ -117,13 +117,13 @@ function mesh_data(::Val{1})
     end
 
     # Create cells (all lines in this case) and cell data.
-    const celltype = VTKCellTypes.VTK_LINE
+    celltype = VTKCellTypes.VTK_LINE
     cells = MeshCell[]
     cdata = FloatType[]
 
     for i = 2:Ni
         # Define connectivity of cell.
-        inds = Array{Int32}(2)
+        inds = Array{Int32}(undef, 2)
         inds[1] = i-1
         inds[2] = i
 

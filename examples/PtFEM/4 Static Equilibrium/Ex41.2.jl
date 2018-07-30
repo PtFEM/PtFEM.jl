@@ -49,7 +49,7 @@ if VERSION.minor < 7
   x = 0.0:l/els:l
   u = convert(Array, dis_df[:x_translation])
     
-  p = Vector{Plots.Plot{Plots.GRBackend}}(2)
+  p = Vector{Plots.Plot{Plots.GRBackend}}(undef, 2)
   titles = ["PtFEM Ex42.1 u(x)", "PtFEM Ex42.1 N(x)"]
    
   p[1]=plot(ylim=(0.0, 1.0), xlim=(0.0, 70.0),

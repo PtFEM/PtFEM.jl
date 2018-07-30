@@ -1,5 +1,5 @@
 using PtFEM
-using Base.Test
+using Test
 
 # write your own tests here
 
