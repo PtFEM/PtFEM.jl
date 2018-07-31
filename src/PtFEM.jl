@@ -2,7 +2,7 @@ __precompile__()
 
 module PtFEM
 
-using Compat, SuiteSparse, SparseArrays, LinearAlgebra, Printf, DataFrames
+using Compat, SuiteSparse, SparseArrays, LinearAlgebra, Printf, DataFrames, Statistics
 using OffsetArrays, QuadGK
        
 # package code goes here
@@ -10,6 +10,14 @@ using OffsetArrays, QuadGK
 
 using CustomUnitRanges: filename_for_zerorange
 include(filename_for_zerorange)
+
+#=
+_size(A::AbstractArray) = size(LinearIndices(A))
+_size(A) = size(A)
+
+_length(A::AbstractArray) = length(LinearIndices(A))
+_length(A) = length(A)
+=#
 
 ### Includes ###
 include("PtFEM/Types/finite_elements.jl")

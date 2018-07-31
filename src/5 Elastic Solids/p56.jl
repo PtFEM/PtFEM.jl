@@ -5,7 +5,8 @@ function p56(data::Dict, profiling::Bool=false)
   # Parse & check FEdict data
   
   if :struc_el in keys(data)
-    struc_el = deepcopy(data[:struc_el])
+    #struc_el = deepcopy(data[:struc_el])
+    struc_el = data[:struc_el]
     @assert typeof(struc_el) <: StructuralElement
   else
     println("No fin_el type specified.")
@@ -15,7 +16,7 @@ function p56(data::Dict, profiling::Bool=false)
   ndim = copy(struc_el.ndim)
   nst = copy(struc_el.nst)
   
-  fin_el = deepcopy(struc_el.fin_el)
+  fin_el = struc_el.fin_el
   @assert typeof(fin_el) <: FiniteElement
   
   if typeof(fin_el) == Line

@@ -33,7 +33,7 @@ if VERSION.minor < 6
   using Plots
   gr(size=(400,600))
 
-  p = Vector{Plots.Plot{Plots.GRBackend}}(2)
+  p = Vector{Plots.Plot{Plots.GRBackend}}(undef, 2)
   titles = ["p46.1a translation", "p46.1a rotation"]
   p[1] = plot(
     convert(Array, buckling_df[:translation]), 

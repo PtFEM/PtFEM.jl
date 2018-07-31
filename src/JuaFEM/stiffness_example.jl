@@ -131,7 +131,7 @@ ke_element!(Ke2, x_vec, values, C)
 ke_element2!(Ke3, x_vec, vector_values, C);
 ke_element_mat!(Ke, x_vec, values, Cmat, B, DB, BDB);
 
-using Base.Test
+using Test
 @test norm(Ke - Ke2) / norm(Ke) < 1e-14
 @test norm(Ke - Ke3) / norm(Ke) < 1e-14
 

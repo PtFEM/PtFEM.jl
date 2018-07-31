@@ -10,7 +10,7 @@ const FloatType = Float32
 const vtm_filename_noext = "multiblock"
 
 function first_block_data()
-    const Ni, Nj, Nk = 10, 15, 20
+    Ni, Nj, Nk = 10, 15, 20
 
     x = zeros(FloatType, Ni, Nj, Nk)
     y = copy(x)
@@ -33,7 +33,7 @@ function first_block_data()
 end
 
 function second_block_data()
-    const Ni, Nj, Nk = 20, 16, 12
+    Ni, Nj, Nk = 20, 16, 12
 
     x = zeros(FloatType, Ni)
     y = zeros(FloatType, Nj)
@@ -54,8 +54,8 @@ end
 
 function third_block_data()
     # This is basically the same as in the unstructured example.
-    const Ni, Nj, Nk = 40, 50, 20
-    const dims = (Ni, Nj, Nk)
+    Ni, Nj, Nk = 40, 50, 20
+    dims = (Ni, Nj, Nk)
 
     # Create points and point data.
     pts = Array{FloatType}(3, Ni, Nj, Nk)
@@ -71,21 +71,21 @@ function third_block_data()
     end
 
     # Create cells (all hexahedrons in this case) and cell data.
-    const celltype = VTKCellTypes.VTK_HEXAHEDRON
+    celltype = VTKCellTypes.VTK_HEXAHEDRON
     cells = MeshCell[]
     cdata = FloatType[]
 
     for k = 2:Nk, j = 2:Nj, i = 2:Ni
         # Define connectivity of cell.
-        inds = Array{Int32}(8)
-        inds[1] = sub2ind(dims, i-1, j-1, k-1)
-        inds[2] = sub2ind(dims, i  , j-1, k-1)
-        inds[3] = sub2ind(dims, i  , j  , k-1)
-        inds[4] = sub2ind(dims, i-1, j  , k-1)
-        inds[5] = sub2ind(dims, i-1, j-1, k  )
-        inds[6] = sub2ind(dims, i  , j-1, k  )
-        inds[7] = sub2ind(dims, i  , j  , k  )
-        inds[8] = sub2ind(dims, i-1, j  , k  )
+        inds = Array{Int32}(undef, 8)
+        inds[1] = CartesianIndices(dims, i-1, j-1, k-1)
+        inds[2] = CartesianIndices(dims, i  , j-1, k-1)
+        inds[3] = CartesianIndices(dims, i  , j  , k-1)
+        inds[4] = CartesianIndices(dims, i-1, j  , k-1)
+        inds[5] = CartesianIndices(dims, i-1, j-1, k  )
+        inds[6] = CartesianIndices(dims, i  , j-1, k  )
+        inds[7] = CartesianIndices(dims, i  , j  , k  )
+        inds[8] = CartesianIndices(dims, i-1, j  , k  )
 
         # Define cell.
         c = MeshCell(celltype, inds)

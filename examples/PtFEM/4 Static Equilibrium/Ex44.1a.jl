@@ -87,7 +87,7 @@ if VERSION.minor < 6
   using Plots
   gr(size=(400,600))
 
-  p = Vector{Plots.Plot{Plots.GRBackend}}(4)
+  p = Vector{Plots.Plot{Plots.GRBackend}}(undef, 4)
   titles = ["p4.4.1 translations", "p4.4.1 rotations",
     "p4.4.1 y shear force", "p4.4.1 z moment"]
   indxs = [1,2,3,4,5,6,7,9,10,11,12,13,14,16,17]

@@ -29,6 +29,6 @@ function checon(loads, oldlds, tol)
   #
   # Updates oldlds
   converged = maximum(abs.(loads-oldlds))/maximum(abs.(loads)) <= tol
-  oldlds[:] = loads
+  oldlds[:] .= loads
   converged
 end

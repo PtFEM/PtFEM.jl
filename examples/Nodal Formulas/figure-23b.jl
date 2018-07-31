@@ -64,7 +64,7 @@ if VERSION.minor == 5
   using Plots
   gr(size=(400,600))
 
-  p = Vector{Plots.Plot{Plots.GRBackend}}(3)
+  p = Vector{Plots.Plot{Plots.GRBackend}}(undef, 3)
   p[1] = plot(m.x_coords, m.displacements[1,:], ylim=(-500.0, 10.0), lab="Displacement", 
    xlabel="x [m]", ylabel="deflection [m]", color=:red)
   p[2] = plot(m.actions'[:,1], lab="Shear force", ylim=(-15, 15), xlabel="element",
