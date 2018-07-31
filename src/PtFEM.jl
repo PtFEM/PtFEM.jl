@@ -1,5 +1,3 @@
-__precompile__()
-
 module PtFEM
 
 using Compat, SuiteSparse, SparseArrays, LinearAlgebra, Printf, DataFrames, Statistics
