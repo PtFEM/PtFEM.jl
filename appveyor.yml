@@ -4,7 +4,7 @@ environment:
   - julia_version: latest
 
 platform:
-  #- x86 # 32-bit
+  ##- x86 # 32-bit
   - x64 # 64-bit
 
 ## uncomment the following lines to allow failures on nightly julia
@@ -14,9 +14,9 @@ matrix:
   allow_failures:
     - platform: x64
       julia_version: latest
-  exclude:
-    - platform: x86
-      julia_version: latest
+  ##exclude:
+  ##  - platform: x86
+  ##    julia_version: latest
 
 branches:
   only:
