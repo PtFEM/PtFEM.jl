@@ -20,7 +20,7 @@ SuiteSparse = "4607b0f0-06f3-5cda-b6b1-a6196a1729e9"
 [compat]
 Compat = "^2.2, 3.0"
 DataFrames = "^0.19"
-GR = "^0.42"
+GR = "^0.42, 0.43"
 Interpolations = "^0.12"
 OffsetArrays = "^0.11"
 QuadGK = "^2.1"
