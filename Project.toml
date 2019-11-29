@@ -20,15 +20,15 @@ Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 SuiteSparse = "4607b0f0-06f3-5cda-b6b1-a6196a1729e9"
 
 [compat]
-Compat = "^2.2, 3.0"
-DataFrames = "^0.19"
-GR = "^0.42, 0.43, 0.44"
+Compat = "2.2, 3.0"
+DataFrames = "0.19"
+GR = "0.42, 0.43, 0.44"
 GraphRecipes = "0.4"
-Interpolations = "^0.12"
-OffsetArrays = "^0.11"
+Interpolations = "0.12"
+OffsetArrays = "0.11"
 Plots = "0.27, 0.28"
-QuadGK = "^2.1"
-julia = "^1"
+QuadGK = "2.1"
+julia = "1"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
