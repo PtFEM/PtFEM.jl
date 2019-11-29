@@ -1,6 +1,6 @@
 using PtFEM
 
-ProjDir = dirname(@__FILE__)
+ProjDir = @__DIR__
 
 data = Dict(
   # Plane(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)

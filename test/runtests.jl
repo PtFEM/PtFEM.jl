@@ -4,10 +4,15 @@ using Test
 # write your own tests here
 
 code_tests = [
+
+  "sparse_01.jl",
+  "sparse_02.jl",
+
   "p41.1.jl",
   "p41.2.jl",
   "p42.2.jl",
   "p43.1b.jl",
+  #"p43.3.jl",
   "p44.2.jl",
   "p45.2.jl",
   "p46.2.jl",

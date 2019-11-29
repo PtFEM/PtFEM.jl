@@ -4,8 +4,8 @@ data = Dict(
   # Plane(ndim, nst, nxe, nye, nip, direction, finite_element(nod, nodof), axisymmetric)
   :struc_el => Plane(2, 3, 20, 2, 4, :y, Quadrilateral(8, 2), false),
   :properties => [1.0e5 0.0 1.0e-5 1.0e-5;],
-  :x_coords => range(0.0, stop=1.0, length=21),
-  :y_coords => range(0.05, stop=-0.05, length=3),
+  :x_coords => collect(range(0.0, stop=1.0, length=21)),
+  :y_coords => collect(range(0.05, stop=-0.05, length=3)),
   :temp => [],
   :support => [
     (1, [0 0]),

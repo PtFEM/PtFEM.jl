@@ -30,36 +30,19 @@ println()
 @show As\b
 println()
 
-@show F = lufact(As)
+@show F = lu(As)
 println()
 
-if VERSION.minor == 7
-  @show F.L * F.U == F.Rs .* A[F.p, :]
-  println()
-  
-  @show F.L*F.U
-  println()
+@show F.L * F.U == F.Rs .* A[F.p, :]
+println()
 
-  @show sparse(F.Rs.* A[F.p, F.q])
-  println()
-else
-  @show ys = F[:L] \ (F[:Rs] .* b)
-  println()
+@show F.L*F.U
+println()
 
-  @show x = F[:U] \ ys
-  println()
+@show sparse(F.Rs.* A[F.p, F.q])
+println()
 
-  @show F[:L]*F[:U] == (F[:Rs] .* A)[F[:p], F[:q]]
-  println()
-
-  @show F[:L]*F[:U]
-  println()
-
-  @show sparse((F[:Rs] .* A)[F[:p], F[:q]])
-  println()
-end
-
-@show lufact(A)
+@show lu(A)
 println()
 
 end

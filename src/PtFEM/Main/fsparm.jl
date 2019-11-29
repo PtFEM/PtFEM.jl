@@ -38,7 +38,7 @@ function fsparm!(gsm, g, km)
               gsm[g[j], g[i]] += km[i, j]
             end  
             #println("gsm[$(g[i]), $(g[j])] += $(km[i,j])")
-            #full(gsm) |> display
+            #gsm |> display
             #println()
           end
         end

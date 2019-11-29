@@ -32,12 +32,8 @@ examples = [
   "Nodal Formulas/figure-24.jl",
 ]
 
-println("\nRunning examples:\n")
-
-if VERSION.minor < 7
-  println("\nRunning Julia 0.5 examples\n")
-  for ex in examples
-    println("\n\nRunning $(ex).\n\n")
-    include(joinpath(dirname(@__FILE__), "..", "examples", ex))
-  end
+println("\nRunning Julia 1.4 examples\n")
+for ex in examples
+  println("\n\nRunning $(ex).\n\n")
+  include(joinpath(dirname(@__FILE__), "..", "examples", ex))
 end

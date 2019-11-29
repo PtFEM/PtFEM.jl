@@ -23,6 +23,6 @@ println("\nThe buckling load = $(m[1])")
 m[4][1] = 0.0
 println("\nThe buckling mode (iterations=$(m[2])):\n")
 for i in 1:m[3]
-  println("$i    $(m[4][m[5][:, i]+1])")
+  println("$i    $(m[4][m[5][:, i] .+ 1])")
 end
 println()

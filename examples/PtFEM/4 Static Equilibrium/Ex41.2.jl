@@ -47,7 +47,7 @@ if VERSION.minor < 7
   gr(size=(400,500))
 
   x = 0.0:l/els:l
-  u = convert(Array, dis_df[:x_translation])
+  u = convert(Array, dis_df[:, :x_translation])
     
   p = Vector{Plots.Plot{Plots.GRBackend}}(undef, 2)
   titles = ["PtFEM Ex42.1 u(x)", "PtFEM Ex42.1 N(x)"]
@@ -56,7 +56,7 @@ if VERSION.minor < 7
     yflip=true, xflip=false, xlab="Normal force [N]",
     ylab="x [m]", title=titles[2]
   )
-  vals = convert(Array, fm_df[:normal_force_2])
+  vals = convert(Array, fm_df[:, :normal_force_2])
   for i in 1:els
       plot!(p[1], 
         [vals[i], vals[i]],
