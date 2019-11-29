@@ -27,8 +27,8 @@ data = Dict(
 
 @time m = p62(data)
 
-disp = convert(Array, m[:disp])
-iters = convert(Array, m[:iters])
+disp = convert(Array, m[:, :disp])
+iters = convert(Array, m[:, :iters])
 
 @test round.(disp, digits=3) ≈ round.([-0.006592,-0.011549,-0.016301,-0.023169,
   -0.033211,-0.042357,-0.050967,-0.0568,-0.061014,-0.071163], digits=3)

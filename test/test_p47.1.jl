@@ -25,4 +25,4 @@ data = Dict(
 
 @time fm_df, sigma_df = p47(data)
 
-@test round.(convert(Array,sigma_df[4,:]), digits=4)' ≈ [-0.1211,-0.1211,-0.0335]
+@test round(sigma_df[4,3], digits=4) ≈ -0.0335 atol = 0.001

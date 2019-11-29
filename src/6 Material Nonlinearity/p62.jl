@@ -462,10 +462,10 @@ function p62(data::Dict)
   println()
   
   dt = DataFrame()
-  dt[:loads] = loaddt
-  dt[:disp] = dispdt
-  dt[:iters] = itersdt
-  dt[:ratio] = ratiodt
+  dt[!, :loads] = loaddt
+  dt[!, :disp] = dispdt
+  dt[!, :iters] = itersdt
+  dt[!, :ratio] = ratiodt
   dt
 end
 
