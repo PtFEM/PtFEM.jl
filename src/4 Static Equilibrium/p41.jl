@@ -226,7 +226,6 @@ function p41(data::Dict{Symbol, Any})
     actions[i, :] = km * eld
   end
 
-  
   dis_df = DataFrame(
     x_translation = displacements[:, 1],
   )

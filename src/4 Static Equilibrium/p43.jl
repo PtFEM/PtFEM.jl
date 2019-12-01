@@ -190,6 +190,7 @@ function p43(data::Dict)
     if size(prop, 2) > 1
       mm = beam_mm(prop[etype[i], 2], ell[i])
     end
+    #println("\nkm+mm (i = $i) = $(km+mm)")
     fsparm!(gsm, g, km+mm)
   end
   
@@ -232,11 +233,12 @@ function p43(data::Dict)
     end
   end
 
+  #println("load: $loads\n")
   for i in 1:nels
-    beam_km(prop[etype[i], 1], ell[i])
+    km = beam_km(prop[etype[i], 1], ell[i])
     g = g_g[:, i]
     if size(prop, 2) > 1
-      beam_mm(prop[etype[i], 2], ell[i])
+      mm = beam_mm(prop[etype[i], 2], ell[i])
     end
     eld = zeros(length(g))
     for j in 1:length(g)
@@ -244,7 +246,11 @@ function p43(data::Dict)
         eld[j] = loads[g[j]]
       end
     end
+    #println("\ni: $i")
+    #println("\nkm+mm: $(km+mm)")
+    #println("\neld: $eld")
     actions[:, i] = (km+mm) * eld
+    #println("\nactions: $actions\n")
   end
 
   dis_df = DataFrame(
@@ -259,13 +265,14 @@ function p43(data::Dict)
     xr_Moment = actions[4, :]
   )
   
+  
   # Correct element forces and moments for equivalent nodal
   # forces and moments introduced for loading between nodes
   if :eq_nodal_forces_and_moments in keys(data)
     eqfm = data[:eq_nodal_forces_and_moments]
     k = data[:struc_el].fin_el.nod * data[:struc_el].fin_el.nodof
     for t in eqfm
-      vals = convert(Array, fm_df[t[1], :])
+      vals = permutedims(Vector(fm_df[t[1], :]))
       for i in 1:k
         fm_df[t[1], i] = round.(vals[i] - t[2][i], digits=2)
       end

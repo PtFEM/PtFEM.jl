@@ -2,7 +2,7 @@ using PtFEM
 
 data = Dict(
   # Beam(ndim, nst, nxe, nip, direction, finite_element(nod, nodof), axisymmet
-  :struc_el => Beam(2, 1, 4, 1, :x, Line(2, 2), false),
+  :struc_el => Beam(2, 0, 4, 1, :x, Line(2, 2), false),
   :properties => [4.0e4; 2.0e4],
   :etype => [1, 1, 2, 2],
   :x_coords => [0.0, 2.5, 5.0, 8.0, 10.0],
