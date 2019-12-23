@@ -1,7 +1,7 @@
 name = "PtFEM"
 uuid = "9b64898b-da2a-5774-a656-fd6fb605642c"
 authors = ["Rob J Goedman <goedman@mac.com>"]
-version = "1.2.1"
+version = "1.2.0"
 
 [deps]
 CategoricalArrays = "324d7699-5711-5eae-9e2f-1d82baa6b597"
@@ -22,9 +22,9 @@ SuiteSparse = "4607b0f0-06f3-5cda-b6b1-a6196a1729e9"
 
 [compat]
 CategoricalArrays = "0.7"
-Compat = "2.2, 3.0"
-DataFrames = "0.19, 0.20"
-GR = "0.42, 0.43, 0.44"
+Compat = "3.0"
+DataFrames = "0.20"
+GR = "0.44"
 GraphRecipes = "0.4"
 Interpolations = "0.12"
 OffsetArrays = "0.11"
