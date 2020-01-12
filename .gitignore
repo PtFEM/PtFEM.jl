@@ -1,4 +1,4 @@
-Manifest.toml
+#Manifest.toml
 *.o *.so *.dylib
 *.svg
 *.vtu
