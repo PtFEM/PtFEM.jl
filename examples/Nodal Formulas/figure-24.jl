@@ -59,7 +59,8 @@ p[3] = plot(m.actions[12,:], lab="Moment", ylim=(-6000, 6000), xlabel="element",
   ylabel="moment [Nm]", palette=:grays,fill=(0,:auto),α=0.6)
 
 plot(p..., layout=(3, 1))
-savefig(ProjDir*"/figure-24.pdf")
+#savefig(ProjDir*"/figure-24.pdf")
+gui()
 
 # See figure 24 in above reference (Δmax): 
 @test round.(m.displacements[2,101], digits=11) ≈ -0.00333333333 atol = 0.001
