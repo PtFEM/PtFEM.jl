@@ -1,7 +1,7 @@
 name = "PtFEM"
 uuid = "9b64898b-da2a-5774-a656-fd6fb605642c"
 authors = ["Rob J Goedman <goedman@mac.com>"]
-version = "1.2.1"
+version = "1.2.2"
 
 [deps]
 CategoricalArrays = "324d7699-5711-5eae-9e2f-1d82baa6b597"
