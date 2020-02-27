@@ -1,6 +1,6 @@
 module PtFEM
 
-using Compat, SuiteSparse, SparseArrays, LinearAlgebra
+using SuiteSparse, SparseArrays, LinearAlgebra
 using Printf, DataFrames, Statistics
 using OffsetArrays, QuadGK
        

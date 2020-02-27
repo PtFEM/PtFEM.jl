@@ -1,9 +1,3 @@
-using Compat
-
-if VERSION.minor == 7
-  @eval using LinearAlgebra, SparseMatrices
-end
-
 ProjDir = dirname(@__FILE__)
 cd(ProjDir) do
 

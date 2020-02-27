@@ -1,5 +1,3 @@
-using Compat
-
 ### Finite elements used to approximate fin_el ###
 
 """
