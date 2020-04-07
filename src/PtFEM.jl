@@ -68,7 +68,7 @@ include("PtFEM/Geom/hexahedron_xz.jl")
 
 #include("graphics/vtkrecipes/vtk.jl")
 #include("graphics/vtkrecipes/exportVTK_XML.jl")
-include("graphics/plotrecipes/mesh.jl")
+#include("graphics/plotrecipes/mesh.jl")
 
 include("PtFEM/Deprecated/fkdiag.jl")
 include("PtFEM/Deprecated/fsparv.jl")
