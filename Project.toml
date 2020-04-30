@@ -21,7 +21,7 @@ SuiteSparse = "4607b0f0-06f3-5cda-b6b1-a6196a1729e9"
 [compat]
 CategoricalArrays = "0.7, 0.8"
 DataFrames = "0.20"
-GR = "0.46, 0.47, 0.48"
+GR = "0.46, 0.47, 0.48, 0.49"
 Interpolations = "0.12"
 OffsetArrays = "0.11, 1.0"
 Plots = "0.27, 0.28, 0.29, 1.0"
