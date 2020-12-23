@@ -3,7 +3,9 @@ module PtFEM
 using SuiteSparse, SparseArrays, LinearAlgebra
 using Printf, DataFrames, Statistics
 using OffsetArrays, QuadGK
-       
+
+const ptfem_path = @__DIR__
+
 # package code goes here
 ### Imports ###
 
@@ -104,6 +106,9 @@ include("6 Material Nonlinearity/p63_skyline.jl")
 ### Exports ###
 
 export
+
+  ptfem_path,
+
   # From fin_els.jl
   StructuralElement,
   Rod,

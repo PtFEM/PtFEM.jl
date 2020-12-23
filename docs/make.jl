@@ -1,4 +1,6 @@
-using Documenter, PtFEM
+using PtFEM, Documenter
+
+DOC_ROOT = ptfem_path("..", "docs")
 
 page_list = Array{Pair{String, Any}, 1}();
 append!(page_list, [Pair("Introduction", "INTRO.md")])
