@@ -1,4 +1,4 @@
-using PtFEM, Documenter
+using PtFEM, SparseArrays, Documenter
 
 DOC_ROOT = ptfem_path("..", "docs")
 
