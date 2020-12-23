@@ -1,25 +1,26 @@
 using Documenter, PtFEM
 
+page_list = Array{Pair{String, Any}, 1}();
+append!(page_list, [Pair("Introduction", "INTRO.md")])
+append!(page_list, [Pair("Getting started", "acknowledgements.md")]);
+append!(page_list, [Pair("Changes w.r.t. PtFEM", "references.md")])
+append!(page_list, [Pair("PtFEM.jl documentation", "index.md")])
+append!(page_list, [Pair("Versions", "VERSIONS.md")]);
+append!(page_list, [Pair("Todo", "TODO.md")])
+append!(page_list, [Pair("References", "REFERENCES.md")])
+
 makedocs(
-    format = :html,
+    format = Documenter.HTML(prettyurls = haskey(ENV, "GITHUB_ACTIONS")),
+    root = DOC_ROOT,
+    modules = Module[],
     sitename = "PtFEM",
-    pages = Any[
-        "Introduction" => "INTRO.md",
-        "Getting started" => "GETTINGSTARTED.md",
-        "Changes w.r.t. PtFEM" => "CHANGES.md",
-        "PtFEM.jl documentation" => "index.md",
-        "Versions" => "VERSIONS.md",
-        "Todo" => "TODO.md",
-        "References" => "REFERENCES.md",
-    ]
+    authors = "Rob Goedman",
+    pages = page_list,
 )
 
 deploydocs(
-    repo = "github.com/PtFEM/PtFEM.jl.git",
-    target = "build",
-    julia = "0.6",
-    osname = "linux",
-    latest = "v0.0.4",
-    deps = nothing,
-    make = nothing
-)
+    root = DOC_ROOT,
+    repo = "github.com/PtFEM.jl.git",
+    devbranch = "master",
+    push_preview = true,
+ )
