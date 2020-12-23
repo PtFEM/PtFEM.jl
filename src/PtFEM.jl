@@ -4,21 +4,8 @@ using SuiteSparse, SparseArrays, LinearAlgebra
 using Printf, DataFrames, Statistics
 using OffsetArrays, QuadGK
 
-const ptfem_path = @__DIR__
-
-# package code goes here
-### Imports ###
-
-#using CustomUnitRanges: filename_for_zerorange
-#include(filename_for_zerorange)
-
-#=
-_size(A::AbstractArray) = size(LinearIndices(A))
-_size(A) = size(A)
-
-_length(A::AbstractArray) = length(LinearIndices(A))
-_length(A) = length(A)
-=#
+const src_path = @__DIR__
+ptfem_path(parts...) = normpath(joinpath(src_path, parts...))
 
 ### Includes ###
 include("PtFEM/Types/finite_elements.jl")
