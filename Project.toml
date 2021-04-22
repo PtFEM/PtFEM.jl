@@ -20,7 +20,7 @@ SuiteSparse = "4607b0f0-06f3-5cda-b6b1-a6196a1729e9"
 
 [compat]
 CategoricalArrays = "0.9"
-DataFrames = "0.22"
+DataFrames = "0.22, 1.0"
 GR = "0.53, 0.54, 0.55, 0.57"
 Interpolations = "0.13"
 OffsetArrays = "1.0"
